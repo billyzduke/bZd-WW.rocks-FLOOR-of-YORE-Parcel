@@ -1,8 +1,8 @@
-// import { hideHelp } from './help'
+import { hideHelp } from './help'
 
 const revealNav = el => {
   if (el.header) el.header.classList.remove('navHidden')
-  // hideHelp(el, 0.5)
+  hideHelp(el, 0.5)
 }
 
 const hideNav = el => {

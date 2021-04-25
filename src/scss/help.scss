@@ -4,6 +4,13 @@ div#helpScreen {
   top: 0;
   height: 100%;
 }
+div#help {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  left: 0;
+  pointer-events: none;
+}
 div#helpScreen {
   position: absolute;
   width: 100vw;
@@ -12,18 +19,11 @@ div#helpScreen {
   opacity: 0;
   transition: all 1s ease-in-out;
   z-index: -1;
-}
-div#help {
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-  left: 0;
-  pointer-events: none;
-}
-div#help.open div#helpScreen {
-  pointer-events: auto;
-  cursor: pointer;
-  opacity: 0.42;
+  div#help.open & {
+    pointer-events: auto;
+    cursor: pointer;
+    opacity: 0.42;
+  }
 }
 div#helpMeLawd {
   position: fixed;
@@ -37,8 +37,9 @@ div#helpToggle {
   background-color: rgba(0,0,0,0.42);
   border: solid 3px transparent;
   border-radius: 50%;
+  box-sizing: content-box !important;
   position: absolute;
-  top: 24px;
+  top: 16.5px;
   right: 22px;
   pointer-events: auto;
   cursor: context-menu;
@@ -48,6 +49,7 @@ div#helpToggle {
   z-index: 10;
 }
 svg#helpIcon {
+  box-sizing: content-box !important;
   position: absolute;
   width: 17px;
   height: 24px;
@@ -71,7 +73,8 @@ div#help.open div#helpToggle {
   border: solid 3px white;
 }
 
-#helpList {
+div#helpList {
+  margin-top: 3px;
   transform: translateX(100%) translateY(3px);
   box-shadow: 10px 10px 12px rgba(0,0,0,0.88);
 }
@@ -142,6 +145,7 @@ div#help.open div#helpToggle {
 }
 .mkOpen .mkTitle h1 {
   background-position: 120% 6px;
+  font-size: 20.5px;
 }
 .mkNode i {
   font-weight: bold;

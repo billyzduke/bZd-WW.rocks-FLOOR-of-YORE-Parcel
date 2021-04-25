@@ -230,4 +230,4 @@ const makisusan = el => {
   }
 }
 
-export { makisusan }
+export { hideHelp, makisusan }

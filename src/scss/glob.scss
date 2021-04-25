@@ -31,3 +31,11 @@ main {
   top: 0;
   width: 100vw;
 }
+
+iframe#discoWall {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  border: none;
+  z-index: -400;
+}

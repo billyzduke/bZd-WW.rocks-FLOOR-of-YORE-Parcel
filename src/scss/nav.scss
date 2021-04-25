@@ -19,6 +19,10 @@ nav.navBar {
   position: absolute;
   z-index: 0;
 }
+nav.navBar,
+nav.navBar * {
+  box-sizing: content-box;
+}
 nav.navBar:not(.subNavBar):after {
   background-color: black;
   content: '';
