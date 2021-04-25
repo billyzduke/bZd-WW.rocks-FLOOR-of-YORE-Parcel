@@ -7,12 +7,14 @@
     "url": "git+https://github.com/emendelski/parcel-starter-kit.git"
   },
   "scripts": {
-    "serve": "parcel index.html",
+    "serve": "parcel yore.html",
     "lint": "eslint scripts/*",
-    "build": "parcel build index.html"
+    "build": "parcel build yore.html"
   },
   "dependencies": {
-    "bulma": "^0.9.2"
+    "@gsap/shockingly": "^3.6.1",
+    "gsap": "npm:@gsap/shockingly",
+    "howler": "^2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
@@ -23,12 +25,14 @@
     "eslint": "7.24.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "modern-css-reset": "^1.4.0",
     "parcel": "next",
     "postcss": "^8.2.12",
     "postcss-loader": "^5.2.0",
     "postcss-modules": "^4.0.0",
     "posthtml-include": "^1.7.0",
     "posthtml-loader": "^2.0.1",
-    "sass": "^1.32.11"
+    "sass": "^1.32.11",
+    "video.js": "^7.12.1"
   }
 }

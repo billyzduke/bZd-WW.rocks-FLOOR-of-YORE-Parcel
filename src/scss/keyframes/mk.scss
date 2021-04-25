@@ -1,0 +1,93 @@
+
+@keyframes mkUnfold {
+  0% {
+    transform: rotateX(180deg);
+  }
+  50% {
+    transform: rotateX(-30deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes mkUnfoldFirst {
+  0% {
+    transform: rotateX(-90deg);
+  }
+  50% {
+    transform: rotateX(60deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes mkFold {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(180deg);
+  }
+}
+
+@keyframes mkFoldFirst {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(-180deg);
+  }
+}
+
+@keyframes mkSwingOut {
+  0% {
+    transform: rotateX(0deg);
+  }
+  30% {
+    transform: rotateX(-30deg);
+  }
+  60% {
+    transform: rotateX(15deg);
+  }
+  85% {
+    transform: rotateX(-4.2deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes mkSwingIn {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(-10deg);
+  }
+  90% {
+    transform: rotateX(15deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes mkUnfoldOver {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes mkFoldOver {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

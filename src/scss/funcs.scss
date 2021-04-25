@@ -1,0 +1,11 @@
+@function coloring($rgbOrName, $a:null) {
+  @if type_of($rgbOrName) == 'string' and map_get($namedColors, $rgbOrName) != null {
+    $rgbOrName: map_get($namedColors, $rgbOrName)
+  }
+  @if type_of($rgbOrName) == list {
+    @if $a == null {
+      $a: 1
+    }
+    @return rgba(nth($rgbOrName, 1), nth($rgbOrName, 2), nth($rgbOrName, 3), $a);
+  }
+}
