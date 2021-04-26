@@ -1,0 +1,11 @@
+<svg viewBox="0 0 {{ width }} {{ height }}" width="{{ width }}" height="{{ height }}" class="turbulent">
+  <filter width="100%" height="100%" x="0%" y="0%" id="noise{{ filterId }}">
+    <feTurbulence type="turbulence" baseFrequency="{{ baseFrequency }}" id="turbulence" numOctaves="{{ numOctaves }}" result="turbulence" seed="{{ seed }}">
+      <animate id="noiseAnimate" attributeName="baseFrequency" values="0;.1;0,0" from="{{ from }}" to="{{ to }}" dur="{{ dur }}s" repeatCount="{{ repeatCount }}"></animate>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="{{ scale }}" xChannelSelector="R" yChannelSelector="R"></feDisplacementMap>
+  </filter>
+  <foreignObject width="100%" height="100%">
+    <img src="{{ sourceGraphic }}" xlink:href="data:{{ sourceGraphic }}" width="100%" height="100%" x="0" y="0" style="filter: url(#noise{{ filterId }});">
+  </foreignObject>
+</svg>

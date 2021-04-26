@@ -6,7 +6,6 @@ export const htmEl = (find, findByType = 'id', returnMulti = false) => {
   labels.forEach(lbl => {
     // eslint-disable-next-line no-useless-escape
     const keyFromSelector = lbl.split(/[#\.\s]/).pop()
-    console.log(keyFromSelector)
     switch (findByType) {
       case 'q':
         el[keyFromSelector] = returnMulti ? document.querySelectorAll(lbl) : document.querySelector(lbl)
@@ -19,6 +18,7 @@ export const htmEl = (find, findByType = 'id', returnMulti = false) => {
         el[lbl] = document.getElementById(lbl)
     }
   })
+  console.log(el)
   return el
 }
 

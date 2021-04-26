@@ -1,0 +1,5 @@
+const setShaiHulud = () => {
+
+}
+
+export { setShaiHulud }

@@ -1,0 +1,14 @@
+<div id="curtains">
+  <each loop="cc in {{ layers }}">
+    <div id="cc{{ cc }}" class="cc">
+      <div class="cw">
+        <each loop="c in {{ crtnsPerLayer }}">
+          <include src="src/html/curtain.html">{
+            "uniqId": "cc{{ cc }}_c{{ c }}",
+            "crtn": "src/img/curtains/red-curtain.gif"
+          }</include>
+        </each>
+      </div>
+    </div>
+  </each>
+</div>

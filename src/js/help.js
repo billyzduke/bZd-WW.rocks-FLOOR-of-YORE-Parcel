@@ -2,6 +2,7 @@ import { gsap } from 'gsap'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
 import { addCSSRule, isNode } from './utils'
+// eslint-disable-next-line import/no-cycle
 import { hideNav } from './nav'
 
 gsap.registerPlugin(MorphSVGPlugin)
