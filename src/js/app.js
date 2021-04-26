@@ -1,3 +1,4 @@
+import { g } from './glob'
 import { getW, getMouseMove } from './window'
 import htmEl from './el'
 import { revealNav, hideNav, toggleShopNav } from './nav'
@@ -18,18 +19,8 @@ import { setScene, setSceneSkipper } from './scene'
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
 import '/src/scss/app.scss'
 
-const m = { x: 0, y: 0 }
-// eslint-disable-next-line prefer-const
-let scene = {
-  action: '',
-  current: 0,
-  skipDur: 0,
-  skipTarget: 0,
-}
-let el
-
 const loadApp = () => {
-  el = {
+  const el = {
     ...htmEl([
       'binary',
       'binaryScroll',
@@ -37,7 +28,7 @@ const loadApp = () => {
       'bloodSplashR',
       'bronzeCauldron',
       'bronzeVidWrapper',
-      'cw',
+      'ctrRing',
       'dirtOnTheGround',
       'discoWall',
       'drWorm',
@@ -69,10 +60,13 @@ const loadApp = () => {
       'yoreFloor',
     ]),
     ...htmEl([ 'header' ], 'tag'),
+    ...htmEl('.bW', 'q', true),
     ...htmEl('.cw', 'q', true),
     ...htmEl('.makisu', 'q', true),
     ...htmEl('.tpTitle', 'q', true),
   }
+  el.bL = []
+  g.el = el
 
   if (el.header && el.home) {
     el.home.addEventListener('mouseenter', () => revealNav(el))
@@ -87,9 +81,8 @@ const loadApp = () => {
   }
 
   // eslint-disable-next-line object-curly-newline
-  const w = getW(cyOffPx)
-  const bL = []
-  const crtns = { cx: w.cx, cy: w.cyOff }
+  g.w = getW(cyOffPx)
+  g.crtns = { cx: g.w.cx, cy: g.w.cyOff }
 
   if (el.lolf01 && el.lolf02) setLion(w, el, scene)
   if (el.ggrove) setGrove(w, el)
@@ -105,13 +98,8 @@ const loadApp = () => {
   setScene(el, scene)
 }
 
-const setM = ({ x = 0, y = 0 } = {}) => {
-  m.x = x
-  m.y = y
-}
-
 const getM = () => {
-  getMouseMove(window.event, setM)
+  g.m = getMouseMove(window.event)
   moveLionEyes(m, el, scene)
 }
 

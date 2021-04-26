@@ -18,7 +18,7 @@ export const htmEl = (find, findByType = 'id', returnMulti = false) => {
         el[lbl] = document.getElementById(lbl)
     }
   })
-  console.log(el)
+  // console.log(el)
   return el
 }
 

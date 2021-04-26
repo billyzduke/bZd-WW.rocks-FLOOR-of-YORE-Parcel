@@ -1,0 +1,39 @@
+div#bL01 {
+  height: calc(100vh + 2.42%);
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: -2.42%;
+  width: 100vw;
+  z-index: 500;
+  transform: scale(0.75);
+  transform-origin: 50% calc(50% + 17.4px);
+  perspective: 23em;
+}
+div#bW01.orbit {
+  height: 1024px;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, -256px) rotateX(75deg) rotateY(-60deg);
+  width: 1024px;
+}
+div#ctrRing {
+  /* background-color: rgba(255, 0,0, 0.42) */
+  border-radius: 50%;
+  cursor: pointer;
+  height: 138px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 138px;
+}
+img.z {
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}

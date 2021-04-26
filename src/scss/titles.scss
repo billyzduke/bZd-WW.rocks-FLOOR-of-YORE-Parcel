@@ -1,0 +1,33 @@
+div.tpTitles {
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 600;
+}
+div#tpTitles {
+  cursor: wait;
+}
+div.tpTitle {
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 202px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1392px;
+}
+div#tpTitleScreen {
+  background-color: black;
+  pointer-events: none;
+}
+div#tpTitleYore {
+  background-image: url(../img/tpTitles/DAYS_OF_YORE.png);
+}
+div#tpTitleExplore {
+  background-image: url(../img/tpTitles/EXPLORE.png);
+  background-position: right center;
+  opacity: 0;
+}

@@ -1,0 +1,33 @@
+div#bL02 {
+  position: absolute;
+  top: 71px;
+  left: 140px;
+  width: 370.2px;
+  height: 423.5px;
+  pointer-events: none;
+}
+div#bL02 svg {
+  transform: scale(0.77, 0.64);
+}
+div#bL02 svg.bL02_p {
+  position: absolute;
+  width: 274.2px;
+  height: 423.5px;
+  margin-left: -8.5px;
+  top: 0;
+  left: 0;
+  transform: scale(0.56) rotateZ(-8deg);
+}
+div#bL02 svg.bL02_R {
+  margin-left: 104px;
+  margin-top: 0.5px;
+  transform: scale(0.56) rotateZ(8deg);
+}
+svg.bL02_p path {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+div.bL02 {
+  opacity: 0.23;
+  transform: translate(172px, 252px) scale(8);
+}

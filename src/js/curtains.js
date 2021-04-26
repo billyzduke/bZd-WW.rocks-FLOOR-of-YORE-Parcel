@@ -4,7 +4,6 @@ const setCurtains = (w, el) => {
   if (el.cw && el.cw.length) {
     const crtnsScale = (1063 * 0.8648) / w.h
     el.cw.forEach(cw => {
-      // eslint-disable-next-line no-param-reassign
       cw.style.transform = `scale(${crtnsScale})`
     })
   }
@@ -25,14 +24,14 @@ const blurCrtnsTick = (m, crtns, skipDur) => {
   })
 }
 
+const unBlurCrtns = blurCrtnsTickFunc => {
+  gsap.ticker.remove(blurCrtnsTickFunc)
+}
+
 const blurCrtns = (m, crtns, skipDur) => {
   const blurCrtnsTickFunc = () => blurCrtnsTick(m, crtns, skipDur)
   gsap.ticker.add(blurCrtnsTickFunc)
-  return blurCrtnsTickFunc
-}
-
-const unBlurCrtns = blurCrtnsTickFunc => {
-  gsap.ticker.remove(blurCrtnsTickFunc)
+  return () => unBlurCrtns(blurCrtnsTickFunc)
 }
 
 export { blurCrtns, setCurtains, unBlurCrtns }

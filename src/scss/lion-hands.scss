@@ -1,0 +1,87 @@
+div.handEyeWrapper {
+  cursor: not-allowed;
+  height: 56px;
+  width: 42px;
+}
+div.handEyeWrapper.open img.handEye {
+  cursor: context-menu !important;
+}
+img#handEyeRight {
+  left: 103px;
+  top: 365px;
+}
+img#handEyeLeft {
+  left: 509px;
+  top: 367px;
+  transform: rotate(-4deg);
+}
+div.ottomanWrapper {
+  cursor: pointer;
+  opacity: 0;
+  top: 276px;
+  transform: scale(0);
+  transition: all 0.25s ease-in-out;
+}
+div.ottomanBubble {
+  background: #fff;
+  border-radius: 50px;
+  box-shadow: 0 6px 12px black;
+  padding: 16px;
+  position: relative;
+  text-align: center;
+}
+div.ottomanBubble svg {
+  position: relative;
+  margin: 0 14px;
+  transition: all 0.25s ease-in-out;
+}
+div.ottomanBubble svg path {
+  transition: all 0.25s ease-in-out;
+}
+div.ottomanWrapper:before,
+div.ottomanBubble:before {
+  border-bottom: 20px solid transparent;
+  border-left: 24px solid #fff;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #fff;
+  bottom: -24px;
+  content: "";
+  height: 0px;
+  left: 48px;
+  position: absolute;
+  width: 0px;
+}
+div.ottomanWrapper:before {
+  border-left: 24px solid #000;
+  border-top: 12px solid #000;
+  bottom: -32px;
+  filter: blur(6px);
+  transform: translateX(-3px);
+}
+div.ottomanWrapper:hover div.ottomanBubble svg {
+  transform: scale(1.1);
+}
+div.ottomanWrapper:hover div.ottomanBubble svg path {
+  fill: #ca0000;
+}
+div#sayCeren {
+  left: -148px;
+  transform-origin: calc(100% - 48px) bottom;
+}
+div#sayCeren:before,
+div#sayCeren .ottomanBubble:before {
+  transform: scaleX(-1);
+  left: auto;
+  right: 48px;
+}
+div#sayCeren:before {
+  transform: scaleX(-1) translateX(-3px);
+}
+div#saySinan {
+  left: 496px;
+  transform-origin: 48px bottom;
+}
+div.saySaySay {
+  opacity: 1;
+  transform: scale(1);
+}

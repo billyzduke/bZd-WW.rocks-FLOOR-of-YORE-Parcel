@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
-const getMouseMove = (e, callBack) => {
+const getMouseMove = e => {
+  const mm = { x: 0, y: 0 }
   if (e) {
     let eDoc, doc, body
     // If pageX/Y aren't available and clientX/Y are,
@@ -16,8 +17,10 @@ const getMouseMove = (e, callBack) => {
         + ((doc && doc.scrollTop) || (body && body.scrollTop) || 0)
         - ((doc && doc.clientTop) || (body && body.clientTop) || 0)
     }
-    if (callBack) callBack({ x: e.pageX, y: e.pageY })
+    mm.x = e.pageX
+    mm.y = e.pageY
   }
+  return mm
 }
 
 const getW = (cyOffPx = 0) => {

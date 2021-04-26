@@ -1,4 +1,4 @@
-/* eslint-disable import/no-cycle, no-param-reassign */
+/* eslint-disable import/no-cycle */
 import { scene00, setScene00 } from './scenes/scene-00'
 import { scene01, setScene01 } from './scenes/scene-01'
 import { scene02, setScene02 } from './scenes/scene-02'
@@ -29,6 +29,7 @@ const scenes = [
 
 const setScene = (el, scene, toScene = 0) => {
   scene.action = 'set'
+  // console.log({ scene, toScene })
   if (!toScene || toScene === scene.current + 1) {
     const setScenes = [
       setScene00,
@@ -51,7 +52,7 @@ const setScene = (el, scene, toScene = 0) => {
         const sceneSet = setScenes[toScene](el, scene)
         if (sceneSet) {
           scene.current = toScene
-          console.log(`scene ${scene.current} ${scene.action} complete: ${scenes[scene.current]}`)
+          console.log(`scene ${scene.current} ${scene.action} complete: ${scenes[scene.current]}`, el)
           // eslint-disable-next-line no-use-before-define
           setSceneSkipper(el, scene)
           return true
@@ -63,7 +64,7 @@ const setScene = (el, scene, toScene = 0) => {
         console.log(`scene ${scene.current} ${scene.action}: ${scenes[scene.current]}`)
         const nextScene = scene.current + 1
         if (setScenes[nextScene]) {
-          setTimeout(() => setScenes[nextScene](el, scene), 100)
+          setTimeout(() => setScenes[nextScene](el, scene), 100, setScenes, el, scene)
           return true
         }
         console.log(`invalid scene ${scene.action} attempted: scene ${nextScene} does not exist.`)
@@ -71,7 +72,14 @@ const setScene = (el, scene, toScene = 0) => {
     } else {
       console.log(`invalid scene ${scene.action} attempted: scene ${toScene} does not exist`)
     }
-  } else {
+    if (scene.cleanUp.length) {
+      console.log(`running ${scene.cleanUp.length} cleanup functions`)
+      scene.cleanUp.forEach((cu, i) => {
+        if (cu()) console.log(`pipe ${i} is clean`)
+      })
+    }
+  } else if (toScene !== scene.current) {
+    // We're gonna ignore calls to change a scene to itself and not throw errors... Event listeners, it turns out, can accumulate on a single event, esp when using anon funcs
     console.log(`invalid scene ${scene.action} attempted: current scene ${scene.current} cannot be ${scene.action} to target scene ${toScene}`)
   }
   return false
@@ -98,7 +106,6 @@ const setSceneSkipper = (el, scene) => {
         if (i < 1 || i < scene.current + 2 || i < scene.skipTarget + 1) ssOption.disabled = true
         el.sceneSkipper.add(ssOption)
       })
-      // eslint-disable-next-line no-param-reassign
       el.sceneSkipper.value = 0
       el.sceneSkipper.addEventListener('change', e => skipToScene(el, scene, el.sceneSkipper.value, e))
     } else {

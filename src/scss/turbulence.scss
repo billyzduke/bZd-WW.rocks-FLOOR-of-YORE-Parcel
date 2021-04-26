@@ -1,0 +1,21 @@
+svg.turbulent {
+  filter: drop-shadow(0 0 12px rgba(0, 0, 0, 1));
+  position: relative;
+  top: 0;
+}
+svg.turbulent foreignObject,
+svg.turbulent foreignObject img {
+  box-sizing: border-box;
+  display: block;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  transform-origin: 0px 0px;
+  width: 100%;
+}
+svg.turbulent foreignObject img {
+  display: inline-block;
+}

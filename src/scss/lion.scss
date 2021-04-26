@@ -1,0 +1,32 @@
+@import 'mane-of-flames';
+@import 'lion-head';
+@import 'lion-shirt';
+@import 'lion-hands';
+@import 'lightning-rods';
+
+div#theLion {
+  position: absolute;
+  width: 650px;
+  height: 700px;
+}
+div#lionBody {
+  height: 552px;
+  top: 148px;
+  width: 650px;
+}
+div.lionBlur {
+  height: 638px;
+  pointer-events: none;
+  width: 657px;
+}
+div#lionBlur1 {
+  background-image: url(../img/lion/lion-blur-1.png);
+  transform: scale(1.1);
+  top: 42px;
+}
+div#lionBlur2 {
+  background-image: url(../img/lion/lion-blur-2.png);
+  transform: scale(1.05);
+  opacity: 0;
+  top: 57px;
+}

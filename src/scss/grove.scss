@@ -1,0 +1,15 @@
+div#grove {
+  background-color: black;
+  height: 100vh;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 100;
+}
+img#ggrove {
+  display: block;
+  position: absolute;
+  animation: ggroveScroll 20s ease-in-out infinite alternate;
+}

@@ -1,0 +1,45 @@
+div#curtains {
+  height: 100vh;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 400;
+  pointer-events: none;
+}
+div.cc {
+  height: 100vh;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 6;
+}
+div.cw {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 99.0085%, rgba(0, 0, 0, 0) 100%);
+  display: flex;
+  flex-wrap: nowrap;
+  height: 1063px;
+  left: -5px;
+  position: absolute;
+  top: -10px;
+  transform-origin: 0 0;
+  width: 4521px;
+}
+div.crtn {
+  display: inline-block;
+  height: 1063px;
+  position: relative;
+  width: 1507px;
+}
+div.crtn:first-child {
+  margin-right: -2px;
+}
+div.crtn:nth-child(2n) {
+  transform: scaleX(-1);
+}
+div.crtn:last-child {
+  margin-left: -7px;
+}

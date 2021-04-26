@@ -1,0 +1,88 @@
+div#justEnoughBlood {
+  height: 318px;
+  left: 0;
+  top: 911px;
+  width: 100%;
+}
+div#animalsOnWheels {
+  z-index: 200;
+  width: 100%;
+}
+div.womb,
+div.womb * {
+  pointer-events: auto;
+  cursor: pointer;
+}
+div#wombL,
+div#wombL div.foetusRocker {
+  width: 146px;
+  height: 136px;
+}
+div#wombL {
+  opacity: 0;
+  transform: translate(48px, -315px) scale(0.1);
+}
+.anim div#wombL div.foetusRocker {
+  animation: balancing 3s ease-in-out infinite alternate-reverse;
+}
+div#wombR,
+div#wombR div.foetusRocker {
+  width: 151px;
+  height: 131px;
+}
+div#wombR {
+  opacity: 0;
+  transform: translate(457px, -315px) scale(0.1);
+}
+.anim div#wombR div.foetusRocker {
+  animation: balancing 3s ease-in-out infinite alternate;
+}
+div.foetusEye {
+  width: 14px;
+  height: 17px;
+  z-index: 3;
+}
+div.foetusEye img:not(:first-child) {
+  opacity: 0;
+}
+div#foetusEyeL {
+  top: 60px;
+  left: 61px;
+  transform: scaleX(-1);
+}
+div#foetusEyeR {
+  left: 75px;
+  top: 61px;
+}
+img.bloodDrop {
+  top: -348px;
+  width: 23px;
+  height: 42px;
+  transform-origin: 50% 0;
+  transform: scale(0);
+  filter: drop-shadow(0 0 4.2px rgba(0,0,0,0.76));
+}
+img#bloodDropL {
+  left: 110px;
+}
+img#bloodDropR {
+  left: 524px;
+}
+div.bloodSplash {
+  width: 300px;
+  height: 131.2525px;
+}
+div.bloodSplash img {
+  height: 100%;
+  opacity: 0;
+  width: 100%;
+}
+div#bloodSplashL {
+  left: -6px;
+  top: 216px;
+  transform: scaleX(-1);
+}
+div#bloodSplashR {
+  left: 367px;
+  top: 220px;
+}

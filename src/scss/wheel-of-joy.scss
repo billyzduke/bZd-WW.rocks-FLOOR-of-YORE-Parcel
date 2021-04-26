@@ -1,0 +1,67 @@
+div#wheelOfJoy {
+  width: 650px;
+  height: 650px;
+  top: 384px;
+  left: 0;
+  pointer-events: none;
+}
+div.wheelOfJoy {
+  width: 144px;
+  height: 144px;
+  border-radius: 50%;
+}
+div#solarCorona {
+  width: 204px;
+  height: 204px;
+  top: 223px;
+  left: 223px;
+  background-image: url(../img/wheelOfJoy/burning-sun-2021.gif);
+  background-size: contain;
+  background-position: center center;
+  transform: scale(0);
+}
+div#circlingSparks,
+div#circlingSparks div {
+  pointer-events: none;
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  top: 0;
+  left: 0;
+}
+div#circlingSparks {
+  -webkit-mask-image: radial-gradient(circle closest-side, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.88) 88%, rgba(255, 255, 255, 0) 100%);
+  mask-image: radial-gradient(circle closest-side, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.88) 88%, rgba(255, 255, 255, 0) 100%);
+  transform: scale(0);
+}
+div#circlingSparks div {
+  background-image: url(../img/wheelOfJoy/circle-of-sparks-01.gif), url(../img/wheelOfJoy/circle-of-sparks-02.gif);
+  background-size: contain, contain;
+  background-position: center center, center center;
+}
+div#circlingSparks div:last-child {
+  transform: scale(-1);
+}
+div#gankyil {
+  background-image: url(../img/wheelOfJoy/Gankyil.gif);
+  background-position: 5.5px 5.5px;
+  background-size: 133px 133px;
+  cursor: pointer;
+  left: 253px;
+  overflow: visible;
+  top: 253px;
+  transform: scale(0) rotateZ(-540deg);
+  z-index: 1;
+  pointer-events: auto;
+}
+div#triskelion {
+  background-image: url(../img/wheelOfJoy/Triskelion-2021.gif);
+  background-size: 144px 144px;
+  overflow: hidden;
+  transition: transform 0.25s ease-in-out;
+  transform: scale(0);
+  cursor: pointer;
+}
+div#gankyil:hover div#triskelion {
+  transform: scale(1);
+}
