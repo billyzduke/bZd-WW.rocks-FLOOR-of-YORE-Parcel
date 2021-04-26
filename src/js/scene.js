@@ -64,12 +64,12 @@ const setScene = (toScene = 0) => {
       setScene11,
     ]
     if (setScenes[toScene]) {
-      if (toScene >= g.scene.skip.target) {
-        g.scene.skip.dur = 0
-        console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
-        const prevSceneCleaned = cleanScene(g.scene.current)
-        console.log({ prevSceneCleaned })
-        if (prevSceneCleaned) {
+      console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
+      const prevSceneCleaned = cleanScene(g.scene.current)
+      console.log({ prevSceneCleaned })
+      if (prevSceneCleaned) {
+        if (toScene >= g.scene.skip.target) {
+          g.scene.skip.dur = 0
           const nextSceneSet = setScenes[toScene]()
           console.log({ nextSceneSet })
           if (nextSceneSet) {
@@ -80,20 +80,18 @@ const setScene = (toScene = 0) => {
             return true
           }
           console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
-          return false
+        } else {
+          g.scene.action = 'skip'
+          g.scene.current = toScene
+          console.log(`scene ${g.scene.current} ${g.scene.action}: ${scenes[g.scene.current]}`)
+          const nextScene = g.scene.current + 1
+          if (setScenes[nextScene]) {
+            setTimeout(() => setScene(nextScene), 100, setScene, nextScene)
+            return true
+          }
+          console.log(`invalid scene ${g.scene.action} attempted: scene ${nextScene} does not exist.`)
         }
-        console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
-      } else {
-        g.scene.action = 'skip'
-        g.scene.current = toScene
-        console.log(`scene ${g.scene.current} ${g.scene.action}: ${scenes[g.scene.current]}`)
-        const nextScene = g.scene.current + 1
-        if (setScenes[nextScene]) {
-          setTimeout(() => setScenes[nextScene](), 100, setScenes, nextScene)
-          return true
-        }
-        console.log(`invalid scene ${g.scene.action} attempted: scene ${nextScene} does not exist.`)
-      }
+      } else console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
     } else {
       console.log(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
     }

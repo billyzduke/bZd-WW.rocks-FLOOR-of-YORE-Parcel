@@ -2,9 +2,6 @@ import { gsap } from 'gsap'
 
 import g from './glob'
 
-g.crtns.crtnMaskSizeObj = { value: 1080 }
-g.crtns.crtnMaskQuickSetter = gsap.quickSetter('#cc1', 'css')
-
 const embiggenCrtnMaskTick = () => {
   g.crtns.crtnMaskQuickSetter({
     WebkitMaskSize: `${g.crtns.crtnMaskSizeObj.value}px ${g.crtns.crtnMaskSizeObj.value}px`,

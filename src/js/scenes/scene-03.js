@@ -1,4 +1,4 @@
-import { TimelineMax as TL } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { gsapTick, setAddOn, setClearActor } from '../utils'
@@ -14,33 +14,40 @@ const scene03 = 'Reveal Curtain / Floor of Yore'
 
 const setScene03 = () => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
-  g.scene.forCleanUp[3].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(4))
-  g.scene.forCleanUp[3].clearTitles = () => setClearActor('#cc1')
-  g.scene.forCleanUp[3].shockTicker = gsapTick(shockTick)
+  g.crtns.crtnMaskSizeObj = { value: 1080 }
+  g.crtns.crtnMaskQuickSetter = gsap.quickSetter('#cc1', 'css')
   g.scene.forCleanUp[3].crtnMaskTicker = gsapTick(embiggenCrtnMaskTick)
+  g.scene.forCleanUp[3].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(4))
+  g.scene.forCleanUp[3].clearMaskedCrtn = () => setClearActor('#cc1')
+  g.scene.forCleanUp[3].clearGrove = () => setClearActor('#grove')
+  gsapTick(shockTick)
   setAddOn('#yoreFloor', 'mouseenter', readTheFloor)
   setAddOn('#yoreFloor', 'mouseleave', scrubTheFloor)
+
+  gsap.to(g.crtns.crtnMaskSizeObj, {
+    duration: g.scene.skip.dur || 2,
+    ease: 'power2.in',
+    value: g.w.w * 4,
+  })
+
   resetCtrRing()
 
-  flashBulb(g.bL[1].ctrRing)
-  if (!g.scene.skip.dur) obscureGrandiose(2)
+  if (!g.scene.skip.dur) {
+    flashBulb(g.bL[1].ctrRing)
+    obscureGrandiose(2)
+  }
 
   sceneTL.set('#cc0', {
     maskImage: 'none',
-  }, '<')
+  })
     .set('#cc1', {
       opacity: 0.76,
-    }, '<')
-    .to(g.crtns.crtnMaskSizeObj, {
-      duration: g.scene.skip.dur || 2,
-      ease: 'power2.in',
-      value: g.w.w * 4,
-    }, '<')
+    })
     .to(g.el.yoreFloor, {
       duration: g.scene.skip.dur || 4,
       ease: 'power1.in',
       opacity: 1,
-    }, '<')
+    })
     .from(g.el.yoreFloor, {
       duration: g.scene.skip.dur || 4,
       ease: 'power2.inOut',
