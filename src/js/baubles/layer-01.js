@@ -48,6 +48,29 @@ const setBaubleLayer01 = () => {
   // console.log(g.bL)
 }
 
+const resetCtrRing = (dur = 0.15) => {
+  g.bL[1].b.forEach((b, i) => {
+    const a = i * g.bL[1].st
+    const x = Math.round(g.w.cx + g.bL[1].cR * Math.cos(a) - g.b.r)
+    const y = Math.round(g.w.cyOff + g.bL[1].cR * Math.sin(a) - g.b.d)
+    gsap.to(b, {
+      duration: g.scene.skip.dur || dur,
+      ease: 'power2',
+      filter: 'none',
+      x,
+      y,
+      overwrite: true,
+      scale: 1,
+      WebkitFilter: 'none',
+    })
+    g.bL[1].bD[i] = i
+  })
+}
+
+const resetCtrRingV2 = () => {
+  resetCtrRing(1.5)
+}
+
 const evadeMouseTick = re => {
   let inC = false
   let fromC = 0
@@ -62,12 +85,12 @@ const evadeMouseTick = re => {
   }
   const blur = fromC ? `blur(${(fromC / 100)}px)` : false
   g.bL[1].b.forEach((b, i) => {
-    let x = g.w.cx - g.bRadii
-    let y = g.w.cyOff - g.bRadii
+    let x = g.w.cx - g.b.r
+    let y = g.w.cyOff - g.b.r
     if (!inC && g.m.x && g.m.y) {
       const a = i * g.bL[1].st
-      x = Math.round(g.w.cx + o * Math.cos(a) + g.w.cx - g.m.x - g.bRadii)
-      y = Math.round(g.w.cyOff + o * Math.sin(a) + g.w.cyOff - g.m.y - g.bRadii)
+      x = Math.round(g.w.cx + o * Math.cos(a) + g.w.cx - g.m.x - g.b.r)
+      y = Math.round(g.w.cyOff + o * Math.sin(a) + g.w.cyOff - g.m.y - g.b.r)
     }
     gsap.to(b, {
       duration: g.scene.skip.dur || 0.42,
@@ -87,13 +110,21 @@ const evadeMouseTick = re => {
   }
 }
 
-const unEvadeMouse = blurCrtnsTickFunc => {
-  gsap.ticker.remove(blurCrtnsTickFunc)
+const shockTick = () => {
+  let oo = 0
+  let fromCC = 0
+  if (g.m.x && g.m.y) {
+    fromCC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2))
+    oo = (g.w.cx - fromCC) / g.w.cx
+  }
+  const eAss = gsap.utils.snap(1, gsap.utils.random(0, tgBgAsses.length - 1))
+  g.bL[1].zQuickOffSetter(0)
+  g.bL[1].zQuickOnSetters[eAss]({
+    opacity: gsap.utils.random(0, oo) * 0.64,
+    rotateZ: gsap.utils.random(0, 360),
+  })
 }
 
-const evadeMouse = () => {
-  gsap.ticker.add(evadeMouseTick)
-  return () => unEvadeMouse(evadeMouseTick)
+export {
+  evadeMouseTick, resetCtrRing, resetCtrRingV2, setBaubleLayer01, shockTick,
 }
-
-export { evadeMouse, setBaubleLayer01, unEvadeMouse }

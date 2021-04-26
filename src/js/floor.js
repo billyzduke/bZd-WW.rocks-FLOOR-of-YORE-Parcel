@@ -1,6 +1,7 @@
 import { gsap } from 'gsap'
 
 import g from './glob'
+import { pullRando } from './utils'
 
 const setFloor = () => {
   if (g.el.yoreFloor) {
@@ -10,4 +11,20 @@ const setFloor = () => {
   }
 }
 
-export { setFloor }
+const readTheFloor = () => {
+  gsap.to('#yoreFloorTitle', {
+    duration: 2,
+    ease: 'elastic.out',
+    translateX: '-50%',
+  })
+}
+
+const scrubTheFloor = () => {
+  gsap.to('#yoreFloorTitle', {
+    duration: 1,
+    ease: 'back.in',
+    translateX: `${pullRando() ? '-' : ''}${g.w.w * 1.5}`,
+  })
+}
+
+export { scrubTheFloor, readTheFloor, setFloor }

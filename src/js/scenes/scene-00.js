@@ -9,9 +9,7 @@ const scene00 = 'Fade In / DAYS OF YORE'
 
 const setScene00 = () => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
-  const toNextScene = () => {
-    g.scene.cleanUp[0].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(1))
-  }
+  g.scene.forCleanUp[0].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(1))
 
   sceneTL.to('#tpTitleScreen', {
     duration: 2,
@@ -20,7 +18,6 @@ const setScene00 = () => {
     .set('#tpTitles', {
       cursor: 'pointer',
     }, '>')
-    .call(toNextScene, [], '>')
 
   return true
 }

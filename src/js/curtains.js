@@ -2,6 +2,16 @@ import { gsap } from 'gsap'
 
 import g from './glob'
 
+g.crtns.crtnMaskSizeObj = { value: 1080 }
+g.crtns.crtnMaskQuickSetter = gsap.quickSetter('#cc1', 'css')
+
+const embiggenCrtnMaskTick = () => {
+  g.crtns.crtnMaskQuickSetter({
+    WebkitMaskSize: `${g.crtns.crtnMaskSizeObj.value}px ${g.crtns.crtnMaskSizeObj.value}px`,
+    maskSize: `${g.crtns.crtnMaskSizeObj.value}px ${g.crtns.crtnMaskSizeObj.value}px`,
+  })
+}
+
 const setCurtains = () => {
   if (g.el.cw && g.el.cw.length) {
     const crtnsScale = (1063 * 0.8648) / g.w.h
@@ -26,13 +36,6 @@ const blurCrtnsTick = () => {
   })
 }
 
-const unBlurCrtns = blurCrtnsTickFunc => {
-  gsap.ticker.remove(blurCrtnsTickFunc)
+export {
+  blurCrtnsTick, embiggenCrtnMaskTick, setCurtains,
 }
-
-const blurCrtns = () => {
-  gsap.ticker.add(blurCrtnsTick)
-  return () => unBlurCrtns(blurCrtnsTick)
-}
-
-export { blurCrtns, setCurtains, unBlurCrtns }

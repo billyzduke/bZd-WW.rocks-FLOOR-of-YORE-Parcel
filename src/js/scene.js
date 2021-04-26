@@ -28,20 +28,21 @@ const scenes = [
   scene11,
 ]
 scenes.forEach((_, s) => {
-  g.scene.cleanUp[s] = {}
+  g.scene.forCleanUp[s] = {}
 })
 
 const cleanScene = s => {
-  const cleanUps = Object.entries(g.scene.cleanUp[s])
+  const cleanUps = Object.entries(g.scene.forCleanUp[s])
   if (cleanUps.length) {
-    console.log(`running ${cleanUps.length} cleanUps for scene ${s}`)
+    console.log(`running ${cleanUps.length} cleanUp${cleanUps.length !== 1 ? 's' : ''} for scene ${s}`)
     cleanUps.forEach(([ c, u ], i) => {
-      if (u()) {
-        console.log(`${i} - ${c}: this pipe is clean`)
+      if (typeof u === 'function' && u()) {
+        console.log(`${i + 1} - ${c}: this pipe is clean`)
       }
     })
-    g.scene.cleanUp[s] = {}
+    g.scene.forCleanUp[s] = {}
   }
+  return true
 }
 
 const setScene = (toScene = 0) => {
@@ -66,16 +67,22 @@ const setScene = (toScene = 0) => {
       if (toScene >= g.scene.skip.target) {
         g.scene.skip.dur = 0
         console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
-        cleanScene(g.scene.current)
-        const sceneSet = setScenes[toScene]()
-        if (sceneSet) {
-          g.scene.current = toScene
-          console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
-          // eslint-disable-next-line no-use-before-define
-          setSceneSkipper()
-          return true
+        const prevSceneCleaned = cleanScene(g.scene.current)
+        console.log({ prevSceneCleaned })
+        if (prevSceneCleaned) {
+          const nextSceneSet = setScenes[toScene]()
+          console.log({ nextSceneSet })
+          if (nextSceneSet) {
+            g.scene.current = toScene
+            console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
+            // eslint-disable-next-line no-use-before-define
+            setSceneSkipper()
+            return true
+          }
+          console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
+          return false
         }
-        console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
+        console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
       } else {
         g.scene.action = 'skip'
         g.scene.current = toScene

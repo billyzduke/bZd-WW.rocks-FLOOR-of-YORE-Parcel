@@ -1,6 +1,7 @@
 div#yoreFloor {
+  box-sizing: content-box !important;
   background-color: white;
-  background-image: url(../ass/rast/WW_Black_Lodge_Tile.png);
+  background-image: url(../img/floor/WW_Black_Lodge_Tile.png);
   background-repeat: repeat;
   background-size: 48px auto;
   height: 324px;
@@ -11,7 +12,7 @@ div#yoreFloor {
   position: relative;
   transform-style: preserve-3d;
   transform: perspective(23em) rotateX(50deg);
-  width: 6000px;
+  width: 6000px !important;
   z-index: 200;
   animation: floorScroll 7.2s linear infinite backwards;
 }

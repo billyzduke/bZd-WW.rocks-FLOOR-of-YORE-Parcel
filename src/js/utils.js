@@ -99,6 +99,7 @@ const setClearActor = domSelector => {
   domElements.forEach(domEl => {
     if (domEl.parentNode) domEl.parentNode.removeChild(domEl)
   })
+  return true
 }
 
 const setRemoveOn = (domSelector, onEvent, doFunc, cursor = 'no-drop') => {
@@ -287,6 +288,16 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
   return tl
 }
 
+const gsapUnTick = tickFunc => {
+  gsap.ticker.remove(tickFunc)
+  return true
+}
+
+const gsapTick = tickFunc => {
+  gsap.ticker.add(tickFunc)
+  return () => gsapUnTick(tickFunc)
+}
+
 const uuidv4 = () => {
   const c = '0123456789abcdef'.split('')
   const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.split('')
@@ -345,5 +356,6 @@ export {
   setRemoveOn,
   shuffleArray,
   svgPathsMorphOriginsHelper,
+  gsapTick,
   uuidv4,
 }
