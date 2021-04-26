@@ -1,15 +1,16 @@
 import { gsap } from 'gsap'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
+import g from './glob'
 import { addCSSRule, isNode } from './utils'
 // eslint-disable-next-line import/no-cycle
 import { hideNav } from './nav'
 
 gsap.registerPlugin(MorphSVGPlugin)
 
-const hideHelp = (el, dur) => {
-  if (el.help && el.helpList && el.help.classList.contains('open') && !el.help.classList.contains('anim')) {
-    el.help.classList.add('anim')
+const hideHelp = dur => {
+  if (g.el.help && g.el.helpList && g.el.help.classList.contains('open') && !g.el.help.classList.contains('anim')) {
+    g.el.help.classList.add('anim')
     gsap.to('#que_fill', {
       duration: dur,
       morphSVG: {
@@ -28,12 +29,12 @@ const hideHelp = (el, dur) => {
       overflow: 'hidden',
       pointerEvents: 'auto',
     })
-    gsap.to(el.helpList, {
+    gsap.to(g.el.helpList, {
       duration: dur,
       ease: 'power4.in',
       onComplete() {
-        el.help.classList.remove('anim', 'open')
-        if (el.helpList.classList.contains('mkOpen')) el.helpList.classList.remove('mkOpen')
+        g.el.help.classList.remove('anim', 'open')
+        if (g.el.helpList.classList.contains('mkOpen')) g.el.helpList.classList.remove('mkOpen')
       },
       translateX: '100%',
       translateY: 3,
@@ -41,13 +42,13 @@ const hideHelp = (el, dur) => {
   }
 }
 
-const helpToggle = el => {
-  if (el.header && el.help && !el.help.classList.contains('anim')) {
-    if (el.help.classList.contains('open')) {
-      hideHelp(el, 2)
+const helpToggle = () => {
+  if (g.el.header && g.el.help && !g.el.help.classList.contains('anim')) {
+    if (g.el.help.classList.contains('open')) {
+      hideHelp(2)
     } else {
-      hideNav(el)
-      el.help.classList.add('anim')
+      hideNav()
+      g.el.help.classList.add('anim')
       gsap.to('#que_fill', {
         duration: 1,
         morphSVG: {
@@ -69,8 +70,8 @@ const helpToggle = el => {
         duration: 1,
         ease: 'power4.out',
         onComplete() {
-          el.help.classList.add('open')
-          el.help.classList.remove('anim')
+          g.el.help.classList.add('open')
+          g.el.help.classList.remove('anim')
           gsap.set('#helpListW', {
             overflow: 'visible',
             pointerEvents: 'none',
@@ -93,7 +94,7 @@ const mkToggle = m => {
   }
 }
 
-const makisu = (el, mk, remNodes, n = 0) => {
+const makisu = (mk, remNodes, n = 0) => {
   if (remNodes.length > 0) { // not listening to this if I don't provide an alternate return ?!?
     const thisNode = remNodes.shift()
 
@@ -111,17 +112,17 @@ const makisu = (el, mk, remNodes, n = 0) => {
     mkN.oCloseWait = (mkN.firstN) ? mkN.nCloseWait : ((mk.totalNodes - n - 2) * mk.time) + (mk.speed * 0.15)
 
     thisNode.classList.add('mkNode')
-    const mkNode = document.createElement('div')
+    const mkNode = g.document.createElement('div')
     mkNode.id = mkN.id
     thisNode.id = `mkNode${n}`
     mkNode.classList.add('mkNode')
-    const mkMeat = document.createElement('div')
+    const mkMeat = g.document.createElement('div')
     mkMeat.classList.add('mkMeat')
-    const mkOver = document.createElement('div')
+    const mkOver = g.document.createElement('div')
     mkOver.id = `${mkNode.id}_over`
     mkOver.classList.add('mkOver')
     mkOver.style.background = mk.shading
-    const mkBack = document.createElement('div')
+    const mkBack = g.document.createElement('div')
     mkBack.classList.add('mkBack')
     mkMeat.appendChild(thisNode)
     mkMeat.appendChild(mkOver)
@@ -133,7 +134,7 @@ const makisu = (el, mk, remNodes, n = 0) => {
     addCSSRule(mk.css.sheet, `#${mk.id}.mkClosed #${mkN.id}`, `transform: rotateX(0deg); animation: ${mkN.animFold} ${(mk.speed * 0.66).toFixed(3)}s ease-in-out ${mkN.nCloseWait.toFixed(3)}s 1 normal forwards;`)
     addCSSRule(mk.css.sheet, `#${mk.id}.mkClosed #${mkOver.id}`, `animation: mkFoldOver ${(mk.speed * 0.2178).toFixed(3)}s ease-in-out ${mkN.oCloseWait.toFixed(3)}s 1 normal forwards;`)
 
-    const childNode = makisu(el, mk, remNodes, mkN.nextN)
+    const childNode = makisu(mk, remNodes, mkN.nextN)
     if (isNode(childNode)) {
       mkNode.appendChild(childNode)
       return mkNode
@@ -141,7 +142,7 @@ const makisu = (el, mk, remNodes, n = 0) => {
   } /* else {
     console.log(mk.css)
   } */
-  return document.createElement('span')
+  return g.document.createElement('span')
 }
 
 const makeNodes = mkContent => {
@@ -171,36 +172,36 @@ const makeNodes = mkContent => {
   mkLines.push('')
   const mkNodes = []
   mkLines.forEach(l => {
-    const newNode = document.createElement('div')
+    const newNode = g.document.createElement('div')
     newNode.innerHTML = l
     mkNodes.push(newNode)
   })
   return mkNodes
 }
 
-const makisusan = el => {
-  if (el.makisu && el.helpToggle && el.helpScreen && el.helpList) {
-    el.makisu.forEach((m, i) => {
+const makisusan = () => {
+  if (g.el.makisu && g.el.helpToggle && g.el.helpScreen && g.el.helpList) {
+    g.el.makisu.forEach(m => {
       const mk = {
         id: m.id,
         speed: Number(m.getAttribute('data-mk-speed')), // Duration per element
         overlap: Number(m.getAttribute('data-mk-overlap')), // Fraction of speed (0-1)
         maxCharsPerLine: Number(m.getAttribute('data-mk-mx-chrs-per-line')),
         shading: m.getAttribute('data-mk-shading'),
-        css: document.createElement('style'),
+        css: g.document.createElement('style'),
       }
-      mk.css.appendChild(document.createTextNode('')) // Webkit Hack
-      document.body.appendChild(mk.css)
+      mk.css.appendChild(g.document.createTextNode('')) // Webkit Hack
+      g.document.body.appendChild(mk.css)
 
       mk.time = mk.speed * (1 - mk.overlap)
-      const mkListW = document.createElement('div')
+      const mkListW = g.document.createElement('div')
       mkListW.classList.add('mkList')
       const [ mkTitle, mkContent ] = [ ...m.children ]
       const mkNodes = makeNodes(mkContent.innerHTML)
       mk.totalNodes = mkNodes.length
       mkTitle.classList.add('mkTitle')
       mkListW.appendChild(mkTitle)
-      const mkRoot = document.createElement('div')
+      const mkRoot = g.document.createElement('div')
       mkRoot.classList.add('mkNode', 'mkRoot')
       mkRoot.id = `mk_${m.id}`
       mkNodes.forEach((_, id) => {
@@ -214,7 +215,7 @@ const makisusan = el => {
       m.appendChild(mkListW)
       m.addEventListener('click', () => mkToggle(m))
 
-      const childNode = makisu(el, mk, mkNodes)
+      const childNode = makisu(mk, mkNodes)
       if (isNode(childNode)) mkRoot.appendChild(childNode)
     })
     const editNodesI = []
@@ -222,12 +223,12 @@ const makisusan = el => {
     editNodesI[18] = [ 'next', '<i>next</i>' ]
     editNodesI[23] = [ 'most', '<i>most</i>' ]
     editNodesI.forEach((nRe, nI) => {
-      const editNode = document.getElementById(`mkNode${nI}`)
+      const editNode = g.document.getElementById(`mkNode${nI}`)
       editNode.innerHTML = editNode.innerHTML.replace(nRe[0], nRe[1])
     })
 
-    el.helpToggle.addEventListener('click', () => helpToggle(el))
-    el.helpScreen.addEventListener('click', () => helpToggle(el))
+    g.el.helpToggle.addEventListener('click', () => helpToggle())
+    g.el.helpScreen.addEventListener('click', () => helpToggle())
   }
 }
 

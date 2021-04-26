@@ -1,15 +1,16 @@
 import { TimelineMax as TL } from 'gsap'
 
+import g from '../glob'
 import { setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
-const setScene00 = (el, scene) => {
+const setScene00 = () => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
   const toNextScene = () => {
-    scene.cleanUp.push(setAddOn('#tpTitles', 'click', () => setScene(el, scene, 1)))
+    g.scene.cleanUp.push(setAddOn('#tpTitles', 'click', () => setScene(1)))
   }
 
   sceneTL.to('#tpTitleScreen', {

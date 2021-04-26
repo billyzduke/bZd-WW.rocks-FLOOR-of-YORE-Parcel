@@ -1,8 +1,13 @@
 import { gsap } from 'gsap'
 
-const moveLionEyes = (m, el, scene) => {
-  if (el.phasingRainbow && scene >= 8 && lionEyesActive) {
-    const thirdEyeDeets = el.phasingRainbow.getBoundingClientRect()
+import g from './glob'
+
+const lionEyesQuickSetter = gsap.quickSetter('.lionEye', 'css')
+g.lionEyesActive = false
+
+const moveLionEyes = () => {
+  if (g.el.phasingRainbow && g.scene.current >= 8 && g.lionEyesActive) {
+    const thirdEyeDeets = g.el.phasingRainbow.getBoundingClientRect()
     lionEyesQuickSetter({
       translateX: gsap.utils.clamp(-16, 12.44, -(thirdEyeDeets.x + (thirdEyeDeets.width / 2) - m.x) / 54),
       translateY: gsap.utils.clamp(-7, 9.55, -(thirdEyeDeets.y + 50 - m.y) / 42),

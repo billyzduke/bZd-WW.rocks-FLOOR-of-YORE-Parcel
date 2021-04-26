@@ -1,4 +1,4 @@
-import { g } from './glob'
+import g from './glob'
 import { getW, getMouseMove } from './window'
 import htmEl from './el'
 import { revealNav, hideNav, toggleShopNav } from './nav'
@@ -7,7 +7,6 @@ import { moveLionEyes } from './lion-head'
 import { setGrove } from './grove'
 import { setLion } from './lion'
 import { setTitles } from './titles'
-import { cyOffPx } from './bauble-layer-01'
 import { setCurtains } from './curtains'
 import { setFloor } from './floor'
 import { setBronze } from './bronze'
@@ -59,7 +58,7 @@ const loadApp = () => {
       'wormSignScreen',
       'yoreFloor',
     ]),
-    ...htmEl([ 'header' ], 'tag'),
+    ...htmEl([ 'body', 'header' ], 'tag'),
     ...htmEl('.bW', 'q', true),
     ...htmEl('.cw', 'q', true),
     ...htmEl('.makisu', 'q', true),
@@ -68,45 +67,42 @@ const loadApp = () => {
   el.bL = []
   g.el = el
 
-  if (el.header && el.home) {
-    el.home.addEventListener('mouseenter', () => revealNav(el))
-    el.header.addEventListener('mouseleave', () => hideNav(el))
+  if (g.el.header && g.el.home) {
+    g.el.home.addEventListener('mouseenter', () => revealNav())
+    g.el.header.addEventListener('mouseleave', () => hideNav())
   }
-  if (el.shopNavBar && el.shopNavItem) {
-    el.shopNavItem.addEventListener('click', () => toggleShopNav(el))
-  }
-  if (el.header && el.help && el.helpList && el.helpScreen && el.helpToggle && el.makisu) {
-    el.helpToggle.style.transition = 'all 2.5s ease-in-out'
-    makisusan(el)
-  }
+  if (g.el.shopNavBar && g.el.shopNavItem) g.el.shopNavItem.addEventListener('click', () => toggleShopNav())
+  if (g.el.helpToggle) g.el.helpToggle.style.transition = 'all 2.5s ease-in-out'
 
-  // eslint-disable-next-line object-curly-newline
-  g.w = getW(cyOffPx)
+  g.w = getW(g.cyOffPx)
   g.crtns = { cx: g.w.cx, cy: g.w.cyOff }
 
-  if (el.lolf01 && el.lolf02) setLion(w, el, scene)
-  if (el.ggrove) setGrove(w, el)
-  if (el.tpTitle) setTitles(w, el)
-  if (el.cw) setCurtains(w, el)
-  if (el.yoreFloor) setFloor(w, el)
-  const bronzeVid = el.bronzeCauldron ? setBronze(w, el) : undefined
-  const dirtVid = el.bronzeCauldron ? setDirt(el) : undefined
-  if (el.drWorm && el.wormSignScreen) setShaiHulud()
+  makisusan()
+  setLion()
+  setGrove()
+  setTitles()
+  setCurtains()
+  setFloor()
+  g.vid.bronze = g.el.bronzeCauldron ? setBronze() : undefined
+  g.vid.dirt = g.el.bronzeCauldron ? setDirt() : undefined
+  if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
 
-  if (el.sceneSkipper) setSceneSkipper(el, scene)
+  if (el.sceneSkipper) setSceneSkipper()
 
-  setScene(el, scene)
+  setScene()
 }
 
 const getM = () => {
-  g.m = getMouseMove(window.event)
-  moveLionEyes(m, el, scene)
+  g.m = getMouseMove(g.window.event)
+  moveLionEyes()
 }
 
-/* eslint-disable no-undef */
-document.addEventListener('DOMContentLoaded', () => {
-  window.addEventListener('resize', loadApp)
-  document.onmousemove = getM
+// eslint-disable-next-line no-undef
+g.document = document
+g.document.addEventListener('DOMContentLoaded', () => {
+  // eslint-disable-next-line no-undef
+  g.window = window
+  g.window.addEventListener('resize', loadApp)
+  g.document.onmousemove = getM
   loadApp()
 })
-/* eslint-enable no-undef */

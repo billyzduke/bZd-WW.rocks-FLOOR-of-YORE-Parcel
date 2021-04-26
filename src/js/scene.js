@@ -1,3 +1,4 @@
+import g from './glob'
 /* eslint-disable import/no-cycle */
 import { scene00, setScene00 } from './scenes/scene-00'
 import { scene01, setScene01 } from './scenes/scene-01'
@@ -27,10 +28,10 @@ const scenes = [
   scene11,
 ]
 
-const setScene = (el, scene, toScene = 0) => {
-  scene.action = 'set'
+const setScene = (toScene = 0) => {
+  g.scene.action = 'set'
   // console.log({ scene, toScene })
-  if (!toScene || toScene === scene.current + 1) {
+  if (!toScene || toScene === g.scene.current + 1) {
     const setScenes = [
       setScene00,
       setScene01,
@@ -46,81 +47,81 @@ const setScene = (el, scene, toScene = 0) => {
       setScene11,
     ]
     if (setScenes[toScene]) {
-      if (toScene >= scene.skipTarget) {
-        scene.skipDur = 0
-        console.log(`scene ${toScene} ${scene.action} started: ${scenes[toScene]}`)
-        const sceneSet = setScenes[toScene](el, scene)
+      if (toScene >= g.scene.skip.target) {
+        g.scene.skip.dur = 0
+        console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
+        const sceneSet = setScenes[toScene]()
         if (sceneSet) {
-          scene.current = toScene
-          console.log(`scene ${scene.current} ${scene.action} complete: ${scenes[scene.current]}`, el)
+          g.scene.current = toScene
+          console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
           // eslint-disable-next-line no-use-before-define
-          setSceneSkipper(el, scene)
+          setSceneSkipper()
           return true
         }
-        console.log(`a problem occurred while attempting to ${scene.action} scene ${toScene}`)
+        console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
       } else {
-        scene.action = 'skip'
-        scene.current = toScene
-        console.log(`scene ${scene.current} ${scene.action}: ${scenes[scene.current]}`)
-        const nextScene = scene.current + 1
+        g.scene.action = 'skip'
+        g.scene.current = toScene
+        console.log(`scene ${g.scene.current} ${g.scene.action}: ${scenes[g.scene.current]}`)
+        const nextScene = g.scene.current + 1
         if (setScenes[nextScene]) {
-          setTimeout(() => setScenes[nextScene](el, scene), 100, setScenes, el, scene)
+          setTimeout(() => setScenes[nextScene](), 100, setScenes, nextScene)
           return true
         }
-        console.log(`invalid scene ${scene.action} attempted: scene ${nextScene} does not exist.`)
+        console.log(`invalid scene ${g.scene.action} attempted: scene ${nextScene} does not exist.`)
       }
     } else {
-      console.log(`invalid scene ${scene.action} attempted: scene ${toScene} does not exist`)
+      console.log(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
     }
-    if (scene.cleanUp.length) {
-      console.log(`running ${scene.cleanUp.length} cleanup functions`)
-      scene.cleanUp.forEach((cu, i) => {
-        if (cu()) console.log(`pipe ${i} is clean`)
-      })
+    if (g.scene.cleanUp.length) {
+      console.log(`running ${g.scene.cleanUp.length} cleanup functions`)
+      while (cu = g.scene.cleanUp.shift()) {
+        if (cu()) console.log(`this pipe is clean`, cu)
+      }
     }
-  } else if (toScene !== scene.current) {
+  } else if (toScene !== g.scene.current) {
     // We're gonna ignore calls to change a scene to itself and not throw errors... Event listeners, it turns out, can accumulate on a single event, esp when using anon funcs
-    console.log(`invalid scene ${scene.action} attempted: current scene ${scene.current} cannot be ${scene.action} to target scene ${toScene}`)
+    console.log(`invalid scene ${g.scene.action} attempted: current scene ${g.scene.current} cannot be ${g.scene.action} to target scene ${toScene}`)
   }
   return false
 }
 
-const skipToScene = (el, scene, toScene, e) => {
+const skipToScene = (toScene, e) => {
   e.target.blur()
   e.target.style.pointerEvents = 'none'
-  scene.skipDur = 0.01
-  scene.targetScene = Number(toScene)
-  setScene(el, scene, scene.current + 1)
+  g.scene.skip.dur = 0.01
+  g.scene.skip.target = Number(toScene)
+  setScene(g.scene.current + 1)
   setTimeout(() => {
     e.target.style.pointerEvents = 'auto'
   }, 2500)
 }
 
-const setSceneSkipper = (el, scene) => {
-  if (document.body.classList.contains('dev')) {
-    if (!el.sceneSkipper.options.length) {
+const setSceneSkipper = () => {
+  if (g.el.body.classList.contains('dev')) {
+    if (!g.el.sceneSkipper.options.length) {
       scenes.forEach((s, i) => {
-        const ssOption = document.createElement('option')
+        const ssOption = g.document.createElement('option')
         ssOption.value = i
         ssOption.innerHTML = `${i}: ${s}`
-        if (i < 1 || i < scene.current + 2 || i < scene.skipTarget + 1) ssOption.disabled = true
-        el.sceneSkipper.add(ssOption)
+        if (i < 1 || i < g.scene.current + 2 || i < g.scene.skip.target + 1) ssOption.disabled = true
+        g.el.sceneSkipper.add(ssOption)
       })
-      el.sceneSkipper.value = 0
-      el.sceneSkipper.addEventListener('change', e => skipToScene(el, scene, el.sceneSkipper.value, e))
+      g.el.sceneSkipper.value = 0
+      g.el.sceneSkipper.addEventListener('change', e => skipToScene(g.el.sceneSkipper.value, e))
     } else {
       // eslint-disable-next-line guard-for-in, no-restricted-syntax
-      for (let i in el.sceneSkipper.options) {
+      for (let i in g.el.sceneSkipper.options) {
         i = Number(i) // it's not an array, so...
         if (Number.isInteger(i)) {
-          if (i === scene.current) {
-            el.sceneSkipper.value = i
+          if (i === g.scene.current) {
+            g.el.sceneSkipper.value = i
           }
-          if (i < 1 || i < scene.current + 2 || i < scene.skipTarget + 1) el.sceneSkipper.options[i].disabled = true
+          if (i < 1 || i < g.scene.current + 2 || i < g.scene.skip.target + 1) g.el.sceneSkipper.options[i].disabled = true
         }
       }
     }
-  } else if (el.sceneSkipper) el.sceneSkipper.parentNode.removeChild(el.sceneSkipper)
+  } else if (g.el.sceneSkipper) g.el.sceneSkipper.parentNode.removeChild(g.el.sceneSkipper)
 }
 
 export { scenes, setScene, setSceneSkipper }

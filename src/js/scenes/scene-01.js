@@ -1,5 +1,6 @@
 import { TimelineMax as TL } from 'gsap'
 
+import g from '../glob'
 import { setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
@@ -8,20 +9,20 @@ import { obscure } from '../obscuro'
 
 const scene01 = 'EXPLORE'
 
-const setScene01 = (el, scene) => {
+const setScene01 = () => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
-  scene.cleanUp.push(setAddOn('#tpTitles', 'click', () => setScene(el, scene, 2)))
+  g.scene.cleanUp.push(setAddOn('#tpTitles', 'click', () => setScene(2)))
 
-  setBaubleLayer01(el)
+  setBaubleLayer01()
 
-  if (!scene.skipDur) obscure(scene, 3)
+  if (!g.scene.skip.dur) obscure(3)
 
   sceneTL.to('#tpTitleYore', {
-    duration: scene.skipDur || 3,
+    duration: g.scene.skip.dur || 3,
     opacity: 0,
   })
     .to('#tpTitleExplore', {
-      duration: scene.skipDur || 3,
+      duration: g.scene.skip.dur || 3,
       opacity: 1,
     }, '<')
 

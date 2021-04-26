@@ -4,6 +4,8 @@ import { gsap } from 'gsap'
 import { Draggable } from 'gsap/Draggable'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
+import g from './glob'
+
 const addCSSRule = (sheet, selector, rules) => {
   if ('insertRule' in sheet) {
     sheet.insertRule(`${selector}{${rules}}`)
@@ -22,6 +24,7 @@ const convertTextToBinary = txt => {
 
 const getTranslateValues = element => {
   if (typeof window !== 'undefined') {
+    // eslint-disable-next-line no-undef
     const style = window.getComputedStyle(element)
     const matrix = style.transform || style.webkitTransform || style.mozTransform
 
@@ -89,31 +92,31 @@ const randomColor = (as = 'hex') => {
   }
 }
 
-const roundNumberTo = (num, dec = 0) => Math.round((num + Number.EPSILON) * Math.pow(10, dec)) / Math.pow(10, dec)
+const roundNumberTo = (num, dec = 0) => Math.round(((num + Number.EPSILON) * (10 ** dec)) / (10 ** dec))
 
 const setClearActor = domSelector => {
-  const domElements = document.querySelectorAll(domSelector)
+  const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     if (domEl.parentNode) domEl.parentNode.removeChild(domEl)
   })
 }
 
-const setAddOn = (domSelector, onEvent, doFunc, cursor = 'pointer') => {
-  const domElements = document.querySelectorAll(domSelector)
-  domElements.forEach(domEl => {
-    domEl.addEventListener(onEvent, doFunc)
-    if (onEvent === 'click') domEl.style.cursor = cursor
-  })
-  return () => setRemoveOn(domSelector, onEvent, doFunc)
-}
-
 const setRemoveOn = (domSelector, onEvent, doFunc, cursor = 'no-drop') => {
-  const domElements = document.querySelectorAll(domSelector)
+  const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     domEl.removeEventListener(onEvent, doFunc)
     if (onEvent === 'click') domEl.style.cursor = cursor
   })
   return true
+}
+
+const setAddOn = (domSelector, onEvent, doFunc, cursor = 'pointer') => {
+  const domElements = g.document.querySelectorAll(domSelector)
+  domElements.forEach(domEl => {
+    domEl.addEventListener(onEvent, doFunc)
+    if (onEvent === 'click') domEl.style.cursor = cursor
+  })
+  return () => setRemoveOn(domSelector, onEvent, doFunc)
 }
 
 const shuffleArray = arr => {
@@ -128,7 +131,7 @@ const shuffleArray = arr => {
 const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
   gsap.killTweensOf(target1, false, { morphSVG: true })
   const _getElement = function (e) {
-    return (typeof (e) === 'string') ? document.querySelector(e) : e
+    return (typeof (e) === 'string') ? g.document.querySelector(e) : e
   }
   const _setDefaults = function (v = {}, defaults) {
     for (const p in defaults) {
@@ -139,7 +142,7 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
     return v
   }
   const _createSVG = function (type, container, attributes) {
-    const element = document.createElementNS('http://www.w3.org/2000/svg', type)
+    const element = g.document.createElementNS('http://www.w3.org/2000/svg', type)
     const reg = /([a-z])([A-Z])/g
     let p
     for (p in attributes) {

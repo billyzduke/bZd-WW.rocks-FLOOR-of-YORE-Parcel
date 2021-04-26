@@ -1,15 +1,19 @@
 const g = {
   bDiam: 12, // global bauble diameter
+  bL: [],
   crtns: {},
   m: { x: 0, y: 0 },
   scene: {
     action: '',
     cleanUp: [],
     current: 0,
-    skipDur: 0,
-    skipTarget: 0,
+    skip: {
+      dur: 0,
+      target: 0,
+    },
   },
+  vid: {},
 }
 g.cyOffPx = g.bDiam * 1.5 // magic number
 
-export { g }
+export default g
