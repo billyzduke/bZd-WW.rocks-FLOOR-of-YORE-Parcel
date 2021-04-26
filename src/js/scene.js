@@ -38,9 +38,9 @@ const cleanScene = s => {
     cleanUps.forEach(([ c, u ], i) => {
       if (u()) {
         console.log(`${i} - ${c}: this pipe is clean`)
-        g.scene.cleanUp[s][c] = undefined
       }
     })
+    g.scene.cleanUp[s] = {}
   }
 }
 

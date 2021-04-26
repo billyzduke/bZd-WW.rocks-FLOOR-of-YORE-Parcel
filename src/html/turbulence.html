@@ -6,8 +6,8 @@
     <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="{{ scale }}" xChannelSelector="R" yChannelSelector="R"></feDisplacementMap>
   </filter>
   <foreignObject width="100%" height="100%" x="0" y="0">
-    <xhtml:body>
-      <xhtml:img style="filter:url(#noise_{{ filterId }})" src="{{ sourceGraphic }}" width="100%" height="100%" x="0" y="0"></xhtml:img>
-    </xhtml:body>
+    <body>
+      <img style="filter:url(#noise_{{ filterId }})" src="{{ sourceGraphic }}" width="100%" height="100%" /></img>
+    </body>
   </foreignObject>
 </svg>

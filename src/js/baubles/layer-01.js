@@ -51,23 +51,23 @@ const setBaubleLayer01 = () => {
 const evadeMouseTick = re => {
   let inC = false
   let fromC = 0
-  let o = (g.w.cx > g.w.cyOffPx) ? g.w.cx * 2 : g.w.cyOffPx * 2
+  let o = (g.w.cx > g.w.cyOff) ? g.w.cx * 2 : g.w.cyOff * 2
   if (g.m.x && g.m.y) {
-    inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOffPx) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
+    inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
     if (inC) o = (re) ? g.bL[1].cR : 0
     else {
-      fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOffPx) ** 2))
+      fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2))
       o = Math.sqrt(g.bL[1].cR * fromC) + (fromC / 2)
     }
   }
   const blur = fromC ? `blur(${(fromC / 100)}px)` : false
   g.bL[1].b.forEach((b, i) => {
     let x = g.w.cx - g.bRadii
-    let y = g.w.cyOffPx - g.bRadii
+    let y = g.w.cyOff - g.bRadii
     if (!inC && g.m.x && g.m.y) {
       const a = i * g.bL[1].st
       x = Math.round(g.w.cx + o * Math.cos(a) + g.w.cx - g.m.x - g.bRadii)
-      y = Math.round(g.w.cyOffPx + o * Math.sin(a) + g.w.cyOffPx - g.m.y - g.bRadii)
+      y = Math.round(g.w.cyOff + o * Math.sin(a) + g.w.cyOff - g.m.y - g.bRadii)
     }
     gsap.to(b, {
       duration: g.scene.skip.dur || 0.42,

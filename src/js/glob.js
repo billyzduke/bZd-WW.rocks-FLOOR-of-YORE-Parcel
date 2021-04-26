@@ -16,6 +16,6 @@ const g = {
   w: {},
 }
 g.bRadii = g.bDiam / 2
-g.w.cyOffPx = g.bDiam * 1.5 // magic number
+g.cyOffPx = g.bDiam * 1.5 // magic number
 
 export default g

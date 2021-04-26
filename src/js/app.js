@@ -63,6 +63,7 @@ const loadApp = () => {
     ...htmEl('.cw', 'q', true),
     ...htmEl('.makisu', 'q', true),
     ...htmEl('.tpTitle', 'q', true),
+    ...htmEl('.mkNode', 'q', true),
   }
   el.bL = []
   g.el = el
@@ -74,10 +75,10 @@ const loadApp = () => {
   if (g.el.shopNavBar && g.el.shopNavItem) g.el.shopNavItem.addEventListener('click', () => toggleShopNav())
   if (g.el.helpToggle) g.el.helpToggle.style.transition = 'all 2.5s ease-in-out'
 
-  g.w = getW(g.w.cyOffPx)
-  g.crtns = { cx: g.w.cx, cy: g.w.cyOff }
+  g.w = getW(g.cyOffPx)
+  g.crtns = { cx: g.w.cx, cy: g.w.cyOff - (g.cyOffPx * 1.5) }
 
-  makisusan()
+  if (!g.el.mkNode) makisusan()
   setLion()
   setGrove()
   setTitles()
@@ -89,7 +90,7 @@ const loadApp = () => {
 
   if (el.sceneSkipper) setSceneSkipper()
 
-  setScene()
+  if (!g.scene.current) setScene()
 }
 
 const getM = () => {

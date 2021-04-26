@@ -24,7 +24,7 @@ const getMouseMove = e => {
   return mm
 }
 
-const getW = (cyOffPx = 0) => {
+const getW = (cyOff = 0) => {
   const w = window.innerWidth
     || document.documentElement.clientWidth
     || document.body.clientWidth
@@ -34,10 +34,10 @@ const getW = (cyOffPx = 0) => {
     || document.documentElement.clientHeight
     || document.body.clientHeight
   const cy = h / 2
-  cyOffPx += cy
+  cyOff += cy
 
   // eslint-disable-next-line object-curly-newline
-  return { w, h, cx, cy, cyOffPx }
+  return { w, h, cx, cy, cyOff }
 }
 
 export { getW, getMouseMove }

@@ -18,7 +18,7 @@ const blurCrtnsTick = () => {
   const o = (200 - fromC) / 200
   gsap.to('#cc1', {
     id: 'blur',
-    duration: g.scene.skip.dur || 1,
+    duration: g.scene.skip.dur || 1 / 24,
     opacity: gsap.utils.clamp(0, 1, o) * 0.76,
     WebkitFilter: crtnBlur,
     filter: crtnBlur,
