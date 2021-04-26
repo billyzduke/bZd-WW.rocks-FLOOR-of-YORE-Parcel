@@ -1,4 +1,4 @@
-import { gsap, TimelineMax as TL } from 'gsap'
+import { TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { setAddOn, setClearActor } from '../utils'
@@ -6,16 +6,15 @@ import { setAddOn, setClearActor } from '../utils'
 import { setScene } from '../scene'
 import { obscure } from '../obscuro'
 import { blurCrtns } from '../curtains'
+import { evadeMouse } from '../bauble-layer-01'
 
 const scene02 = 'Blur Curtain / Bauble Layer 01'
 
 const setScene02 = () => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
-  g.scene.cleanUp.push(setAddOn('#ctrRing', 'click', () => setScene(3)))
-  g.scene.cleanUp.push(blurCrtns())
-  setAddOn('#ctrRing', 'click', setScene[3])
-
-  gsap.ticker.add(evadeMouseTick)
+  g.scene.cleanUp[2].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(3))
+  g.scene.cleanUp[2].blurCtrnsTicker = blurCrtns()
+  g.scene.cleanUp[2].evadeMouseTicker = evadeMouse()
 
   if (!g.scene.skip.dur) obscure(2.42)
   sceneTL.to('#tpTitles', {
@@ -61,6 +60,8 @@ const setScene02 = () => {
       opacity: 1,
     }, '<')
     .call(setClearActor, [ '#tpTitles' ], '>')
+
+  return true
 }
 
 export { scene02, setScene02 }

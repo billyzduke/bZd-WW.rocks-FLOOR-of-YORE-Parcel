@@ -14,7 +14,7 @@ const hideNav = () => {
 const toggleShopNav = el => {
   if (g.el.shopNavItem && g.el.shopNavBar) {
     if (g.el.shopNavItem.classList.contains('hovered') && g.el.shopNavBar.classList.contains('open')) {
-      g.el.shopNavItemi.classList.remove('hovered')
+      g.el.shopNavItem.classList.remove('hovered')
       g.el.shopNavBar.classList.remove('open')
     } else {
       g.el.shopNavItem.classList.add('hovered')

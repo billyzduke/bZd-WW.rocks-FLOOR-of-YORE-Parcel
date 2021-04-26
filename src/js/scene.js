@@ -27,6 +27,22 @@ const scenes = [
   scene10,
   scene11,
 ]
+scenes.forEach((_, s) => {
+  g.scene.cleanUp[s] = {}
+})
+
+const cleanScene = s => {
+  const cleanUps = Object.entries(g.scene.cleanUp[s])
+  if (cleanUps.length) {
+    console.log(`running ${cleanUps.length} cleanUps for scene ${s}`)
+    cleanUps.forEach(([ c, u ], i) => {
+      if (u()) {
+        console.log(`${i} - ${c}: this pipe is clean`)
+        g.scene.cleanUp[s][c] = undefined
+      }
+    })
+  }
+}
 
 const setScene = (toScene = 0) => {
   g.scene.action = 'set'
@@ -50,6 +66,7 @@ const setScene = (toScene = 0) => {
       if (toScene >= g.scene.skip.target) {
         g.scene.skip.dur = 0
         console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
+        cleanScene(g.scene.current)
         const sceneSet = setScenes[toScene]()
         if (sceneSet) {
           g.scene.current = toScene
@@ -72,12 +89,6 @@ const setScene = (toScene = 0) => {
       }
     } else {
       console.log(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
-    }
-    if (g.scene.cleanUp.length) {
-      console.log(`running ${g.scene.cleanUp.length} cleanup functions`)
-      while (cu = g.scene.cleanUp.shift()) {
-        if (cu()) console.log(`this pipe is clean`, cu)
-      }
     }
   } else if (toScene !== g.scene.current) {
     // We're gonna ignore calls to change a scene to itself and not throw errors... Event listeners, it turns out, can accumulate on a single event, esp when using anon funcs

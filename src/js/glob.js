@@ -14,6 +14,7 @@ const g = {
   },
   vid: {},
 }
+g.bRadii = g.bDiam / 2
 g.cyOffPx = g.bDiam * 1.5 // magic number
 
 export default g
