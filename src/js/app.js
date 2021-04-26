@@ -74,7 +74,7 @@ const loadApp = () => {
   if (g.el.shopNavBar && g.el.shopNavItem) g.el.shopNavItem.addEventListener('click', () => toggleShopNav())
   if (g.el.helpToggle) g.el.helpToggle.style.transition = 'all 2.5s ease-in-out'
 
-  g.w = getW(g.cyOffPx)
+  g.w = getW(g.w.cyOffPx)
   g.crtns = { cx: g.w.cx, cy: g.w.cyOff }
 
   makisusan()

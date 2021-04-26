@@ -6,7 +6,7 @@ import { setAddOn, setClearActor } from '../utils'
 import { setScene } from '../scene'
 import { obscure } from '../obscuro'
 import { blurCrtns } from '../curtains'
-import { evadeMouse } from '../bauble-layer-01'
+import { evadeMouse } from '../baubles/layer-01'
 
 const scene02 = 'Blur Curtain / Bauble Layer 01'
 

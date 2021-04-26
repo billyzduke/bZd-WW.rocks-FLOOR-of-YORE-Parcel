@@ -4,7 +4,7 @@ import g from '../glob'
 import { setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
-import { setBaubleLayer01 } from '../bauble-layer-01'
+import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
 
 const scene01 = 'EXPLORE'

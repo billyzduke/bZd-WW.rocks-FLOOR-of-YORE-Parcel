@@ -2,7 +2,7 @@ const g = {
   bDiam: 12, // global bauble diameter
   bL: [],
   crtns: {},
-  m: { x: 0, y: 0 },
+  m: {},
   scene: {
     action: '',
     cleanUp: [],
@@ -13,8 +13,9 @@ const g = {
     },
   },
   vid: {},
+  w: {},
 }
 g.bRadii = g.bDiam / 2
-g.cyOffPx = g.bDiam * 1.5 // magic number
+g.w.cyOffPx = g.bDiam * 1.5 // magic number
 
 export default g

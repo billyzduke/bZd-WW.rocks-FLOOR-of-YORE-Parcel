@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+
 const getMouseMove = e => {
   const mm = { x: 0, y: 0 }
   if (e) {
@@ -33,10 +34,10 @@ const getW = (cyOffPx = 0) => {
     || document.documentElement.clientHeight
     || document.body.clientHeight
   const cy = h / 2
-  const cyOff = cy + cyOffPx
+  cyOffPx += cy
 
   // eslint-disable-next-line object-curly-newline
-  return { w, h, cx, cy, cyOff }
+  return { w, h, cx, cy, cyOffPx }
 }
 
 export { getW, getMouseMove }

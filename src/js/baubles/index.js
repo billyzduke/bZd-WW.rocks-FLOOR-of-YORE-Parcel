@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
-import { padStr } from './utils'
-import g from './glob'
+import { padStr } from '../utils'
+import g from '../glob'
 
 const setBaublesInLayer = (bLyr, bCnt, bOpts, qMvSttrs) => {
   /*

@@ -1,7 +1,28 @@
 import { gsap } from 'gsap'
 
-import g from './glob'
-import { setBaublesInLayer } from './baubles'
+import assLightning01 from 'url:/src/img/lightningBalls/lightning-ball-01.png'
+import assLightning02 from 'url:/src/img/lightningBalls/lightning-ball-02.png'
+import assLightning03 from 'url:/src/img/lightningBalls/lightning-ball-03.png'
+import assLightning04 from 'url:/src/img/lightningBalls/lightning-ball-04.png'
+import assLightning05 from 'url:/src/img/lightningBalls/lightning-ball-05.png'
+import assLightning06 from 'url:/src/img/lightningBalls/lightning-ball-06.png'
+import assLightning07 from 'url:/src/img/lightningBalls/lightning-ball-07.png'
+import assLightning08 from 'url:/src/img/lightningBalls/lightning-ball-08.png'
+import assLightning09 from 'url:/src/img/lightningBalls/lightning-ball-09.png'
+import { setBaublesInLayer } from '.'
+import g from '../glob'
+
+const tgBgAsses = [
+  assLightning01,
+  assLightning02,
+  assLightning03,
+  assLightning04,
+  assLightning05,
+  assLightning06,
+  assLightning07,
+  assLightning08,
+  assLightning09,
+]
 
 const setBaubleLayer01 = () => {
   g.bL[1] = setBaublesInLayer(1, 33, {}, true)
@@ -9,7 +30,6 @@ const setBaubleLayer01 = () => {
   g.bL[1].ctrRing = g.el.ctrRing
   g.bL[1].ctrRingLightning = []
   g.bL[1].zQuickOnSetters = []
-  const tgBgAsses = Array.from({ length: 9 }, (_, i) => `src/img/lightningBalls/lightning-ball-0${i + 1}.png`)
   tgBgAsses.forEach((tgBgAss, i) => {
     g.bL[1].ctrRingLightning[i] = g.document.createElement('img')
     g.bL[1].ctrRingLightning[i].src = tgBgAss
@@ -31,23 +51,23 @@ const setBaubleLayer01 = () => {
 const evadeMouseTick = re => {
   let inC = false
   let fromC = 0
-  let o = (g.w.cx > g.cyOff) ? g.w.cx * 2 : g.cyOff * 2
+  let o = (g.w.cx > g.w.cyOffPx) ? g.w.cx * 2 : g.w.cyOffPx * 2
   if (g.m.x && g.m.y) {
-    inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.cyOff) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
+    inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOffPx) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
     if (inC) o = (re) ? g.bL[1].cR : 0
     else {
-      fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.cyOff) ** 2))
+      fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOffPx) ** 2))
       o = Math.sqrt(g.bL[1].cR * fromC) + (fromC / 2)
     }
   }
   const blur = fromC ? `blur(${(fromC / 100)}px)` : false
   g.bL[1].b.forEach((b, i) => {
     let x = g.w.cx - g.bRadii
-    let y = g.cyOff - g.bRadii
+    let y = g.w.cyOffPx - g.bRadii
     if (!inC && g.m.x && g.m.y) {
       const a = i * g.bL[1].st
       x = Math.round(g.w.cx + o * Math.cos(a) + g.w.cx - g.m.x - g.bRadii)
-      y = Math.round(g.cyOff + o * Math.sin(a) + g.cyOff - g.m.y - g.bRadii)
+      y = Math.round(g.w.cyOffPx + o * Math.sin(a) + g.w.cyOffPx - g.m.y - g.bRadii)
     }
     gsap.to(b, {
       duration: g.scene.skip.dur || 0.42,
@@ -73,7 +93,6 @@ const unEvadeMouse = blurCrtnsTickFunc => {
 
 const evadeMouse = () => {
   gsap.ticker.add(evadeMouseTick)
-  console.log(gsap.ticker)
   return () => unEvadeMouse(evadeMouseTick)
 }
 
