@@ -1,10 +1,17 @@
 {
-  "name": "landing-page",
+  "name": "floor-of-yore",
+  "author": "billy Z duke <ww@wrongwindows.rocks> (https://wrongwindows.rocks)",
+  "contributors": [
+    {
+      "name": "Kamil Mendelski",
+      "url": "https://github.com/emendelski/parcel-starter-kit"
+    }
+  ],
   "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emendelski/parcel-starter-kit.git"
+    "url": "git+https://github.com/billyzduke/bZd-WW.rocks-FLOOR-of-YORE-Parcel.git"
   },
   "scripts": {
     "serve": "parcel yore.html",

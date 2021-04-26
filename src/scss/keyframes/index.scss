@@ -8,3 +8,12 @@
     opacity: 1;
   }
 }
+
+@keyframes ggroveScroll {
+  from {
+    transform: translateX(-42px);
+  }
+  to {
+    transform: translateX(42px);
+  }
+}

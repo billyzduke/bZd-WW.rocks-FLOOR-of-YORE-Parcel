@@ -1,5 +1,7 @@
 import { TimelineMax as TL } from 'gsap'
 
+import assCurtainSectionMask from 'url:/src/img/curtains/curtain-section-mask.svg'
+import assCurtainPeekMask from 'url:/src/img/curtains/curtains-peek-mask.svg'
 import g from '../glob'
 import { setAddOn, setClearActor } from '../utils'
 // eslint-disable-next-line import/no-cycle
@@ -37,13 +39,13 @@ const setScene02 = () => {
       filter: 'grayscale(1)',
     }, '<')
     .set('.crtn', {
-      maskImage: 'url(ass/vect/curtainMasks/curtain-section-mask.svg)',
+      maskImage: `url(${assCurtainSectionMask})`,
       maskPosition: 'center center',
       maskRepeat: 'no-repeat',
       maskSize: '100% 100%',
     }, '<')
     .set('.cc', {
-      maskImage: 'url(ass/vect/curtainMasks/curtains-peek-mask.svg)',
+      maskImage: `url(${assCurtainPeekMask})`,
       maskPosition: 'center center',
       maskRepeat: 'no-repeat',
       maskSize: '1080px 1080px',

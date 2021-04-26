@@ -4,7 +4,7 @@ svg.turbulent {
   top: 0;
 }
 svg.turbulent foreignObject,
-svg.turbulent foreignObject img {
+svg.turbulent foreignObject * {
   box-sizing: border-box;
   display: block;
   height: 100%;
@@ -16,6 +16,6 @@ svg.turbulent foreignObject img {
   transform-origin: 0px 0px;
   width: 100%;
 }
-svg.turbulent foreignObject img {
+svg.turbulent foreignObject * {
   display: inline-block;
 }

@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1507 1063"  xmlns:v="https://vecta.io/nano"><linearGradient id="A" gradientUnits="userSpaceOnUse" x1=".353" y1="531.087" x2="1507.399" y2="531.087"><stop offset="0" stop-opacity="0"/><stop offset=".01"/><stop offset=".99"/><stop offset="1" stop-opacity="0"/></linearGradient><path d="M.3-.4h1507v1063H.3z" fill="url(#A)"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1507 1063">
+  <linearGradient id="cwsm" gradientUnits="userSpaceOnUse" x1=".353" y1="531.087" x2="1507.399" y2="531.087">
+    <stop offset="0" stop-opacity="0"></stop>
+    <stop offset=".01"></stop>
+    <stop offset=".99"></stop>
+    <stop offset="1" stop-opacity="0"></stop>
+  </linearGradient>
+  <path d="M.3-.4h1507v1063H.3z" fill="url(#cwsm)"></path>
+</svg>
