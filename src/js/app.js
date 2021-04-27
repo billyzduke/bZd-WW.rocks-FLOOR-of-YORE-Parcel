@@ -63,6 +63,7 @@ const loadApp = () => {
     ...htmEl('.makisu', 'q', true),
     ...htmEl('.tpTitle', 'q', true),
     ...htmEl('.mkNode', 'q', true),
+    ...htmEl('.wormRingSegment', 'q', true),
   }
   el.bL = []
   g.el = el

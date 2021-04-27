@@ -4,6 +4,9 @@ const g = {
   },
   bL: [],
   crtns: {},
+  lion: {
+    eyes: {},
+  },
   m: {},
   scene: {
     action: '',
@@ -14,10 +17,25 @@ const g = {
       target: 0,
     },
   },
+  tL: {},
   vid: {},
   w: {},
+  worm: {
+    ribs: {
+      ntrvl: null,
+      which: 12,
+    },
+    ring: {
+      dO: 10692.6,
+      dI: 8192,
+    },
+    stars: {
+      ntrvl: null,
+    },
+  },
 }
 g.b.r = g.b.d / 2
 g.cyOffPx = g.b.d * 1.5 // magic number
+g.worm.ring.rO = g.worm.ring.dO / 2
 
 export default g

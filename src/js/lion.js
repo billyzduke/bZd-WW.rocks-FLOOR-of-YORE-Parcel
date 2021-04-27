@@ -21,6 +21,8 @@ const setLion = () => {
         transformOrigin: '325px 714px',
       })
     }
+    g.lion.eyes.followMouseQuickSetter = gsap.quickSetter('.lionEye', 'css')
+    g.lion.eyes.active = false
   }
 }
 

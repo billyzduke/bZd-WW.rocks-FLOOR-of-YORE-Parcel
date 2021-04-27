@@ -3,12 +3,13 @@ import { gsap } from 'gsap'
 import { padStr } from '../utils'
 import g from '../glob'
 
-const setBaublesInLayer = (bLyr, bCnt, bOpts, qMvSttrs) => {
-  /*
-    bOpts = {
-      d: [baubleIndex: diameterValue]
-    }
-  */
+const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
+  // bOpts = {
+  //   d: { // id of property to adjust
+  //     b: [ 'keys of baubles to adjust this property value on' ],
+  //     v: 'property value to apply to above keys',
+  //   }
+  // }
   const padLyr = padStr(bLyr)
   const bL = {
     b: [],
@@ -24,9 +25,10 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts, qMvSttrs) => {
     bL.b[b] = g.document.createElement('div')
     bL.b[b].id = `${bLyrClass}_b${padStr(b)}`
     bL.b[b].classList.add('b', bLyrClass)
-    if (bOpts.d && bOpts.d[b] && bOpts.d[b] !== bL.bD[b]) {
-      bL.bD[b] = bOpts.d[b]
-      bL.b[b].style.height = `${bOpts.d[b]}px`
+    // optional diameter
+    if (bOpts.d && bOpts.d.b && bOpts.d.b.length && bOpts.d.b.includes(b)) {
+      bL.bD[b] = bOpts.d.v
+      bL.b[b].style.height = `${bL.bD[b]}px`
       bL.b[b].style.width = bL.b[b].style.height
     }
     bL.b[b].appendChild(bL.bN[b])

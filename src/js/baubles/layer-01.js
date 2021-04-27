@@ -25,9 +25,10 @@ const tgBgAsses = [
 ]
 
 const setBaubleLayer01 = () => {
-  g.bL[1] = setBaublesInLayer(1, 33, {}, true)
+  g.bL[1] = setBaublesInLayer(1, 33)
   g.bL[1].cR = 69
-  g.bL[1].cR02 = g.bL[1].cR * 0.2
+  g.bL[1].cR02 = g.bL[1].cR * 0.2 // flingRingTick
+  g.bL[1].oR = g.bL[1].cR * 7.5 // spin/orbitRingTicks
   g.bL[1].ctrRing = g.el.ctrRing
   g.bL[1].ctrRingLightning = []
   g.bL[1].zQuickOnSetters = []
@@ -134,7 +135,7 @@ const shockTick = () => {
   })
 }
 
-const spinRingTick = () => {
+const flingRingTick = () => {
   if (!g.scene.skip.ff) {
     g.bL[1].b.forEach((b, i) => {
       const a = i * g.bL[1].st
@@ -158,6 +159,37 @@ const spinRingTick = () => {
   }
 }
 
+const orbitRingTick = (orR, sp = 0.1, ang = 1, sc = 0) => {
+  g.bL[1].b.forEach((b, i) => {
+    const a = g.bL[1].bD[i] * g.bL[1].st
+    const x = Math.round(g.w.cx + orR * Math.cos(a) - g.b.r)
+    const y = Math.round(g.w.cyOff + ang * orR * Math.sin(a) - g.b.d)
+    const scaleY = sc ? (y - (g.w.cyOff / 2)) / 100 : 1
+    gsap.to(b, {
+      delay: `0.${a}`,
+      duration: sp,
+      scale: scaleY,
+      translateX: x,
+      translateY: y,
+      overwrite: true,
+    })
+    g.bL[1].bD[i] -= sp
+  })
+}
+const spinRing = () => {
+  orbitRingTick(g.bL[1].cR)
+}
+const orbitRing = () => {
+  orbitRingTick(g.bL[1].oR, 0.25, 0.25, true)
+}
+
 export {
-  evadeMouseTick, resetCtrRing, resetCtrRingV2, setBaubleLayer01, shockTick, spinRingTick,
+  evadeMouseTick,
+  flingRingTick,
+  orbitRing,
+  resetCtrRing,
+  resetCtrRingV2,
+  setBaubleLayer01,
+  shockTick,
+  spinRing,
 }

@@ -1,24 +1,24 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
-import { gsapTick, setAddOn, setClearActor } from '../utils'
+import { gsapTick, setAddOn, setClearActors } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
-import { spinRingTick } from '../baubles/layer-01'
+import { flingRingTick } from '../baubles/layer-01'
 
 const scene04 = 'Raise Curtain / Reveal Cauldron of Bronze'
 
-const setScene04 = () => {
+const setScene04 = (c, n) => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
-  g.scene.forCleanUp[4].spinRingTick = gsapTick(spinRingTick)
-  g.scene.forCleanUp[4].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(5))
-  g.scene.forCleanUp[4].clearCrtns = () => setClearActor('#curtains')
+  g.scene.forCleanUp[c].flingRingTicker = gsapTick(flingRingTick)
+  g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
+  g.scene.forCleanUp[c].clearCrtns = () => setClearActors('#curtains')
+  g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(4)
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
-    obscureGrandiose(4)
     g.vid.bronze.play()
   } else sceneTL.timeScale(1 / g.scene.skip.ff)
 
@@ -38,7 +38,7 @@ const setScene04 = () => {
     opacity: 0,
   }, g.scene.skip.ff ? '>' : '<1')
 
-  if (g.scene.skip.ff) sceneTL.call(setScene, [ 5 ], '>')
+  if (g.scene.skip.ff) sceneTL.call(setScene, [ n ], '>')
 
   return true
 }

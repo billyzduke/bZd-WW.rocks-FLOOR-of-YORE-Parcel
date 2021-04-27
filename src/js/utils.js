@@ -118,11 +118,16 @@ const randomColor = (as = 'hex') => {
 
 const roundNumberTo = (num, dec = 0) => Math.round(((num + Number.EPSILON) * (10 ** dec)) / (10 ** dec))
 
-const setClearActor = domSelector => {
+const setClearActors = domSelector => {
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     if (domEl.parentNode) domEl.parentNode.removeChild(domEl)
   })
+  return true
+}
+
+const setClearInterval = ntrvl => {
+  clearInterval(ntrvl)
   return true
 }
 
@@ -368,7 +373,8 @@ export {
   randomColor,
   roundNumberTo,
   setAddOn,
-  setClearActor,
+  setClearActors,
+  setClearInterval,
   setRemoveOn,
   shuffleArray,
   svgPathsMorphOriginsHelper,

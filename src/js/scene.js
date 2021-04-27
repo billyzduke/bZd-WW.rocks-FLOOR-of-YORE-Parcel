@@ -50,18 +50,18 @@ const setScene = (toScene = 0) => {
   // console.log({ scene, toScene })
   if (!toScene || toScene === g.scene.current + 1) {
     const setScenes = [
-      setScene00,
-      setScene01,
-      setScene02,
-      setScene03,
-      setScene04,
-      setScene05,
-      setScene06,
-      setScene07,
-      setScene08,
-      setScene09,
-      setScene10,
-      setScene11,
+      () => setScene00(0, 1),
+      () => setScene01(1, 2),
+      () => setScene02(2, 3),
+      () => setScene03(3, 4),
+      () => setScene04(4, 5),
+      () => setScene05(5, 6),
+      () => setScene06(6, 7),
+      () => setScene07(7, 8),
+      () => setScene08(8, 9),
+      () => setScene09(9, 10),
+      () => setScene10(10, 11),
+      () => setScene11(11, 12),
     ]
     if (setScenes[toScene]) {
       console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)

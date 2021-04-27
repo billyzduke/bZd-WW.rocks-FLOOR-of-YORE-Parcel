@@ -8,12 +8,12 @@ import { obscure } from '../obscuro'
 
 const scene01 = 'EXPLORE'
 
-const setScene01 = () => {
+const setScene01 = (c, n) => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
-  g.scene.forCleanUp[1].exploreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(2))
+  g.scene.forCleanUp[c].exploreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
+  g.scene.forCleanUp[c].obscureNextScene = () => obscure(2.42)
 
-  if (!g.scene.skip.ff) obscure(3)
-  else sceneTL.timeScale(1 / g.scene.skip.ff)
+  if (g.scene.skip.ff) sceneTL.timeScale(1 / g.scene.skip.ff)
 
   sceneTL.to('#tpTitleYore', {
     duration: 3,
@@ -24,7 +24,7 @@ const setScene01 = () => {
       opacity: 1,
     }, '<')
 
-  if (g.scene.skip.ff) sceneTL.call(setScene, [ 2 ], '>')
+  if (g.scene.skip.ff) sceneTL.call(setScene, [ n ], '>')
 
   return true
 }

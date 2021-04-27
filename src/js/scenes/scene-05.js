@@ -1,7 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
-import { setAddOn } from '../utils'
+import { setAddOn, setClearActors } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
@@ -10,20 +10,21 @@ import { resetCtrRingV2 } from '../baubles/layer-01'
 
 const scene05 = 'Distill Gankyil / Way Down in the Hole'
 
-const setScene05 = () => {
-  const bronzeTL = new TL({ defaults: { overwrite: 'auto' } })
-  const gankyilTL = new TL({ defaults: { overwrite: 'auto' } })
-  g.scene.forCleanUp[5].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(6))
+g.tL.gankyil = new TL({ defaults: { overwrite: 'auto' } })
 
+const setScene05 = (c, n) => {
+  const bronzeTL = new TL({ defaults: { overwrite: 'auto' } })
+  g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
+  g.scene.forCleanUp[c].clearBronze = () => setClearActors('#bronzeVidWrapper')
+  g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)
   resetCtrRingV2()
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
-    obscureGrandiose(4)
     g.vid.dirt.play()
   } else {
     bronzeTL.timeScale(1 / g.scene.skip.ff)
-    bronzeTL.timeScale(1 / g.scene.skip.ff)
+    g.tL.gankyil.timeScale(1 / g.scene.skip.ff)
   }
 
   gsap.set('.pCC', {
@@ -48,7 +49,7 @@ const setScene05 = () => {
       scale: 0,
     }, g.scene.skip.ff ? '>' : '<0.5')
 
-  gankyilTL.fromTo('#gankyil', {
+  g.tL.gankyil.fromTo('#gankyil', {
     opacity: 0,
     scale: 10,
     rotateZ: -720,
@@ -78,7 +79,7 @@ const setScene05 = () => {
     overwrite: true,
   })
 
-  if (g.scene.skip.ff) bronzeTL.call(setScene, [ 6 ], '>')
+  if (g.scene.skip.ff) bronzeTL.call(setScene, [ n ], '>')
 
   return true
 }

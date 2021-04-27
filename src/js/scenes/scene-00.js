@@ -5,12 +5,15 @@ import { setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { setBaubleLayer01 } from '../baubles/layer-01'
+import { obscure } from '../obscuro'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
-const setScene00 = () => {
+const setScene00 = (c, n) => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
-  g.scene.forCleanUp[0].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(1))
+  // Only functions that return a boolean can be included in forCleanUp
+  g.scene.forCleanUp[c].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
+  g.scene.forCleanUp[c].obscureNextScene = () => obscure(3)
 
   setBaubleLayer01()
 
