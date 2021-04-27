@@ -17,12 +17,14 @@ const setScene05 = () => {
 
   resetCtrRingV2()
 
-  if (!g.scene.skip.dur) {
+  if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
     obscureGrandiose(4)
+    g.vid.dirt.play()
+  } else {
+    bronzeTL.timeScale(1 / g.scene.skip.ff)
+    bronzeTL.timeScale(1 / g.scene.skip.ff)
   }
-
-  g.vid.dirt.play()
 
   gsap.set('.pCC', {
     opacity: 1,
@@ -30,21 +32,21 @@ const setScene05 = () => {
 
   bronzeTL.to(g.el.bronzeVidWrapper, {
     borderRadius: '50%',
-    duration: g.scene.skip.dur || 0.5,
+    duration: 0.5,
     ease: 'power4.in',
-    scaleX: w.h / w.w,
+    scaleX: g.w.h / g.w.w,
   }, '<')
     .to('#bronzeVidWrapper > .video-js', {
-      duration: g.scene.skip.dur || 0.5,
+      duration: 0.5,
       ease: 'power4.in',
       borderRadius: '50%',
     }, '<')
     .to(g.el.bronzeVidWrapper, {
-      duration: g.scene.skip.dur || 0.5,
+      duration: 0.5,
       ease: 'power4.out',
       rotateZ: 360,
       scale: 0,
-    }, g.scene.skip.dur ? '>' : '<0.5')
+    }, g.scene.skip.ff ? '>' : '<0.5')
 
   gankyilTL.fromTo('#gankyil', {
     opacity: 0,
@@ -52,12 +54,12 @@ const setScene05 = () => {
     rotateZ: -720,
   }, {
     delay: 0.25,
-    duration: g.scene.skip.dur || 0.25,
+    duration: 0.25,
     ease: 'power4.in',
     opacity: 0.23,
   }, '>')
     .to('#gankyil', {
-      duration: g.scene.skip.dur || 0.5,
+      duration: 0.5,
       ease: 'power4.out',
       opacity: 1,
       rotateZ: 0,
@@ -70,11 +72,13 @@ const setScene05 = () => {
     }, '<0.5')
 
   gsap.to(g.bL[1].bW, {
-    duration: g.scene.skip.dur || 0.75,
+    duration: g.scene.skip.ff || 0.75,
     ease: 'power3.in',
     rotateZ: 0,
     overwrite: true,
   })
+
+  if (g.scene.skip.ff) bronzeTL.call(setScene, [ 6 ], '>')
 
   return true
 }

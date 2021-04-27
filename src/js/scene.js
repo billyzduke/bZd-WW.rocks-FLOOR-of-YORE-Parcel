@@ -68,29 +68,18 @@ const setScene = (toScene = 0) => {
       const prevSceneCleaned = cleanScene(g.scene.current)
       console.log({ prevSceneCleaned })
       if (prevSceneCleaned) {
-        if (toScene >= g.scene.skip.target) {
-          g.scene.skip.dur = 0
-          const nextSceneSet = setScenes[toScene]()
-          console.log({ nextSceneSet })
-          if (nextSceneSet) {
-            g.scene.current = toScene
-            console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
-            // eslint-disable-next-line no-use-before-define
-            setSceneSkipper()
-            return true
-          }
-          console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
-        } else {
-          g.scene.action = 'skip'
+        if (toScene >= g.scene.skip.target) g.scene.skip.ff = 0
+        else g.scene.action = 'skip'
+        const nextSceneSet = setScenes[toScene]()
+        console.log({ nextSceneSet })
+        if (nextSceneSet) {
           g.scene.current = toScene
-          console.log(`scene ${g.scene.current} ${g.scene.action}: ${scenes[g.scene.current]}`)
-          const nextScene = g.scene.current + 1
-          if (setScenes[nextScene]) {
-            setTimeout(() => setScene(nextScene), 100, setScene, nextScene)
-            return true
-          }
-          console.log(`invalid scene ${g.scene.action} attempted: scene ${nextScene} does not exist.`)
+          console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
+          // eslint-disable-next-line no-use-before-define
+          setSceneSkipper()
+          return true
         }
+        console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
       } else console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
     } else {
       console.log(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
@@ -105,7 +94,7 @@ const setScene = (toScene = 0) => {
 const skipToScene = (toScene, e) => {
   e.target.blur()
   e.target.style.pointerEvents = 'none'
-  g.scene.skip.dur = 0.01
+  g.scene.skip.ff = 0.1
   g.scene.skip.target = Number(toScene)
   setScene(g.scene.current + 1)
   setTimeout(() => {

@@ -12,16 +12,19 @@ const setScene01 = () => {
   const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
   g.scene.forCleanUp[1].exploreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(2))
 
-  if (!g.scene.skip.dur) obscure(3)
+  if (!g.scene.skip.ff) obscure(3)
+  else sceneTL.timeScale(1 / g.scene.skip.ff)
 
   sceneTL.to('#tpTitleYore', {
-    duration: g.scene.skip.dur || 3,
+    duration: 3,
     opacity: 0,
   })
     .to('#tpTitleExplore', {
-      duration: g.scene.skip.dur || 3,
+      duration: 3,
       opacity: 1,
     }, '<')
+
+  if (g.scene.skip.ff) sceneTL.call(setScene, [ 2 ], '>')
 
   return true
 }

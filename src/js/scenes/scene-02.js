@@ -19,10 +19,11 @@ const setScene02 = () => {
   g.scene.forCleanUp[2].evadeMouseTicker = gsapTick(evadeMouseTick)
   g.scene.forCleanUp[2].clearTitles = () => setClearActor('#tpTitles')
 
-  if (!g.scene.skip.dur) obscure(2.42)
+  if (!g.scene.skip.ff) obscure(2.42)
+  else sceneTL.timeScale(1 / g.scene.skip.ff)
 
   sceneTL.to('#tpTitles', {
-    duration: g.scene.skip.dur || 3.24,
+    duration: 3.24,
     ease: 'power3.in',
     opacity: 0,
     WebkitFilter: 'blur(100px)',
@@ -35,7 +36,7 @@ const setScene02 = () => {
       WebkitFilter: 'grayscale(0)',
       filter: 'grayscale(0)',
     }, {
-      duration: g.scene.skip.dur || 1.5,
+      duration: 1.5,
       ease: 'power3.in',
       WebkitFilter: 'grayscale(1)',
       filter: 'grayscale(1)',
@@ -53,16 +54,18 @@ const setScene02 = () => {
       maskSize: '1080px 1080px',
     }, '<')
     .to('#bL01', {
-      duration: g.scene.skip.dur || 3,
+      duration: 3,
       opacity: 1,
     }, '<')
     .set('#tpTitles', {
       pointerEvents: 'none',
     }, '<')
     .to('#curtains', {
-      duration: g.scene.skip.dur || 5,
+      duration: 5,
       opacity: 1,
     }, '<')
+
+  if (g.scene.skip.ff) sceneTL.call(setScene, [ 3 ], '>')
 
   return true
 }

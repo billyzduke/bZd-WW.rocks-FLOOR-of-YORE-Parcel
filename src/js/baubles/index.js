@@ -9,12 +9,14 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts, qMvSttrs) => {
       d: [baubleIndex: diameterValue]
     }
   */
+  const padLyr = padStr(bLyr)
   const bL = {
     b: [],
     bD: [],
     bN: [],
+    bW: g.document.getElementById(`bW${padLyr}`),
   }
-  const bLyrClass = `bL${padStr(bLyr)}`
+  const bLyrClass = `bL${padLyr}`
   for (let b = 0; b < bCnt; b++) {
     bL.bD[b] = g.b.d
     bL.bN[b] = g.document.createElement('div')
@@ -28,7 +30,6 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts, qMvSttrs) => {
       bL.b[b].style.width = bL.b[b].style.height
     }
     bL.b[b].appendChild(bL.bN[b])
-    bL.bW = g.el.bW[bLyr - 1]
     bL.bW.appendChild(bL.b[b])
     if (qMvSttrs) {
       if (typeof bL.bQuickMoveSetters === 'undefined') bL.bQuickMoveSetters = []

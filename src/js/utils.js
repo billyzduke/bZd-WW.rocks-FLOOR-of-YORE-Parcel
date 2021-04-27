@@ -65,6 +65,30 @@ const getTranslateValues = element => {
   return {}
 }
 
+const gsapToOrSet = (tL, too, too2, pos, set = false) => {
+  if (tL) {
+    if (set) {
+      tL.set(too, too2, pos)
+    } else tL.to(too, too2, pos)
+  } else if (set) {
+    gsap.set(too, too2)
+  } else {
+    gsap.to(too, too2)
+  }
+}
+
+const gsapUnTick = tickFunc => {
+  gsap.ticker.remove(tickFunc)
+  console.log(`${tickFunc.name} removed from gsap.ticker`)
+  return true
+}
+
+const gsapTick = tickFunc => {
+  gsap.ticker.add(tickFunc)
+  console.log(`${tickFunc.name} added to gsap.ticker`)
+  return () => gsapUnTick(tickFunc)
+}
+
 // eslint-disable-next-line no-undef
 const isNode = o => (typeof Node === 'object' ? o instanceof Node : o && typeof o === 'object' && typeof o.nodeType === 'number' && typeof o.nodeName === 'string')
 
@@ -288,16 +312,6 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
   return tl
 }
 
-const gsapUnTick = tickFunc => {
-  gsap.ticker.remove(tickFunc)
-  return true
-}
-
-const gsapTick = tickFunc => {
-  gsap.ticker.add(tickFunc)
-  return () => gsapUnTick(tickFunc)
-}
-
 const uuidv4 = () => {
   const c = '0123456789abcdef'.split('')
   const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.split('')
@@ -346,6 +360,8 @@ export {
   addCSSRule,
   convertTextToBinary,
   getTranslateValues,
+  gsapToOrSet,
+  gsapTick,
   isNode,
   padStr,
   pullRando,
@@ -356,6 +372,5 @@ export {
   setRemoveOn,
   shuffleArray,
   svgPathsMorphOriginsHelper,
-  gsapTick,
   uuidv4,
 }

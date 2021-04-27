@@ -18,7 +18,7 @@ const positionBulb = (elTarget, yOffPx = 0) => {
 const flashBulb = (elTarget, yOffPx = 0) => {
   if (elTarget) positionBulb(elTarget, yOffPx)
   const flashTL = new TL({ defaults: { overwrite: 'auto' } })
-  if (!g.scene.skip.dur) {
+  if (!g.scene.skip.ff) {
     flashTL.set('#flashBulbWrapper', {
       opacity: 1,
       scale: 0,

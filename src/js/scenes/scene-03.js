@@ -25,17 +25,17 @@ const setScene03 = () => {
   setAddOn('#yoreFloor', 'mouseleave', scrubTheFloor)
 
   gsap.to(g.crtns.crtnMaskSizeObj, {
-    duration: g.scene.skip.dur || 2,
+    duration: g.scene.skip.ff || 2,
     ease: 'power2.in',
     value: g.w.w * 4,
   })
 
   resetCtrRing()
 
-  if (!g.scene.skip.dur) {
+  if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
     obscureGrandiose(2)
-  }
+  } else sceneTL.timeScale(1 / g.scene.skip.ff)
 
   sceneTL.set('#cc0', {
     maskImage: 'none',
@@ -44,12 +44,12 @@ const setScene03 = () => {
       opacity: 0.76,
     })
     .to(g.el.yoreFloor, {
-      duration: g.scene.skip.dur || 4,
+      duration: 4,
       ease: 'power1.in',
       opacity: 1,
     })
     .from(g.el.yoreFloor, {
-      duration: g.scene.skip.dur || 4,
+      duration: 4,
       ease: 'power2.inOut',
       perspective: 0,
       rotateX: 0,
@@ -57,21 +57,24 @@ const setScene03 = () => {
       translateY: '+=400',
     }, '<')
     .to('#cc1', {
-      duration: g.scene.skip.dur || 4,
+      duration: 4,
       opacity: 1,
       WebkitFilter: 'blur(0px)',
       filter: 'blur(0px)',
     }, '<')
     .to('#cc0', {
-      duration: g.scene.skip.dur || 2,
+      duration: 2,
       ease: 'none',
       opacity: 1,
-    }, g.scene.skip.dur ? '>' : '<2')
+    }, g.scene.skip.ff ? '>' : '<2')
     .to('#cc1', {
-      duration: g.scene.skip.dur || 2,
+      duration: 2,
       ease: 'none',
       opacity: 0,
     }, '>')
+
+  if (g.scene.skip.ff) sceneTL.call(setScene, [ 4 ], '>')
+
   return true
 }
 

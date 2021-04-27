@@ -14,7 +14,7 @@ const setLion = () => {
     gsap.set([ g.el.lolf01, g.el.lolf02 ], {
       scale: (ww / Number(g.window.getComputedStyle(g.el.lolf01, null).getPropertyValue('width').slice(0, -2))) * 0.9,
     })
-    if (scene < 8 && g.el.theLion) {
+    if (g.scene.current < 8 && g.el.theLion) {
       gsap.set(g.el.theLion, {
         rotation: -2880,
         scale: 0,

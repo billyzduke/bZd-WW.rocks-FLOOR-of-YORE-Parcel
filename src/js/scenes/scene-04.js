@@ -16,12 +16,11 @@ const setScene04 = () => {
   g.scene.forCleanUp[4].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(5))
   g.scene.forCleanUp[4].clearCrtns = () => setClearActor('#curtains')
 
-  if (!g.scene.skip.dur) {
+  if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
     obscureGrandiose(4)
-  }
-
-  g.vid.bronze.play()
+    g.vid.bronze.play()
+  } else sceneTL.timeScale(1 / g.scene.skip.ff)
 
   gsap.to(g.bL[1].bW, {
     duration: 64,
@@ -30,14 +29,16 @@ const setScene04 = () => {
     repeat: -1,
   })
   gsap.to('#curtains', {
-    duration: g.scene.skip.dur || 7,
+    duration: g.scene.skip.ff || 7,
     ease: 'power2.in',
     translateY: '-110%',
   })
   sceneTL.to('#bronzeVidWrapper .bgVidOverlay.black', {
-    duration: g.scene.skip.dur || 5,
+    duration: 5,
     opacity: 0,
-  }, g.scene.skip.dur ? '>' : '<1')
+  }, g.scene.skip.ff ? '>' : '<1')
+
+  if (g.scene.skip.ff) sceneTL.call(setScene, [ 5 ], '>')
 
   return true
 }

@@ -59,7 +59,6 @@ const loadApp = () => {
       'yoreFloor',
     ]),
     ...htmEl([ 'body', 'header' ], 'tag'),
-    ...htmEl('.bW', 'q', true),
     ...htmEl('.cw', 'q', true),
     ...htmEl('.makisu', 'q', true),
     ...htmEl('.tpTitle', 'q', true),
