@@ -38,11 +38,13 @@ const loadApp = () => {
       'ggrove',
       'handEyeLeft',
       'handEyeRight',
+      'heartChakra',
       'help',
       'helpList',
       'helpScreen',
       'helpToggle',
       'home',
+      'lightningRodsWrapper',
       'lolf01',
       'lolf02',
       'owlLaser',
@@ -78,7 +80,6 @@ const loadApp = () => {
   g.w = getW(g.cyOffPx)
   g.crtns = { cx: g.w.cx, cy: g.w.cyOff - (g.cyOffPx * 1.5) }
 
-  if (!g.el.mkNode) makisusan()
   setLion()
   setGrove()
   setTitles()
@@ -91,6 +92,13 @@ const loadApp = () => {
   if (el.sceneSkipper) setSceneSkipper()
 
   if (!g.scene.current) setScene()
+
+  return true
+}
+
+const initApp = () => {
+  const loaded = loadApp()
+  if (loaded) makisusan()
 }
 
 const getM = () => {
@@ -105,5 +113,5 @@ g.document.addEventListener('DOMContentLoaded', () => {
   g.window = window
   g.window.addEventListener('resize', loadApp)
   g.document.onmousemove = getM
-  loadApp()
+  initApp()
 })

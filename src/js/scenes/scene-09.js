@@ -1,19 +1,105 @@
-import { TimelineMax as TL } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
+import assGemGuyIdle from 'url:/src/img/tShirt/gem-guy-on.gif'
 import g from '../glob'
-import { setAddOn, setClearActors } from '../utils'
+import { setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
-import { obscure } from '../obscuro'
+import { flashBulb } from '../flashbulb'
+// eslint-disable-next-line import/no-cycle
+import { revertTshirt, transformTshirt } from '../lion-t-shirt'
+import { setLightningRods } from '../lightning-rods'
 
+gsap.registerPlugin(MotionPathPlugin)
 
 const scene09 = 'Wake Up GemGuy / Bauble Layer 02'
 
-const setScene09 = () => {
-  const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
+g.tL.b = new TL({ defaults: { overwrite: 'auto' } })
 
+const setScene09 = (c, n) => {
+  g.scene.forCleanUp[c].vajraClick = setAddOn('#crossMyHeart', 'click', () => setScene(n))
+  setAddOn('#heartChakra', 'mouseenter', transformTshirt)
+  setAddOn('#heartChakra', 'mouseleave', revertTshirt)
+  setLightningRods()
 
-  return false
+  if (g.scene.skip.ff) g.tL.b.timeScale(1 / g.scene.skip.ff)
+  else flashBulb(g.el.heartChakra)
+
+  gsap.set('#gankyil, #triskelion', {
+    cursor: 'no-drop',
+  })
+  g.el.gemGuy.src = assGemGuyIdle
+
+  const bLL = g.bL[2].b.length
+  g.tL.b.to('.b.bL02_L', {
+    duration: 2.5,
+    ease: 'none',
+    motionPath: {
+      align: '#bL02_L',
+      alignOrigin: [ 0.5, 0.5 ],
+      path: '#bL02_L',
+      end: i => {
+        const end = ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + 0.55 // (i ? 0.6175 : 0.4)
+        g.bL[2].L[i] = end
+        return end
+      },
+    },
+    opacity: 1,
+    scale: 0.9,
+    stagger: {
+      each: 0.15,
+    },
+  })
+    .to('.b.bL02_R', {
+      duration: 2.5,
+      ease: 'none',
+      motionPath: {
+        align: '#bL02_R',
+        alignOrigin: [ 0.5, 0.5 ],
+        path: '#bL02_R',
+        end: i => {
+          let n
+          switch (i) {
+            case 0:
+            case 1:
+              n = 0.525
+              break
+            case 2:
+              n = 0.53
+              break
+            default:
+              n = 0.535
+          }
+          const end = ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + n
+          g.bL[2].R[i] = end
+          return end
+        },
+      },
+      opacity: 1,
+      scale: 0.9,
+      stagger: {
+        each: 0.15,
+      },
+    }, '<0.15')
+    .to('#heartChakra', {
+      duration: 1.5,
+      ease: 'back.in',
+      rotateZ: 360,
+      repeat: 1,
+      scale: 1.24,
+      yoyo: true,
+    }, '<2.5')
+    .to('#gemPulse', {
+      duration: 1.5,
+      ease: 'power3.out',
+      scale: 1.5,
+      opacity: 0.88,
+      repeat: 1,
+      yoyo: true,
+    }, '<')
+
+  return true
 }
 
 export { scene09, setScene09 }

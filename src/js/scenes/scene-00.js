@@ -9,15 +9,16 @@ import { obscure } from '../obscuro'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
+g.tL.yore = new TL({ defaults: { overwrite: 'auto' } }) // general use global timeline
+
 const setScene00 = (c, n) => {
-  const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
   // Only functions that return a boolean can be included in forCleanUp
   g.scene.forCleanUp[c].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
   g.scene.forCleanUp[c].obscureNextScene = () => obscure(3)
 
   setBaubleLayer01()
 
-  sceneTL.to('#tpTitleScreen', {
+  g.tL.yore.to('#tpTitleScreen', {
     duration: 2,
     opacity: 0,
   })

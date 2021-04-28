@@ -11,9 +11,9 @@
   transition: opacity 1s ease-in-out;
   overflow: visible;
   z-index: -200;
-}
-#drWorm.anim {
-  opacity: 1;
+  &.anim {
+    opacity: 1;
+  }
 }
 .wormSignPath {
   fill: none;
@@ -21,16 +21,20 @@
   stroke-linejoin: round;
   stroke-miterlimit: 10;
   stroke: white;
-}
-.anim .wormSignPath {
-  animation: dash 10s ease-in forwards;
-  stroke-dasharray: 1069260; /* 100; */
+  .anim & {
+    animation: dash 10s ease-in forwards;
+    stroke-dasharray: 1069260; /* 100; */
+  }
+  .skip & {
+    animation: dash 1s ease-in forwards;
+  }
 }
 .wormRingSegment {
   display: block;
   left: 0;
   position: absolute;
   top: 0;
+  opacity: 0;
 }
 .wormTube {
   display: block;
@@ -72,13 +76,13 @@
   position: absolute;
   transform-origin: 4096px 4096px;
   width: 8192px;
-}
-.anim .wormRibs {
-  animation: spinZ 224s linear infinite reverse;
+  .anim & {
+    animation: spinZ 224s linear infinite reverse;
+  }
 }
 div#wormSignScreen {
   position: absolute;
-  mix-blend-mode: overlay;
+  mix-blend-mode: overlay !important;
   background-image: radial-gradient(circle farthest-side, rgba(0, 255,255, 1) 0%, rgba(0, 255, 255, 0) 100%);
   background-size: cover;
   background-position: center center;

@@ -48,7 +48,7 @@ const shiftStars = () => {
 const setScene07 = (c, n) => {
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].orbitRingTicker = gsapTick(orbitRing)
-  g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(6)
+  g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(5)
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
@@ -84,6 +84,15 @@ const setScene07 = (c, n) => {
   gsap.to(g.el.wormSignScreen, {
     duration: g.scene.skip.dur || 9,
     ease: 'power1.in',
+    onComplete() {
+      // THIS IS TO CORRECT SOME RANDOM BUGGINESS WITH THE mix-blend-mode: overlay ON wormSignScreen
+      const wrmScr = g.el.wormSignScreen.cloneNode(true)
+      const main = g.el.wormSignScreen.parentNode
+      const nextSibling = main.querySelector('#bronzeVidWrapper')
+      main.removeChild(g.el.wormSignScreen)
+      g.el.wormSignScreen = wrmScr
+      main.insertBefore(g.el.wormSignScreen, nextSibling)
+    },
     scale: 1,
   })
   gsap.to(g.bL[1].bW, {
@@ -91,6 +100,8 @@ const setScene07 = (c, n) => {
     ease: 'power2.inOut',
     rotateZ: -30,
   })
+
+  if (g.scene.skip.ff) setTimeout(() => setScene(n), 100)
 
   return true
 }

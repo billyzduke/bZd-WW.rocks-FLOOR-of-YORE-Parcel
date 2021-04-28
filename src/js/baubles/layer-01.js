@@ -78,19 +78,33 @@ const resetCtrRingV2 = () => {
   resetCtrRing(1.5)
 }
 
+const setCtrRing = () => {
+  const r = g.w.h > g.w.w ? g.w.h : g.w.w
+  g.bL[1].b.forEach((b, i) => {
+    const a = i * g.bL[1].st
+    const x = Math.round(g.w.cx + r * Math.cos(a) - g.b.r)
+    const y = Math.round(g.w.cyOff + r * Math.sin(a) - g.b.d)
+    gsap.to(b, {
+      duration: 2.5,
+      ease: 'power2',
+      filter: 'blur(12px)',
+      x,
+      y,
+      WebkitFilter: 'blur(12px)',
+    })
+  })
+}
+
 const evadeMouseTick = re => {
-  if (g.scene.skip.ff) resetCtrRing()
-  else {
+  if (!g.scene.skip.ff && g.m.x && g.m.y) {
     let inC = false
     let fromC = 0
     let o = (g.w.cx > g.w.cyOff) ? g.w.cx * 2 : g.w.cyOff * 2
-    if (g.m.x && g.m.y) {
-      inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
-      if (inC) o = (re) ? g.bL[1].cR : 0
-      else {
-        fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2))
-        o = Math.sqrt(g.bL[1].cR * fromC) + (fromC / 2)
-      }
+    inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
+    if (inC) o = (re) ? g.bL[1].cR : 0
+    else {
+      fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2))
+      o = Math.sqrt(g.bL[1].cR * fromC) + (fromC / 2)
     }
     const blur = fromC ? `blur(${(fromC / 100)}px)` : false
     g.bL[1].b.forEach((b, i) => {
@@ -165,14 +179,20 @@ const orbitRingTick = (orR, sp = 0.1, ang = 1, sc = 0) => {
     const x = Math.round(g.w.cx + orR * Math.cos(a) - g.b.r)
     const y = Math.round(g.w.cyOff + ang * orR * Math.sin(a) - g.b.d)
     const scaleY = sc ? (y - (g.w.cyOff / 2)) / 100 : 1
-    gsap.to(b, {
-      delay: `0.${a}`,
-      duration: sp,
-      scale: scaleY,
-      translateX: x,
-      translateY: y,
-      overwrite: true,
-    })
+    if (g.bL[1].bD[i] === i || orR === g.bL[1].oR) {
+      gsap.to(b, {
+        // delay: `0.${a}`,
+        duration: sp,
+        scale: scaleY,
+        translateX: x,
+        translateY: y,
+        overwrite: true,
+      })
+    } else {
+      g.bL[1].bQuickMoveSetters[i]({
+        transform: `translate(${x}px, ${y}px) scale(${scaleY})`,
+      })
+    }
     g.bL[1].bD[i] -= sp
   })
 }
@@ -190,6 +210,7 @@ export {
   resetCtrRing,
   resetCtrRingV2,
   setBaubleLayer01,
+  setCtrRing,
   shockTick,
   spinRing,
 }

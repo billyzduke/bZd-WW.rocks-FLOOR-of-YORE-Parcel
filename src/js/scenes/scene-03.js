@@ -13,7 +13,6 @@ import { readTheFloor, scrubTheFloor } from '../floor'
 const scene03 = 'Reveal Curtain / Floor of Yore'
 
 const setScene03 = (c, n) => {
-  const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
   g.crtns.crtnMaskSizeObj = { value: 1080 }
   g.crtns.crtnMaskQuickSetter = gsap.quickSetter('#cc1', 'css')
   g.scene.forCleanUp[c].crtnMaskTicker = gsapTick(embiggenCrtnMaskTick)
@@ -35,9 +34,9 @@ const setScene03 = (c, n) => {
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
-  } else sceneTL.timeScale(1 / g.scene.skip.ff)
+  }
 
-  sceneTL.set('#cc0', {
+  g.tL.yore.set('#cc0', {
     maskImage: 'none',
   })
     .set('#cc1', {
@@ -73,7 +72,7 @@ const setScene03 = (c, n) => {
       opacity: 0,
     }, '>')
 
-  if (g.scene.skip.ff) sceneTL.call(setScene, [ n ], '>')
+  if (g.scene.skip.ff) g.tL.yore.call(setScene, [ n ], '>')
 
   return true
 }

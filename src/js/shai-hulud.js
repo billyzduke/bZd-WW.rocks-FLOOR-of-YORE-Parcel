@@ -1,5 +1,7 @@
 import g from './glob'
-import { roundNumberTo } from './utils'
+import { roundNumberTo, setClearActors, setClearInterval } from './utils'
+
+const clearShaiHulud = () => (setClearInterval(g.worm.ribs.ntrvl) && setClearInterval(g.worm.stars.ntrvl) ? setClearActors('#drWorm, #wormSignScreen, #solarCorona, #circlingSparks') : false)
 
 const wormScale = s => s * g.worm.ring.dI
 
@@ -31,6 +33,7 @@ const setShaiHulud = () => {
   wormRingSegments.forEach((el, i) => {
     const wrmScale = 0.069 * (2.02799845 ** (wrmSegs - i - 1))
     el.style.height = `${wormScale(wrmScale)}px`
+    el.style.opacity = 1
     el.style.width = el.style.height
     el.style.transform = doTheWorm(wrmScale, flipH)
     flipH = !flipH
@@ -46,7 +49,7 @@ const setShaiHulud = () => {
   const loops = 12 // must set stroke-width and circle radius accordingly = 0.25/loops
   const coverCornerLoops = Math.ceil(loops * Math.sqrt(2)) + 1/* for inner circle */
   const loopSteps = 16
-  const tangentOff = 4 / 3 * Math.tan(Math.PI / (2 * loopSteps))
+  const tangentOff = (4 / 3) * Math.tan(Math.PI / (2 * loopSteps))
 
   let px = g.worm.ring.rO
   let py = px
@@ -64,9 +67,9 @@ const setShaiHulud = () => {
       const cx = Math.cos(tangent) * radius * tangentOff
       const cy = Math.sin(tangent) * radius * tangentOff
 
-      if (loop == 0 && i == 1) {
+      if (loop === 0 && i === 1) {
         path = `${path}M${x} ${y}`
-      } else if (!(loop == 0 && i == 0)) {
+      } else if (!(loop === 0 && i === 0)) {
         path = `${path}C${px + pcx} ${py + pcy} ${x - cx} ${y - cy} ${x} ${y}`
       }
 
@@ -79,4 +82,4 @@ const setShaiHulud = () => {
   g.el.spiralOutPath.setAttribute('d', path)
 }
 
-export { setShaiHulud }
+export { clearShaiHulud, setShaiHulud }

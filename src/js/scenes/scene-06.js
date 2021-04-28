@@ -60,21 +60,21 @@ const setScene06 = (c, n) => {
   g.scene.forCleanUp[c].presetFutureScene = () => presetScene08()
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)
 
-  if (!g.scene.skip.ff) {
+  if (g.scene.skip.ff) {
+    g.el.drWorm.classList.add('skip')
+    gsap.set('#gankyil', {
+      opacity: 1,
+      rotateZ: 0,
+      scale: 1,
+    })
+  } else {
     flashBulb(g.bL[1].ctrRing)
     g.vid.bronze.play()
-
-    // DON'T FORGET TO CLEAR THIS FUCKER LATER
-    g.worm.ribs.ntrvl = setInterval(() => {
-      shiftSegment(g.worm.ribs.which)
-    }, 400)
   }
 
-  // gsap.set('#gankyil', {
-  //   opacity: 1,
-  //   rotateZ: 0,
-  //   scale: 1,
-  // })
+  g.worm.ribs.ntrvl = setInterval(() => {
+    shiftSegment(g.worm.ribs.which)
+  }, 400)
 
   // FIX INITIAL RIB SPACING // very arbitrary stuff, but interim SVGs are MIA
   g.tL.ribs.set('.wormRibs path:first-of-type, .wormRibs path:nth-of-type(2)', {
@@ -112,7 +112,7 @@ const setScene06 = (c, n) => {
     overwrite: true,
   })
 
-  if (g.scene.skip.ff) g.tL.stars.call(setScene, [ n ], '>')
+  if (g.scene.skip.ff) setTimeout(() => setScene(n), 100)
 
   return true
 }

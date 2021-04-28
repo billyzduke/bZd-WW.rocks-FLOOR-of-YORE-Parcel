@@ -13,16 +13,13 @@ import { evadeMouseTick } from '../baubles/layer-01'
 const scene02 = 'Blur Curtain / Bauble Layer 01'
 
 const setScene02 = (c, n) => {
-  const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].blurCtrnsTicker = gsapTick(blurCrtnsTick)
   g.scene.forCleanUp[c].evadeMouseTicker = gsapTick(evadeMouseTick)
   g.scene.forCleanUp[c].clearTitles = () => setClearActors('#tpTitles')
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(2)
 
-  if (g.scene.skip.ff) sceneTL.timeScale(1 / g.scene.skip.ff)
-
-  sceneTL.to('#tpTitles', {
+  g.tL.yore.to('#tpTitles', {
     duration: 3.24,
     ease: 'power3.in',
     opacity: 0,
@@ -65,7 +62,7 @@ const setScene02 = (c, n) => {
       opacity: 1,
     }, '<')
 
-  if (g.scene.skip.ff) sceneTL.call(setScene, [ n ], '>')
+  if (g.scene.skip.ff) g.tL.yore.call(setScene, [ n ], '>')
 
   return true
 }

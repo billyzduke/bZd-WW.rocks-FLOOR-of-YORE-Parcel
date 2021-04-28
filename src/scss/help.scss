@@ -63,7 +63,7 @@ svg#helpIcon {
 }
 div#help:not(.open) div#helpToggle:hover {
   transition: all 0.36s ease-in-out !important;
-  opacity: 0.88;
+  opacity: 0.88 !important;
 }
 div#help.open div#helpToggle {
   opacity: 1;

@@ -11,9 +11,9 @@ import { resetCtrRingV2 } from '../baubles/layer-01'
 const scene05 = 'Distill Gankyil / Way Down in the Hole'
 
 g.tL.gankyil = new TL({ defaults: { overwrite: 'auto' } })
+g.tL.bronze = new TL({ defaults: { overwrite: 'auto' } })
 
 const setScene05 = (c, n) => {
-  const bronzeTL = new TL({ defaults: { overwrite: 'auto' } })
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].clearBronze = () => setClearActors('#bronzeVidWrapper')
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)
@@ -23,7 +23,7 @@ const setScene05 = (c, n) => {
     flashBulb(g.bL[1].ctrRing)
     g.vid.dirt.play()
   } else {
-    bronzeTL.timeScale(1 / g.scene.skip.ff)
+    g.tL.bronze.timeScale(1 / g.scene.skip.ff)
     g.tL.gankyil.timeScale(1 / g.scene.skip.ff)
   }
 
@@ -31,7 +31,7 @@ const setScene05 = (c, n) => {
     opacity: 1,
   })
 
-  bronzeTL.to(g.el.bronzeVidWrapper, {
+  g.tL.bronze.to(g.el.bronzeVidWrapper, {
     borderRadius: '50%',
     duration: 0.5,
     ease: 'power4.in',
@@ -79,7 +79,7 @@ const setScene05 = (c, n) => {
     overwrite: true,
   })
 
-  if (g.scene.skip.ff) bronzeTL.call(setScene, [ n ], '>')
+  if (g.scene.skip.ff) g.tL.bronze.call(setScene, [ n ], '>')
 
   return true
 }

@@ -7,6 +7,9 @@ const setBaubleLayer02 = () => {
   g.bL[2].b.forEach((b, i) => {
     b.classList.add(`bL02_${i % 2 ? 'L' : 'R'}`)
   })
+  // the following only needed for console logging
+  g.bL[2].L = []
+  g.bL[2].R = []
 }
 
 export { setBaubleLayer02 }

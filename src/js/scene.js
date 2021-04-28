@@ -68,8 +68,10 @@ const setScene = (toScene = 0) => {
       const prevSceneCleaned = cleanScene(g.scene.current)
       console.log({ prevSceneCleaned })
       if (prevSceneCleaned) {
-        if (toScene >= g.scene.skip.target) g.scene.skip.ff = 0
-        else g.scene.action = 'skip'
+        if (toScene >= g.scene.skip.target) {
+          g.scene.skip.ff = 0
+          g.tL.yore.timeScale(1)
+        } else g.scene.action = 'skip'
         const nextSceneSet = setScenes[toScene]()
         console.log({ nextSceneSet })
         if (nextSceneSet) {
@@ -95,6 +97,7 @@ const skipToScene = (toScene, e) => {
   e.target.blur()
   e.target.style.pointerEvents = 'none'
   g.scene.skip.ff = 0.1
+  g.tL.yore.timeScale(1 / g.scene.skip.ff)
   g.scene.skip.target = Number(toScene)
   setScene(g.scene.current + 1)
   setTimeout(() => {

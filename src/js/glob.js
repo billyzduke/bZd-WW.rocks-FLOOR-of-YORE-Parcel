@@ -4,8 +4,10 @@ const g = {
   },
   bL: [],
   crtns: {},
+  lightningRodQuickSetters: {},
   lion: {
     eyes: {},
+    tShirt: false,
   },
   m: {},
   scene: {

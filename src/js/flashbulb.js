@@ -3,6 +3,8 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
 import g from './glob'
 
+gsap.registerPlugin(MotionPathPlugin)
+
 const positionBulb = (elTarget, yOffPx = 0) => {
   if (elTarget) {
     const matrix = MotionPathPlugin.getGlobalMatrix(elTarget)
