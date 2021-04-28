@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250"  xmlns:v="https://vecta.io/nano"><radialGradient id="A" cx="125" cy="124" r="125" gradientTransform="matrix(1 0 0 -1 0 249)" gradientUnits="userSpaceOnUse"><stop offset="0"/><stop offset=".69"/><stop offset="1" stop-opacity="0"/></radialGradient><circle cx="125" cy="125" r="125" fill="url(#A)"/></svg>

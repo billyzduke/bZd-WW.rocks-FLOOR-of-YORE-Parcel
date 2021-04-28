@@ -44,7 +44,7 @@ const openFoetusEyeTick = foe => {
   const nextOpenEyeFrame = g.foetus[foe].eye + 1
   if (g.qss.foetusEyes[foe][nextOpenEyeFrame]) {
     if (g.qss.foetusEyes[foe][g.foetus[foe].eye]) g.qss.foetusEyes[foe][g.foetus[foe].eye](0)
-    g.qss.foetusEyes[s][nextOpenEyeFrame](1)
+    g.qss.foetusEyes[foe][nextOpenEyeFrame](1)
     g.foetus[foe].eye = nextOpenEyeFrame
   } else {
     gsap.ticker.remove(foe === 'L' ? openFoetusEyeL : openFoetusEyeR)

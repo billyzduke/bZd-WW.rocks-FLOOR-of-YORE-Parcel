@@ -33,45 +33,46 @@ import assLightningRod28 from 'url:/src/img/lightningRods/lightning-rod-28.png'
 import g from './glob'
 import { padStr } from './utils'
 
-const assLightningRods = [
-  assLightningRod00,
-  assLightningRod01,
-  assLightningRod02,
-  assLightningRod03,
-  assLightningRod04,
-  assLightningRod05,
-  assLightningRod06,
-  assLightningRod07,
-  assLightningRod08,
-  assLightningRod09,
-  assLightningRod10,
-  assLightningRod11,
-  assLightningRod12,
-  assLightningRod13,
-  assLightningRod14,
-  assLightningRod15,
-  assLightningRod16,
-  assLightningRod17,
-  assLightningRod18,
-  assLightningRod19,
-  assLightningRod20,
-  assLightningRod21,
-  assLightningRod22,
-  assLightningRod23,
-  assLightningRod24,
-  assLightningRod25,
-  assLightningRod26,
-  assLightningRod27,
-  assLightningRod28,
-]
-
 const setLightningRods = () => {
+  const assLightningRods = [
+    assLightningRod00,
+    assLightningRod01,
+    assLightningRod02,
+    assLightningRod03,
+    assLightningRod04,
+    assLightningRod05,
+    assLightningRod06,
+    assLightningRod07,
+    assLightningRod08,
+    assLightningRod09,
+    assLightningRod10,
+    assLightningRod11,
+    assLightningRod12,
+    assLightningRod13,
+    assLightningRod14,
+    assLightningRod15,
+    assLightningRod16,
+    assLightningRod17,
+    assLightningRod18,
+    assLightningRod19,
+    assLightningRod20,
+    assLightningRod21,
+    assLightningRod22,
+    assLightningRod23,
+    assLightningRod24,
+    assLightningRod25,
+    assLightningRod26,
+    assLightningRod27,
+    assLightningRod28,
+  ]
+
   const lightningRodWrappers = [
     'N',
     'S',
     'E',
     'W',
   ]
+
   lightningRodWrappers.forEach(lrw => {
     const lightningRodWrapper = g.document.createElement('div')
     lightningRodWrapper.id = `lightningRodWrapper_${lrw}`

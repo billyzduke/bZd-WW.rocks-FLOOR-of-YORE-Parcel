@@ -39,7 +39,7 @@ const lionShockTick = () => {
   gsap.set('.lightningRod', {
     opacity: 0,
   })
-  Object.keys(g.el.lightningRods).forEach(lrw => g.qss.lightningRods[lrw][gsap.utils.snap(1, gsap.utils.random(0, 28))](1))
+  Object.keys(g.qss.lightningRods).forEach(lrw => g.qss.lightningRods[lrw][gsap.utils.snap(1, gsap.utils.random(0, 28))](1))
 }
 
 const relieveTheLion = () => {

@@ -39,7 +39,7 @@ const setScene10 = (c, n) => {
   setAddOn('#wombR', 'mouseleave', () => closeFoetusEye('R'))
   setAddOn('#thirdEyeWrapper', 'click', ex)
 
-  g.qss.ramIconHorns(1)
+  g.qss.ramIconHorns[0](1)
 
   gsap.set('#lionHead', {
     attr: {
@@ -74,7 +74,7 @@ const setScene10 = (c, n) => {
 
   setTimeout(() => setScene(n), g.scene.skip.ff ? 100 : 4242)
 
-  return false
+  return true
 }
 
 export { scene10, setScene10 }

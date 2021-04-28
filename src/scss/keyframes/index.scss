@@ -1,5 +1,25 @@
 @import 'mk';
 
+@keyframes balancing {
+  from {
+    transform: rotate(-16deg);
+  }
+  to {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 1069260; /* 100; */
+    stroke-width: 10.6926; /* 0.001; */
+  }
+  100% {
+    stroke-dashoffset: 0;
+    stroke-width: 445.525; /* 0.042; */
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -9,12 +29,12 @@
   }
 }
 
-@keyframes ggroveScroll {
+@keyframes fadeOut {
   from {
-    transform: translateX(-42px);
+    opacity: 1;
   }
   to {
-    transform: translateX(42px);
+    opacity: 0;
   }
 }
 
@@ -27,14 +47,115 @@
   }
 }
 
-@keyframes dash {
+@keyframes ggroveScroll {
+  from {
+    transform: translateX(-42px);
+  }
+  to {
+    transform: translateX(42px);
+  }
+}
+
+@keyframes jarp {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1.05);
+  }
+  50% {
+    transform: scale(1.025, 1);
+  }
+  75% {
+    transform: scale(1, 1.05);
+  }
+}
+
+@keyframes pulseDryOrb {
+  from {
+    background-color: rgb(243, 6, 3);
+  }
+  to {
+    background-color: rgb(241, 243, 2);
+  }
+}
+
+@keyframes pulseOpacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulseScale {
+  from {
+    transform: scale(0.75);
+  }
+  to {
+    transform: scale(1.25);
+  }
+}
+
+@keyframes pulseScaleXtreme {
+  from {
+    transform: scale(0.64);
+  }
+  to {
+    transform: scale(1.42);
+  }
+}
+
+@keyframes rainbowPhase {
+  0%,
+  100% {
+    background-color: violet;
+  }
+  14.2857% {
+    background-color: indigo;
+  }
+  28.5714% {
+    background-color: blue;
+  }
+  42.8571% {
+    background-color: green;
+  }
+  57.1429% {
+    background-color: yellow;
+  }
+  71.4286% {
+    background-color: orange
+  }
+  85.7143% {
+    background-color: red;
+  }
+}
+
+@keyframes rememberTheGlow {
   0% {
-    stroke-dashoffset: 1069260; /* 100; */
-    stroke-width: 10.6926; /* 0.001; */
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  25% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.25;
   }
   100% {
-    stroke-dashoffset: 0;
-    stroke-width: 445.525; /* 0.042; */
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes rockabye {
+  from {
+    transform: rotate(-42deg);
+  }
+  to {
+    transform: rotate(42deg);
   }
 }
 

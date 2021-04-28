@@ -1,8 +1,12 @@
 import { gsap, TimelineMax as TL } from 'gsap'
+import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
 import g from './glob'
 // eslint-disable-next-line object-curly-newline
 import { padStr, randOnum, randOcolor, shuffleArray } from './utils'
+
+gsap.registerPlugin(MorphSVGPlugin, MotionPathPlugin)
 
 const moveLionEyes = () => {
   const thirdEyeDeets = g.el.phasingRainbow.getBoundingClientRect()
@@ -86,7 +90,7 @@ const setExcs = () => {
 
 const claim = (whEx, exDr) => {
   if (g.scene.current >= 11) {
-    const excTL02 = gsap.timeline({ defaults: { overwrite: 'auto' } })
+    const excTL02 = new TL({ defaults: { overwrite: 'auto' } })
     const randSpeed = randOnum(12, 16) / 4
     excTL02.to(`#ex${whEx}`, {
       duration: randSpeed * 2,
@@ -126,7 +130,7 @@ const claim = (whEx, exDr) => {
 
 const ex = () => {
   if (g.scene.current >= 11) {
-    const excTL01 = gsap.timeline({ defaults: { overwrite: 'auto' } })
+    const excTL01 = new TL({ defaults: { overwrite: 'auto' } })
     const padEx = padStr(g.exc.which)
     excTL01.fromTo(`#ex${padEx}`, {
       opacity: 1,

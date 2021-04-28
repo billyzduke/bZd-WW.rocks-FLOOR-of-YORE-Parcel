@@ -1,4 +1,4 @@
-import { gsap } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import assBloodSplash01 from 'url:/src/img/tearsOFBlood/bloodSplash-01.png'
 import assBloodSplash02 from 'url:/src/img/tearsOFBlood/bloodSplash-02.png'
@@ -126,7 +126,8 @@ const bloodDrop = side => {
   if (!g.foetus[side].drop) {
     g.foetus[side].drop = true
     const whichHandEye = side === 'L' ? '#sayCeren' : '#saySinan'
-    g.tl.tearsOfBlood.set(whichHandEye, {
+    const tearTL = new TL({ defaults: { overwrite: 'auto' } })
+    tearTL.set(whichHandEye, {
       cursor: 'no-drop',
     }, '>')
       .set(`#womb${side}`, {

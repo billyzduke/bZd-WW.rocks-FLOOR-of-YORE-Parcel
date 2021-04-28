@@ -10,7 +10,7 @@ const setScene11 = (c, n) => {
 
   g.el.threshold.classList.add('anim')
 
-  g.scenes[c].subs = {
+  g.subScenes[c] = {
     owlRamBinaryFolklore: false,
     handEyeFoetuses: false,
   }

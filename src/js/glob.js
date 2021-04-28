@@ -42,7 +42,7 @@ const g = {
     bloodSplashes: {},
     foetusEyes: {},
     lightningRods: {},
-    ramIconHorns: {},
+    ramIconHorns: [],
   },
   ramIcon: {},
   scene: { // global scene manager
@@ -54,7 +54,7 @@ const g = {
       target: 0,
     },
   },
-  scenes: [], // subScenes container
+  subScenes: [], // subScenes container
   tL: {}, // gsap timelines
   vid: {}, // video.js objects
   w: {}, // window size properties
