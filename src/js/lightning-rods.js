@@ -76,7 +76,7 @@ const setLightningRods = () => {
     const lightningRodWrapper = g.document.createElement('div')
     lightningRodWrapper.id = `lightningRodWrapper_${lrw}`
     lightningRodWrapper.classList.add('lightningRodWrapper')
-    g.lightningRodQuickSetters[lrw] = []
+    g.qss.lightningRods[lrw] = []
     for (let lr = 0; lr < 29; lr++) {
       const plr = padStr(lr)
       const lightningRod = g.document.createElement('img')
@@ -84,7 +84,7 @@ const setLightningRods = () => {
       lightningRod.id = `lightningRod_${lrw}_${plr}`
       lightningRod.classList.add('lightningRod')
       lightningRodWrapper.appendChild(lightningRod)
-      g.lightningRodQuickSetters[lrw].push(gsap.quickSetter(lightningRod, 'opacity'))
+      g.qss.lightningRods[lrw].push(gsap.quickSetter(lightningRod, 'opacity'))
     }
     g.el.lightningRodsWrapper.appendChild(lightningRodWrapper)
   })

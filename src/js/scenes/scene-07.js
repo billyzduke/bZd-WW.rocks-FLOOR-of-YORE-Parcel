@@ -64,7 +64,7 @@ const setScene07 = (c, n) => {
   }
 
   gsap.to('.wormRing .wormTube .innerSpace', {
-    duration: g.scene.skip.dur || 3,
+    duration: g.scene.skip.ff || 3,
     ease: 'power1.in',
     opacity: 1,
     stagger: -1.25,
@@ -77,12 +77,12 @@ const setScene07 = (c, n) => {
     overwrite: true,
   })
   gsap.to('#solarCorona', {
-    duration: g.scene.skip.dur || 2.5,
+    duration: g.scene.skip.ff || 2.5,
     opacity: 1,
     scale: 1,
   })
   gsap.to(g.el.wormSignScreen, {
-    duration: g.scene.skip.dur || 9,
+    duration: g.scene.skip.ff || 9,
     ease: 'power1.in',
     onComplete() {
       // THIS IS TO CORRECT SOME RANDOM BUGGINESS WITH THE mix-blend-mode: overlay ON wormSignScreen
@@ -96,7 +96,7 @@ const setScene07 = (c, n) => {
     scale: 1,
   })
   gsap.to(g.bL[1].bW, {
-    duration: g.scene.skip.dur || 2,
+    duration: g.scene.skip.ff || 2,
     ease: 'power2.inOut',
     rotateZ: -30,
   })

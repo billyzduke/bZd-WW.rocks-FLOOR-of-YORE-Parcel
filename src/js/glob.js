@@ -2,15 +2,50 @@ const g = {
   b: {
     d: 12, // global bauble diameter
   },
-  bL: [],
+  bL: [], // bauble layers
   crtns: {},
-  lightningRodQuickSetters: {},
+  exc: {
+    dir: false,
+    max: 42,
+    which: 0,
+  },
+  foetus: {},
+  folklore: {
+    binary: {},
+    lore: [],
+    progress: '',
+  },
   lion: {
     eyes: {},
     tShirt: false,
   },
-  m: {},
-  scene: {
+  m: {}, // mouse position
+  mixBlendModes: [
+    'normal',
+    'multiply',
+    'screen',
+    'overlay',
+    'darken',
+    'lighten',
+    'color-dodge',
+    'color-burn',
+    'hard-light',
+    'soft-light',
+    'difference',
+    'exclusion',
+    'hue',
+    'saturation',
+    'color',
+    'luminosity',
+  ],
+  qss: { // gsap quickSetters
+    bloodSplashes: {},
+    foetusEyes: {},
+    lightningRods: {},
+    ramIconHorns: {},
+  },
+  ramIcon: {},
+  scene: { // global scene manager
     action: '',
     forCleanUp: [],
     current: 0,
@@ -19,9 +54,10 @@ const g = {
       target: 0,
     },
   },
-  tL: {},
-  vid: {},
-  w: {},
+  scenes: [], // subScenes container
+  tL: {}, // gsap timelines
+  vid: {}, // video.js objects
+  w: {}, // window size properties
   worm: {
     ribs: {
       ntrvl: null,

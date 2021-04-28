@@ -1,17 +1,78 @@
-import { TimelineMax as TL } from 'gsap'
+import { gsap } from 'gsap'
 
+import assHandEyeBlinkL from 'url:/src/img/lion/lion-hand-eye-left-blink.gif'
+import assHandEyeBlinkR from 'url:/src/img/lion/lion-hand-eye-right-blink.gif'
 import g from '../glob'
-import { setAddOn, setClearActors } from '../utils'
+import { gsapTick, setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
-import { obscure } from '../obscuro'
-
+import { lionShockTick, shockTheLion } from '../lion'
+import { ex, setExcs } from '../lion-head'
+import { closeFoetusEye, openFoetusEye, setFoetuses } from '../foetuses'
+// eslint-disable-next-line object-curly-newline
+import { bloodDropL, bloodDropR, sayCeren, sayNothing, saySinan, setBloodSplashes } from '../lion-hands'
+import { rollEmOut, setRamIconHorns } from '../owl-ram'
+import { setFolkLore } from '../folklore'
 
 const scene10 = 'Shock the Lion / Open All Eyes / Release the Owl'
 
-const setScene10 = () => {
-  const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
+const setScene10 = (c, n) => {
+  shockTheLion()
+  g.scene.forCleanUp[c].lionShockTicker = gsapTick(lionShockTick)
 
+  setFoetuses()
+  setBloodSplashes()
+  setRamIconHorns()
+  setFolkLore()
+  setExcs()
+
+  setAddOn('#handEyeLeft, #saySinan', 'mouseenter', saySinan)
+  setAddOn('#handEyeLeft, #saySinan', 'mouseleave', sayNothing)
+  setAddOn('#saySinan', 'click', bloodDropR)
+  setAddOn('#handEyeRight, #sayCeren', 'mouseenter', sayCeren)
+  setAddOn('#handEyeRight, #sayCeren', 'mouseleave', sayNothing)
+  setAddOn('#sayCeren', 'click', bloodDropL)
+  setAddOn('#ramIcon', 'click', rollEmOut)
+  setAddOn('#wombL', 'mouseenter', () => openFoetusEye('L'))
+  setAddOn('#wombL', 'mouseleave', () => closeFoetusEye('L'))
+  setAddOn('#wombR', 'mouseenter', () => openFoetusEye('R'))
+  setAddOn('#wombR', 'mouseleave', () => closeFoetusEye('R'))
+  setAddOn('#thirdEyeWrapper', 'click', ex)
+
+  g.qss.ramIconHorns(1)
+
+  gsap.set('#lionHead', {
+    attr: {
+      class: 'jarp',
+    },
+  })
+  gsap.set('#thirdEyeClosed', {
+    attr: {
+      class: 'open',
+    },
+  })
+  g.el.handEyeLeft.src = assHandEyeBlinkL
+  g.el.handEyeRight.src = assHandEyeBlinkR
+  gsap.set('.handEyeWrapper', {
+    attr: {
+      class: 'handEyeWrapper open',
+    },
+  })
+  gsap.fromTo('#theOwlIsNotWhatItSeems', {
+    translateY: '-=76',
+  }, {
+    duration: g.scene.skip.ff || 1.42,
+    scale: 1,
+    translateY: 0,
+  })
+  gsap.set('#gemGuy, #raelStar, #vajraCross, #heartPulse, #crossMyHeart', {
+    cursor: 'no-drop',
+  })
+  gsap.set('#threshold', {
+    opacity: 1,
+  })
+
+  setTimeout(() => setScene(n), g.scene.skip.ff ? 100 : 4242)
 
   return false
 }

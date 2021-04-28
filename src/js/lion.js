@@ -1,6 +1,7 @@
 import { gsap } from 'gsap'
 
 import g from './glob'
+import { randOnum } from './utils'
 
 const setLion = () => {
   if (g.el.lolf01 && g.el.lolf02) {
@@ -26,4 +27,31 @@ const setLion = () => {
   }
 }
 
-export { setLion }
+const shockTheLion = () => {
+  g.lion.blur2X = gsap.quickSetter('#lionBlur2', 'css')
+}
+
+const lionShockTick = () => {
+  g.lion.blur2X({
+    left: `${randOnum() ? '' : '-'}${randOnum(12, 20)}px`,
+    opacity: randOnum(42, 76) / 100,
+  })
+  gsap.set('.lightningRod', {
+    opacity: 0,
+  })
+  Object.keys(g.el.lightningRods).forEach(lrw => g.qss.lightningRods[lrw][gsap.utils.snap(1, gsap.utils.random(0, 28))](1))
+}
+
+const relieveTheLion = () => {
+  g.lion.blur2X({
+    opacity: 0,
+  })
+  gsap.set('.lightningRod', {
+    opacity: 0,
+  })
+}
+
+
+export {
+  lionShockTick, relieveTheLion, setLion, shockTheLion,
+}

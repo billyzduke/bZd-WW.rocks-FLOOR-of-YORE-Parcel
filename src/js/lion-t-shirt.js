@@ -10,8 +10,7 @@ const setShirtState = nuTsS => {
 }
 
 const revertTshirt = () => {
-  const overMe = g.document.querySelector('#heartChakra:hover')
-  if (typeof g.lion.tShirt === 'boolean' && g.lion.tShirt && !overMe) {
+  if (typeof g.lion.tShirt === 'boolean' && g.lion.tShirt) {
     g.lion.tShirt = undefined
     g.tL.tShirtOff = gsap.timeline({ defaults: { overwrite: true } })
     gsap.set('#gemGuy', {
@@ -124,7 +123,7 @@ const transformTshirt = () => {
         overwrite: 'auto',
         scale: 0,
       }, 2)
-      .call(setShirtState, [ 'on' ], 2)
+      .call(setShirtState, [ true ], 2)
     setTimeout(revertTshirt, 4242)
   }
 }

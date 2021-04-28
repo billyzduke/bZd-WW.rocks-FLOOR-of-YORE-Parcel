@@ -19,6 +19,7 @@ import { setScene, setSceneSkipper } from './scene'
 import '/src/scss/app.scss'
 
 const loadApp = () => {
+  // All the DOM elements we are going to need to directly manipulate later on
   const el = {
     ...htmEl([
       'binary',
@@ -57,6 +58,7 @@ const loadApp = () => {
       'shopNavItem',
       'spiralOutPath',
       'theLion',
+      'threshold',
       'wormSignScreen',
       'yoreFloor',
     ]),
@@ -89,7 +91,8 @@ const loadApp = () => {
   g.vid.dirt = g.el.bronzeCauldron ? setDirt() : undefined
   if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
 
-  if (el.sceneSkipper) setSceneSkipper()
+  if (g.el.body.classList.contains('dev') && typeof g.dev === 'undefined') g.dev = true
+  if (g.dev && g.el.sceneSkipper) setSceneSkipper()
 
   if (!g.scene.current) setScene()
 
@@ -103,7 +106,7 @@ const initApp = () => {
 
 const getM = () => {
   g.m = getMouseMove(g.window.event)
-  moveLionEyes()
+  if (g.el.phasingRainbow && g.scene.current >= 8 && g.lion.eyes.active) moveLionEyes()
 }
 
 // eslint-disable-next-line no-undef

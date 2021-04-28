@@ -21,9 +21,9 @@ const setShaiHulud = () => {
   g.el.drWorm.style.top = `${wormSignShiftY}px`
 
   g.el.wormSignScreen.style.transform = `translateY(${wormSignShiftY}px) scale(0)`
-  g.el.wormSignScreen.height = Number(window.getComputedStyle(g.el.drWorm, null).getPropertyValue('height').slice(0, -2))
+  g.el.wormSignScreen.height = Number(g.window.getComputedStyle(g.el.drWorm, null).getPropertyValue('height').slice(0, -2))
   g.el.wormSignScreen.style.height = `${g.el.wormSignScreen.height}px`
-  g.el.wormSignScreen.width = Number(window.getComputedStyle(g.el.drWorm, null).getPropertyValue('width').slice(0, -2))
+  g.el.wormSignScreen.width = Number(g.window.getComputedStyle(g.el.drWorm, null).getPropertyValue('width').slice(0, -2))
   g.el.wormSignScreen.style.width = `${g.el.wormSignScreen.width}px`
 
   const wormRingSegments = g.el.wormRingSegment

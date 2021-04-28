@@ -39,11 +39,7 @@ const setScene09 = (c, n) => {
       align: '#bL02_L',
       alignOrigin: [ 0.5, 0.5 ],
       path: '#bL02_L',
-      end: i => {
-        const end = ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + 0.55 // (i ? 0.6175 : 0.4)
-        g.bL[2].L[i] = end
-        return end
-      },
+      end: i => ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + 0.55,
     },
     opacity: 1,
     scale: 0.9,
@@ -71,9 +67,7 @@ const setScene09 = (c, n) => {
             default:
               n = 0.535
           }
-          const end = ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + n
-          g.bL[2].R[i] = end
-          return end
+          return ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + n
         },
       },
       opacity: 1,
@@ -98,6 +92,8 @@ const setScene09 = (c, n) => {
       repeat: 1,
       yoyo: true,
     }, '<')
+
+  if (g.scene.skip.ff) g.tL.b.call(setScene, [ n ], '>')
 
   return true
 }

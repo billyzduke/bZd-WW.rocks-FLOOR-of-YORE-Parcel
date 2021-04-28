@@ -106,7 +106,7 @@ const skipToScene = (toScene, e) => {
 }
 
 const setSceneSkipper = () => {
-  if (g.el.body.classList.contains('dev')) {
+  if (g.dev) {
     if (!g.el.sceneSkipper.options.length) {
       scenes.forEach((s, i) => {
         const ssOption = g.document.createElement('option')

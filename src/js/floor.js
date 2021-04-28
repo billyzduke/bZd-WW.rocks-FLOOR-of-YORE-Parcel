@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
 import g from './glob'
-import { pullRando } from './utils'
+import { randOnum } from './utils'
 
 const setFloor = () => {
   if (g.el.yoreFloor) {
@@ -11,19 +11,22 @@ const setFloor = () => {
   }
 }
 
-const readTheFloor = () => {
-  gsap.to('#yoreFloorTitle', {
-    duration: 2,
-    ease: 'elastic.out',
-    translateX: '-50%',
-  })
-}
-
 const scrubTheFloor = () => {
   gsap.to('#yoreFloorTitle', {
     duration: 1,
     ease: 'back.in',
-    translateX: `${pullRando() ? '-' : ''}${g.w.w * 1.5}`,
+    translateX: `${randOnum() ? '-' : ''}${g.w.w * 1.5}`,
+  })
+}
+
+const readTheFloor = () => {
+  gsap.to('#yoreFloorTitle', {
+    duration: 2,
+    ease: 'elastic.out',
+    onComplete() {
+      setTimeout(scrubTheFloor, 4242)
+    },
+    translateX: '-50%',
   })
 }
 

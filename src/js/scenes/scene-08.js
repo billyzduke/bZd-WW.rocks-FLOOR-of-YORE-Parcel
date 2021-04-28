@@ -18,7 +18,7 @@ const setScene08 = (c, n) => {
   g.scene.forCleanUp[c].clearDrWorm = clearShaiHulud
 
   setBaubleLayer02()
-  resetCtrRing(5)
+  resetCtrRing(5.75)
 
   g.el.theLion.classList.add('anim')
   g.lion.eyes.active = true
@@ -105,8 +105,7 @@ const setScene08 = (c, n) => {
     scale: 0,
   })
 
-
-  if (g.scene.skip.ff) g.tL.yore.call(setScene, [ n ], '>')
+  if (g.scene.skip.ff) g.tL.bronze.call(setScene, [ n ], '>')
 
   return true
 }

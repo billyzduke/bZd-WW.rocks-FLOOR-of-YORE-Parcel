@@ -1,19 +1,23 @@
-import { TimelineMax as TL } from 'gsap'
-
 import g from '../glob'
-import { setAddOn, setClearActors } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
-import { obscure } from '../obscuro'
-
+import { relieveTheLion } from '../lion'
 
 const scene11 = 'Relieve the Lion / Lightning Rods Off'
 
-const setScene11 = () => {
-  const sceneTL = new TL({ defaults: { overwrite: 'auto' } })
+const setScene11 = (c, n) => {
+  relieveTheLion()
 
+  g.el.threshold.classList.add('anim')
 
-  return false
+  g.scenes[c].subs = {
+    owlRamBinaryFolklore: false,
+    handEyeFoetuses: false,
+  }
+
+  if (g.scene.skip.ff) setTimeout(() => setScene(n), 100)
+
+  return true
 }
 
 export { scene11, setScene11 }

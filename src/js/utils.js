@@ -94,7 +94,7 @@ const isNode = o => (typeof Node === 'object' ? o instanceof Node : o && typeof 
 
 const padStr = (input, padLen = 2, padWith = '0', start = true) => (start ? input.toString().padStart(padLen, padWith) : input.toString().padEnd(padLen, padWith))
 
-const pullRando = (mn = 0, mx = 1, inc = 1) => {
+const randOnum = (mn = 0, mx = 1, inc = 1) => {
   const totalSteps = (mx - mn) / inc
   const possibleValues = []
   for (let step = 0; step <= totalSteps; step += inc) {
@@ -106,12 +106,12 @@ const pullRando = (mn = 0, mx = 1, inc = 1) => {
   return (rando)
 }
 
-const randomColor = (as = 'hex') => {
+const randOcolor = (as = 'hex') => {
   const rgb = []
   switch (as) {
     case 'hex':
     default:
-      for (let h = 0; h < 3; h++) rgb[h] = padStr(pullRando(0, 255).toString(16))
+      for (let h = 0; h < 3; h++) rgb[h] = padStr(randOnum(0, 255).toString(16))
       return `#${rgb.join('')}`
   }
 }
@@ -369,8 +369,8 @@ export {
   gsapTick,
   isNode,
   padStr,
-  pullRando,
-  randomColor,
+  randOnum,
+  randOcolor,
   roundNumberTo,
   setAddOn,
   setClearActors,
