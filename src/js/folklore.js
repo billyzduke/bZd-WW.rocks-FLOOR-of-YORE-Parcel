@@ -1,11 +1,14 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import assFolkloreTypewriter from 'url:/src/img/binaryFolklore/typewriter.png'
-import assFolkloreBlueprint from 'url:/src/img/binaryFolklore/blueprint.png'
+import assFolkloreBlueprint from 'url:/src/img/binaryFolklore/blueprint.gif'
 import assFolkloreParchment from 'url:/src/img/binaryFolklore/parchment.png'
 import assFolkloreRosetta from 'url:/src/img/binaryFolklore/rosetta.png'
+import assFolkloreBrocade from 'url:/src/img/binaryFolklore/brocade.png'
 import g from './glob'
 import { setAddOn, randOnum } from './utils'
+// eslint-disable-next-line import/no-cycle
+import { rollEmIn } from './owl-ram'
 
 const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
   const printLineSVG = g.document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -116,7 +119,7 @@ const setFolkLore = () => {
     charsPerPrintedLine: 51,
     drawCharsReversed: false,
     drawSingleCharS: 0.0125,
-    folkLoreMaskIncrementX: 10,
+    folkLoreMaskIncrementX: 5,
     folkLoreMaskOffsetX: 450,
     owlLaserQuickSetter: gsap.quickSetter('#owlLaser', 'css'),
     ramLaserMaxTranslateX: 443,
@@ -133,6 +136,7 @@ const setFolkLore = () => {
     assFolkloreBlueprint,
     assFolkloreParchment,
     assFolkloreRosetta,
+    assFolkloreBrocade,
   ]
 
   g.folklore.lore = [
@@ -140,6 +144,7 @@ const setFolkLore = () => {
     'blueprint',
     'parchment',
     'rosetta',
+    'brocade',
   ]
 
   g.folklore.lore.forEach((fL, ass) => {
@@ -200,7 +205,7 @@ const scanFolkLoreTick = (f, mv = 0, rv = false) => {
     g.folklore.binary.var.drawCharsReversed = !rv
     gsap.ticker.add(primeRamLaser)
     gsap.to('#ramLaser', {
-      duration: 0.25,
+      duration: 0.36,
       height: 0,
       onComplete() {
         gsap.ticker.remove(primeRamLaser)
@@ -215,33 +220,78 @@ const scanFolkLoreTick = (f, mv = 0, rv = false) => {
   }
 }
 
+const printOutCows = () => {
+  const cowWowTL = new TL({ defaults: { overwrite: 'auto' } })
+  if (g.scene.skip.ff) cowWowTL.timeScale(1 / g.scene.skip.ff)
+  rollEmIn()
+  cowWowTL.to('#owlGlyphGlow', {
+    duration: g.folklore.binary.var.drawSingleCharS * 45,
+    ease: 'power1.out',
+    opacity: 1,
+    repeat: 5,
+    scale: 1.5,
+    yoyo: true,
+  })
+    .to('#binaryFolklore', {
+      duration: 3.42,
+      ease: 'power1.in',
+      translateY: 118,
+    }, '<')
+    .to('#cowStill01', {
+      duration: 1,
+      ease: 'power2.in',
+      scale: 1,
+    }, '<')
+    .to('#cowStill02', {
+      duration: 1,
+      ease: 'power2.in',
+      scaleY: 1,
+      scaleX: -1,
+    }, '<')
+    .to('.cowStill', {
+      duration: 2,
+      ease: 'power2.inOut',
+      translateX: 0,
+      translateY: 0,
+    }, '>')
+    .to('#owlGlyphGlow', {
+      duration: 1,
+      ease: 'power1.in',
+      opacity: 0,
+    }, g.folklore.binary.var.drawSingleCharS * 270)
+}
+
 const scanFolkLore = () => {
-  if (g.folklore.lore.length && g.folklore.binary.progress !== 'scanning') {
-    g.folklore.binary.progress = 'scanning'
-    let thisFolkLore = g.folklore.lore.shift()
-    thisFolkLore = g.document.getElementById(thisFolkLore)
-    g.folklore.binary.var.hideFolkLoreWrapperQuickSetter = g.folklore.binary.var.revealFolkLoreWrapperQuickSetter || gsap.quickSetter('#graphPaper', 'css')
-    g.folklore.binary.var.hideFolkLoreImageQuickSetter = g.folklore.binary.var.revealFolkLoreImageQuickSetter || gsap.quickSetter('#graphPaper > div', 'css')
-    g.folklore.binary.var.revealFolkLoreWrapperQuickSetter = gsap.quickSetter(thisFolkLore, 'css')
-    g.folklore.binary.var.revealFolkLoreImageQuickSetter = gsap.quickSetter(thisFolkLore.children[0], 'css')
-    gsap.ticker.add(primeRamLaser)
-    gsap.to('#owlGlyphGlow', {
-      duration: g.folklore.binary.var.drawSingleCharS * 45,
-      ease: 'power1.out',
-      opacity: 1,
-      repeat: 1,
-      scale: 1.5,
-      yoyo: true,
-    })
-    gsap.to('#ramLaser', {
-      duration: 0.25,
-      height: 600,
-      onComplete() {
-        gsap.ticker.remove(primeRamLaser)
-        scanFolkLoreTick(thisFolkLore, 0, g.folklore.binary.var.drawCharsReversed)
-      },
-      overwrite: 'auto',
-    })
+  if (g.folklore.lore.length) {
+    if (g.folklore.binary.progress !== 'scanning') {
+      g.folklore.binary.progress = 'scanning'
+      let thisFolkLore = g.folklore.lore.shift()
+      thisFolkLore = g.document.getElementById(thisFolkLore)
+      g.folklore.binary.var.hideFolkLoreWrapperQuickSetter = g.folklore.binary.var.revealFolkLoreWrapperQuickSetter || gsap.quickSetter('#graphPaper', 'css')
+      g.folklore.binary.var.hideFolkLoreImageQuickSetter = g.folklore.binary.var.revealFolkLoreImageQuickSetter || gsap.quickSetter('#graphPaper > div', 'css')
+      g.folklore.binary.var.revealFolkLoreWrapperQuickSetter = gsap.quickSetter(thisFolkLore, 'css')
+      g.folklore.binary.var.revealFolkLoreImageQuickSetter = gsap.quickSetter(thisFolkLore.children[0], 'css')
+      gsap.ticker.add(primeRamLaser)
+      gsap.to('#owlGlyphGlow', {
+        duration: g.folklore.binary.var.drawSingleCharS * 135,
+        ease: 'power1.out',
+        opacity: 1,
+        repeat: 1,
+        scale: 1.5,
+        yoyo: true,
+      })
+      gsap.to('#ramLaser', {
+        duration: 0.36,
+        height: 600,
+        onComplete() {
+          gsap.ticker.remove(primeRamLaser)
+          scanFolkLoreTick(thisFolkLore, 0, g.folklore.binary.var.drawCharsReversed)
+        },
+        overwrite: 'auto',
+      })
+    }
+  } else {
+    printOutCows()
   }
 }
 

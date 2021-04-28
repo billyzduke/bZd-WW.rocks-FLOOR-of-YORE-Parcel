@@ -54,7 +54,7 @@ const g = {
       target: 0,
     },
   },
-  subScenes: [], // subScenes container
+  subSceneActive: false,
   tL: {}, // gsap timelines
   vid: {}, // video.js objects
   w: {}, // window size properties

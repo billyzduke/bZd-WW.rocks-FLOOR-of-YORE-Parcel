@@ -88,7 +88,7 @@ const setExcs = () => {
   })
 }
 
-const claim = (whEx, exDr) => {
+const claim = whEx => {
   if (g.scene.current >= 11) {
     const excTL02 = new TL({ defaults: { overwrite: 'auto' } })
     const randSpeed = randOnum(12, 16) / 4
@@ -99,8 +99,8 @@ const claim = (whEx, exDr) => {
         align: '#excOrbit',
         alignOrigin: [ 0.5, 0.5 ],
         path: '#excOrbit',
-        start: exDr ? 0 : 1,
-        end: exDr ? 1 : 0,
+        start: g.exc.dir ? 0 : 1,
+        end: g.exc.dir ? 1 : 0,
       },
       repeat: -1,
     // overwrite: true,
@@ -125,6 +125,7 @@ const claim = (whEx, exDr) => {
       duration: 2.5,
       opacity: 0,
     }, '>')
+    g.exc.dir = g.exc.dir ? 0 : 1
   }
 }
 
@@ -154,11 +155,10 @@ const ex = () => {
         translateZ: -86,
         translateX: '+=4',
         onComplete: () => {
-          claim(padEx, g.exc.dir)
+          claim(padEx)
         },
       }, '>')
     g.exc.which++
-    g.exc.dir = g.exc.dir ? 0 : 1
     if (g.exc.which >= g.exc.max) g.exc.which = 0
   }
 }

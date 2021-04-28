@@ -2,7 +2,8 @@ div#wheelOfJoy {
   width: 650px;
   height: 650px;
   top: 384px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 div.wheelOfJoy {

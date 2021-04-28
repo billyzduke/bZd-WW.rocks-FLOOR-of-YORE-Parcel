@@ -1,19 +1,20 @@
+import { gsap } from 'gsap'
+
 import g from '../glob'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
-import { relieveTheLion } from '../lion'
 
 const scene11 = 'Relieve the Lion / Lightning Rods Off'
 
 const setScene11 = (c, n) => {
-  relieveTheLion()
+  g.lion.blur2X({
+    opacity: 0,
+  })
+  gsap.set('.lightningRod', {
+    opacity: 0,
+  })
 
   g.el.threshold.classList.add('anim')
-
-  g.subScenes[c] = {
-    owlRamBinaryFolklore: false,
-    handEyeFoetuses: false,
-  }
 
   if (g.scene.skip.ff) setTimeout(() => setScene(n), 100)
 

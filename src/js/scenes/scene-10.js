@@ -5,8 +5,7 @@ import assHandEyeBlinkR from 'url:/src/img/lion/lion-hand-eye-right-blink.gif'
 import g from '../glob'
 import { gsapTick, setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
-import { setScene } from '../scene'
-import { lionShockTick, shockTheLion } from '../lion'
+import { lionShockTick, relieveTheLion, shockTheLion } from '../lion'
 import { ex, setExcs } from '../lion-head'
 import { closeFoetusEye, openFoetusEye, setFoetuses } from '../foetuses'
 // eslint-disable-next-line object-curly-newline
@@ -72,7 +71,7 @@ const setScene10 = (c, n) => {
     opacity: 1,
   })
 
-  setTimeout(() => setScene(n), g.scene.skip.ff ? 100 : 4242)
+  setTimeout(relieveTheLion, (g.scene.skip.ff ? 100 : 4242))
 
   return true
 }

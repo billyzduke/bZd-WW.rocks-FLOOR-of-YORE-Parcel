@@ -2,6 +2,8 @@ import { gsap } from 'gsap'
 
 import g from './glob'
 import { randOnum } from './utils'
+// eslint-disable-next-line import/no-cycle
+import { setScene } from './scene'
 
 const setLion = () => {
   if (g.el.lolf01 && g.el.lolf02) {
@@ -28,6 +30,7 @@ const setLion = () => {
 }
 
 const shockTheLion = () => {
+  console.log('shock the lion')
   g.lion.blur2X = gsap.quickSetter('#lionBlur2', 'css')
 }
 
@@ -43,15 +46,8 @@ const lionShockTick = () => {
 }
 
 const relieveTheLion = () => {
-  g.lion.blur2X({
-    opacity: 0,
-  })
-  gsap.set('.lightningRod', {
-    opacity: 0,
-  })
+  setScene(11)
 }
 
-
-export {
-  lionShockTick, relieveTheLion, setLion, shockTheLion,
-}
+// eslint-disable-next-line object-curly-newline
+export { lionShockTick, relieveTheLion, setLion, shockTheLion }

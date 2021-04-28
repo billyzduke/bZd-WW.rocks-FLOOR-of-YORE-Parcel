@@ -2,7 +2,7 @@ div#binaryFolklore {
   top: 1px;
   width: 450px;
   left: 37.16665px;
-  height: 600px;
+  height: 612px;
   overflow-x: hidden;
   overflow-y: visible;
   filter: none;
@@ -12,7 +12,7 @@ div#binaryFolklore * {
 }
 div#binaryScroll {
   width: 450px;
-  height: 600px;
+  height: 610px;
   top: 0;
   transform: translateY(-590px);
   pointer-events: none;
@@ -48,8 +48,8 @@ svg.binaryRow {
 }
 
 div#binaryFolklore div#binaryScroll div.folkLore {
-  height: 598px;
-  top: -4.5px;
+  height: 610px;
+  top: -7.5px;
   transform: translateX(-450px);
   width: 450px;
 }
@@ -65,17 +65,32 @@ div#binaryFolklore div#binaryScroll div.folkLore:nth-child(even) div {
   transform: translateX(-100%);
 }
 div#binaryFolklore div#binaryScroll div.folkLore div img {
-  height: 569.5px;
+  position: relative;
+  margin: 0 auto;
+  height: 588.5px;
   left: 0;
-  top: 16.5px;
-  width: 450px;
+  top: 1.5px;
+  width: 436.5px;
   filter: drop-shadow(0 4.2px 4.2px rgba(0,0,0,0.76));
 }
-div#binaryFolklore div#binaryScroll div#blueprint img,
-div#binaryFolklore div#binaryScroll div#typewriter img {
-  top: 18px;
+div#binaryFolklore div#binaryScroll div#parchment img {
+  margin-top: 2px;
+  height: 589px;
 }
-div#binaryFolklore div#binaryScroll div#rosetta img {
-  height: 591.5px;
-  top: 0;
+div#binaryFolklore div#binaryScroll div#parchment img {
+  top: -1px;
+}
+
+img.cowStill {
+  width: 110px; /* 108px; */
+  height: 90px; /* 88px; */
+  top: 62px;
+}
+img#cowStill01 {
+  left: 76px;
+  transform: translate(132px, -32px) scale(0);
+}
+img#cowStill02 {
+  transform: translate(-130px, -32px) scale(0);
+  right: 78px;
 }

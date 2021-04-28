@@ -107,18 +107,35 @@ const ramIconHornsRollIn = () => {
     g.ramIcon.horns = nextHornRollFrame
   } else {
     gsap.ticker.remove(ramIconHornsRollIn)
+    gsap.to('#ramIcon', {
+      duration: 0.5,
+      ease: 'power2.inOut',
+      scale: 0,
+    })
+    gsap.to('#theOwl', {
+      duration: 0.5,
+      ease: 'power2.inOut',
+      scale: 1,
+    })
   }
 }
 
-const rollEmOut = () => {
-  g.folklore.binary.progress = 'ramPrep'
-  setRemoveOn('#ramIcon', 'click', rollEmOut, 'wait')
-  gsap.ticker.add(ramIconHornsRollOut)
-  gsap.set('#theOwlIsNotWhatItSeems', {
-    attr: {
-      class: 'open',
-    },
-  })
+const rollEmIn = () => {
+  gsap.ticker.add(ramIconHornsRollIn)
 }
 
-export { ramIconHornsRollIn, rollEmOut, setRamIconHorns }
+const rollEmOut = () => {
+  if (!g.subSceneActive) {
+    g.subSceneActive = true
+    g.folklore.binary.progress = 'ramPrep'
+    setRemoveOn('#ramIcon', 'click', rollEmOut, 'wait')
+    gsap.ticker.add(ramIconHornsRollOut)
+    gsap.set('#theOwlIsNotWhatItSeems', {
+      attr: {
+        class: 'open',
+      },
+    })
+  }
+}
+
+export { rollEmIn, rollEmOut, setRamIconHorns }

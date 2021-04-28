@@ -173,9 +173,9 @@ const bloodDrop = side => {
       .to(`#womb${side}`, {
         duration: g.scene.skip.ff || 6,
         ease: 'elastic.out(1, 0.3)',
-        // onComplete: () => {
-        //   g.foetus[side].drop = true
-        // },
+        onComplete: () => {
+          g.subSceneActive = false
+        },
         opacity: 1,
         rotateZ: 0,
         scale: 1,
@@ -185,13 +185,19 @@ const bloodDrop = side => {
 }
 
 const bloodDropL = () => {
-  setRemoveOn('#sayCeren', 'click', bloodDropL)
-  bloodDrop('L')
+  if (!g.subSceneActive) {
+    g.subSceneActive = true
+    setRemoveOn('#sayCeren', 'click', bloodDropL)
+    bloodDrop('L')
+  }
 }
 
 const bloodDropR = () => {
-  setRemoveOn('#saySinan', 'click', bloodDropR)
-  bloodDrop('R')
+  if (!g.subSceneActive) {
+    g.subSceneActive = true
+    setRemoveOn('#saySinan', 'click', bloodDropR)
+    bloodDrop('R')
+  }
 }
 
 export {
