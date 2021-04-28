@@ -1,4 +1,4 @@
-import { gsap } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import ramIconHornRoll00 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-00.png'
 import ramIconHornRoll01 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-01.png'
@@ -107,16 +107,17 @@ const ramIconHornsRollIn = () => {
     g.ramIcon.horns = nextHornRollFrame
   } else {
     gsap.ticker.remove(ramIconHornsRollIn)
-    gsap.to('#ramIcon', {
-      duration: 0.5,
-      ease: 'power2.inOut',
-      scale: 0,
-    })
-    gsap.to('#theOwl', {
-      duration: 0.5,
+    const switcherooTL = new TL()
+    switcherooTL.to('#theOwl', {
+      duration: 2,
       ease: 'power2.inOut',
       scale: 1,
-    })
+    }, 0.5)
+      .to('#theRamBack, #theRam', {
+        duration: 2,
+        ease: 'power2.inOut',
+        scale: 0,
+      }, '<')
   }
 }
 

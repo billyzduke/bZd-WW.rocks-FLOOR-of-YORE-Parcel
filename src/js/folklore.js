@@ -273,7 +273,7 @@ const scanFolkLore = () => {
       g.folklore.binary.var.revealFolkLoreImageQuickSetter = gsap.quickSetter(thisFolkLore.children[0], 'css')
       gsap.ticker.add(primeRamLaser)
       gsap.to('#owlGlyphGlow', {
-        duration: g.folklore.binary.var.drawSingleCharS * 135,
+        duration: g.folklore.binary.var.drawSingleCharS * 108,
         ease: 'power1.out',
         opacity: 1,
         repeat: 1,

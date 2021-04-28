@@ -14,9 +14,6 @@ div#theOwl {
 }
 
 div#ramIcon {
-  background-image: url(../img/ramIcon/ramIcon-center-bottom.png);
-  background-position: center center;
-  background-size: contain;
   height: 138.7466px;
   /* filter: drop-shadow(0 0 12px white); */
   left: -140.5px;
@@ -47,8 +44,18 @@ div#ramIconHornLeft {
 div#ramIconHornRight {
   right: 0;
 }
-div#ramIconHead {
+div#theRamBack,
+div#theRam {
   height: 143.6289px;
+  width: 100%;
+}
+div#theRamBack {
+  background-image: url(../img/ramIcon/ramIcon-center-bottom.png);
+  background-position: center center;
+  background-size: contain;
+}
+div#ramIconHead {
+  height: 100%;
   left: 50%;
   position: absolute;
   transform: translateX(-50%);
