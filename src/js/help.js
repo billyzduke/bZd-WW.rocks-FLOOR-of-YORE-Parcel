@@ -27,7 +27,6 @@ const hideHelp = dur => {
     })
     gsap.set('#helpListW', {
       overflow: 'hidden',
-      pointerEvents: 'auto',
     })
     gsap.to(g.el.helpList, {
       duration: dur,
@@ -74,7 +73,6 @@ const helpToggle = () => {
           g.el.help.classList.remove('anim')
           gsap.set('#helpListW', {
             overflow: 'visible',
-            pointerEvents: 'none',
           })
         },
         translateX: 40,

@@ -14,7 +14,7 @@ div#help {
 div#helpScreen {
   position: absolute;
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
   background-color: rgb(92, 95, 102);
   opacity: 0;
   transition: all 1s ease-in-out;
@@ -31,7 +31,7 @@ div#helpMeLawd {
   right: 0;
   width: 412px;
   overflow-y: auto;
-  pointer-events: auto;
+  pointer-events: none;
 }
 div#helpToggle {
   background-color: rgba(0,0,0,0.42);
@@ -78,11 +78,15 @@ div#helpList {
   transform: translateX(100%) translateY(3px);
   box-shadow: 10px 10px 12px rgba(0,0,0,0.88);
 }
+div#help.open div#helpList {
+  pointer-events: auto;
+}
 #helpListW {
   right: 37px;
   width: 375px;
   height: 100%;
   overflow: hidden;
+  pointer-events: none;
 }
 .mkList,
 .mkList * {
