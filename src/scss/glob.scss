@@ -31,6 +31,12 @@ main {
   top: 0;
   width: 100vw;
 }
+@media screen and (max-width: 1220px) {
+  main {
+    overflow-x: auto;
+    width: 1220px;
+  }
+}
 
 iframe#discoWall {
   display: block;

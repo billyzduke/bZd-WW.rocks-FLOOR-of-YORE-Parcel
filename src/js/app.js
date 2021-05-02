@@ -62,7 +62,7 @@ const loadApp = () => {
       'wormSignScreen',
       'yoreFloor',
     ]),
-    ...htmEl([ 'body', 'header' ], 'tag'),
+    ...htmEl([ 'body', 'header', 'main' ], 'tag'),
     ...htmEl('.cw', 'q', true),
     ...htmEl('.makisu', 'q', true),
     ...htmEl('.tpTitle', 'q', true),

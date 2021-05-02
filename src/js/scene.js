@@ -129,7 +129,10 @@ const setSceneSkipper = () => {
         }
       }
     }
-  } else if (g.el.sceneSkipper) g.el.sceneSkipper.parentNode.removeChild(g.el.sceneSkipper)
+  } else if (g.el.sceneSkipper && g.el.sceneSkipper.parentNode) {
+    g.el.sceneSkipper.parentNode.removeChild(g.el.sceneSkipper)
+    g.el.sceneSkipper = undefined
+  }
 }
 
 export { scenes, setScene, setSceneSkipper }

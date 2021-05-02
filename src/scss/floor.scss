@@ -9,18 +9,13 @@ div#yoreFloor {
   opacity: 0;
   overflow: visible;
   perspective-origin: top;
-  position: relative;
+  position: absolute;
+  top: calc(90vh - 110px);
   transform-style: preserve-3d;
   transform: perspective(23em) rotateX(50deg);
   width: 6000px !important;
   z-index: 200;
   animation: floorScroll 7.2s linear infinite backwards;
-}
-@media screen and (min-width: 1220px) {
-  div#yoreFloor {
-    position: fixed;
-    top: calc(90vh - 110px);
-  }
 }
 div#yoreFloorGradient {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
