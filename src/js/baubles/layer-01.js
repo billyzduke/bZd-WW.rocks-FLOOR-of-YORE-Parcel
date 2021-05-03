@@ -12,7 +12,7 @@ import assLightning09 from 'url:/src/img/lightningBalls/lightning-ball-09.png'
 import { setBaublesInLayer } from '.'
 import g from '../glob'
 
-const tgBgAsses = [
+const assLightning = [
   assLightning01,
   assLightning02,
   assLightning03,
@@ -26,52 +26,56 @@ const tgBgAsses = [
 
 const setBaubleLayer01 = () => {
   g.bL[1] = setBaublesInLayer(1, 33)
-  g.bL[1].cR = 69
-  g.bL[1].cR02 = g.bL[1].cR * 0.2 // flingRingTick
-  g.bL[1].oR = g.bL[1].cR * 7.5 // spin/orbitRingTicks
-  g.bL[1].ctrRing = g.el.ctrRing
-  g.bL[1].ctrRingLightning = []
-  g.bL[1].zQuickOnSetters = []
-  tgBgAsses.forEach((tgBgAss, i) => {
-    g.bL[1].ctrRingLightning[i] = g.document.createElement('img')
-    g.bL[1].ctrRingLightning[i].src = tgBgAss
-    g.bL[1].ctrRingLightning[i].id = `z${i}`
-    g.bL[1].ctrRingLightning[i].height = g.bL[1].cR * 2
-    g.bL[1].ctrRingLightning[i].width = g.bL[1].ctrRingLightning[i].height
-    g.bL[1].ctrRingLightning[i].classList.add('z')
-    tgBgAsses.forEach((_, z) => {
-      if (z !== i) g.bL[1].ctrRingLightning[i].classList.add(`z${z}`)
+  if (g.bL[1]) {
+    g.bL[1].cR = 69
+    g.bL[1].cR02 = g.bL[1].cR * 0.2 // flingRingTick
+    g.bL[1].oR = g.bL[1].cR * 7.5 // spin/orbitRingTicks
+    g.bL[1].ctrRing = g.el.ctrRing
+    g.bL[1].ctrRingLightning = []
+    g.bL[1].zQuickOnSetters = []
+    assLightning.forEach((assLight, i) => {
+      g.bL[1].ctrRingLightning[i] = g.document.createElement('img')
+      g.bL[1].ctrRingLightning[i].src = assLight
+      g.bL[1].ctrRingLightning[i].id = `z${i}`
+      g.bL[1].ctrRingLightning[i].height = g.bL[1].cR * 2
+      g.bL[1].ctrRingLightning[i].width = g.bL[1].ctrRingLightning[i].height
+      g.bL[1].ctrRingLightning[i].classList.add('z')
+      assLightning.forEach((_, z) => {
+        if (z !== i) g.bL[1].ctrRingLightning[i].classList.add(`z${z}`)
+      })
+      g.bL[1].ctrRing.appendChild(g.bL[1].ctrRingLightning[i])
+      g.bL[1].zQuickOnSetters[i] = gsap.quickSetter(`#${g.bL[1].ctrRingLightning[i].id}`, 'css')
     })
-    g.bL[1].ctrRing.appendChild(g.bL[1].ctrRingLightning[i])
-    g.bL[1].zQuickOnSetters[i] = gsap.quickSetter(`#${g.bL[1].ctrRingLightning[i].id}`, 'css')
-  })
-  g.bL[1].zQuickOffSetter = gsap.quickSetter('.z', 'opacity')
-  g.bL[1].st = (2 * Math.PI) / g.bL[1].b.length
-  // console.log(g.bL)
+    g.bL[1].zQuickOffSetter = gsap.quickSetter('.z', 'opacity')
+    g.bL[1].st = (2 * Math.PI) / g.bL[1].b.length
+    // console.log(g.bL)
+  }
 }
 
 const resetCtrRing = (dur = 0.25) => {
-  g.bL[1].b.forEach((b, i) => {
-    const a = i * g.bL[1].st
-    const x = Math.round(g.w.cx + g.bL[1].cR * Math.cos(a) - g.b.r)
-    const y = Math.round(g.w.cyOff + g.bL[1].cR * Math.sin(a) - g.b.d)
-    const reset = {
-      ease: 'power2',
-      filter: 'none',
-      x,
-      y,
-      overwrite: true,
-      scale: 1,
-      WebkitFilter: 'none',
-    }
-    if (g.scene.skip.ff) {
-      gsap.set(b, reset)
-    } else {
-      reset.duration = dur
-      gsap.to(b, reset)
-    }
-    g.bL[1].bD[i] = i
-  })
+  if (g.bL[1] && g.bL[1].b && g.bL[1].b.length) {
+    g.bL[1].b.forEach((b, i) => {
+      const a = i * g.bL[1].st
+      const x = Math.round(g.main.cx + g.bL[1].cR * Math.cos(a) - g.b.r)
+      const y = Math.round(g.main.cyOff + g.bL[1].cR * Math.sin(a) - g.b.d)
+      const reset = {
+        ease: 'power2',
+        filter: 'none',
+        x,
+        y,
+        overwrite: true,
+        scale: 1,
+        WebkitFilter: 'none',
+      }
+      if (g.scene.skip.ff) {
+        gsap.set(b, reset)
+      } else {
+        reset.duration = dur
+        gsap.to(b, reset)
+      }
+      g.bL[1].bD[i] = i
+    })
+  }
 }
 
 const resetCtrRingV2 = () => {
@@ -79,20 +83,22 @@ const resetCtrRingV2 = () => {
 }
 
 const setCtrRing = () => {
-  const r = g.w.h > g.w.w ? g.w.h : g.w.w
-  g.bL[1].b.forEach((b, i) => {
-    const a = i * g.bL[1].st
-    const x = Math.round(g.w.cx + r * Math.cos(a) - g.b.r)
-    const y = Math.round(g.w.cyOff + r * Math.sin(a) - g.b.d)
-    gsap.to(b, {
-      duration: 2.5,
-      ease: 'power2',
-      filter: 'blur(12px)',
-      x,
-      y,
-      WebkitFilter: 'blur(12px)',
+  if (g.bL[1] && g.bL[1].b && g.bL[1].b.length) {
+    const r = g.main.h > g.main.w ? g.main.h : g.main.w
+    g.bL[1].b.forEach((b, i) => {
+      const a = i * g.bL[1].st
+      const x = Math.round(g.main.cx + r * Math.cos(a) - g.b.r)
+      const y = Math.round(g.main.cyOff + r * Math.sin(a) - g.b.d)
+      gsap.to(b, {
+        duration: 2.5,
+        ease: 'power2',
+        filter: 'blur(12px)',
+        x,
+        y,
+        WebkitFilter: 'blur(12px)',
+      })
     })
-  })
+  }
 }
 
 const evadeMouseTick = re => {
@@ -141,9 +147,9 @@ const shockTick = () => {
     fromCC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2))
     oo = (g.w.cx - fromCC) / g.w.cx
   }
-  const eAss = gsap.utils.snap(1, gsap.utils.random(0, tgBgAsses.length - 1))
+  const assLightOn = gsap.utils.snap(1, gsap.utils.random(0, assLightning.length - 1))
   g.bL[1].zQuickOffSetter(0)
-  g.bL[1].zQuickOnSetters[eAss]({
+  g.bL[1].zQuickOnSetters[assLightOn]({
     opacity: gsap.utils.random(0, oo) * 0.64,
     rotateZ: gsap.utils.random(0, 360),
   })

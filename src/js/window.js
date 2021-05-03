@@ -35,7 +35,6 @@ const getW = (cyOff = 0) => {
     || document.body.clientHeight
   const cy = h / 2
   cyOff += cy
-
   // eslint-disable-next-line object-curly-newline
   return { w, h, cx, cy, cyOff }
 }

@@ -15,8 +15,8 @@ const doTheWorm = (s, fH) => {
 }
 
 const setShaiHulud = () => {
-  const ww = g.w.w > g.w.h ? g.w.w : g.w.h
-  const wormSignShiftY = ((g.w.h - ww) / 2) - (g.cyOffPx / 2)
+  const ww = g.main.w > g.main.h ? g.main.w : g.main.h
+  const wormSignShiftY = ((g.main.h - ww) / 2) - (g.cyOffPx / 2)
 
   g.el.drWorm.style.top = `${wormSignShiftY}px`
 
@@ -40,7 +40,7 @@ const setShaiHulud = () => {
     lastWrmSeg = el
   })
 
-  if (g.w.w < 2755) {
+  if (g.main.w < 2755) {
     const lastWormTube = lastWrmSeg.querySelector('.wormTube')
     if (lastWormTube) lastWrmSeg.removeChild(lastWormTube)
   }

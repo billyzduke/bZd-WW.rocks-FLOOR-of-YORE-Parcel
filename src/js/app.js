@@ -1,3 +1,4 @@
+import assBodyBackground from 'url:/src/img/WWineBoxBG.jpg'
 import g from './glob'
 import { getW, getMouseMove } from './window'
 import htmEl from './el'
@@ -30,6 +31,7 @@ const loadApp = () => {
       'bronzeVidWrapper',
       'ctrRing',
       'dirtOnTheGround',
+      'dirtVidWrapper',
       'discoWall',
       'drWorm',
       'excWrapper',
@@ -62,7 +64,12 @@ const loadApp = () => {
       'wormSignScreen',
       'yoreFloor',
     ]),
-    ...htmEl([ 'body', 'header', 'main' ], 'tag'),
+    ...htmEl([
+      'html',
+      'body',
+      'header',
+      'main',
+    ], 'tag'),
     ...htmEl('.cw', 'q', true),
     ...htmEl('.makisu', 'q', true),
     ...htmEl('.tpTitle', 'q', true),
@@ -71,6 +78,19 @@ const loadApp = () => {
   }
   el.bL = []
   g.el = el
+  g.w = getW(g.cyOffPx)
+  g.crtns = { cx: g.w.cx, cy: g.w.cyOff - (g.cyOffPx * 1.5) }
+
+  if (g.el.main) {
+    g.main.scale = g.w.h / Number(g.window.getComputedStyle(g.el.main, null).getPropertyValue('height').slice(0, -2))
+    g.el.main.style.transform = `scale(${g.main.scale})`
+    g.main.w = g.w.w / g.main.scale
+    g.el.main.style.width = `${g.main.w}px`
+    g.main.h = g.w.h / g.main.scale
+    g.main.cx = g.main.w / 2
+    g.main.cy = g.main.h / 2
+    g.main.cyOff = g.main.cy + g.cyOffPx
+  }
 
   if (g.el.header && g.el.home) {
     g.el.home.addEventListener('mouseenter', () => revealNav())
@@ -79,22 +99,24 @@ const loadApp = () => {
   if (g.el.shopNavBar && g.el.shopNavItem) g.el.shopNavItem.addEventListener('click', () => toggleShopNav())
   if (g.el.helpToggle) g.el.helpToggle.style.transition = 'all 2.5s ease-in-out'
 
-  g.w = getW(g.cyOffPx)
-  g.crtns = { cx: g.w.cx, cy: g.w.cyOff - (g.cyOffPx * 1.5) }
-
   setLion()
   setGrove()
   setTitles()
   setCurtains()
   setFloor()
+
   g.vid.bronze = g.el.bronzeCauldron ? setBronze() : undefined
-  g.vid.dirt = g.el.bronzeCauldron ? setDirt() : undefined
+  g.vid.dirt = g.el.dirtOnTheGround ? setDirt() : undefined
+
   if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
 
   if (g.el.body.classList.contains('dev') && typeof g.dev === 'undefined') g.dev = true
+
   if (g.dev && g.el.sceneSkipper) setSceneSkipper()
 
   if (!g.scene.current) setScene()
+
+  if (g.el.body) g.el.body.style.backgroundImage = `url(${assBodyBackground})`
 
   return true
 }

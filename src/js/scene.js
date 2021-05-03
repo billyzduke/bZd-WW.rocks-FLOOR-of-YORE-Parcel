@@ -65,8 +65,14 @@ const setScene = (toScene = 0) => {
     ]
     if (setScenes[toScene]) {
       console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
-      const prevSceneCleaned = cleanScene(g.scene.current)
-      console.log({ prevSceneCleaned })
+      let prevSceneCleaned = false
+      if (toScene) {
+        prevSceneCleaned = cleanScene(g.scene.current)
+        console.log({ prevSceneCleaned })
+      } else {
+        console.log({ prevSceneCleaned })
+        prevSceneCleaned = true
+      }
       if (prevSceneCleaned) {
         if (toScene >= g.scene.skip.target) {
           g.scene.skip.ff = 0

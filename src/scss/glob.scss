@@ -14,7 +14,6 @@ body {
 }
 body {
   background-color: rgb(118, 122, 131);
-  background-image: url(../img/WWineBoxBG.jpg);
   background-position: center top;
   background-repeat: repeat;
   font-family: Monaco, Menlo, "Lucida Sans Unicode", monospace;
@@ -25,16 +24,20 @@ body {
 }
 
 main {
-  height: 100vh;
+  background-image: url(../img/ref/1306x1306.png);
+  background-size: 1306px 1306px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: 1306px;
   left: 0;
   position: absolute;
   top: 0;
   width: 100vw;
+  transform-origin: 0 0;
 }
 @media screen and (max-width: 1220px) {
   main {
     overflow-x: auto;
-    width: 1220px;
   }
 }
 
@@ -47,7 +50,7 @@ iframe#discoWall {
 }
 
 #sceneSkipper {
-  bottom: 18px;
+  top: calc(100vh - 56px);
   color: red;
   display: block;
   font-size: 24px;

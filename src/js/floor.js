@@ -5,8 +5,10 @@ import { randOnum } from './utils'
 
 const setFloor = () => {
   if (g.el.yoreFloor) {
+    console.log(Number(g.window.getComputedStyle(g.el.main, null).getPropertyValue('height').slice(0, -2)))
     gsap.set(g.el.yoreFloor, {
       left: (g.w.w - Number(g.window.getComputedStyle(g.el.yoreFloor, null).getPropertyValue('width').slice(0, -2))) / 2,
+      top: (Number(g.window.getComputedStyle(g.el.main, null).getPropertyValue('height').slice(0, -2)) * 0.9) - 110,
     })
   }
 }

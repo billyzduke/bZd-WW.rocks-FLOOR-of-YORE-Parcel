@@ -20,6 +20,7 @@ const g = {
     tShirt: false,
   },
   m: {}, // mouse position
+  main: {}, // scaled dimensions reference for main container
   mixBlendModes: [
     'normal',
     'multiply',

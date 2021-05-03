@@ -61,15 +61,15 @@ const setScene06 = (c, n) => {
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)
 
   if (g.scene.skip.ff) {
-    g.el.drWorm.classList.add('skip')
+    if (g.el.drWorm) g.el.drWorm.classList.add('skip')
     gsap.set('#gankyil', {
       opacity: 1,
       rotateZ: 0,
       scale: 1,
     })
   } else {
-    flashBulb(g.bL[1].ctrRing)
-    g.vid.bronze.play()
+    if (g.bL[1].ctrRing) flashBulb(g.bL[1].ctrRing)
+    if (g.vid.bronze) g.vid.bronze.play()
   }
 
   g.worm.ribs.ntrvl = setInterval(() => {
@@ -102,7 +102,7 @@ const setScene06 = (c, n) => {
     transformOrigin: '4096px 4096px',
   })
 
-  g.el.drWorm.classList.add('anim')
+  if (g.el.drWorm) g.el.drWorm.classList.add('anim')
 
   g.tL.gankyil.to('#gankyil', {
     duration: 10,
