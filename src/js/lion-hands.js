@@ -35,7 +35,8 @@ import assBloodSplash32 from 'url:/src/img/tearsOFBlood/bloodSplash-32.png'
 import assBloodSplash33 from 'url:/src/img/tearsOFBlood/bloodSplash-33.png'
 import assBloodSplash34 from 'url:/src/img/tearsOFBlood/bloodSplash-34.png'
 import g from './glob'
-import { setRemoveOn } from './utils'
+import { setAddOn, setRemoveOn } from './utils'
+import { closeFoetusEye, openFoetusEye } from './foetuses'
 
 const say = (who, what) => {
   gsap.set(who, {
@@ -160,6 +161,8 @@ const bloodDrop = side => {
         ease: 'power2.in',
         onComplete: () => {
           gsap.ticker.add(side === 'L' ? bloodSplashL : bloodSplashR)
+          setAddOn(`#womb${side}`, 'mouseenter', () => openFoetusEye(side))
+          setAddOn(`#womb${side}`, 'mouseleave', () => closeFoetusEye(side))
         },
         opacity: 0.52,
         rotateZ: side === 'L' ? 232 : -240,

@@ -7,7 +7,7 @@ import { gsapTick, setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { lionShockTick, relieveTheLion, shockTheLion } from '../lion'
 import { ex, setExcs } from '../lion-head'
-import { closeFoetusEye, openFoetusEye, setFoetuses } from '../foetuses'
+import { setFoetuses } from '../foetuses'
 // eslint-disable-next-line object-curly-newline
 import { bloodDropL, bloodDropR, sayCeren, sayNothing, saySinan, setBloodSplashes } from '../lion-hands'
 import { rollEmOut, setRamIconHorns } from '../owl-ram'
@@ -32,10 +32,6 @@ const setScene10 = (c, n) => {
   setAddOn('#handEyeRight, #sayCeren', 'mouseleave', sayNothing)
   setAddOn('#sayCeren', 'click', bloodDropL)
   setAddOn('#ramIcon', 'click', rollEmOut)
-  setAddOn('#wombL', 'mouseenter', () => openFoetusEye('L'))
-  setAddOn('#wombL', 'mouseleave', () => closeFoetusEye('L'))
-  setAddOn('#wombR', 'mouseenter', () => openFoetusEye('R'))
-  setAddOn('#wombR', 'mouseleave', () => closeFoetusEye('R'))
   setAddOn('#thirdEyeWrapper', 'click', ex)
 
   g.qss.ramIconHorns[0](1)

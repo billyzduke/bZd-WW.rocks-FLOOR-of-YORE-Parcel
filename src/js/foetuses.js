@@ -48,6 +48,9 @@ const openFoetusEyeTick = foe => {
     g.foetus[foe].eye = nextOpenEyeFrame
   } else {
     gsap.ticker.remove(foe === 'L' ? openFoetusEyeL : openFoetusEyeR)
+    setTimeout(() => {
+      gsap.ticker.add(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
+    }, 4242)
   }
 }
 
