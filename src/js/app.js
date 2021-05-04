@@ -12,6 +12,7 @@ import { setCurtains } from './curtains'
 import { setFloor } from './floor'
 import { setShaiHulud } from './shai-hulud'
 import { setScene, setSceneSkipper } from './scene'
+import { resetCtrRing } from './baubles/layer-01'
 
 // import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
@@ -77,7 +78,6 @@ const loadApp = () => {
   el.bL = []
   g.el = el
   g.w = getW(g.cyOffPx)
-  g.crtns = { cx: g.main.cx, cy: g.main.cyOff - (g.cyOffPx * 1.5) }
 
   if (g.el.main) {
     g.main.scale = g.w.h / Number(g.window.getComputedStyle(g.el.main, null).getPropertyValue('height').slice(0, -2))
@@ -97,11 +97,15 @@ const loadApp = () => {
   if (g.el.shopNavBar && g.el.shopNavItem) g.el.shopNavItem.addEventListener('click', () => toggleShopNav())
   if (g.el.helpToggle) g.el.helpToggle.style.transition = 'all 2.5s ease-in-out'
 
+  g.crtns = { h: g.main.h, cx: g.main.cx, cy: g.main.cyOff - (g.cyOffPx * 1.5) }
+
   setLion()
   setGrove()
   setTitles()
   setCurtains()
   setFloor()
+
+  if (g.scene.current >= 3) resetCtrRing()
 
   if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
 

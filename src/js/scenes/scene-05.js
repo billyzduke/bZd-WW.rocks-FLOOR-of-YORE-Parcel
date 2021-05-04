@@ -66,11 +66,6 @@ const setScene05 = (c, n) => {
       rotateZ: 0,
       scale: 1,
     }, '>')
-    .set('#gankyil', {
-      opacity: 1,
-      rotateZ: 0,
-      scale: 1,
-    }, '<0.5')
 
   gsap.to(g.bL[1].bW, {
     duration: g.scene.skip.ff || 0.75,

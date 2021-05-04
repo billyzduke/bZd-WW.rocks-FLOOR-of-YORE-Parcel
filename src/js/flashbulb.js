@@ -8,7 +8,8 @@ gsap.registerPlugin(MotionPathPlugin)
 const positionBulb = (elTarget, yOffPx = 0) => {
   if (elTarget) {
     const matrix = MotionPathPlugin.getGlobalMatrix(elTarget)
-    const localPoint = { x: elTarget.getBoundingClientRect().width / 2 - 69, y: elTarget.getBoundingClientRect().height / 2 - 69 - yOffPx }
+    const rect = elTarget.getBoundingClientRect()
+    const localPoint = { x: rect.left + (rect.width / (g.main.scale * 2)) + 3, y: rect.top + (rect.height / (g.main.scale * 2)) - yOffPx - 3 }
     const globalPoint = matrix.apply(localPoint)
     gsap.set('#flashBulbWrapper', {
       x: globalPoint.x,

@@ -92,7 +92,7 @@ const setBloodSplashes = () => {
   Object.keys(g.foetus).forEach(foe => {
     if (g.el[`bloodSplash${foe}`]) {
       g.qss.bloodSplashes[foe] = []
-      for (let bSpl = 1; bSpl <= 34; bSpl++) {
+      for (let bSpl = 0; bSpl < 34; bSpl++) {
         const bloodSplashFrame = g.document.createElement('img')
         bloodSplashFrame.src = assBloodSplashFrames[bSpl]
         bloodSplashFrame.classList.add('bloodSplashFrame', `bSplash${foe}`)
@@ -110,6 +110,7 @@ const bloodSplashTick = side => {
     g.qss.bloodSplashes[side][g.foetus[side].splash](1)
     g.foetus[side].splash++
   } else {
+    // eslint-disable-next-line no-use-before-define
     gsap.ticker.remove(side === 'L' ? bloodSplashL : bloodSplashR)
   }
 }

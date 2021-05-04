@@ -20,7 +20,7 @@ const setCurtains = () => {
 }
 
 const blurCrtnsTick = () => {
-  const fromC = Math.sqrt(((g.m.x - g.crtns.cx) ** 2) + ((g.m.y - g.crtns.cy) ** 2))
+  const fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cy) ** 2))
   const blurPx = (fromC / 3) // - 11.5
   const crtnBlur = blurPx <= 0 ? 'none' : `blur(${blurPx}px)`
   const o = (200 - fromC) / 200

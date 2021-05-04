@@ -16,7 +16,7 @@ const doTheWorm = (s, fH) => {
 
 const setShaiHulud = () => {
   const ww = g.main.w > g.main.h ? g.main.w : g.main.h
-  const wormSignShiftY = ((g.main.h - ww) / 2) - (g.cyOffPx / 2)
+  const wormSignShiftY = ((g.main.h - ww) / 2) + 2 // - (g.cyOffPx / 2)
 
   g.el.drWorm.style.top = `${wormSignShiftY}px`
 

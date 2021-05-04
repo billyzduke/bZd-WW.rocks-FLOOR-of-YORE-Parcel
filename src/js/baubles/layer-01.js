@@ -105,28 +105,30 @@ const evadeMouseTick = re => {
   if (!g.scene.skip.ff && g.m.x && g.m.y) {
     let inC = false
     let fromC = 0
-    let o = (g.w.cx > g.w.cyOff) ? g.w.cx * 2 : g.w.cyOff * 2
-    inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
+    let o = (g.w.cx > g.w.cy) ? g.w.cx * 2 : g.w.cy * 2
+    inC = ((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cy) ** 2) <= ((g.bL[1].cR * 2) ** 2) / 4
     if (inC) o = (re) ? g.bL[1].cR : 0
     else {
-      fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2))
+      fromC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cy) ** 2))
       o = Math.sqrt(g.bL[1].cR * fromC) + (fromC / 2)
     }
     const blur = fromC ? `blur(${(fromC / 100)}px)` : false
     g.bL[1].b.forEach((b, i) => {
-      let x = g.w.cx - g.b.r
-      let y = g.w.cyOff - g.b.r
+      let x = g.w.cx
+      let y = g.w.cy
       if (!inC && g.m.x && g.m.y) {
         const a = i * g.bL[1].st
-        x = Math.round(g.w.cx + o * Math.cos(a) + g.w.cx - g.m.x - g.b.r)
-        y = Math.round(g.w.cyOff + o * Math.sin(a) + g.w.cyOff - g.m.y - g.b.r)
+        x = g.w.cx + o * Math.cos(a) + g.w.cx - g.m.x
+        y = g.w.cy + o * Math.sin(a) + g.w.cy - g.m.y
       }
+      x = Math.round((x - g.b.r) / g.main.scale)
+      y = Math.round(((y - g.b.r) / g.main.scale) + g.cyOffPx)
       gsap.to(b, {
         duration: 0.42,
         filter: blur || 'none',
         overwrite: true,
-        translateX: x / g.main.scale,
-        translateY: y / g.main.scale,
+        translateX: x,
+        translateY: y,
         WebkitFilter: blur || 'none',
       })
     })

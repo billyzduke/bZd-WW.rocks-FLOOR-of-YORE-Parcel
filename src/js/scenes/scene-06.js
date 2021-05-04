@@ -60,13 +60,14 @@ const setScene06 = (c, n) => {
   g.scene.forCleanUp[c].presetFutureScene = () => presetScene08()
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)
 
+  gsap.set('#gankyil', {
+    opacity: 1,
+    rotateZ: 0,
+    scale: 1,
+  })
+
   if (g.scene.skip.ff) {
     if (g.el.drWorm) g.el.drWorm.classList.add('skip')
-    gsap.set('#gankyil', {
-      opacity: 1,
-      rotateZ: 0,
-      scale: 1,
-    })
   } else {
     if (g.bL[1].ctrRing) flashBulb(g.bL[1].ctrRing)
     if (g.vid.bronze) g.vid.bronze.play()

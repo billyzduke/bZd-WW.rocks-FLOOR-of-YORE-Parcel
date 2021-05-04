@@ -48,7 +48,7 @@ const setScene02 = (c, n) => {
       maskImage: `url(${assCurtainPeekMask})`,
       maskPosition: 'center center',
       maskRepeat: 'no-repeat',
-      maskSize: '1080px 1080px',
+      maskSize: `${g.crtns.h}px ${g.crtns.h}px`,
     }, '<')
     .to('#bL01', {
       duration: 3,
