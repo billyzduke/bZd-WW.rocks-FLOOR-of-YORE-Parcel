@@ -15,12 +15,7 @@ const doTheWorm = (s, fH) => {
 }
 
 const setShaiHulud = () => {
-  const ww = g.main.w > g.main.h ? g.main.w : g.main.h
-  const wormSignShiftY = ((g.main.h - ww) / 2) + 2 // - (g.cyOffPx / 2)
-
-  g.el.drWorm.style.top = `${wormSignShiftY}px`
-
-  g.el.wormSignScreen.style.transform = `translateY(${wormSignShiftY}px) scale(0)`
+  g.el.wormSignScreen.style.transform = `translateY(-50%) scale(0)`
   g.el.wormSignScreen.height = Number(g.window.getComputedStyle(g.el.drWorm, null).getPropertyValue('height').slice(0, -2))
   g.el.wormSignScreen.style.height = `${g.el.wormSignScreen.height}px`
   g.el.wormSignScreen.width = Number(g.window.getComputedStyle(g.el.drWorm, null).getPropertyValue('width').slice(0, -2))
@@ -47,7 +42,7 @@ const setShaiHulud = () => {
 
   let path = ''
   const loops = 12 // must set stroke-width and circle radius accordingly = 0.25/loops
-  const coverCornerLoops = Math.ceil(loops * Math.sqrt(2)) + 1/* for inner circle */
+  const coverCornerLoops = Math.ceil(loops * Math.sqrt(2)) + 1 /* for inner circle */
   const loopSteps = 16
   const tangentOff = (4 / 3) * Math.tan(Math.PI / (2 * loopSteps))
 
@@ -59,7 +54,7 @@ const setShaiHulud = () => {
   for (let loop = 0; loop <= coverCornerLoops; loop++) {
     for (let i = 0; i < loopSteps; i++) {
       const radius = Math.max(0.25 / loops, (i / loopSteps + loop) / loops / 2) * g.worm.ring.dO
-      const angle = 2 * Math.PI * i / loopSteps
+      const angle = (2 * Math.PI * i) / loopSteps
       const x = Math.cos(angle) * radius + g.worm.ring.rO
       const y = Math.sin(angle) * radius + g.worm.ring.rO
 

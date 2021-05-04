@@ -1,10 +1,11 @@
 .wormSign {
   display: block;
   left: 0;
-  min-height: 100vh;
-  min-width: 100vw;
+  min-height: 100%;
+  min-width: 100%;
   position: absolute;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 #drWorm {
   opacity: 0;
@@ -27,6 +28,13 @@
   }
   .skip & {
     animation: dash 1s ease-in forwards;
+  }
+  transform: none;
+  transform-origin: 50% 50%;
+}
+@media screen and (max-width: 772px) {
+  .wormSignPath {
+    transform: scale(1.5);
   }
 }
 .wormRingSegment {
