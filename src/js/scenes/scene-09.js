@@ -32,21 +32,26 @@ const setScene09 = (c, n) => {
   g.el.gemGuy.src = assGemGuyIdle
 
   const bLL = g.bL[2].b.length
-  g.tL.b.to('.b.bL02_L', {
-    duration: 2.5,
-    ease: 'none',
-    motionPath: {
-      align: '#bL02_L',
-      alignOrigin: [ 0.5, 0.5 ],
-      path: '#bL02_L',
-      end: i => ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + 0.55,
-    },
-    opacity: 1,
-    scale: 0.9,
-    stagger: {
-      each: 0.15,
+  g.tL.b.set('#gankyil', {
+    attr: {
+      class: 'wheelOfJoy gank',
     },
   })
+    .to('.b.bL02_L', {
+      duration: 2.5,
+      ease: 'none',
+      motionPath: {
+        align: '#bL02_L',
+        alignOrigin: [ 0.5, 0.5 ],
+        path: '#bL02_L',
+        end: i => ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + 0.55,
+      },
+      opacity: 1,
+      scale: 0.9,
+      stagger: {
+        each: 0.15,
+      },
+    })
     .to('.b.bL02_R', {
       duration: 2.5,
       ease: 'none',
@@ -92,6 +97,11 @@ const setScene09 = (c, n) => {
       repeat: 1,
       yoyo: true,
     }, '<')
+    .set('#gankyil', {
+      attr: {
+        class: 'wheelOfJoy',
+      },
+    }, '<3')
 
   if (g.scene.skip.ff) g.tL.b.call(setScene, [ n ], '>')
 

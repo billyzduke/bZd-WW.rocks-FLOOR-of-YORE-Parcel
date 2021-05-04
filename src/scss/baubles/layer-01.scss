@@ -20,10 +20,10 @@ div#ctrRing {
   border-radius: 50%;
   cursor: pointer;
   height: 138px;
-  left: 50%;
+  left: calc(48.8% - 69px);
   position: absolute;
   top: 50%;
-  transform: translate(calc(-50% - 19.5px), calc(-50% - 4.5px));
+  transform: translateY(calc(-50% - 4.5px));
   width: 138px;
   mask-image: url(../img/lightningBalls/lightning-ball-mask.svg);
   mask-repeat: no-repeat;

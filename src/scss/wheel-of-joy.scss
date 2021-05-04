@@ -63,6 +63,7 @@ div#triskelion {
   transform: scale(0);
   cursor: pointer;
 }
-div#gankyil:hover div#triskelion {
+div#gankyil:hover div#triskelion,
+div#gankyil.gank div#triskelion {
   transform: scale(1);
 }

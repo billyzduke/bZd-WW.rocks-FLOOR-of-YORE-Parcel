@@ -48,7 +48,6 @@ const setBaubleLayer01 = () => {
     })
     g.bL[1].zQuickOffSetter = gsap.quickSetter('.z', 'opacity')
     g.bL[1].st = (2 * Math.PI) / g.bL[1].b.length
-    // console.log(g.bL)
   }
 }
 
