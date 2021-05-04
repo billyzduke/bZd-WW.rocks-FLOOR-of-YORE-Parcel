@@ -7,6 +7,7 @@ const setBronze = () => {
   if (g.el.bronzeVidWrapper && g.el.bronzeCauldron) {
     g.el.bronzeVidWrapper.style.height = `${g.main.h}px`
     g.el.bronzeVidWrapper.style.width = `${g.main.w}px`
+    g.el.bronzeVidWrapper.style.opacity = 1
     g.el.bronzeCauldron.style.maxHeight = g.el.bronzeCauldron.style.height = g.el.bronzeVidWrapper.style.height
     g.el.bronzeCauldron.style.minWidth = g.el.bronzeCauldron.style.width = g.el.bronzeVidWrapper.style.width
     g.el.bronzeCauldron.style.objectFit = 'fill'

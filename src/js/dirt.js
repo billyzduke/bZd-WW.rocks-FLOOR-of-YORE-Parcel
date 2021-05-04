@@ -7,6 +7,7 @@ const setDirt = () => {
   if (g.el.dirtVidWrapper && g.el.dirtOnTheGround) {
     g.el.dirtVidWrapper.style.height = `${g.main.h}px`
     g.el.dirtVidWrapper.style.width = `${g.main.w}px`
+    g.el.dirtVidWrapper.style.opacity = 1
     g.el.dirtOnTheGround.style.minHeight = g.el.dirtVidWrapper.style.height
     g.el.dirtOnTheGround.style.minWidth = g.el.dirtVidWrapper.style.width
     g.el.dirtOnTheGround.style.objectFit = 'cover'

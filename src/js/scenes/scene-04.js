@@ -7,6 +7,7 @@ import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscure } from '../obscuro'
 import { flingRingTick } from '../baubles/layer-01'
+import { setDirt } from '../dirt'
 
 const scene04 = 'Raise Curtain / Reveal Cauldron of Bronze'
 
@@ -15,6 +16,8 @@ const setScene04 = (c, n) => {
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].clearCrtns = () => setClearActors('#curtains')
   g.scene.forCleanUp[c].obscureNextScene = () => obscure(2)
+
+  g.vid.dirt = g.el.dirtOnTheGround ? setDirt() : undefined
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)

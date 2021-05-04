@@ -1,13 +1,12 @@
 div#bL01 {
-  height: calc(100vh + 2.42%);
-  left: 0;
+  height: 1338px;
+  left: calc(50% + 3px);
+  top: -8px;
   opacity: 0;
   position: fixed;
-  top: -2.42%;
-  width: 100vw;
+  width: 102.4%;
   z-index: 500;
-  transform: scale(0.75);
-  transform-origin: 50% calc(50% + 17.4px);
+  transform: scale(0.98) translateX(-50%);
   perspective: 23em;
 }
 div#bW01.orbit {
@@ -24,12 +23,13 @@ div#ctrRing {
   left: 50%;
   position: absolute;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(calc(-50% - 19.5px), calc(-50% - 4.5px));
   width: 138px;
   mask-image: url(../img/lightningBalls/lightning-ball-mask.svg);
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
   mask-position: center center;
+  // background-color: rgba(255,0,0,0.64);
 }
 img.z {
   display: block;

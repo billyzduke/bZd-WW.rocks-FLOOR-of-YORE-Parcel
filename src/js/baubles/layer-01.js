@@ -125,8 +125,8 @@ const evadeMouseTick = re => {
         duration: 0.42,
         filter: blur || 'none',
         overwrite: true,
-        translateX: x,
-        translateY: y,
+        translateX: x / g.main.scale,
+        translateY: y / g.main.scale,
         WebkitFilter: blur || 'none',
       })
     })
@@ -144,8 +144,8 @@ const shockTick = () => {
   let oo = 0
   let fromCC = 0
   if (g.m.x && g.m.y) {
-    fromCC = Math.sqrt(((g.m.x - g.w.cx) ** 2) + ((g.m.y - g.w.cyOff) ** 2))
-    oo = (g.w.cx - fromCC) / g.w.cx
+    fromCC = Math.sqrt(((g.m.x - g.main.cx) ** 2) + ((g.m.y - g.main.cyOff) ** 2))
+    oo = (g.main.cx - fromCC) / g.main.cx
   }
   const assLightOn = gsap.utils.snap(1, gsap.utils.random(0, assLightning.length - 1))
   g.bL[1].zQuickOffSetter(0)
@@ -161,11 +161,11 @@ const flingRingTick = () => {
       const a = i * g.bL[1].st
       const tau = ((i + 2) * g.bL[1].bD[i]) / (Math.PI * 2)
       const tau2 = ((i + 3) * g.bL[1].bD[i]) / Math.PI
-      const x1 = Math.sin(tau) * g.bL[1].cR + Math.round((g.w.cx + (g.bL[1].cR * Math.cos(a)) - g.b.r))
-      const y1 = Math.cos(tau) * g.bL[1].cR + Math.round((g.w.cyOff + (g.bL[1].cR * Math.sin(a)) - g.b.r))
+      const x1 = Math.sin(tau) * g.bL[1].cR + Math.round((g.main.cx + (g.bL[1].cR * Math.cos(a)) - g.b.r))
+      const y1 = Math.cos(tau) * g.bL[1].cR + Math.round((g.main.cyOff + (g.bL[1].cR * Math.sin(a)) - g.b.r))
       const x2 = x1 + Math.sin(tau2) * g.bL[1].cR02
       const y2 = y1 + Math.cos(tau2) * g.bL[1].cR02
-      const fromC = Math.sqrt(((x2 - g.w.cx) ** 2) + ((y2 - g.w.cyOff) ** 2))
+      const fromC = Math.sqrt(((x2 - g.main.cx) ** 2) + ((y2 - g.main.cyOff) ** 2))
       gsap.to(b, {
         delay: `0.${a}`,
         duration: 0.25,
@@ -182,9 +182,9 @@ const flingRingTick = () => {
 const orbitRingTick = (orR, sp = 0.1, ang = 1, sc = 0) => {
   g.bL[1].b.forEach((b, i) => {
     const a = g.bL[1].bD[i] * g.bL[1].st
-    const x = Math.round(g.w.cx + orR * Math.cos(a) - g.b.r)
-    const y = Math.round(g.w.cyOff + ang * orR * Math.sin(a) - g.b.d)
-    const scaleY = sc ? (y - (g.w.cyOff / 2)) / 100 : 1
+    const x = Math.round(g.main.cx + orR * Math.cos(a) - g.b.r)
+    const y = Math.round(g.main.cyOff + ang * orR * Math.sin(a) - g.b.d)
+    const scaleY = sc ? (y - (g.main.cyOff / 2)) / 100 : 1
     if (g.bL[1].bD[i] === i || orR === g.bL[1].oR) {
       gsap.to(b, {
         // delay: `0.${a}`,

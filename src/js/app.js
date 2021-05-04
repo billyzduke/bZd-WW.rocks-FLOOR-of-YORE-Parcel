@@ -10,8 +10,6 @@ import { setLion } from './lion'
 import { setTitles } from './titles'
 import { setCurtains } from './curtains'
 import { setFloor } from './floor'
-import { setBronze } from './bronze'
-import { setDirt } from './dirt'
 import { setShaiHulud } from './shai-hulud'
 import { setScene, setSceneSkipper } from './scene'
 
@@ -79,7 +77,7 @@ const loadApp = () => {
   el.bL = []
   g.el = el
   g.w = getW(g.cyOffPx)
-  g.crtns = { cx: g.w.cx, cy: g.w.cyOff - (g.cyOffPx * 1.5) }
+  g.crtns = { cx: g.main.cx, cy: g.main.cyOff - (g.cyOffPx * 1.5) }
 
   if (g.el.main) {
     g.main.scale = g.w.h / Number(g.window.getComputedStyle(g.el.main, null).getPropertyValue('height').slice(0, -2))
@@ -105,9 +103,6 @@ const loadApp = () => {
   setCurtains()
   setFloor()
 
-  g.vid.bronze = g.el.bronzeCauldron ? setBronze() : undefined
-  g.vid.dirt = g.el.dirtOnTheGround ? setDirt() : undefined
-
   if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
 
   if (g.el.body.classList.contains('dev') && typeof g.dev === 'undefined') g.dev = true
@@ -116,7 +111,10 @@ const loadApp = () => {
 
   if (!g.scene.current) setScene()
 
-  if (g.el.body) g.el.body.style.backgroundImage = `url(${assBodyBackground})`
+  if (g.el.body) {
+    g.el.body.style.backgroundImage = `url(${assBodyBackground})`
+    g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
+  }
 
   return true
 }
@@ -127,7 +125,7 @@ const initApp = () => {
 }
 
 const getM = () => {
-  g.m = getMouseMove(g.window.event)
+  if (g.el.main) g.m = getMouseMove(g.window.event, g.el.main.getBoundingClientRect())
   if (g.el.phasingRainbow && g.scene.current >= 8 && g.lion.eyes.active) moveLionEyes()
 }
 

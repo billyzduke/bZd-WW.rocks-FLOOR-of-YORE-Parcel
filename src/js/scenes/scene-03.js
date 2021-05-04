@@ -9,11 +9,12 @@ import { obscureGrandiose } from '../obscuro'
 import { resetCtrRing, shockTick } from '../baubles/layer-01'
 import { embiggenCrtnMaskTick } from '../curtains'
 import { readTheFloor, scrubTheFloor } from '../floor'
+import { setBronze } from '../bronze'
 
 const scene03 = 'Reveal Curtain / Floor of Yore'
 
 const setScene03 = (c, n) => {
-  g.crtns.crtnMaskSizeObj = { value: 1080 }
+  g.crtns.crtnMaskSizeObj = { value: g.main.h }
   g.crtns.crtnMaskQuickSetter = gsap.quickSetter('#cc1', 'css')
   g.scene.forCleanUp[c].crtnMaskTicker = gsapTick(embiggenCrtnMaskTick)
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
@@ -23,6 +24,8 @@ const setScene03 = (c, n) => {
   gsapTick(shockTick)
   setAddOn('#yoreFloor', 'mouseenter', readTheFloor)
   setAddOn('#yoreFloor', 'mouseleave', scrubTheFloor)
+
+  g.vid.bronze = g.el.bronzeCauldron ? setBronze() : undefined
 
   gsap.to(g.crtns.crtnMaskSizeObj, {
     duration: g.scene.skip.ff || 2,

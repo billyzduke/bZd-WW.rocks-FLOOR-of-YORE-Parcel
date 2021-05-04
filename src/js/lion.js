@@ -9,7 +9,8 @@ const setLion = () => {
   if (g.el.lolf01 && g.el.lolf02) {
     g.window.scrollTo(0, 0)
     gsap.set([ g.el.lolf01, g.el.lolf02 ], {
-      translateX: (g.w.w - 1220) / 2,
+      translateX: (g.main.w - 1220) / 2,
+      // scale: g.main.scale * 0.7709,
     })
     if (g.scene.current < 8 && g.el.theLion) {
       gsap.set(g.el.theLion, {

@@ -1,9 +1,9 @@
 div.pW {
   height: 1220px;
-  margin: -34px 0 84px 0;
+  margin: -42px 0 84px 0;
   position: absolute;
   transform-origin: 50% 0%;
-  transform: scale(0.7709);
+  transform: scale(0.985);
   width: 1220px;
   z-index: 0;
   * {
@@ -17,6 +17,12 @@ div.pW {
     transform-origin: 50% 50%;
     transform-style: preserve-3d;
   }
+  // &#lolf01 {
+  //   background-image: url(../img/ref/1200x1200.png);
+  //   background-size: 1200px 1200px;
+  //   background-position: center center;
+  //   background-repeat: no-repeat;
+  // }
   &#lolf02 {
     z-index: 300;
     pointer-events: none;

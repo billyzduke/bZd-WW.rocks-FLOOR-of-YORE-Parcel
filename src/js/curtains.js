@@ -11,7 +11,7 @@ const embiggenCrtnMaskTick = () => {
 
 const setCurtains = () => {
   if (g.el.cw && g.el.cw.length) {
-    const crtnsScale = (0.91 * g.w.h) / 1063
+    const crtnsScale = (0.91 * g.main.h) / 1063
     // console.log(crtnsScale)
     g.el.cw.forEach(cw => {
       cw.style.transform = `scale(${crtnsScale})`

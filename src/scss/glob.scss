@@ -13,7 +13,7 @@ body {
   top: 0;
 }
 body {
-  background-color: rgb(118, 122, 131);
+  background-color: black;
   background-position: center top;
   background-repeat: repeat;
   font-family: Monaco, Menlo, "Lucida Sans Unicode", monospace;
@@ -24,10 +24,10 @@ body {
 }
 
 main {
-  background-image: url(../img/ref/1306x1306.png);
-  background-size: 1306px 1306px;
-  background-position: center center;
-  background-repeat: no-repeat;
+  // background-image: url(../img/ref/1306x1306.png);
+  // background-size: 1306px 1306px;
+  // background-position: center center;
+  // background-repeat: no-repeat;
   height: 1306px;
   left: 0;
   position: absolute;
