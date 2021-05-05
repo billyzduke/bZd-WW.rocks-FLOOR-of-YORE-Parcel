@@ -15,8 +15,8 @@ const doTheWorm = (s, fH) => {
 }
 
 const setShaiHulud = () => {
-  g.el.wormSignScreen.style.transform = `translateY(-50%) scale(0)`
   g.el.wormSignScreen.height = Number(g.window.getComputedStyle(g.el.drWorm, null).getPropertyValue('height').slice(0, -2))
+  g.el.wormSignScreen.style.transform = `translateY(${(g.main.h - g.el.wormSignScreen.height) / 2}px) scale(0)`
   g.el.wormSignScreen.style.height = `${g.el.wormSignScreen.height}px`
   g.el.wormSignScreen.width = Number(g.window.getComputedStyle(g.el.drWorm, null).getPropertyValue('width').slice(0, -2))
   g.el.wormSignScreen.style.width = `${g.el.wormSignScreen.width}px`

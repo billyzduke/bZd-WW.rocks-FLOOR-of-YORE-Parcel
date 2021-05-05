@@ -89,10 +89,9 @@ const setScene07 = (c, n) => {
         // THIS IS TO CORRECT SOME RANDOM BUGGINESS WITH THE mix-blend-mode: overlay ON wormSignScreen
         const wrmScr = g.el.wormSignScreen.cloneNode(true)
         const main = g.el.wormSignScreen.parentNode
-        const nextSibling = main.querySelector('#bronzeVidWrapper')
         main.removeChild(g.el.wormSignScreen)
         g.el.wormSignScreen = wrmScr
-        main.insertBefore(g.el.wormSignScreen, nextSibling)
+        main.appendChild(g.el.wormSignScreen)
       }
     },
     scale: 1,

@@ -3,8 +3,24 @@
   "author": "billy Z duke <ww@wrongwindows.rocks> (https://wrongwindows.rocks)",
   "contributors": [
     {
+      "name": "Jennifer J. Jelenski",
+      "url": "https://twitter.com/varmintsofdoom"
+    },
+    {
       "name": "Kamil Mendelski",
       "url": "https://github.com/emendelski/parcel-starter-kit"
+    },
+    {
+      "name": "Justin Windle",
+      "url": "https://soulwire.github.io/Makisu/"
+    },
+    {
+      "name": "Nathan Keeys",
+      "url": "https://medium.com/swlh/using-the-svg-feturbulence-filter-for-wave-effects-2b8cb2546ee6"
+    },
+    {
+      "name": "Edaqa 😊 Mortoray",
+      "url": "https://www.youtube.com/watch?v=BFesF3T1n4E"
     }
   ],
   "version": "1.0.0",

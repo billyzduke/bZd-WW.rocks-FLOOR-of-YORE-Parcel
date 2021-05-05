@@ -1,3 +1,11 @@
+/*!
+  BASED ON CODE LICENSED FROM https://codecanyon.net/item/code-rain-javascript-matrix-effect/25307087
+ * Code Rain v1.0.0
+ * (c) CreativeTier
+ * contact@creativetier.com
+ * http://www.creativetier.com
+ */
+
 import g from './glob'
 import { isSet } from './utils'
 
