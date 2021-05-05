@@ -313,10 +313,12 @@ const stoneColdLaserC = () => {
     translateX: randOnum(0, 24) - 12,
     translateY: randOnum(0, 24) - 12,
   })
-  g.folklore.binary.var.stoneImgQuickSetter({
+  const flashCrack = randOnum(0, 3) ? 1 : randOnum(64, 96) / 100
+  g.folklore.binary.var.oldStoneImgQuickSetter({
     filter: g.folklore.binary.var.stoneFilters[randOnum(0, g.folklore.binary.var.stoneFilters.length - 1)],
-    opacity: randOnum(0, 3) ? 1 : randOnum(64, 96) / 100,
+    opacity: flashCrack,
   })
+  g.folklore.binary.var.newStoneImgQuickSetter(flashCrack === 1 ? 0 : 1)
 }
 
 const iceIceBaby = () => {
@@ -327,20 +329,22 @@ const iceIceBaby = () => {
     translateX: 0,
     translateY: 0,
   })
-  g.folklore.binary.var.stoneImgQuickSetter({
+  g.folklore.binary.var.oldStoneImgQuickSetter({
     filter: g.folklore.binary.var.stoneFilters[0],
     opacity: 1,
   })
-  // const flashCrack = randOnum(0, 3) ? assFolkloreRosetta : assFolkloreRosetta2
+  g.folklore.binary.var.newStoneImgQuickSetter(0)
 }
 
 const clearAwayTheStone = () => {
   const currentStone = g.document.querySelector('#rosetta img')
   const nextStone = currentStone.cloneNode(true)
+  nextStone.style.opacity = 0
   const stoneWrapper = currentStone.parentNode
   stoneWrapper.insertBefore(nextStone, currentStone)
   g.folklore.binary.var.stoneQuickSetter = gsap.quickSetter('#rosetta', 'css')
-  g.folklore.binary.var.stoneImgQuickSetter = gsap.quickSetter(currentStone, 'css')
+  g.folklore.binary.var.oldStoneImgQuickSetter = gsap.quickSetter(currentStone, 'css')
+  g.folklore.binary.var.newStoneImgQuickSetter = gsap.quickSetter(nextStone, 'opacity')
   // eslint-disable-next-line default-case
   switch (g.folklore.binary.var.stoneDemolition) {
     case 0:
@@ -413,7 +417,16 @@ const clearAwayTheStone = () => {
         gsap.ticker.remove(stoneColdLaserR)
         iceIceBaby()
         stoneWrapper.removeChild(currentStone)
+        if (g.folklore.binary.var.stoneDemolition === 2) {
+          gsap.set(g.el.codeRain, {
+            maskSize: '436.5px 646px',
+            maskPosition: 'center calc(50% - 36px)',
+            WebkitMaskSize: '436.5px 646px',
+            WebkitMaskPosition: 'center calc(50% - 36px)',
+          })
+        }
         g.folklore.binary.var.stoneDemolition++
+        g.folklore.binary.var.newStoneImgQuickSetter(1)
       }, g.folklore.binary.var.stoneLaserTimer * 2)
     }, g.folklore.binary.var.stoneLaserTimer)
   }, g.folklore.binary.var.stoneLaserTimer)
