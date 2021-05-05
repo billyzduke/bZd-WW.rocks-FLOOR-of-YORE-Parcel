@@ -9,10 +9,10 @@ import assFolkloreRosetta3 from 'url:/src/img/binaryFolklore/rosetta3.png'
 import assFolkloreRosetta4 from 'url:/src/img/binaryFolklore/rosetta4.png'
 // import assFolkloreBrocade from 'url:/src/img/binaryFolklore/brocade.png'
 import g from './glob'
-import { setAddOn, randOnum } from './utils'
+import { gsapTick, setAddOn, randOnum } from './utils'
 // eslint-disable-next-line import/no-cycle
 import { rollEmIn } from './owl-ram'
-import { setCodeRain, startRaining } from './code-rain'
+import { setCodeRain } from './code-rain'
 
 const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
   const printLineSVG = g.document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -336,6 +336,13 @@ const iceIceBaby = () => {
   g.folklore.binary.var.newStoneImgQuickSetter(0)
 }
 
+const embiggenCodeRainMaskTick = () => {
+  g.folklore.binary.codeRainMaskQuickSetter({
+    WebkitMaskSize: `${g.folklore.binary.codeRainMaskSizeObj.w}px ${g.folklore.binary.codeRainMaskSizeObj.h}px`,
+    maskSize: `${g.folklore.binary.codeRainMaskSizeObj.w}px ${g.folklore.binary.codeRainMaskSizeObj.h}px`,
+  })
+}
+
 const clearAwayTheStone = () => {
   const currentStone = g.document.querySelector('#rosetta img')
   const nextStone = currentStone.cloneNode(true)
@@ -424,6 +431,24 @@ const clearAwayTheStone = () => {
             WebkitMaskSize: '436.5px 646px',
             WebkitMaskPosition: 'center calc(50% - 36px)',
           })
+          gsap.set(nextStone, {
+            delay: g.folklore.binary.var.stoneLaserTimer / 4000,
+            attr: {
+              class: 'fragment',
+            },
+          })
+          setTimeout(() => {
+            const codeRainMaskSizeObj = { w: 436.5, h: 646 }
+            g.folklore.binary.codeRainMaskSizeObj = { ...codeRainMaskSizeObj }
+            g.folklore.binary.codeRainMaskQuickSetter = gsap.quickSetter(g.el.codeRain, 'css')
+            g.scene.forCleanUp[11].codeRainMaskTicker = gsapTick(embiggenCodeRainMaskTick)
+            gsap.to(g.folklore.binary.codeRainMaskSizeObj, {
+              duration: g.scene.skip.ff || 2,
+              ease: 'power2.in',
+              w: codeRainMaskSizeObj.w * 2,
+              h: codeRainMaskSizeObj.h * 2,
+            })
+          }, g.folklore.binary.var.stoneLaserTimer * 1.5)
         }
         g.folklore.binary.var.stoneDemolition++
         g.folklore.binary.var.newStoneImgQuickSetter(1)
