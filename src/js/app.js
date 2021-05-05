@@ -13,6 +13,7 @@ import { setFloor } from './floor'
 import { setShaiHulud } from './shai-hulud'
 import { setScene, setSceneSkipper } from './scene'
 import { resetCtrRing } from './baubles/layer-01'
+import { isSet } from './utils'
 
 // import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
@@ -109,7 +110,7 @@ const loadApp = () => {
 
   if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
 
-  if (g.el.body.classList.contains('dev') && typeof g.dev === 'undefined') g.dev = true
+  if (g.el.body.classList.contains('dev') && !isSet(g.dev)) g.dev = true
 
   if (g.dev && g.el.sceneSkipper) setSceneSkipper()
 

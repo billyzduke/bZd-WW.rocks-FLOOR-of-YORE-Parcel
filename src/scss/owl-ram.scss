@@ -102,13 +102,15 @@ div#theOwlIsNotWhatItSeems.open div#ramIcon {
   transform: scale(1) translate(-3px, 0);
   opacity: 1;
 }
-
+div.laser {
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 4px rgba(0, 255, 0, 1));
+  opacity: 0;
+}
 div#owlLaser {
   background-image: url(../img/ramIcon/owlLaser.png);
-  filter: drop-shadow(0 0 4px rgba(0, 255, 0, 1));
   height: 50px;
   left: 31px;
-  opacity: 0;
   top: 40px;
   transform-origin: 0 50%;
   transform: translateX(194px) scaleX(-1);
@@ -116,10 +118,30 @@ div#owlLaser {
 }
 div#ramLaser {
   background-image: url(../img/ramIcon/ramLaser.png);
-  background-size: 100% 100%;
-  filter: drop-shadow(0 0 4px rgba(0, 255, 0, 1));
   height: 1px;
   left: 28px;
   top: 2px;
   width: 23px;
+  opacity: 1;
+}
+div.ramLaser2 {
+  background-image: url(../img/ramIcon/ramLaser2.png);
+  width: 242px;
+  height: 330px;
+  pointer-events: none;
+}
+div#ramLaser2 {
+  left: 23px;
+}
+div#ramLaser3 {
+  right: 22px;
+  transform: scaleX(-1);
+}
+div#owlLaser2 {
+  background-image: url(../img/ramIcon/owlLaser2.png);
+  width: 54px;
+  height: 254px;
+  left: 50%;
+  top: 70px;
+  transform: translateX(-50%);
 }

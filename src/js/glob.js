@@ -3,6 +3,7 @@ const g = {
     d: 12, // global bauble diameter
   },
   bL: [], // bauble layers
+  codeRain: {},
   crtns: {},
   exc: {
     dir: false,

@@ -1,3 +1,5 @@
+@import 'code-rain';
+
 div#binaryFolklore {
   top: 1px;
   width: 450px;
@@ -80,7 +82,14 @@ div#binaryFolklore div#binaryScroll div#parchment img {
 div#binaryFolklore div#binaryScroll div#parchment img {
   top: -1px;
 }
-
+div#binaryFolklore div#binaryScroll div#rosetta img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+div#binaryFolklore div#binaryScroll div#rosetta img:nth-child(2) {
+  filter: none;
+}
 img.cowStill {
   width: 110px; /* 108px; */
   height: 90px; /* 88px; */

@@ -2,7 +2,7 @@ import { gsap } from 'gsap'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
 import g from './glob'
-import { addCSSRule, isNode } from './utils'
+import { addCSSRule, isNode, isSet } from './utils'
 // eslint-disable-next-line import/no-cycle
 import { hideNav } from './nav'
 
@@ -149,7 +149,7 @@ const makeNodes = mkContent => {
   let mkL = 1
   mkWords.forEach((wrd, i) => {
     let useMax = 44 * 2
-    if (typeof mkLines[mkL] === 'undefined') mkLines[mkL] = i ? '&oplus;' : ''
+    if (!isSet(mkLines[mkL])) mkLines[mkL] = i ? '&oplus;' : ''
     if (wrd === '|') {
       mkL++
       mkLines[mkL] = '&nbsp;<br /><hr />'

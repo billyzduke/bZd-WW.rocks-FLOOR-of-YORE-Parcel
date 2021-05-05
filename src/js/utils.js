@@ -23,13 +23,13 @@ const convertTextToBinary = txt => {
 }
 
 const getTranslateValues = element => {
-  if (typeof window !== 'undefined') {
+  if (isSet(window)) {
     // eslint-disable-next-line no-undef
     const style = window.getComputedStyle(element)
     const matrix = style.transform || style.webkitTransform || style.mozTransform
 
     // No transform property. Simply return 0 values.
-    if (matrix === 'none' || typeof matrix === 'undefined') {
+    if (matrix === 'none' || !isSet(matrix)) {
       return {
         x: 0,
         y: 0,
@@ -91,6 +91,8 @@ const gsapTick = tickFunc => {
 
 // eslint-disable-next-line no-undef
 const isNode = o => (typeof Node === 'object' ? o instanceof Node : o && typeof o === 'object' && typeof o.nodeType === 'number' && typeof o.nodeName === 'string')
+
+const isSet = value => !(typeof value === 'undefined')
 
 const padStr = (input, padLen = 2, padWith = '0', start = true) => (start ? input.toString().padStart(padLen, padWith) : input.toString().padEnd(padLen, padWith))
 
@@ -288,7 +290,7 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
   }
   _update()
   _update(true)
-  if (typeof (Draggable) !== 'undefined') {
+  if (isSet(Draggable)) {
     Draggable.create(g, {
       onPress() {
         if (tl.pause().progress() < 0.5) {
@@ -368,6 +370,7 @@ export {
   gsapToOrSet,
   gsapTick,
   isNode,
+  isSet,
   padStr,
   randOnum,
   randOcolor,
