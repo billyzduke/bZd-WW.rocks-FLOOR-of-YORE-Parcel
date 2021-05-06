@@ -259,7 +259,8 @@ const printOutCows = () => {
     .to('#binaryFolklore', {
       duration: 3.42,
       ease: 'power1.in',
-      translateY: 118,
+      translateY: 94,
+      scale: 0.86,
     }, '<')
     .to('#cowStill01', {
       duration: 1,
@@ -344,6 +345,9 @@ const embiggenCodeRainMaskTick = () => {
 }
 
 const clearAwayTheStone = () => {
+  gsap.set('#ramIcon', {
+    cursor: 'wait',
+  })
   const currentStone = g.document.querySelector('#rosetta img')
   const nextStone = currentStone.cloneNode(true)
   nextStone.style.opacity = 0
@@ -465,7 +469,7 @@ const clearAwayTheStone = () => {
             onComplete: function () {
               setTimeout(() => {
                 gsap.to(extraStone, {
-                  duration: g.folklore.binary.var.stoneLaserTimer / 2000,
+                  duration: g.folklore.binary.var.stoneLaserTimer / 5000,
                   // eslint-disable-next-line func-names, object-shorthand
                   onComplete: function () {
                     stoneWrapper.removeChild(extraStone)
@@ -486,17 +490,24 @@ const clearAwayTheStone = () => {
               ease: 'power2.in',
               w: codeRainMaskSizeObj.w * 2,
               h: codeRainMaskSizeObj.h * 2,
+              // eslint-disable-next-line func-names, object-shorthand
+              onComplete: function () {
+                gsap.set('#ramIcon', {
+                  cursor: 'pointer',
+                })
+              },
             })
-          }, g.folklore.binary.var.stoneLaserTimer * 2)
+          }, g.folklore.binary.var.stoneLaserTimer)
+        } else {
+          gsap.set('#ramIcon', {
+            cursor: 'pointer',
+          })
         }
         g.folklore.binary.var.stoneDemolition++
         g.folklore.binary.var.newStoneImgQuickSetter(1)
       }, g.folklore.binary.var.stoneLaserTimer * 2)
     }, g.folklore.binary.var.stoneLaserTimer)
   }, g.folklore.binary.var.stoneLaserTimer)
-
-
-  // printOutCows()
 }
 
 const scanFolkLore = () => {
@@ -530,9 +541,8 @@ const scanFolkLore = () => {
         },
         overwrite: 'auto',
       })
-    } else {
-      clearAwayTheStone()
-    }
+    } else if (g.folklore.binary.var.stoneDemolition < 3) clearAwayTheStone()
+    else printOutCows()
   }
 }
 
