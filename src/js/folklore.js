@@ -352,6 +352,10 @@ const clearAwayTheStone = () => {
   g.folklore.binary.var.stoneQuickSetter = gsap.quickSetter('#rosetta', 'css')
   g.folklore.binary.var.oldStoneImgQuickSetter = gsap.quickSetter(currentStone, 'css')
   g.folklore.binary.var.newStoneImgQuickSetter = gsap.quickSetter(nextStone, 'opacity')
+  gsap.set('#ramLaser2, #ramLaser3, #owlLaser2', {
+    overwrite: 'auto',
+    scale: 0,
+  })
   // eslint-disable-next-line default-case
   switch (g.folklore.binary.var.stoneDemolition) {
     case 0:
@@ -394,6 +398,11 @@ const clearAwayTheStone = () => {
       })
       break
   }
+  gsap.to('#ramLaser2', {
+    duration: g.folklore.binary.var.stoneLaserTimer / 5000,
+    overwrite: 'auto',
+    scale: 1,
+  })
   gsap.ticker.add(stoneColdLaserL)
   gsap.to('#owlGlyphGlow', {
     duration: g.folklore.binary.var.stoneLaserTimer / 275,
@@ -414,9 +423,19 @@ const clearAwayTheStone = () => {
   })
   setTimeout(() => {
     iceIceBaby()
+    gsap.to('#ramLaser3', {
+      duration: g.folklore.binary.var.stoneLaserTimer / 5000,
+      overwrite: 'auto',
+      scale: 1,
+    })
     gsap.ticker.add(stoneColdLaserR)
     setTimeout(() => {
       iceIceBaby()
+      gsap.to('#owlLaser2', {
+        duration: g.folklore.binary.var.stoneLaserTimer / 5000,
+        overwrite: 'auto',
+        scale: 1,
+      })
       gsap.ticker.add(stoneColdLaserC)
       setTimeout(() => {
         gsap.ticker.remove(stoneColdLaserC)
@@ -431,10 +450,30 @@ const clearAwayTheStone = () => {
             WebkitMaskSize: '436.5px 646px',
             WebkitMaskPosition: 'center calc(50% - 36px)',
           })
+          // node has to be cloned to avoid stone flickering out if/when mask-image is dynamically added
+          const extraStone = nextStone.cloneNode(true)
+          stoneWrapper.insertBefore(extraStone, nextStone)
+          gsap.set(extraStone, {
+            opacity: 1,
+          })
           gsap.set(nextStone, {
             delay: g.folklore.binary.var.stoneLaserTimer / 4000,
             attr: {
               class: 'fragment',
+            },
+            // eslint-disable-next-line func-names, object-shorthand
+            onComplete: function () {
+              setTimeout(() => {
+                gsap.to(extraStone, {
+                  duration: g.folklore.binary.var.stoneLaserTimer / 2000,
+                  // eslint-disable-next-line func-names, object-shorthand
+                  onComplete: function () {
+                    stoneWrapper.removeChild(extraStone)
+                  },
+                  opacity: 0,
+                  overwrite: true,
+                })
+              }, g.folklore.binary.var.stoneLaserTimer)
             },
           })
           setTimeout(() => {
@@ -448,7 +487,7 @@ const clearAwayTheStone = () => {
               w: codeRainMaskSizeObj.w * 2,
               h: codeRainMaskSizeObj.h * 2,
             })
-          }, g.folklore.binary.var.stoneLaserTimer * 1.5)
+          }, g.folklore.binary.var.stoneLaserTimer * 2)
         }
         g.folklore.binary.var.stoneDemolition++
         g.folklore.binary.var.newStoneImgQuickSetter(1)

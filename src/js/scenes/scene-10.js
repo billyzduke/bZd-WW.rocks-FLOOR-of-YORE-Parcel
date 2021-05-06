@@ -1,4 +1,4 @@
-import { gsap } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import assHandEyeBlinkL from 'url:/src/img/lion/lion-hand-eye-left-blink.gif'
 import assHandEyeBlinkR from 'url:/src/img/lion/lion-hand-eye-right-blink.gif'
@@ -67,7 +67,8 @@ const setScene10 = (c, n) => {
     opacity: 1,
   })
 
-  setTimeout(relieveTheLion, (g.scene.skip.ff ? 100 : 4242))
+  const relieveTL = new TL({ defaults: { overwrite: 'auto' } })
+  relieveTL.call(relieveTheLion, [], g.scene.skip.ff || 4.242)
 
   return true
 }

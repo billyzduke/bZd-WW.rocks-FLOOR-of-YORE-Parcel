@@ -132,10 +132,23 @@ div.ramLaser2 {
 }
 div#ramLaser2 {
   left: 23px;
+  transform-origin: 0 0;
 }
 div#ramLaser3 {
+  background-image: none;
+  filter: none;
   right: 22px;
-  transform: scaleX(-1);
+  transform-origin: 100% 0;
+  &:before {
+    background-image: url(../img/ramIcon/ramLaser2.png);
+    background-size: 100% 100%;
+    content: '';
+    display: block;
+    filter: drop-shadow(0 0 4px rgba(0, 255, 0, 1));
+    height: 100%;
+    transform: scaleX(-1);
+    width: 100%;
+  }
 }
 div#owlLaser2 {
   background-image: url(../img/ramIcon/owlLaser2.png);
@@ -144,4 +157,5 @@ div#owlLaser2 {
   left: 50%;
   top: 70px;
   transform: translateX(-50%);
+  transform-origin: 50% 0;
 }
