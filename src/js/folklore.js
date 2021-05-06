@@ -382,7 +382,7 @@ const clearAwayTheStone = () => {
         characters: '%&*+.0123456789Z:<=>£¥§±·¿ØĦƧ௹Ẍ…₡₥₩€₮₲₶℞⅋∴∺∻≇≡⊏⊐⊑⊒⊢⊰⊽⋀⋁⋂⋃⋈⋯⋰♫⟣⧦⨀あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわゐゑをんアイウエオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヲン丝儿吉尺开比艾马﷼',
         font: 'Arial, sans-serif',
         fontSize: 12,
-        columnWidth: 12,
+        columnWidth: 10,
         rowHeight: 12,
         textColor: '#52FF52',
         overlayColor: 'rgba(0, 0, 0, 0.04)',
