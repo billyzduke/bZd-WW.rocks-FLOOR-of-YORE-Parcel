@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-
 const getMouseMove = e => {
   const mm = { x: 0, y: 0 }
   if (e) {

@@ -84,14 +84,7 @@ div#binaryFolklore div#binaryScroll div#parchment img {
 }
 div#binaryFolklore div#binaryScroll div#rosetta img {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-div#binaryFolklore div#binaryScroll div#rosetta img.fragment {
-  mask-image: url(../img/binaryFolklore/rosetta-mask-cubic.gif);
-  mask-repeat: repeat;
-  mask-size: 42px 42px;
-  mask-position: center center;
+  left: 6.75px;
 }
 div#binaryFolklore div#binaryScroll div#rosetta img:nth-child(2) {
   filter: none;
@@ -108,4 +101,10 @@ img#cowStill01 {
 img#cowStill02 {
   transform: translate(-130px, -32px) scale(0);
   right: 78px;
+}
+div#binaryFolklore div#binaryScroll div#rosetta div div.stoneBlock {
+  background-image: url(../img/binaryFolklore/rosetta4.png);
+  background-size: 436.5px 588.5px;
+  width: 10.5px;
+  height: 12.5px;
 }
