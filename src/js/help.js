@@ -137,9 +137,7 @@ const makisu = (mk, remNodes, n = 0) => {
       mkNode.appendChild(childNode)
       return mkNode
     }
-  } /* else {
-    console.log(mk.css)
-  } */
+  }
   return g.document.createElement('span')
 }
 

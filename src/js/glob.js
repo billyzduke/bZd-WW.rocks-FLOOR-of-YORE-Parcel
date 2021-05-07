@@ -14,7 +14,6 @@ const g = {
   folklore: {
     binary: {},
     lore: [],
-    progress: '',
   },
   lion: {
     eyes: {},
@@ -56,7 +55,7 @@ const g = {
       target: 0,
     },
   },
-  subSceneActive: false,
+  subScene: {},
   tL: {}, // gsap timelines
   vid: {}, // video.js objects
   w: {}, // window size properties

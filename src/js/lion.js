@@ -25,7 +25,7 @@ const setLion = () => {
 }
 
 const shockTheLion = () => {
-  console.log('shock the lion')
+  if (g.dev) console.log('shock the lion')
   g.lion.blur2X = gsap.quickSetter('#lionBlur2', 'css')
 }
 

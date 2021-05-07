@@ -30,8 +30,11 @@ import ramIconHornRoll26 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-26.png'
 import ramIconHornRoll27 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-27.png'
 import ramIconHornRoll28 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-28.png'
 import g from './glob'
-import { convertTextToBinary, setRemoveOn } from './utils'
+import { convertTextToBinary, gsapTick, setRemoveOn } from './utils'
+/* eslint-disable import/no-cycle */
 import { printOutBinary } from './folklore'
+import { activateSubScene, subSceneProgress } from './scene'
+/* eslint-enable import/no-cycle */
 
 const setRamIconHorns = () => {
   const ramIconHornRollFrames = [
@@ -82,55 +85,54 @@ const setRamIconHorns = () => {
   }
 }
 
-const ramIconHornsRollOut = () => {
+const ramIconHornsRollOutTick = () => {
   const nextHornRollFrame = g.ramIcon.horns + 1
   if (g.qss.ramIconHorns[nextHornRollFrame]) {
     if (g.qss.ramIconHorns[g.ramIcon.horns]) g.qss.ramIconHorns[g.ramIcon.horns](0)
     g.qss.ramIconHorns[nextHornRollFrame](1)
     g.ramIcon.horns = nextHornRollFrame
   } else {
-    gsap.ticker.remove(ramIconHornsRollOut)
-    g.folklore.binary.progress = 'lyricsPrep'
+    g.ramIcon.unTick()
+    subSceneProgress('scene11', 'folklore', 'ramUnrolled')
     const textLyrics = "The cows are coming home for dinner/The cynic's circus slops their trough with memes/They'll never deign to touch the feed I pour for them again/They'll starve themselves awaiting greener dreams/The zeitgeist is in need of reupholstering/We shabby dolls bereft of dopamine/A cop in every kitchen and a chef in every pot/All our streets paved o'er with baby bumps/We've made ourselves immune to revolution/Wittgenstein escaped in a balloon/Our actions speak so loud that we can't hear the words no more/Binary folklore/Engraven on all fours/You've just enough blood left to paint the door/Gone are the days of yore/Gone are the days of yore/They won't be back no more/Gone are the days of yore"
+    subSceneProgress('scene11', 'folklore', 'prepLyrics')
     const binaryLyricsUnspaced = convertTextToBinary(textLyrics).replace(/\s/g, '')
-    g.folklore.binary.progress = 'lyricsPrint'
-    // setTimeout(() => {
     printOutBinary(binaryLyricsUnspaced)
-    // }, 1242)
   }
 }
-const ramIconHornsRollIn = () => {
+const ramIconHornsRollInTick = () => {
   const nextHornRollFrame = g.ramIcon.horns - 1
   if (g.qss.ramIconHorns[nextHornRollFrame]) {
     if (g.qss.ramIconHorns[g.ramIcon.horns]) g.qss.ramIconHorns[g.ramIcon.horns](0)
     g.qss.ramIconHorns[nextHornRollFrame](1)
     g.ramIcon.horns = nextHornRollFrame
   } else {
-    gsap.ticker.remove(ramIconHornsRollIn)
-    const switcherooTL = new TL()
-    switcherooTL.to('#theOwl', {
-      duration: 2,
-      ease: 'power2.inOut',
-      scale: 1,
-    }, 0.5)
-      .to('#theRamBack, #theRam', {
-        duration: 2,
-        ease: 'power2.inOut',
-        scale: 0,
-      }, '<')
+    g.ramIcon.unTick()
+    subSceneProgress('scene11', 'folklore', 'ramRolled')
+    // const switcherooTL = new TL()
+    // switcherooTL.to('#theOwl', {
+    //   duration: 2,
+    //   ease: 'power2.inOut',
+    //   scale: 1,
+    // }, 0.5)
+    //   .to('#theRamBack, #theRam', {
+    //     duration: 2,
+    //     ease: 'power2.inOut',
+    //     scale: 0,
+    //   }, '<')
   }
 }
 
 const rollEmIn = () => {
-  gsap.ticker.add(ramIconHornsRollIn)
+  subSceneProgress('scene11', 'folklore', 'rollRam')
+  g.ramIcon.unTick = gsapTick(ramIconHornsRollInTick)
 }
 
 const rollEmOut = () => {
-  if (!g.subSceneActive) {
-    g.subSceneActive = true
-    g.folklore.binary.progress = 'ramPrep'
+  if (!g.subScene.scene11.active) {
+    activateSubScene('scene11', 'folklore', 'unrollRam')
     setRemoveOn('#ramIcon', 'click', rollEmOut, 'wait')
-    gsap.ticker.add(ramIconHornsRollOut)
+    g.ramIcon.unTick = gsapTick(ramIconHornsRollOutTick)
     gsap.set('#theOwlIsNotWhatItSeems', {
       attr: {
         class: 'open',

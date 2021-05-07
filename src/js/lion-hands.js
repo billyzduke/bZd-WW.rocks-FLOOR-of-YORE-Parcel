@@ -35,8 +35,10 @@ import assBloodSplash32 from 'url:/src/img/tearsOFBlood/bloodSplash-32.png'
 import assBloodSplash33 from 'url:/src/img/tearsOFBlood/bloodSplash-33.png'
 import assBloodSplash34 from 'url:/src/img/tearsOFBlood/bloodSplash-34.png'
 import g from './glob'
-import { setAddOn, setRemoveOn } from './utils'
+import { gsapTick, setAddOn, setRemoveOn } from './utils'
 import { closeFoetusEye, openFoetusEye } from './foetuses'
+// eslint-disable-next-line import/no-cycle
+import { activateSubScene, subSceneProgress } from './scene'
 
 const say = (who, what) => {
   gsap.set(who, {
@@ -111,8 +113,7 @@ const bloodSplashTick = side => {
     g.qss.bloodSplashes[side][g.foetus[side].splash](1)
     g.foetus[side].splash++
   } else {
-    // eslint-disable-next-line no-use-before-define
-    gsap.ticker.remove(side === 'L' ? bloodSplashL : bloodSplashR)
+    g.foetus.unTick()
   }
 }
 
@@ -160,7 +161,7 @@ const bloodDrop = side => {
         duration: g.scene.skip.ff || 2,
         ease: 'power2.in',
         onComplete: () => {
-          gsap.ticker.add(side === 'L' ? bloodSplashL : bloodSplashR)
+          g.foetus.unTick = gsapTick(side === 'L' ? bloodSplashL : bloodSplashR)
           setAddOn(`#womb${side}`, 'mouseenter', () => openFoetusEye(side))
           setAddOn(`#womb${side}`, 'mouseleave', () => closeFoetusEye(side))
         },
@@ -178,7 +179,7 @@ const bloodDrop = side => {
         duration: g.scene.skip.ff || 6,
         ease: 'elastic.out(1, 0.3)',
         onComplete: () => {
-          g.subSceneActive = false
+          subSceneProgress('scene11', 'foetusL', 'complete')
         },
         opacity: 1,
         rotateZ: 0,
@@ -189,16 +190,17 @@ const bloodDrop = side => {
 }
 
 const bloodDropL = () => {
-  if (!g.subSceneActive) {
-    g.subSceneActive = true
+  if (!g.subScene.scene11.active) {
+    activateSubScene('scene11', 'foetusL', 'cryBlood')
     setRemoveOn('#sayCeren', 'click', bloodDropL)
     bloodDrop('L')
   }
 }
 
 const bloodDropR = () => {
-  if (!g.subSceneActive) {
-    g.subSceneActive = true
+  console.log(g.subScene)
+  if (!g.subScene.scene11.active) {
+    activateSubScene('scene11', 'foetusR', 'cryBlood')
     setRemoveOn('#saySinan', 'click', bloodDropR)
     bloodDrop('R')
   }

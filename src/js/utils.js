@@ -79,13 +79,13 @@ const gsapToOrSet = (tL, too, too2, pos, set = false) => {
 
 const gsapUnTick = tickFunc => {
   gsap.ticker.remove(tickFunc)
-  console.log(`${tickFunc.name} removed from gsap.ticker`)
+  if (g.dev) console.log(`${tickFunc.name} removed from gsap.ticker`)
   return true
 }
 
 const gsapTick = tickFunc => {
   gsap.ticker.add(tickFunc)
-  console.log(`${tickFunc.name} added to gsap.ticker`)
+  if (g.dev) console.log(`${tickFunc.name} added to gsap.ticker`)
   return () => gsapUnTick(tickFunc)
 }
 
@@ -313,9 +313,7 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
         tl.totalTime(0).invalidate().play(time > 0.001 ? time + 1.25 : 0)
       },
     })
-  } else {
-    console.log('Please load Draggable for findMorphOrigin() to work.')
-  }
+  } else if (g.dev) console.log('Please load Draggable for findMorphOrigin() to work.')
   return tl
 }
 

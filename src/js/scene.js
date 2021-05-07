@@ -1,4 +1,5 @@
 import g from './glob'
+import { padStr } from './utils'
 /* eslint-disable import/no-cycle */
 import { scene00, setScene00 } from './scenes/scene-00'
 import { scene01, setScene01 } from './scenes/scene-01'
@@ -34,10 +35,10 @@ scenes.forEach((_, s) => {
 const cleanScene = s => {
   const cleanUps = Object.entries(g.scene.forCleanUp[s])
   if (cleanUps.length) {
-    console.log(`running ${cleanUps.length} cleanUp${cleanUps.length !== 1 ? 's' : ''} for scene ${s}`)
+    if (g.dev) console.log(`running ${cleanUps.length} cleanUp${cleanUps.length !== 1 ? 's' : ''} for scene ${s}`)
     cleanUps.forEach(([ c, u ], i) => {
       if (typeof u === 'function' && u()) {
-        console.log(`${i + 1} - ${c}: this pipe is clean`)
+        if (g.dev) console.log(`${i + 1} - ${c}: this pipe is clean`)
       }
     })
     g.scene.forCleanUp[s] = {}
@@ -64,13 +65,13 @@ const setScene = (toScene = 0) => {
       () => setScene11(11, 12),
     ]
     if (setScenes[toScene]) {
-      console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
+      if (g.dev) console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
       let prevSceneCleaned = false
       if (toScene) {
         prevSceneCleaned = cleanScene(g.scene.current)
-        console.log({ prevSceneCleaned })
+        if (g.dev) console.log({ prevSceneCleaned })
       } else {
-        console.log({ prevSceneCleaned })
+        if (g.dev) console.log({ prevSceneCleaned })
         prevSceneCleaned = true
       }
       if (prevSceneCleaned) {
@@ -87,16 +88,44 @@ const setScene = (toScene = 0) => {
           setSceneSkipper()
           return true
         }
-        console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
-      } else console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
-    } else {
-      console.log(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
-    }
+        if (g.dev) console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
+      } else if (g.dev) console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
+    } else if (g.dev) console.log(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
   } else if (toScene !== g.scene.current) {
     // We're gonna ignore calls to change a scene to itself and not throw errors... Event listeners, it turns out, can accumulate on a single event, esp when using anon funcs
-    console.log(`invalid scene ${g.scene.action} attempted: current scene ${g.scene.current} cannot be ${g.scene.action} to target scene ${toScene}`)
+    if (g.dev) console.log(`invalid scene ${g.scene.action} attempted: current scene ${g.scene.current} cannot be ${g.scene.action} to target scene ${toScene}`)
   }
   return false
+}
+
+const deActivateSubScene = (parentScene, subScene) => {
+  g.subScene[parentScene][subScene].active = false
+  if (g.dev) console.log(`${parentScene} subScene ${subScene} de-activated`)
+  g.subScene[parentScene].active = false
+  if (g.dev) console.log(`${parentScene} all subScenes de-activated`)
+}
+
+const subSceneProgress = (parentScene, subScene, progression) => {
+  g.subScene[parentScene][subScene].progress = progression
+  if (g.dev) console.log(`${parentScene} subScene ${subScene} progress: ${g.subScene[parentScene][subScene].progress}`)
+  if (progression === 'complete') deActivateSubScene(parentScene, subScene)
+}
+
+const setSubScenes = (scene, subScenes = []) => {
+  const parentScene = `scene${padStr(scene)}`
+  if (!g.subScene[parentScene]) g.subScene[parentScene] = { active: false }
+  subScenes.forEach(subScene => {
+    g.subScene[parentScene][subScene] = { active: false }
+    subSceneProgress(parentScene, subScene, 'set')
+  })
+}
+
+const activateSubScene = (parentScene, subScene, progression) => {
+  g.subScene[parentScene].active = true
+  if (g.dev) console.log(`${parentScene} any subScene activated`)
+  g.subScene[parentScene][subScene].active = true
+  if (g.dev) console.log(`${parentScene} subScene ${subScene} activated`)
+  subSceneProgress(parentScene, subScene, progression)
 }
 
 const skipToScene = (toScene, e) => {
@@ -141,5 +170,7 @@ const setSceneSkipper = () => {
   }
 }
 
-export { scenes, setScene, setSceneSkipper }
+export {
+  activateSubScene, scenes, setScene, setSceneSkipper, setSubScenes, subSceneProgress,
+}
 
