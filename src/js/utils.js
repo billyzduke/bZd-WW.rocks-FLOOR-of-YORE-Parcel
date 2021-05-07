@@ -79,13 +79,13 @@ const gsapToOrSet = (tL, too, too2, pos, set = false) => {
 
 const gsapUnTick = tickFunc => {
   gsap.ticker.remove(tickFunc)
-  if (g.dev) console.log(`${tickFunc.name} removed from gsap.ticker`)
+  if (g.dev) console.log(`${tickFunc.name}() removed from gsap.ticker`)
   return true
 }
 
 const gsapTick = tickFunc => {
   gsap.ticker.add(tickFunc)
-  if (g.dev) console.log(`${tickFunc.name} added to gsap.ticker`)
+  if (g.dev) console.log(`${tickFunc.name}() added to gsap.ticker`)
   return () => gsapUnTick(tickFunc)
 }
 
@@ -137,6 +137,7 @@ const setRemoveOn = (domSelector, onEvent, doFunc, cursor = 'no-drop') => {
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     domEl.removeEventListener(onEvent, doFunc)
+    if (g.dev) console.log(`event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
     if (onEvent === 'click') domEl.style.cursor = cursor
   })
   return true
@@ -146,6 +147,7 @@ const setAddOn = (domSelector, onEvent, doFunc, cursor = 'pointer') => {
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     domEl.addEventListener(onEvent, doFunc)
+    if (g.dev) console.log(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
     if (onEvent === 'click') domEl.style.cursor = cursor
   })
   return () => setRemoveOn(domSelector, onEvent, doFunc)
