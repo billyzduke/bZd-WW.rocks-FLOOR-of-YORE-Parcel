@@ -3,11 +3,13 @@ import { gsap } from 'gsap'
 import g from '../glob'
 // eslint-disable-next-line import/no-cycle
 import { setScene, setSubScenes } from '../scene'
+import { setSmokes } from '../smoke'
 
 const scene11 = 'Relieve the Lion / Lightning Rods Off'
 
 const setScene11 = (c, n) => {
-  setSubScenes(c, [ 'foetusL', 'foetusR', 'folklore' ])
+  setSubScenes(c, ['foetusL', 'foetusR', 'folklore'])
+  setSmokes()
 
   g.lion.blur2X({
     opacity: 0,

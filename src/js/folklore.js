@@ -13,10 +13,9 @@ import {
   gsapTick, setAddOn, randOnum, setClearActors, shuffleArray,
 } from './utils'
 import { setCodeRain } from './code-rain'
-/* eslint-disable import/no-cycle */
-import { rollEmIn } from './owl-ram'
+import { stoneSmokeTick1, stoneSmokeTick2 } from './smoke'
+// import { rollEmIn } from './owl-ram'
 import { subSceneProgress } from './scene'
-/* eslint-enable import/no-cycle */
 
 const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
   subSceneProgress('scene11', 'folklore', 'lyricsPrinting')
@@ -33,7 +32,6 @@ const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
     overwrite: 'auto',
     translateY: incY,
   }, '>')
-  // pos += g.folklore.binary.var.timelinePadS
   if (biBlobRow.length > 0) {
     g.el.binary.appendChild(printLineSVG)
     for (let ch = 0; ch < biBlobRow.length; ch++) {
@@ -83,7 +81,6 @@ const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
       onComplete() {
         subSceneProgress('scene11', 'folklore', 'lyricsPrinted')
         g.folklore.binary.var.drawCharsReversed = false
-        // eslint-disable-next-line no-use-before-define
         if (g.ramIcon.unClick()) g.ramIcon.unClick = setAddOn('#ramIcon', 'click', scanFolkLore)
       },
       opacity: 0,
@@ -257,7 +254,6 @@ const scanFolkLoreTick = (f, mv = 0, rv = false) => {
             }
             gsap.set('#ramIcon', {
               cursor: 'pointer',
-              // eslint-disable-next-line func-names, object-shorthand
               onComplete: function () {
                 subSceneProgress('scene11', 'folklore', 'readyToPulverize')
               },
@@ -302,7 +298,7 @@ const printOutCows = () => {
     if (setClearActors('#binaryScroll > div:not(#codeRain)')) {
       subSceneProgress('scene11', 'folklore', 'cowsComeHome')
       g.tL.cowWow = new TL({ defaults: { overwrite: 'auto' } })
-      if (g.scene.skip.ff) cowWowTL.timeScale(1 / g.scene.skip.ff)
+      if (g.scene.skip.ff) g.tL.cowWowTL.timeScale(1 / g.scene.skip.ff)
       g.tL.cowWow.to('#owlGlyphGlow', {
         duration: g.folklore.binary.var.drawSingleCharS * 45,
         ease: 'power1.out',
@@ -341,7 +337,6 @@ const printOutCows = () => {
         .to('#owlGlyphGlow', {
           duration: 1,
           ease: 'power1.in',
-          // eslint-disable-next-line func-names, object-shorthand
           onComplete: function () {
             if (g.ramIcon.unClick()) g.ramIcon.unClick = setAddOn('#ramIcon', 'click', chewMe)
           },
@@ -419,6 +414,16 @@ const clearAwayTheStone = () => {
     gsap.set('#ramIcon', {
       cursor: 'wait',
     })
+    g.smoke.stoneSmoke1.unTick = gsapTick(stoneSmokeTick1)
+    gsap.to('#stoneSmoke1', {
+      duration: g.folklore.binary.var.stoneDemolition === 2 ? g.folklore.binary.var.stoneLaserTimer / 200 : g.folklore.binary.var.stoneLaserTimer / 100,
+      ease: 'power2.out',
+      onComplete: g.smoke.stoneSmoke1.unTick,
+      opacity: 1,
+      overwrite: 'auto',
+      repeat: 1,
+      yoyo: true,
+    })
     const currentStone = g.document.querySelector('#rosetta img')
     const nextStone = currentStone.cloneNode(true)
     nextStone.style.opacity = 0
@@ -480,7 +485,6 @@ const clearAwayTheStone = () => {
     gsap.to('#owlGlyphGlow', {
       duration: g.folklore.binary.var.stoneLaserTimer / 275,
       ease: 'power2.in',
-      // eslint-disable-next-line func-names, object-shorthand
       onComplete: function () {
         gsap.to('#owlGlyphGlow', {
           duration: g.folklore.binary.var.stoneLaserTimer / 1500,
@@ -515,10 +519,18 @@ const clearAwayTheStone = () => {
           stoneColdLaserUnTick2()
           stoneColdLaserUnTick3()
           iceIceBaby()
+          g.smoke.stoneSmoke2.unTick = gsapTick(stoneSmokeTick2)
           g.folklore.binary.var.stoneWrapper.removeChild(currentStone)
           if (g.folklore.binary.var.stoneDemolition === 2) {
             subSceneProgress('scene11', 'folklore', 'completelyPulverized')
             nextStone.style.top = 0
+            gsap.to('#stoneSmoke1', {
+              duration: 1,
+              ease: 'power2.in',
+              onComplete: g.smoke.stoneSmoke1.unTick,
+              opacity: 0,
+              overwrite: 'auto',
+            })
             gsap.set(g.el.codeRain, {
               maskSize: '436.5px 646px',
               maskPosition: 'center calc(50% - 36px)',
@@ -527,7 +539,6 @@ const clearAwayTheStone = () => {
             })
             setTimeout(() => {
               gsap.set('.stoneBlock', {
-                // eslint-disable-next-line func-names, object-shorthand
                 onComplete: function () {
                   g.folklore.binary.var.stoneWrapper.removeChild(nextStone)
                   subSceneProgress('scene11', 'folklore', 'clearingRubble')
@@ -559,7 +570,6 @@ const clearAwayTheStone = () => {
                   gsap.set('#ramIcon', {
                     delay: 12,
                     cursor: 'pointer',
-                    // eslint-disable-next-line func-names, object-shorthand
                     onComplete: function () {
                       subSceneProgress('scene11', 'folklore', 'rubbleCleared')
                     },

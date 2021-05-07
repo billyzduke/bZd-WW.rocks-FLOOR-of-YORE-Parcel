@@ -44,6 +44,7 @@ const g = {
     foetusEyes: {},
     lightningRods: {},
     ramIconHorns: [],
+    smoke: {},
   },
   ramIcon: {},
   scene: { // global scene manager
@@ -55,6 +56,7 @@ const g = {
       target: 0,
     },
   },
+  smoke: {},
   subScene: {},
   tL: {}, // gsap timelines
   vid: {}, // video.js objects

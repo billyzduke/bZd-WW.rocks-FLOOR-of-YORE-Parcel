@@ -23,9 +23,9 @@ const convertTextToBinary = txt => {
 }
 
 const getTranslateValues = element => {
-  if (isSet(window)) {
+  if (isSet(g.window)) {
     // eslint-disable-next-line no-undef
-    const style = window.getComputedStyle(element)
+    const style = g.window.getComputedStyle(element)
     const matrix = style.transform || style.webkitTransform || style.mozTransform
 
     // No transform property. Simply return 0 values.

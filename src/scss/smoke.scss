@@ -1,0 +1,20 @@
+div.smoke {
+  height: 500px;
+  width: 500px;
+  opacity: 0;
+  pointer-events: none;
+  img {
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+  }
+  &.stoneSmoke {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &#stoneSmoke2 {
+    transform: translate(-50%, 12%);
+    opacity: 0.42;
+  }
+}
+
