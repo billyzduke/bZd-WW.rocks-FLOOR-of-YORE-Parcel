@@ -13,8 +13,8 @@ import {
   gsapTick, setAddOn, randOnum, setClearActors, shuffleArray,
 } from './utils'
 import { setCodeRain } from './code-rain'
-import { stoneSmokeTick1, stoneSmokeTick2 } from './smoke'
-// import { rollEmIn } from './owl-ram'
+import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
+import { rollEmInInc } from './owl-ram'
 import { subSceneProgress } from './scene'
 
 const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
@@ -128,6 +128,7 @@ const setFolkLore = () => {
     drawSingleCharS: 0.0125,
     folkLoreMaskIncrementX: 10,
     folkLoreMaskOffsetX: 450,
+    folkLoreQuickSetter: gsap.quickSetter('#binaryFolklore', 'css'),
     owlLaserQuickSetter: gsap.quickSetter('#owlLaser', 'css'),
     owlLaser2QuickSetter: gsap.quickSetter('#owlLaser2', 'css'),
     ramLaserMaxTranslateX: 443,
@@ -185,6 +186,8 @@ const setFolkLore = () => {
     newFolkLore.appendChild(subMask)
     g.el.binaryScroll.appendChild(newFolkLore)
   })
+
+  g.folklore.whichCow = false
 
   gsap.set('#ramLaser', g.folklore.binary.var.cssQuickReSetter)
 }
@@ -271,26 +274,36 @@ const scanFolkLoreTick = (f, mv = 0, rv = false) => {
 }
 
 const chewMe = () => {
+  const whichCow = g.folklore.whichCow ? 'R' : 'L'
+  rollEmInInc(whichCow)
   g.tL.cowWow.pause()
-  g.tL.cowWow.to('#cowStill01', {
+  g.tL.cowWow.to(`#cow${whichCow}`, {
     duration: 0.5,
-    skewX: random(1, 4),
-    skewY: random(3, 5),
+    ease: 'power1.in',
+    skewX: random(1, 3),
+    skewY: random(-3, -5),
+    scaleX: 0.96,
+    scaleY: 1.12,
   }, '>')
   for (let gnaw = 0; gnaw < 10; gnaw++) {
-    g.tL.cowWow.to('#cowStill01', {
+    g.tL.cowWow.to(`#cow${whichCow}`, {
       duration: 0.5,
-      skewX: gnaw % 0 ? random(1, 4) : random(-4, -1),
-      skewY: gnaw % 0 ? random(3, 5) : random(-3, -5),
+      ease: 'none',
+      skewX: randOnum(0, 1) ? random(-3, -1) : random(1, 3),
+      skewY: randOnum(0, 1) ? random(3, 5) : random(-3, -5),
+      scaleX: randOnum(0, 1) ? 1.12 : 0.96,
+      scaleY: randOnum(0, 1) ? 0.96 : 1.12,
     }, '>')
   }
-  g.tL.cowWow.to('#cowStill01', {
+  g.tL.cowWow.to(`#cow${whichCow}`, {
     duration: 0.5,
+    ease: 'power1.out',
     skewX: 0,
     skewY: 0,
+    scale: 1,
   }, '>')
   g.tL.cowWow.play()
-// rollEmIn()
+  g.folklore.whichCow = !g.folklore.whichCow
 }
 
 const printOutCows = () => {
@@ -318,18 +331,12 @@ const printOutCows = () => {
           ease: 'power1.in',
           height: 560,
         }, '<')
-        .to('#cowStill01', {
+        .to('.cow', {
           duration: 1,
           ease: 'power2.in',
           scale: 1,
         }, '<')
-        .to('#cowStill02', {
-          duration: 1,
-          ease: 'expo.in',
-          scaleY: 1,
-          scaleX: -1,
-        }, '<')
-        .to('.cowStill', {
+        .to('.cow', {
           duration: 2,
           ease: 'expo.inOut',
           translateX: 0,
@@ -352,6 +359,9 @@ const stoneColdLaserTick = (laserQss, stoneShiftPx) => {
     mixBlendMode: g.mixBlendModes[randOnum(0, g.mixBlendModes.length - 1)],
   })
   g.folklore.binary.var.oldStoneImgQuickSetter({
+    scale: randOnum(96, 104) / 100,
+    skewX: randOnum(0, 15) / 10 - 0.75,
+    skewY: randOnum(0, 15) / 10 - 0.75,
     translateX: randOnum(0, stoneShiftPx * 2) - stoneShiftPx,
     translateY: randOnum(0, stoneShiftPx * 2) - stoneShiftPx,
   })
@@ -382,6 +392,9 @@ const stoneColdLaserTickC = () => {
   g.folklore.binary.var.oldStoneImgQuickSetter({
     filter: g.folklore.binary.var.stoneFilters[randOnum(0, g.folklore.binary.var.stoneFilters.length - 1)],
     opacity: flashCrack,
+    scale: randOnum(96, 104) / 100,
+    skewX: randOnum(0, 15) / 10 - 0.75,
+    skewY: randOnum(0, 15) / 10 - 0.75,
     translateX: randOnum(0, 24) - 12,
     translateY: randOnum(0, 24) - 12,
   })
@@ -395,6 +408,8 @@ const iceIceBaby = () => {
   g.folklore.binary.var.oldStoneImgQuickSetter({
     filter: g.folklore.binary.var.stoneFilters[0],
     opacity: 1,
+    scale: 1,
+    skew: 0,
     translateX: 0,
     translateY: 0,
   })
@@ -416,12 +431,13 @@ const clearAwayTheStone = () => {
     })
     g.smoke.stoneSmoke1.unTick = gsapTick(stoneSmokeTick1)
     gsap.to('#stoneSmoke1', {
-      duration: g.folklore.binary.var.stoneDemolition === 2 ? g.folklore.binary.var.stoneLaserTimer / 200 : g.folklore.binary.var.stoneLaserTimer / 100,
+      duration: g.folklore.binary.var.stoneDemolition === 2 ? g.folklore.binary.var.stoneLaserTimer / 50 : g.folklore.binary.var.stoneLaserTimer / 100,
       ease: 'power2.out',
       onComplete: g.smoke.stoneSmoke1.unTick,
       opacity: 1,
       overwrite: 'auto',
       repeat: 1,
+      scaleY: g.folklore.binary.var.stoneDemolition === 2 ? 1.5 : 1,
       yoyo: true,
     })
     const currentStone = g.document.querySelector('#rosetta img')
@@ -434,23 +450,15 @@ const clearAwayTheStone = () => {
       overwrite: 'auto',
       scale: 0,
     })
+    let stoneSmoke2opacity = 0
+    let nextStoneImgAss = assFolkloreRosetta2
     // eslint-disable-next-line default-case
     switch (g.folklore.binary.var.stoneDemolition) {
       case 0:
-        gsap.set(nextStone, {
-          attr: {
-            src: assFolkloreRosetta2,
-          },
-          zIndex: -1,
-        })
+        stoneSmoke2opacity = 0.12
         break
       case 1:
-        gsap.set(nextStone, {
-          attr: {
-            src: assFolkloreRosetta3,
-          },
-          zIndex: -1,
-        })
+        nextStoneImgAss = assFolkloreRosetta3
         g.folklore.binary.var.codeRain = setCodeRain({
           element: g.el.codeRain,
           characters: '%&*+.0123456789Z:<=>£¥§±·¿ØĦƧ௹Ẍ…₡₥₩€₮₲₶℞⅋∴∺∻≇≡⊏⊐⊑⊒⊢⊰⊽⋀⋁⋂⋃⋈⋯⋰♫⟣⧦⨀あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわゐゑをんアイウエオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヲン丝儿吉尺开比艾马﷼',
@@ -466,16 +474,19 @@ const clearAwayTheStone = () => {
           showStart: true,
           autoStart: true, // or startRaining() ?
         })
+        stoneSmoke2opacity = 0.23
         break
       case 2:
-        gsap.set(nextStone, {
-          attr: {
-            src: assFolkloreRosetta4,
-          },
-          zIndex: -1,
-        })
+        nextStoneImgAss = assFolkloreRosetta4
+        stoneSmoke2opacity = 0.32
         break
     }
+    gsap.set(nextStone, {
+      attr: {
+        src: nextStoneImgAss,
+      },
+      zIndex: -1,
+    })
     gsap.to(g.folklore.binary.var.stoneDemolition === 1 ? '#ramLaser3' : '#ramLaser2', {
       duration: g.folklore.binary.var.stoneLaserTimer / 5000,
       overwrite: 'auto',
@@ -515,78 +526,84 @@ const clearAwayTheStone = () => {
         })
         const stoneColdLaserUnTick3 = gsapTick(stoneColdLaserTickC)
         setTimeout(() => {
-          stoneColdLaserUnTick1()
-          stoneColdLaserUnTick2()
-          stoneColdLaserUnTick3()
-          iceIceBaby()
-          g.smoke.stoneSmoke2.unTick = gsapTick(stoneSmokeTick2)
-          g.folklore.binary.var.stoneWrapper.removeChild(currentStone)
-          if (g.folklore.binary.var.stoneDemolition === 2) {
-            subSceneProgress('scene11', 'folklore', 'completelyPulverized')
-            nextStone.style.top = 0
-            gsap.to('#stoneSmoke1', {
-              duration: 1,
-              ease: 'power2.in',
-              onComplete: g.smoke.stoneSmoke1.unTick,
-              opacity: 0,
-              overwrite: 'auto',
+          gsap.set('#stoneSmoke2', {
+            opacity: stoneSmoke2opacity,
+            rotateZ: random(0, 359),
+          })
+          g.smoke.stoneSmoke2.unTick = gsapTick(g.folklore.binary.var.stoneDemolition === 2 ? stoneSmokeTick3 : stoneSmokeTick2)
+          setTimeout(() => {
+            stoneColdLaserUnTick1()
+            stoneColdLaserUnTick2()
+            stoneColdLaserUnTick3()
+            iceIceBaby()
+            g.folklore.binary.var.newStoneImgQuickSetter(1)
+            g.folklore.binary.var.stoneWrapper.removeChild(currentStone)
+            gsap.fromTo(nextStone, {
+              scale: 1.18,
+            }, {
+              duration: 2.5,
+              ease: 'elastic.out(1, 0.1)',
+              scale: 1,
             })
-            gsap.set(g.el.codeRain, {
-              maskSize: '436.5px 646px',
-              maskPosition: 'center calc(50% - 36px)',
-              WebkitMaskSize: '436.5px 646px',
-              WebkitMaskPosition: 'center calc(50% - 36px)',
-            })
-            setTimeout(() => {
-              gsap.set('.stoneBlock', {
-                onComplete: function () {
-                  g.folklore.binary.var.stoneWrapper.removeChild(nextStone)
-                  subSceneProgress('scene11', 'folklore', 'clearingRubble')
-                  const shuffled = shuffleArray(Array.from({ length: 45 }, (_, i) => i))
-                  let dLay = 0
-                  shuffled.forEach(x => {
-                    gsap.to(`.stoneBlock_x${x}`, {
-                      delay: dLay / 6,
-                      duration: 1.5,
-                      ease: 'power2.in',
-                      opacity: 0,
-                      stagger: 0.07,
-                    })
-                    dLay++
-                  })
-                  const codeRainMaskSizeObj = { w: 436.5, h: 646 }
-                  g.folklore.binary.codeRainMaskSizeObj = { ...codeRainMaskSizeObj }
-                  g.folklore.binary.codeRainMaskQuickSetter = gsap.quickSetter(g.el.codeRain, 'css')
-                  g.scene.forCleanUp[11].codeRainMaskTicker = gsapTick(embiggenCodeRainMaskTick)
-                  gsap.set('#binaryScroll', {
-                    height: 586,
-                  })
-                  gsap.to(g.folklore.binary.codeRainMaskSizeObj, {
-                    duration: g.scene.skip.ff || 2,
-                    ease: 'power2.in',
-                    h: codeRainMaskSizeObj.h * 2,
-                    w: codeRainMaskSizeObj.w * 2,
-                  })
-                  gsap.set('#ramIcon', {
-                    delay: 12,
-                    cursor: 'pointer',
-                    onComplete: function () {
-                      subSceneProgress('scene11', 'folklore', 'rubbleCleared')
-                    },
-                  })
-                },
-                opacity: 1,
+            if (g.folklore.binary.var.stoneDemolition === 2) {
+              subSceneProgress('scene11', 'folklore', 'completelyPulverized')
+              nextStone.style.top = 0
+              gsap.set(g.el.codeRain, {
+                maskSize: '436.5px 646px',
+                maskPosition: 'center calc(50% - 36px)',
+                WebkitMaskSize: '436.5px 646px',
+                WebkitMaskPosition: 'center calc(50% - 36px)',
               })
-            }, g.folklore.binary.var.stoneLaserTimer)
-          } else {
-            gsap.set('#ramIcon', {
-              cursor: 'pointer',
-            })
-            subSceneProgress('scene11', 'folklore', 'partiallyPulverized')
-          }
-          g.folklore.binary.var.stoneDemolition++
-          g.folklore.binary.var.newStoneImgQuickSetter(1)
-        }, g.folklore.binary.var.stoneLaserTimer * 2)
+              setTimeout(() => {
+                gsap.set('.stoneBlock', {
+                  onComplete: function () {
+                    g.folklore.binary.var.stoneWrapper.removeChild(nextStone)
+                    subSceneProgress('scene11', 'folklore', 'clearingRubble')
+                    const shuffled = shuffleArray(Array.from({ length: 45 }, (_, i) => i))
+                    let dLay = 0
+                    shuffled.forEach(x => {
+                      gsap.to(`.stoneBlock_x${x}`, {
+                        delay: dLay / 6,
+                        duration: 1.5,
+                        ease: 'power2.in',
+                        opacity: 0,
+                        stagger: 0.07,
+                      })
+                      dLay++
+                    })
+                    const codeRainMaskSizeObj = { w: 436.5, h: 646 }
+                    g.folklore.binary.codeRainMaskSizeObj = { ...codeRainMaskSizeObj }
+                    g.folklore.binary.codeRainMaskQuickSetter = gsap.quickSetter(g.el.codeRain, 'css')
+                    g.subScene.scene11.forCleanUp.codeRainMaskTicker = gsapTick(embiggenCodeRainMaskTick)
+                    gsap.set('#binaryScroll', {
+                      height: 586,
+                    })
+                    gsap.to(g.folklore.binary.codeRainMaskSizeObj, {
+                      duration: g.scene.skip.ff || 2,
+                      ease: 'power2.in',
+                      h: codeRainMaskSizeObj.h * 2,
+                      w: codeRainMaskSizeObj.w * 2,
+                    })
+                    gsap.set('#ramIcon', {
+                      delay: 12,
+                      cursor: 'pointer',
+                      onComplete: function () {
+                        subSceneProgress('scene11', 'folklore', 'rubbleCleared')
+                      },
+                    })
+                  },
+                  opacity: 1,
+                })
+              }, g.folklore.binary.var.stoneLaserTimer)
+            } else {
+              gsap.set('#ramIcon', {
+                cursor: 'pointer',
+              })
+              subSceneProgress('scene11', 'folklore', 'partiallyPulverized')
+            }
+            g.folklore.binary.var.stoneDemolition++
+          }, g.folklore.binary.var.stoneLaserTimer)
+        }, g.folklore.binary.var.stoneLaserTimer)
       }, g.folklore.binary.var.stoneLaserTimer)
     }, g.folklore.binary.var.stoneLaserTimer)
   }

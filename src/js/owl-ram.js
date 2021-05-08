@@ -69,7 +69,22 @@ const setRamIconHorns = () => {
     ramIconHornRoll28,
   ]
 
-  g.ramIcon.horns = 0
+  g.ramIcon.horns = {
+    both: 0,
+    L: {
+      from: ramIconHornRollFrames.length - 1,
+      to: 0,
+    },
+    R: {
+      from: ramIconHornRollFrames.length - 1,
+      to: 0,
+    },
+  }
+  g.qss.ramIconHorns = {
+    both: [],
+    L: [],
+    R: [],
+  }
 
   if (g.el.ramIconHornLeft && g.el.ramIconHornRight) {
     for (let f = 0; f <= 28; f++) {
@@ -80,17 +95,19 @@ const setRamIconHorns = () => {
       ramIconHornFrameR.classList.add('ramIconHornFrame', 'ramIconHornFrameR')
       g.el.ramIconHornLeft.appendChild(ramIconHornFrameL)
       g.el.ramIconHornRight.appendChild(ramIconHornFrameR)
-      g.qss.ramIconHorns.push(gsap.quickSetter([ ramIconHornFrameL, ramIconHornFrameR ], 'opacity'))
+      g.qss.ramIconHorns.both.push(gsap.quickSetter([ ramIconHornFrameL, ramIconHornFrameR ], 'opacity'))
+      g.qss.ramIconHorns.L.push(gsap.quickSetter(ramIconHornFrameL, 'opacity'))
+      g.qss.ramIconHorns.R.push(gsap.quickSetter(ramIconHornFrameR, 'opacity'))
     }
   }
 }
 
 const ramIconHornsRollOutTick = () => {
-  const nextHornRollFrame = g.ramIcon.horns + 1
-  if (g.qss.ramIconHorns[nextHornRollFrame]) {
-    if (g.qss.ramIconHorns[g.ramIcon.horns]) g.qss.ramIconHorns[g.ramIcon.horns](0)
-    g.qss.ramIconHorns[nextHornRollFrame](1)
-    g.ramIcon.horns = nextHornRollFrame
+  const nextHornRollFrame = g.ramIcon.horns.both + 1
+  if (g.qss.ramIconHorns.both[nextHornRollFrame]) {
+    if (g.qss.ramIconHorns.both[g.ramIcon.horns.both]) g.qss.ramIconHorns.both[g.ramIcon.horns.both](0)
+    g.qss.ramIconHorns.both[nextHornRollFrame](1)
+    g.ramIcon.horns.both = nextHornRollFrame
   } else {
     g.ramIcon.unTick()
     subSceneProgress('scene11', 'folklore', 'ramUnrolled')
@@ -100,15 +117,16 @@ const ramIconHornsRollOutTick = () => {
     printOutBinary(binaryLyricsUnspaced)
   }
 }
-const ramIconHornsRollInTick = () => {
-  const nextHornRollFrame = g.ramIcon.horns - 1
-  if (g.qss.ramIconHorns[nextHornRollFrame]) {
-    if (g.qss.ramIconHorns[g.ramIcon.horns]) g.qss.ramIconHorns[g.ramIcon.horns](0)
-    g.qss.ramIconHorns[nextHornRollFrame](1)
-    g.ramIcon.horns = nextHornRollFrame
+
+const ramIconHornsRollInIncTick = horn => {
+  const nextHornRollFrame = g.ramIcon.horns[horn].from - 1
+  if (g.ramIcon.horns[horn].from > g.ramIcon.horns[horn].to && g.qss.ramIconHorns[horn][nextHornRollFrame]) {
+    if (g.qss.ramIconHorns[horn][g.ramIcon.horns[horn].from]) g.qss.ramIconHorns[horn][g.ramIcon.horns[horn].from](0)
+    g.qss.ramIconHorns[horn][nextHornRollFrame](1)
+    g.ramIcon.horns[horn].from = nextHornRollFrame
   } else {
     g.ramIcon.unTick()
-    subSceneProgress('scene11', 'folklore', 'ramRolled')
+    // subSceneProgress('scene11', 'folklore', 'ramRolled')
     // const switcherooTL = new TL()
     // switcherooTL.to('#theOwl', {
     //   duration: 2,
@@ -123,10 +141,23 @@ const ramIconHornsRollInTick = () => {
   }
 }
 
-const rollEmIn = () => {
-  subSceneProgress('scene11', 'folklore', 'rollRam')
-  g.ramIcon.unTick = gsapTick(ramIconHornsRollInTick)
+const rollEmInIncTickL = () => {
+  ramIconHornsRollInIncTick('L')
 }
+
+const rollEmInIncTickR = () => {
+  ramIconHornsRollInIncTick('R')
+}
+
+const rollEmInInc = horn => {
+  g.ramIcon.horns[horn].to = g.ramIcon.horns[horn].from - 8
+  g.ramIcon.unTick = gsapTick(horn === 'L' ? rollEmInIncTickL : rollEmInIncTickR)
+}
+
+// const rollEmIn = () => {
+//   subSceneProgress('scene11', 'folklore', 'rollRam')
+//   g.ramIcon.unTick = gsapTick(ramIconHornsRollInTick)
+// }
 
 const rollEmOut = () => {
   if (!g.subScene.scene11.active) {
@@ -141,4 +172,4 @@ const rollEmOut = () => {
   }
 }
 
-export { rollEmIn, rollEmOut, setRamIconHorns }
+export { rollEmInInc, rollEmOut, setRamIconHorns }

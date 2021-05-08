@@ -85,21 +85,32 @@ div#binaryFolklore div#binaryScroll div#rosetta img {
   position: absolute;
   left: 6.75px;
 }
-div#binaryFolklore div#binaryScroll div#rosetta img:nth-child(2) {
+div#binaryFolklore div#binaryScroll div#rosetta img:nth-of-type(2) {
   filter: none;
 }
-img.cowStill {
+div.cow {
   width: 110px; /* 108px; */
   height: 90px; /* 88px; */
   top: 62px;
 }
-img#cowStill01 {
+div#cowL {
   left: 76px;
   transform: translate(132px, -32px) scale(0);
+  background-image: url(../img/binaryFolklore/cow-still.gif);
+  background-size: 100% 100%;
 }
-img#cowStill02 {
+div#cowR {
   transform: translate(-130px, -32px) scale(0);
   right: 78px;
+  &:before {
+    background-image: url(../img/binaryFolklore/cow-still.gif);
+    background-size: 100% 100%;
+    content: '';
+    display: block;
+    height: 100%;
+    transform: scaleX(-1);
+    width: 100%;
+  }
 }
 div#binaryFolklore div#binaryScroll div#rosetta div div.stoneBlock {
   background-image: url(../img/binaryFolklore/rosetta4.png);

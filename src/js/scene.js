@@ -113,7 +113,7 @@ const subSceneProgress = (parentScene, subScene, progression) => {
 
 const setSubScenes = (scene, subScenes = []) => {
   const parentScene = `scene${padStr(scene)}`
-  if (!g.subScene[parentScene]) g.subScene[parentScene] = { active: false }
+  if (!g.subScene[parentScene]) g.subScene[parentScene] = { active: false, forCleanUp: {} }
   subScenes.forEach(subScene => {
     g.subScene[parentScene][subScene] = { active: false }
     subSceneProgress(parentScene, subScene, 'set')

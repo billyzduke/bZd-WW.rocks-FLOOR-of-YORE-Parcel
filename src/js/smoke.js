@@ -263,23 +263,27 @@ const setSmokes = () => {
     }
     g.smoke[smoke.id] = {
       frame: 0,
+      slow: 1,
     }
   })
 }
 
-const smokeTick = (smokeId, loop = false) => {
-  const prevSmokeFrame = g.smoke[smokeId].frame - 1
-  if (g.qss.smoke[smokeId][prevSmokeFrame]) g.qss.smoke[smokeId][prevSmokeFrame](0)
-  if (loop && !g.qss.smoke[smokeId][g.smoke[smokeId].frame]) {
-    g.smoke[smokeId].frame = 0
-  }
-  if (g.qss.smoke[smokeId][g.smoke[smokeId].frame]) {
-    g.qss.smoke[smokeId][g.smoke[smokeId].frame](1)
-    g.smoke[smokeId].frame++
-  } else {
-    g.smoke[smokeId].unTick()
-    g.smoke[smokeId].frame = 0
-  }
+const smokeTick = (smokeId, loop = false, slowFactor = 1) => {
+  if (g.smoke[smokeId].slow === slowFactor) {
+    const prevSmokeFrame = g.smoke[smokeId].frame - 1
+    if (g.qss.smoke[smokeId][prevSmokeFrame]) g.qss.smoke[smokeId][prevSmokeFrame](0)
+    if (loop && !g.qss.smoke[smokeId][g.smoke[smokeId].frame]) {
+      g.smoke[smokeId].frame = 0
+    }
+    if (g.qss.smoke[smokeId][g.smoke[smokeId].frame]) {
+      g.qss.smoke[smokeId][g.smoke[smokeId].frame](1)
+      g.smoke[smokeId].frame++
+    } else {
+      g.smoke[smokeId].unTick()
+      g.smoke[smokeId].frame = 0
+    }
+    g.smoke[smokeId].slow = 1
+  } else g.smoke[smokeId].slow++
 }
 
 const stoneSmokeTick1 = () => {
@@ -287,7 +291,13 @@ const stoneSmokeTick1 = () => {
 }
 
 const stoneSmokeTick2 = () => {
-  smokeTick('stoneSmoke2')
+  smokeTick('stoneSmoke2', false, 2)
 }
 
-export { setSmokes, stoneSmokeTick1, stoneSmokeTick2 }
+const stoneSmokeTick3 = () => {
+  smokeTick('stoneSmoke2', false)
+}
+
+export {
+  setSmokes, stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3,
+}

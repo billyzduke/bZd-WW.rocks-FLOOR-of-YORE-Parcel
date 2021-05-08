@@ -43,7 +43,6 @@ const g = {
     bloodSplashes: {},
     foetusEyes: {},
     lightningRods: {},
-    ramIconHorns: [],
     smoke: {},
   },
   ramIcon: {},

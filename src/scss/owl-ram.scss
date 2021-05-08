@@ -70,7 +70,7 @@ img#owlGlyph {
   opacity: 0;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, calc(-50% - 1.5px));
+  transform: translate(-50%, calc(-50% - 1px));
   transition: opacity 1s ease-in-out;
   /* transition: filter 0.5s ease-in-out; */
 }

@@ -34,7 +34,7 @@ const setScene10 = (c, n) => {
   setAddOn('#ramIcon', 'click', rollEmOut)
   setAddOn('#thirdEyeWrapper', 'click', ex)
 
-  g.qss.ramIconHorns[0](1)
+  g.qss.ramIconHorns.both[0](1)
 
   gsap.set('#lionHead', {
     attr: {
