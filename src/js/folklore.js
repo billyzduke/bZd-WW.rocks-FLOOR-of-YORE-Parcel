@@ -431,7 +431,7 @@ const clearAwayTheStone = () => {
     })
     g.smoke.stoneSmoke1.unTick = gsapTick(stoneSmokeTick1)
     gsap.to('#stoneSmoke1', {
-      duration: g.folklore.binary.var.stoneDemolition === 2 ? g.folklore.binary.var.stoneLaserTimer / 50 : g.folklore.binary.var.stoneLaserTimer / 100,
+      duration: g.folklore.binary.var.stoneLaserTimer / 100,
       ease: 'power2.out',
       onComplete: g.smoke.stoneSmoke1.unTick,
       opacity: 1,
@@ -538,6 +538,14 @@ const clearAwayTheStone = () => {
             iceIceBaby()
             g.folklore.binary.var.newStoneImgQuickSetter(1)
             g.folklore.binary.var.stoneWrapper.removeChild(currentStone)
+            gsap.to('#stoneSmoke1', {
+              duration: g.folklore.binary.var.stoneLaserTimer / 200,
+              ease: 'power2.out',
+              onComplete: g.smoke.stoneSmoke1.unTick,
+              opacity: 0,
+              overwrite: 'auto',
+              scaleY: 1.5,
+            })
             gsap.fromTo(nextStone, {
               scale: 1.18,
             }, {
