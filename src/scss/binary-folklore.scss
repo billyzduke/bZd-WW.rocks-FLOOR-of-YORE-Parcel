@@ -7,9 +7,9 @@ div#binaryFolklore {
   height: 600px;
   overflow: hidden;
   filter: none;
-}
-div#binaryFolklore * {
-  overflow-x: hidden;
+  * {
+    overflow-x: hidden;
+  }
 }
 div#binaryScroll {
   width: 450px;
@@ -28,9 +28,9 @@ div#graphPaper img {
 }
 div#graphPaper {
   top: 7px;
-}
-div#graphPaper img {
-  filter: drop-shadow(0 4.2px 4.2px rgba(0,0,0,0.76));
+  img {
+    filter: drop-shadow(0 4.2px 4.2px rgba(0,0,0,0.76));
+  }
 }
 div#binary {
   width: 388px;
@@ -92,24 +92,24 @@ div.cow {
   width: 110px; /* 108px; */
   height: 90px; /* 88px; */
   top: 62px;
-}
-div#cowL {
-  left: 76px;
-  transform: translate(132px, -32px) scale(0);
-  background-image: url(../img/binaryFolklore/cow-still.gif);
-  background-size: 100% 100%;
-}
-div#cowR {
-  transform: translate(-130px, -32px) scale(0);
-  right: 78px;
-  &:before {
+  &#cowL {
+    left: 76px;
+    transform: translate(132px, -32px) scale(0);
     background-image: url(../img/binaryFolklore/cow-still.gif);
     background-size: 100% 100%;
-    content: '';
-    display: block;
-    height: 100%;
-    transform: scaleX(-1);
-    width: 100%;
+  }
+  &#cowR {
+    transform: translate(-130px, -32px) scale(0);
+    right: 78px;
+    &:before {
+      background-image: url(../img/binaryFolklore/cow-still.gif);
+      background-size: 100% 100%;
+      content: '';
+      display: block;
+      height: 100%;
+      transform: scaleX(-1);
+      width: 100%;
+    }
   }
 }
 div#binaryFolklore div#binaryScroll div#rosetta div div.stoneBlock {
