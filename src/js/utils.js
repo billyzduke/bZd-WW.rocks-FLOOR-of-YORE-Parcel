@@ -148,7 +148,7 @@ const setAddOn = (domSelector, onEvent, doFunc, cursor = 'pointer') => {
   domElements.forEach(domEl => {
     domEl.addEventListener(onEvent, doFunc)
     if (g.dev) console.log(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
-    if (onEvent === 'click') domEl.style.cursor = cursor
+    domEl.style.cursor = cursor
   })
   return () => setRemoveOn(domSelector, onEvent, doFunc)
 }

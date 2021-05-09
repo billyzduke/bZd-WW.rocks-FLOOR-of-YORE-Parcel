@@ -10,8 +10,8 @@ import { ex, setExcs } from '../lion-head'
 import { setFoetuses } from '../foetuses'
 // eslint-disable-next-line object-curly-newline
 import { bloodDropL, bloodDropR, sayCeren, sayNothing, saySinan, setBloodSplashes } from '../lion-hands'
-import { rollEmOut, setRamIconHorns } from '../owl-ram'
-import { setFolkLore } from '../folklore'
+import { setRamIconHorns } from '../owl-ram'
+import { readyFolklore, setFolkLore } from '../folklore'
 
 const scene10 = 'Shock the Lion / Open All Eyes / Release the Owl'
 
@@ -31,7 +31,6 @@ const setScene10 = (c, n) => {
   setAddOn('#handEyeRight, #sayCeren', 'mouseenter', sayCeren)
   setAddOn('#handEyeRight, #sayCeren', 'mouseleave', sayNothing)
   setAddOn('#sayCeren', 'click', bloodDropL)
-  setAddOn('#ramIcon', 'click', rollEmOut)
   setAddOn('#thirdEyeWrapper', 'click', ex)
 
   g.qss.ramIconHorns.both[0](1)

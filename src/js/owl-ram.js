@@ -34,6 +34,7 @@ import { convertTextToBinary, gsapTick, setRemoveOn } from './utils'
 /* eslint-disable import/no-cycle */
 import { printOutBinary } from './folklore'
 import { activateSubScene, subSceneProgress } from './scene'
+import autoprefixer from 'autoprefixer'
 /* eslint-enable import/no-cycle */
 
 const setRamIconHorns = () => {
@@ -162,7 +163,15 @@ const rollEmInInc = horn => {
 const rollEmOut = () => {
   if (!g.subScene.scene11.active) {
     activateSubScene('scene11', 'folklore', 'unrollRam')
-    setRemoveOn('#ramIcon', 'click', rollEmOut, 'wait')
+    g.scene.forCleanUp[11].ramOverClickable()
+    g.scene.forCleanUp[11].ramOutUnClickable()
+    g.scene.forCleanUp[11].ramOverClickable = g.scene.forCleanUp[11].ramOutUnClickable = undefined
+    gsap.set('#theOwlIsNotWhatItSeems', {
+      cursor: 'auto',
+    })
+    gsap.set('#ramIcon', {
+      cursor: 'wait',
+    })
     g.ramIcon.unTick = gsapTick(ramIconHornsRollOutTick)
     gsap.set('#theOwlIsNotWhatItSeems', {
       attr: {

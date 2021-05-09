@@ -45,9 +45,16 @@ div#ramIconHornRight {
   right: 0;
 }
 div#theRamBack,
-div#theRam {
+div#theRam,
+div.folkloreFinalForm {
   height: 143.6289px;
   width: 100%;
+}
+div#threshold > div.folkloreFinalForm {
+  width: 524.3333px;
+  top: 770px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 div#theRamBack {
   background-image: url(../img/ramIcon/ramIcon-center-bottom.png);

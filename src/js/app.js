@@ -60,6 +60,7 @@ const loadApp = () => {
       'shopNavItem',
       'spiralOutPath',
       'theLion',
+      'theRam',
       'threshold',
       'wormSignScreen',
       'yoreFloor',
@@ -76,6 +77,7 @@ const loadApp = () => {
     ...htmEl('.mkNode', 'q', true),
     ...htmEl('.smoke', 'q', true),
     ...htmEl('.wormRingSegment', 'q', true),
+    ...htmEl('.folkloreFinalForm', 'q', false),
   }
   el.bL = []
   g.el = el

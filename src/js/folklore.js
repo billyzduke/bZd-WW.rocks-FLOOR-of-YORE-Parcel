@@ -8,6 +8,13 @@ import assFolkloreRosetta from 'url:/src/img/binaryFolklore/rosetta.png'
 import assFolkloreRosetta2 from 'url:/src/img/binaryFolklore/rosetta2.png'
 import assFolkloreRosetta3 from 'url:/src/img/binaryFolklore/rosetta3.png'
 import assFolkloreRosetta4 from 'url:/src/img/binaryFolklore/rosetta4.png'
+import assFolkloreFinal01 from 'url:/src/img/binaryFolklore/folklore-final-form-01.png'
+import assFolkloreFinal02 from 'url:/src/img/binaryFolklore/folklore-final-form-02.png'
+import assFolkloreFinal03 from 'url:/src/img/binaryFolklore/folklore-final-form-03.png'
+import assFolkloreFinal04 from 'url:/src/img/binaryFolklore/folklore-final-form-04.png'
+import assFolkloreFinal05 from 'url:/src/img/binaryFolklore/folklore-final-form-05.png'
+import assFolkloreFinal06 from 'url:/src/img/binaryFolklore/folklore-final-form-06.png'
+import assFolkloreFinal07 from 'url:/src/img/binaryFolklore/folklore-final-form-07.png'
 import { random } from 'gsap/gsap-core'
 import g from './glob'
 import {
@@ -15,7 +22,7 @@ import {
 } from './utils'
 import { setCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
-import { rollEmInInc } from './owl-ram'
+import { rollEmInInc, rollEmOut } from './owl-ram'
 import { subSceneProgress } from './scene'
 
 gsap.registerPlugin(MorphSVGPlugin)
@@ -136,7 +143,7 @@ const setFolkLore = () => {
     scrollIncrementPx: 16.1667,
     scrollInitialDelayS: 1.25,
     scrollQuickSetter: gsap.quickSetter('#binaryScroll', 'css'),
-    stoneColdLaserMagnitude: [ 3, 6, 12 ],
+    stoneColdLaserMagnitude: [ 2, 6, 12 ],
     stoneDemolition: 0,
     stoneFilters: [
       'drop-shadow(0 4.2px 4.2px rgba(0,0,0,0.76))',
@@ -174,6 +181,15 @@ const setFolkLore = () => {
       assFolkloreParchment,
       assFolkloreRosetta,
     ],
+    finalForm: [
+      assFolkloreFinal01,
+      assFolkloreFinal02,
+      assFolkloreFinal03,
+      assFolkloreFinal04,
+      assFolkloreFinal05,
+      assFolkloreFinal06,
+      assFolkloreFinal07,
+    ],
   }
 
   g.el.codeRain = g.document.createElement('div')
@@ -191,6 +207,15 @@ const setFolkLore = () => {
     subMask.appendChild(flImg)
     newFolkLore.appendChild(subMask)
     g.el.binaryScroll.appendChild(newFolkLore)
+  })
+
+  g.el.fffBody = g.document.querySelector('#engravenOnAllFours foreignObject') // foreignObject body disappears!
+  g.folklore.fff = [ g.el.fffBody.querySelector('img') ]
+  g.folklore.ass.finalForm.forEach(fff => {
+    const fffImg = g.document.createElement('img')
+    fffImg.src = fff
+    g.folklore.fff.push(fffImg)
+    g.el.fffBody.appendChild(fffImg)
   })
 
   g.folklore.whichCow = false
@@ -279,22 +304,20 @@ const scanFolkLoreTick = (f, mv = 0, rv = false) => {
   }
 }
 
-const chewMe = () => {
-  const whichCow = g.folklore.whichCow ? 'R' : 'L'
-  const { gnawSkew } = g.folklore.binary
-  rollEmInInc(whichCow)
+const idleChew = whichCow => {
+  g.tL.cowWow = new TL({ defaults: { overwrite: 'auto' }, repeat: -1 })
   g.tL.cowWow.pause()
   g.tL.cowWow.to(`#cow${whichCow}`, {
-    duration: 0.5,
+    duration: 0.25,
     ease: 'power1.in',
     skewX: random(1, 3),
     skewY: random(-3, -5),
     scaleX: 0.96,
     scaleY: 1.16,
-  }, '>')
+  }, '<')
   for (let gn = 0; gn < 5; gn++) {
     g.tL.cowWow.to(`#cow${whichCow}`, {
-      duration: 0.5,
+      duration: 0.25,
       ease: 'none',
       skewX: randOnum(0, 1) ? random(-3, -1) : random(1, 3),
       skewY: randOnum(0, 1) ? random(3, 5) : random(-3, -5),
@@ -303,23 +326,136 @@ const chewMe = () => {
       repeat: 1,
       yoyo: true,
     }, '>')
-      .to(g.el.codeRain, {
-        duration: 1,
-        ease: 'power2.in',
-        translateY: `-=${gnawSkew * 4}`,
-        skewY: whichCow === 'L' ? `+=${gnawSkew}` : `-=${gnawSkew}`,
-      }, '<')
   }
   g.tL.cowWow.to(`#cow${whichCow}`, {
-    duration: 0.5,
+    duration: 0.25,
     ease: 'power1.out',
     skewX: 0,
     skewY: 0,
     scale: 1,
   }, '>')
   g.tL.cowWow.play()
-  g.folklore.whichCow = !g.folklore.whichCow
-  g.folklore.binary.gnawSkew *= 1.3
+}
+
+const idleChewL = () => {
+  idleChew('L')
+}
+
+const idleChewR = () => {
+  idleChew('R')
+}
+
+const idleCow = () => {
+  g.tL.cowWow.kill()
+}
+
+const chewMe = () => {
+  if (g.subScene.scene11.folklore.progress !== 'cowChewing') {
+    subSceneProgress('scene11', 'folklore', 'cowChewing')
+    const whichCow = g.folklore.whichCow ? 'R' : 'L'
+    const { gnawSkew } = g.folklore.binary
+    const fadeInFff = g.folklore.fff.pop()
+    rollEmInInc(whichCow)
+    g.tL.cowWow.pause()
+    g.tL.cowWow
+      .set('#ramIcon', {
+        cursor: 'wait',
+      })
+      .to(`#cow${whichCow}`, {
+        duration: 1.75,
+        translateY: '+=7.5',
+      }, '>')
+      .to(g.el.binaryScroll, {
+        duration: 1.75,
+        translateY: '+=3.75',
+      }, '<')
+      .to(fadeInFff, {
+        duration: 1.75,
+        opacity: 1,
+      }, '<')
+      .to('#folkloreFinal', {
+        duration: 1.75,
+        translateY: '+=2',
+      }, '<')
+      .to(`#cow${whichCow}`, {
+        duration: 0.25,
+        ease: 'power1.in',
+        skewX: random(1, 3),
+        skewY: random(-3, -5),
+        scaleX: 0.96,
+        scaleY: 1.16,
+      }, '<')
+    for (let gn = 0; gn < 5; gn++) {
+      g.tL.cowWow.to(`#cow${whichCow}`, {
+        duration: 0.25,
+        ease: 'none',
+        skewX: randOnum(0, 1) ? random(-3, -1) : random(1, 3),
+        skewY: randOnum(0, 1) ? random(3, 5) : random(-3, -5),
+        scaleX: randOnum(0, 1) ? 1.12 : 0.96,
+        scaleY: 1,
+        repeat: 1,
+        yoyo: true,
+      }, '>')
+        .to(g.el.codeRain, {
+          duration: 0.5,
+          ease: 'power2.in',
+          translateY: `-=${gnawSkew * 4}`,
+          skewY: whichCow === 'L' ? `+=${gnawSkew}` : `-=${gnawSkew}`,
+        }, '<')
+    }
+    g.tL.cowWow.to(`#cow${whichCow}`, {
+      duration: 0.25,
+      ease: 'power1.out',
+      onComplete: function () {
+        if (g.folklore.binary.gnawSkew < 9) {
+          subSceneProgress('scene11', 'folklore', 'cowSwallow')
+          g.folklore.whichCow = !g.folklore.whichCow
+          g.folklore.binary.gnawSkew *= 1.3
+          gsap.set('#ramIcon', {
+            cursor: 'copy',
+          })
+        } else {
+          g.ramIcon.unClick()
+          const extricatedFolkloreFinalForm = g.el.folkloreFinalForm.cloneNode(true)
+          extricatedFolkloreFinalForm.style.opacity = 0
+          extricatedFolkloreFinalForm.style.cursor = 'no-drop'
+          g.el.threshold.appendChild(extricatedFolkloreFinalForm)
+          g.tL.cowWow
+            .to(extricatedFolkloreFinalForm, {
+              duration: 1,
+              opacity: 1,
+            }, '>')
+            .to(g.el.folkloreFinalForm, {
+              duration: 1,
+              opacity: 0,
+              onComplete: function () {
+                g.el.theRam.removeChild(g.el.folkloreFinalForm)
+                setAddOn('#cowL', 'mouseenter', idleChewL)
+                setAddOn('#cowL', 'mouseleave', idleCow)
+                setAddOn('#cowR', 'mouseenter', idleChewR)
+                setAddOn('#cowR', 'mouseleave', idleCow)
+                gsap.set('.cow', {
+                  pointerEvents: 'auto',
+                })
+                subSceneProgress('scene11', 'folklore', 'complete')
+              },
+            }, '>')
+            .set('#theOwlIsNotWhatItSeems', {
+              attr: {
+                class: '',
+              },
+            }, '<0.5')
+            .set('#ramIcon', {
+              cursor: 'no-drop',
+            }, '>0.5')
+        }
+      },
+      skewX: 0,
+      skewY: 0,
+      scale: 1,
+    }, '>')
+    g.tL.cowWow.play()
+  }
 }
 
 const printOutCows = () => {
@@ -329,14 +465,21 @@ const printOutCows = () => {
       g.folklore.codeRainMaskUnTick()
       g.tL.cowWow = new TL({ defaults: { overwrite: 'auto' } })
       if (g.scene.skip.ff) g.tL.cowWowTL.timeScale(1 / g.scene.skip.ff)
-      g.tL.cowWow.to('#owlGlyphGlow', {
-        duration: g.folklore.binary.drawSingleCharS * 45,
-        ease: 'power1.out',
-        opacity: 1,
-        repeat: 5,
-        scale: 1.5,
-        yoyo: true,
-      }, '<')
+      g.tL.cowWow
+        .set('#ramIcon', {
+          cursor: 'wait',
+        })
+        .set('#folkloreFinal', {
+          translateY: -16,
+        })
+        .to('#owlGlyphGlow', {
+          duration: g.folklore.binary.drawSingleCharS * 45,
+          ease: 'power1.out',
+          opacity: 1,
+          repeat: 5,
+          scale: 1.5,
+          yoyo: true,
+        }, '>')
         .to('#binaryFolklore', {
           duration: 3.42,
           ease: 'power1.in',
@@ -569,6 +712,7 @@ const clearAwayTheStone = () => {
                 duration: g.folklore.binary.stoneLaserTimer / 200,
                 ease: 'power2.out',
                 onComplete: function () {
+                  g.smoke.stoneSmoke1.unTick()
                   g.smoke.stoneSmoke2.unTick()
                 },
                 opacity: 0,
@@ -625,7 +769,7 @@ const clearAwayTheStone = () => {
               }, g.folklore.binary.stoneLaserTimer)
             } else {
               gsap.set('#ramIcon', {
-                cursor: 'pointer',
+                cursor: 'copy',
               })
               subSceneProgress('scene11', 'folklore', 'partiallyPulverized')
             }
@@ -674,4 +818,19 @@ const scanFolkLore = () => {
   }
 }
 
-export { printOutBinary, setFolkLore }
+const readyFolkLore = () => {
+  gsap.set('#theOwlIsNotWhatItSeems', {
+    cursor: 'wait',
+  })
+  setTimeout(() => {
+    g.folklore.unReady = setAddOn('#theOwlIsNotWhatItSeems', 'click', rollEmOut)
+  }, 500)
+}
+
+const unReadyFolkLore = () => {
+  if (g.folklore.unReady && typeof g.folklore.unReady === 'function') g.folklore.unReady()
+}
+
+export {
+  printOutBinary, readyFolkLore, setFolkLore, unReadyFolkLore,
+}

@@ -4,11 +4,16 @@ import g from '../glob'
 // eslint-disable-next-line import/no-cycle
 import { setScene, setSubScenes } from '../scene'
 import { setSmokes } from '../smoke'
+import { readyFolkLore, unReadyFolkLore } from '../folklore'
+import { setAddOn } from '../utils'
 
 const scene11 = 'Relieve the Lion / Lightning Rods Off'
 
 const setScene11 = (c, n) => {
-  setSubScenes(c, ['foetusL', 'foetusR', 'folklore'])
+  g.scene.forCleanUp[c].ramOverClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseenter', readyFolkLore)
+  g.scene.forCleanUp[c].ramOutUnClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseleave', unReadyFolkLore, 'wait')
+
+  setSubScenes(c, [ 'foetusL', 'foetusR', 'folklore' ])
   setSmokes()
 
   g.lion.blur2X({
