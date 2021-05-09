@@ -41,18 +41,20 @@ import { closeFoetusEye, openFoetusEye } from './foetuses'
 import { activateSubScene, subSceneProgress } from './scene'
 
 const say = (who, what) => {
-  gsap.set(who, {
-    attr: {
-      class: `ottomanWrapper${what ? ' saySaySay' : ''}`,
-    },
+  who.forEach(sayWhat => {
+    if (what) {
+      sayWhat.classList.add('saySaySay')
+    } else {
+      sayWhat.classList.remove('saySaySay')
+    }
   })
 }
 
-const saySinan = () => say('#saySinan', 1)
+const saySinan = () => say([ g.el.saySinan ], 1)
 
-const sayCeren = () => say('#sayCeren', 1)
+const sayCeren = () => say([ g.el.sayCeren ], 1)
 
-const sayNothing = () => say('.ottomanWrapper', 0)
+const sayNothing = () => say([ g.el.saySinan, g.el.sayCeren ], 0)
 
 const setBloodSplashes = () => {
   const assBloodSplashFrames = [
@@ -128,7 +130,7 @@ const bloodSplashR = () => {
 const bloodDrop = side => {
   if (!g.foetus[side].drop) {
     g.foetus[side].drop = true
-    const whichHandEye = side === 'L' ? '#sayCeren' : '#saySinan'
+    const whichHandEye = side === 'L' ? g.el.sayCeren : g.el.saySinan
     const tearTL = new TL({ defaults: { overwrite: 'auto' } })
     tearTL.set(whichHandEye, {
       cursor: 'no-drop',
@@ -179,7 +181,7 @@ const bloodDrop = side => {
         duration: g.scene.skip.ff || 6,
         ease: 'elastic.out(1, 0.3)',
         onComplete: () => {
-          subSceneProgress('scene11', 'foetusL', 'complete')
+          subSceneProgress('scene11', `foetus${side}`, 'complete')
         },
         opacity: 1,
         rotateZ: 0,

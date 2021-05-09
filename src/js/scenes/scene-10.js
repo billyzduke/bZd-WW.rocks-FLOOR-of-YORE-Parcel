@@ -11,7 +11,7 @@ import { setFoetuses } from '../foetuses'
 // eslint-disable-next-line object-curly-newline
 import { bloodDropL, bloodDropR, sayCeren, sayNothing, saySinan, setBloodSplashes } from '../lion-hands'
 import { setRamIconHorns } from '../owl-ram'
-import { readyFolklore, setFolkLore } from '../folklore'
+import { setFolkLore } from '../folklore'
 
 const scene10 = 'Shock the Lion / Open All Eyes / Release the Owl'
 

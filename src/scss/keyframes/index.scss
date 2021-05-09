@@ -47,6 +47,15 @@
   }
 }
 
+@keyframes helpScreenScroll {
+  from {
+    background-position: 50% 50%;
+  }
+  to {
+    background-position: calc(50% + 96px) calc(50% - 266px);
+  }
+}
+
 @keyframes ggroveScroll {
   from {
     transform: translateX(-42px);

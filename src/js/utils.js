@@ -133,24 +133,24 @@ const setClearInterval = ntrvl => {
   return true
 }
 
-const setRemoveOn = (domSelector, onEvent, doFunc, cursor = 'no-drop') => {
+const setRemoveOn = (domSelector, onEvent, doFunc, cursorOn = 'no-drop') => {
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     domEl.removeEventListener(onEvent, doFunc)
     if (g.dev) console.log(`event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
-    if (onEvent === 'click') domEl.style.cursor = cursor
+    if (onEvent === 'click') domEl.style.cursor = cursorOn
   })
   return true
 }
 
-const setAddOn = (domSelector, onEvent, doFunc, cursor = 'pointer') => {
+const setAddOn = (domSelector, onEvent, doFunc, cursorOn = 'pointer', cursorOff = 'no-drop') => {
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     domEl.addEventListener(onEvent, doFunc)
     if (g.dev) console.log(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
-    domEl.style.cursor = cursor
+    domEl.style.cursor = cursorOn
   })
-  return () => setRemoveOn(domSelector, onEvent, doFunc)
+  return () => setRemoveOn(domSelector, onEvent, doFunc, cursorOff)
 }
 
 const shuffleArray = arr => {

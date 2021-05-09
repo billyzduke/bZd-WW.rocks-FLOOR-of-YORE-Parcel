@@ -135,6 +135,12 @@ div#lionPsychHalos {
 .anim .jarp img.lionPsychHalo:nth-of-type(5) {
   animation: rememberTheGlow 2.5s ease-in 2s infinite;
 }
+.jarp img.lionPsychHalo {
+  animation-play-state: paused;
+}
+.jarp:hover img.lionPsychHalo {
+  animation-play-state: running !important;
+}
 div#excWrapper {
   border-radius: 50%;
   height: 650px;

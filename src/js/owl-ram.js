@@ -150,8 +150,8 @@ const rollEmInIncTickR = () => {
   ramIconHornsRollInIncTick('R')
 }
 
-const rollEmInInc = horn => {
-  g.ramIcon.horns[horn].to = g.ramIcon.horns[horn].from - 8
+const rollEmInInc = (horn, rollAmount) => {
+  g.ramIcon.horns[horn].to = g.ramIcon.horns[horn].from - rollAmount
   g.ramIcon.unTick = gsapTick(horn === 'L' ? rollEmInIncTickL : rollEmInIncTickR)
 }
 

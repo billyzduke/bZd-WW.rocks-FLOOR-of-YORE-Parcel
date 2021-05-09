@@ -1,6 +1,7 @@
 import { gsap } from 'gsap'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
+import assFloorBGtile from 'url:/src/img/floor/WW_Black_Lodge_Tile.png'
 import g from './glob'
 import { addCSSRule, isNode, isSet } from './utils'
 // eslint-disable-next-line import/no-cycle
@@ -217,7 +218,6 @@ const makisusan = () => {
     const editNodesI = []
     editNodesI[2] = [ 'Days of Yore', '<i>Days of Yore</i>' ]
     editNodesI[18] = [ 'next', '<i>next</i>' ]
-    editNodesI[23] = [ 'most', '<i>most</i>' ]
     editNodesI.forEach((nRe, nI) => {
       const editNode = g.document.getElementById(`mkNode${nI}`)
       editNode.innerHTML = editNode.innerHTML.replace(nRe[0], nRe[1])
@@ -225,6 +225,7 @@ const makisusan = () => {
 
     g.el.helpToggle.addEventListener('click', () => helpToggle())
     g.el.helpScreen.addEventListener('click', () => helpToggle())
+    g.el.helpScreen.style.backgroundImage = `url(${assFloorBGtile})`
   }
 }
 

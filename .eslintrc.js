@@ -24,6 +24,7 @@ module.exports = {
         after: true,
       } ],
     'comma-dangle': ['error', 'always-multiline'],
+    'default-case': 'off',
     'func-names': 'off',
     'import/no-cycle': 'off',
     'import/no-named-as-default': 0,

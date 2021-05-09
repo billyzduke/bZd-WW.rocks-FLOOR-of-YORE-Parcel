@@ -42,6 +42,9 @@ main {
     z-index: -1;
     pointer-events: auto;
   }
+  .wayLaid {
+    cursor: wait !important;
+  }
 }
 @media screen and (max-width: 1220px) {
   main {

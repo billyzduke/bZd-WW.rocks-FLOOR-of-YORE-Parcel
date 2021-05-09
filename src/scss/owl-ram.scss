@@ -31,18 +31,18 @@ div.ramIconHorn {
   top: 0;
   width: 191.5833px;
   filter: drop-shadow(0 0 12px white);
-}
-div.ramIconHorn img {
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-}
-div#ramIconHornLeft {
-  transform: scaleX(-1);
-  left: 0;
-}
-div#ramIconHornRight {
-  right: 0;
+  img {
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+  }
+  &#ramIconHornLeft {
+    transform: scaleX(-1);
+    left: 0;
+  }
+  &#ramIconHornRight {
+    right: 0;
+  }
 }
 div#theRamBack,
 div#theRam,
@@ -55,6 +55,9 @@ div#threshold > div.folkloreFinalForm {
   top: 770px;
   left: 50%;
   transform: translateX(-50%);
+  svg {
+    filter: drop-shadow(0 0 4.4px rgba(0, 255, 0, 0.66));
+  }
 }
 div#theRamBack {
   background-image: url(../img/ramIcon/ramIcon-center-bottom.png);

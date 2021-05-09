@@ -6,7 +6,7 @@ import { randOnum } from './utils'
 import { setScene } from './scene'
 
 const setLion = () => {
-  if (g.el.lolf01 && g.el.lolf02) {
+  if (g.el.lolf01 && g.el.lolf02 && g.el.lionHead) {
     g.window.scrollTo(0, 0)
     gsap.set([ g.el.lolf01, g.el.lolf02 ], {
       translateX: (g.main.w - 1220) / 2,
@@ -21,6 +21,11 @@ const setLion = () => {
     }
     g.lion.eyes.followMouseQuickSetter = gsap.quickSetter('.lionEye', 'css')
     g.lion.eyes.active = false
+    // psychHalos have to animate a little bit before first rollover or it looks fuct
+    g.el.lionHead.classList.add('jarp')
+    setTimeout(() => {
+      g.el.lionHead.classList.remove('jarp')
+    }, 2500)
   }
 }
 

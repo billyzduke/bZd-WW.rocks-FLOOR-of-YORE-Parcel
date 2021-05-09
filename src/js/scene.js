@@ -98,11 +98,20 @@ const setScene = (toScene = 0) => {
   return false
 }
 
+const handleOtherTriggers = (parentScene, subScene, on) => {
+  const otherTriggers = g.document.querySelectorAll(`.${parentScene}.subSceneTrigger:not(.${subScene})`)
+  otherTriggers.forEach(ot => {
+    if (on) ot.classList.add('wayLaid')
+    else ot.classList.remove('wayLaid')
+  })
+}
+
 const deActivateSubScene = (parentScene, subScene) => {
   g.subScene[parentScene][subScene].active = false
   if (g.dev) console.log(`${parentScene} subScene ${subScene} de-activated`)
   g.subScene[parentScene].active = false
   if (g.dev) console.log(`${parentScene} all subScenes de-activated`)
+  handleOtherTriggers(parentScene, subScene, false)
 }
 
 const subSceneProgress = (parentScene, subScene, progression) => {
@@ -125,6 +134,7 @@ const activateSubScene = (parentScene, subScene, progression) => {
   if (g.dev) console.log(`${parentScene} any subScene activated`)
   g.subScene[parentScene][subScene].active = true
   if (g.dev) console.log(`${parentScene} subScene ${subScene} activated`)
+  handleOtherTriggers(parentScene, subScene, true)
   subSceneProgress(parentScene, subScene, progression)
 }
 

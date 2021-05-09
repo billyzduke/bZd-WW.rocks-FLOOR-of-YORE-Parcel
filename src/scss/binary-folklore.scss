@@ -92,6 +92,12 @@ div.cow {
   width: 110px; /* 108px; */
   height: 90px; /* 88px; */
   top: 62px;
+  .cowBell {
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(calc(-50% - 2px));
+    transform-origin: 50% 0;
+  }
   &#cowL {
     left: 76px;
     transform: translate(132px, -32px) scale(0);
@@ -109,6 +115,9 @@ div.cow {
       height: 100%;
       transform: scaleX(-1);
       width: 100%;
+    }
+    .cowBell {
+      transform: translateX(calc(-50% - 3px)) scaleX(-1);
     }
   }
 }
