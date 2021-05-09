@@ -16,6 +16,7 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
     bD: [],
     bN: [],
     bW: g.document.getElementById(`bW${padLyr}`),
+    x: {}
   }
   if (bL.bW) {
     const bLyrClass = `bL${padLyr}`

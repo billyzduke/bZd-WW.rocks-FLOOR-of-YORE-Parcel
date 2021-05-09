@@ -39,6 +39,7 @@ import { gsapTick, setAddOn, setRemoveOn } from './utils'
 import { closeFoetusEye, openFoetusEye } from './foetuses'
 // eslint-disable-next-line import/no-cycle
 import { activateSubScene, subSceneProgress } from './scene'
+import { animateBaubleLayer03or04 } from './baubles/layer-04'
 
 const say = (who, what) => {
   who.forEach(sayWhat => {
@@ -182,6 +183,7 @@ const bloodDrop = side => {
         ease: 'elastic.out(1, 0.3)',
         onComplete: () => {
           subSceneProgress('scene11', `foetus${side}`, 'complete')
+          animateBaubleLayer03or04(side)
         },
         opacity: 1,
         rotateZ: 0,

@@ -1,4 +1,4 @@
-div#bL03 {
+div#bL04 {
   position: absolute;
   top: 99px;
   left: 140px;
@@ -6,7 +6,7 @@ div#bL03 {
   height: 423.5px;
   pointer-events: none;
   svg {
-    &.bL03_p {
+    &.bL04_p {
       position: absolute;
       width: 274.2px;
       height: 423.5px;
@@ -15,18 +15,18 @@ div#bL03 {
       left: 0;
       transform: scale(0.66) rotateZ(16deg);
     }
-    &.bL03_R {
+    &.bL04_R {
       margin-left: 118px;
       margin-top: 0.5px;
       transform: scale(0.66) rotateZ(-16deg);
     }
   }
 }
-svg.bL03_p path {
+svg.bL04_p path {
   fill: none;
   stroke-miterlimit: 10;
 }
-div.bL03 {
+div.bL04 {
   opacity: 0.23;
   transform: translate(176px, 242px) scale(8);
 }

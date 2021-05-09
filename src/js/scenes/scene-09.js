@@ -46,9 +46,6 @@ const setScene09 = (c, n) => {
         path: '#bL02_L',
         end: i => ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + 0.55,
       },
-      onComplete: function () {
-        console.log('suckme L')
-      },
       opacity: 1,
       scale: 0.9,
       stagger: {
@@ -77,9 +74,6 @@ const setScene09 = (c, n) => {
           }
           return ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + n
         },
-      },
-      onComplete: function () {
-        console.log('suckme R')
       },
       opacity: 1,
       scale: 0.9,
