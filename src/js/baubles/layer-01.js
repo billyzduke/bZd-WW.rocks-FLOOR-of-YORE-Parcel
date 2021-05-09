@@ -25,29 +25,30 @@ const assLightning = [
 ]
 
 const setBaubleLayer01 = () => {
-  g.bL[1] = setBaublesInLayer(1, 33)
-  if (g.bL[1]) {
-    g.bL[1].cR = 69
-    g.bL[1].cR02 = g.bL[1].cR * 0.2 // flingRingTick
-    g.bL[1].oR = g.bL[1].cR * 7.5 // spin/orbitRingTicks
-    g.bL[1].ctrRing = g.el.ctrRing
-    g.bL[1].ctrRingLightning = []
-    g.bL[1].zQuickOnSetters = []
+  const bL = 1
+  g.bL[bL] = setBaublesInLayer(bL, 33)
+  if (g.bL[bL]) {
+    g.bL[bL].cR = 69
+    g.bL[bL].cR02 = g.bL[bL].cR * 0.2 // flingRingTick
+    g.bL[bL].oR = g.bL[bL].cR * 7.5 // spin/orbitRingTicks
+    g.bL[bL].ctrRing = g.el.ctrRing
+    g.bL[bL].ctrRingLightning = []
+    g.bL[bL].zQuickOnSetters = []
     assLightning.forEach((assLight, i) => {
-      g.bL[1].ctrRingLightning[i] = g.document.createElement('img')
-      g.bL[1].ctrRingLightning[i].src = assLight
-      g.bL[1].ctrRingLightning[i].id = `z${i}`
-      g.bL[1].ctrRingLightning[i].height = g.bL[1].cR * 2
-      g.bL[1].ctrRingLightning[i].width = g.bL[1].ctrRingLightning[i].height
-      g.bL[1].ctrRingLightning[i].classList.add('z')
+      g.bL[bL].ctrRingLightning[i] = g.document.createElement('img')
+      g.bL[bL].ctrRingLightning[i].src = assLight
+      g.bL[bL].ctrRingLightning[i].id = `z${i}`
+      g.bL[bL].ctrRingLightning[i].height = g.bL[bL].cR * 2
+      g.bL[bL].ctrRingLightning[i].width = g.bL[bL].ctrRingLightning[i].height
+      g.bL[bL].ctrRingLightning[i].classList.add('z')
       assLightning.forEach((_, z) => {
-        if (z !== i) g.bL[1].ctrRingLightning[i].classList.add(`z${z}`)
+        if (z !== i) g.bL[bL].ctrRingLightning[i].classList.add(`z${z}`)
       })
-      g.bL[1].ctrRing.appendChild(g.bL[1].ctrRingLightning[i])
-      g.bL[1].zQuickOnSetters[i] = gsap.quickSetter(`#${g.bL[1].ctrRingLightning[i].id}`, 'css')
+      g.bL[bL].ctrRing.appendChild(g.bL[bL].ctrRingLightning[i])
+      g.bL[bL].zQuickOnSetters[i] = gsap.quickSetter(`#${g.bL[bL].ctrRingLightning[i].id}`, 'css')
     })
-    g.bL[1].zQuickOffSetter = gsap.quickSetter('.z', 'opacity')
-    g.bL[1].st = (2 * Math.PI) / g.bL[1].b.length
+    g.bL[bL].zQuickOffSetter = gsap.quickSetter('.z', 'opacity')
+    g.bL[bL].st = (2 * Math.PI) / g.bL[bL].b.length
   }
 }
 
@@ -203,9 +204,11 @@ const orbitRingTick = (orR, sp = 0.1, ang = 1, sc = 0) => {
     g.bL[1].bD[i] -= sp
   })
 }
+
 const spinRing = () => {
   orbitRingTick(g.bL[1].cR)
 }
+
 const orbitRing = () => {
   orbitRingTick(g.bL[1].oR, 0.25, 0.25, true)
 }

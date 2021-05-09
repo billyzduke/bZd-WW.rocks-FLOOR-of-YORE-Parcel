@@ -39,9 +39,8 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
         bL.bQuickMoveSetters[b] = gsap.quickSetter(bL.b[b], 'css')
       }
     }
-    return bL
   }
-  return null
+  return bL
 }
 
 export { setBaublesInLayer }

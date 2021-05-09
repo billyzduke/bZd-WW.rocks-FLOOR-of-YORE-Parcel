@@ -95,6 +95,7 @@ const claim = whEx => {
     excTL02.to(`#ex${whEx}`, {
       duration: randSpeed * 2,
       ease: 'none',
+      fill: randOcolor(),
       motionPath: {
         align: '#excOrbit',
         alignOrigin: [ 0.5, 0.5 ],
@@ -117,12 +118,14 @@ const claim = whEx => {
       if (i + 1 < g.exc.path.length) {
         excTL02.to(`#ex${whEx} .xPath00`, {
           duration: 1,
+          fill: randOcolor(),
           morphSVG: `#ex${whEx} .xPath${padStr(i + 1)}`,
         }, i === 0 ? 0 : '<2.5')
       }
     })
     excTL02.to(`#ex${whEx}`, {
       duration: 2.5,
+      fill: randOcolor(),
       opacity: 0,
     }, '>')
     g.exc.dir = g.exc.dir ? 0 : 1

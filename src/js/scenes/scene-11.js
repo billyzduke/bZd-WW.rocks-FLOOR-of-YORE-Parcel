@@ -6,12 +6,15 @@ import { setScene, setSubScenes } from '../scene'
 import { setSmokes } from '../smoke'
 import { readyFolkLore, unReadyFolkLore } from '../folklore'
 import { setAddOn } from '../utils'
+import { setBaubleLayer03 } from '../baubles/layer-03'
 
 const scene11 = 'Relieve the Lion / Lightning Rods Off'
 
 const setScene11 = (c, n) => {
   g.scene.forCleanUp[c].ramOverClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseenter', readyFolkLore)
   g.scene.forCleanUp[c].ramOutUnClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseleave', unReadyFolkLore, 'wait')
+
+  setBaubleLayer03()
 
   setSubScenes(c, [ 'foetusL', 'foetusR', 'folklore' ])
   setSmokes()

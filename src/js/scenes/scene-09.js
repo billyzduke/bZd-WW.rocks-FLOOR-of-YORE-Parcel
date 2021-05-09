@@ -37,7 +37,7 @@ const setScene09 = (c, n) => {
       class: 'wheelOfJoy gank',
     },
   })
-    .to('.b.bL02_L', {
+    .to('#bL02 #bW02 div.b.bL02_L', {
       duration: 2.5,
       ease: 'none',
       motionPath: {
@@ -46,13 +46,16 @@ const setScene09 = (c, n) => {
         path: '#bL02_L',
         end: i => ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + 0.55,
       },
+      onComplete: function () {
+        console.log('suckme L')
+      },
       opacity: 1,
       scale: 0.9,
       stagger: {
         each: 0.15,
       },
     })
-    .to('.b.bL02_R', {
+    .to('#bL02 #bW02 div.b.bL02_R', {
       duration: 2.5,
       ease: 'none',
       motionPath: {
@@ -74,6 +77,9 @@ const setScene09 = (c, n) => {
           }
           return ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + n
         },
+      },
+      onComplete: function () {
+        console.log('suckme R')
       },
       opacity: 1,
       scale: 0.9,

@@ -1,7 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
-import { setAddOn, setClearActors, setClearInterval } from '../utils'
+import { setAddOn } from '../utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
@@ -18,6 +18,7 @@ const setScene08 = (c, n) => {
   g.scene.forCleanUp[c].clearDrWorm = clearShaiHulud
 
   setBaubleLayer02()
+  console.log(g.bL)
   resetCtrRing(5.75)
 
   g.el.theLion.classList.add('anim')
