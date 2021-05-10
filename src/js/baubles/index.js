@@ -1,7 +1,12 @@
 import { gsap } from 'gsap'
+import sync from 'css-animation-sync'
 
 import { padStr } from '../utils'
 import g from '../glob'
+import { setBaubleLayer01 } from './layer-01'
+import { setBaubleLayer02 } from './layer-02'
+import { setBaubleLayer03 } from './layer-03'
+import { setBaubleLayer04 } from './layer-04'
 
 const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
   // bOpts = {
@@ -16,7 +21,7 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
     bD: [],
     bN: [],
     bW: g.document.getElementById(`bW${padLyr}`),
-    x: {}
+    x: {},
   }
   if (bL.bW) {
     const bLyrClass = `bL${padLyr}`
@@ -41,7 +46,15 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
       }
     }
   }
+  sync('rockabye')
   return bL
 }
 
-export { setBaublesInLayer }
+const setBaubleLayers = () => {
+  setBaubleLayer01()
+  setBaubleLayer02()
+  setBaubleLayer03()
+  setBaubleLayer04()
+}
+
+export { setBaublesInLayer, setBaubleLayers }

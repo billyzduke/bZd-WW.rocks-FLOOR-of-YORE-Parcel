@@ -2637,6 +2637,11 @@ crypto-browserify@^3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+css-animation-sync@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/css-animation-sync/-/css-animation-sync-0.2.0.tgz#0c0526ac1595fb6d14c23dd44a10982fa696035c"
+  integrity sha512-5Dy9/pzDm17HAI5x2ANg9c9u66MuTO9UDzrs4AFgq4fGB97N/xj0MxdEZbhtzTbAfi4x5ILeMMTQtxXMnGU0rw==
+
 css-color-names@0.0.4, css-color-names@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
