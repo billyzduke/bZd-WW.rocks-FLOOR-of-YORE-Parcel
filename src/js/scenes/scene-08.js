@@ -18,7 +18,6 @@ const setScene08 = (c, n) => {
   g.scene.forCleanUp[c].clearDrWorm = clearShaiHulud
 
   setBaubleLayer02()
-  console.log(g.bL)
   resetCtrRing(5.75)
 
   g.el.theLion.classList.add('anim')

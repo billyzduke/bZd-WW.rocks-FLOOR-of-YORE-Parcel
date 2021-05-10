@@ -133,6 +133,7 @@ const bloodDrop = side => {
     g.foetus[side].drop = true
     const whichHandEye = side === 'L' ? g.el.sayCeren : g.el.saySinan
     const tearTL = new TL({ defaults: { overwrite: 'auto' } })
+    if (g.subScene.scene11[`foetus${side}`].ff) tearTL.timeScale(1 / g.subScene.scene11[`foetus${side}`].ff)
     tearTL.set(whichHandEye, {
       cursor: 'no-drop',
     }, '>')
@@ -140,28 +141,28 @@ const bloodDrop = side => {
         rotateZ: side === 'L' ? 592 : -592,
       }, '>')
       .to(`#bloodDrop${side}`, {
-        duration: g.scene.skip.ff || 0.75,
+        duration: 0.75,
         ease: 'power1.in',
         scale: 1,
       }, '>')
       .to(`#bloodDrop${side}`, {
-        duration: g.scene.skip.ff || 3,
+        duration: 3,
         ease: 'power2.in',
         translateY: `+=${side === 'L' ? 444 : 446}`,
       }, '>')
       .to(`#womb${side}`, {
-        duration: g.scene.skip.ff || 3,
+        duration: 3,
         ease: 'power3.in',
         translateX: side === 'L' ? 46 : 462,
         translateY: side === 'L' ? 207 : 211,
       }, '<')
       .to(`#bloodDrop${side}`, {
-        duration: g.scene.skip.ff || 2,
+        duration: 2,
         ease: 'power2.in',
         scale: 6,
       }, '<1')
       .to(`#womb${side}`, {
-        duration: g.scene.skip.ff || 2,
+        duration: 2,
         ease: 'power2.in',
         onComplete: () => {
           g.foetus.unTick = gsapTick(side === 'L' ? bloodSplashL : bloodSplashR)
@@ -173,17 +174,17 @@ const bloodDrop = side => {
         scale: side === 'L' ? 0.87 : 0.85,
       }, '<')
       .to(`#bloodDrop${side}`, {
-        duration: g.scene.skip.ff || 0.15,
+        duration: 0.15,
         opacity: 0,
         scaleY: 0.2,
         translateY: 670,
       }, '<2')
       .to(`#womb${side}`, {
-        duration: g.scene.skip.ff || 6,
+        duration: 6,
         ease: 'elastic.out(1, 0.3)',
         onComplete: () => {
+          animateBaubleLayer03or04(side, g.subScene.scene11[`foetus${side}`].ff)
           subSceneProgress('scene11', `foetus${side}`, 'complete')
-          animateBaubleLayer03or04(side)
         },
         opacity: 1,
         rotateZ: 0,
@@ -202,7 +203,6 @@ const bloodDropL = () => {
 }
 
 const bloodDropR = () => {
-  console.log(g.subScene)
   if (!g.subScene.scene11.active) {
     activateSubScene('scene11', 'foetusR', 'cryBlood')
     setRemoveOn('#saySinan', 'click', bloodDropR)

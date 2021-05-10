@@ -34,6 +34,7 @@ main {
   top: 0;
   width: 100vw;
   transform-origin: 0 0;
+  z-index: 0;
   img.transClicker {
     border: none;
     height: 100%;
@@ -58,21 +59,4 @@ iframe#discoWall {
   overflow: hidden;
   border: none;
   z-index: -400;
-}
-
-#sceneSkipper {
-  top: calc(100vh - 56px);
-  color: red;
-  display: block;
-  font-size: 24px;
-  font-weight: bold;
-  opacity: 0.42;
-  padding: 0 3px;
-  position: fixed;
-  right: 23px;
-  transition: opacity 1s ease-in-out;
-  z-index: 10000;
-}
-#sceneSkipper:hover {
-  opacity: 0.88;
 }

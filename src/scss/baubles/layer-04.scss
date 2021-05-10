@@ -10,15 +10,15 @@ div#bL04 {
       position: absolute;
       width: 274.2px;
       height: 423.5px;
-      margin-left: -21.5px;
+      margin-left: 10px;
       top: 0;
       left: 0;
-      transform: scale(0.66) rotateZ(16deg);
+      transform: scale(0.69, 1) skewX(-6deg) rotateZ(58deg);
     }
     &.bL04_R {
-      margin-left: 118px;
+      margin-left: 90px;
       margin-top: 0.5px;
-      transform: scale(0.66) rotateZ(-16deg);
+      transform: scale(0.69, 1) skewX(6deg) rotateZ(-58deg);
     }
   }
 }

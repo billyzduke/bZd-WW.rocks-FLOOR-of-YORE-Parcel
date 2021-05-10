@@ -51,7 +51,7 @@ const g = {
     forCleanUp: [],
     current: 0,
     skip: {
-      dur: 0,
+      ff: 0,
       target: 0,
     },
   },

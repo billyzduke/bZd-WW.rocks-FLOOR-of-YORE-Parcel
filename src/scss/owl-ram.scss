@@ -139,6 +139,7 @@ div.ramLaser2 {
   width: 242px;
   height: 330px;
   pointer-events: none;
+  transform: scale(0);
 }
 div#ramLaser2 {
   left: 23px;
@@ -166,6 +167,6 @@ div#owlLaser2 {
   height: 254px;
   left: 50%;
   top: 70px;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(0);
   transform-origin: 50% 0;
 }

@@ -18,8 +18,9 @@ const setBaubleLayer04 = () => {
   // }
 }
 
-const animateBaubleLayer04 = () => {
+const animateBaubleLayer04 = ff => {
   const bLL = g.bL[4].b.length
+  if (ff) g.tL.b.timeScale(1 / ff)
   g.tL.b
     .to('#bL04 #bW04 div.b.bL04_L', {
       duration: 2.5,
@@ -59,6 +60,9 @@ const animateBaubleLayer04 = () => {
           return ((Math.abs(bLL / 2 - i) / bLL) * 0.9) + n
         },
       },
+      onComplete: function () {
+        g.tL.b.timeScale(1)
+      },
       opacity: 1,
       scale: 0.9,
       stagger: {
@@ -67,11 +71,12 @@ const animateBaubleLayer04 = () => {
     }, '<0.15')
 }
 
-const animateBaubleLayer03or04 = (side) => {
+const animateBaubleLayer03or04 = (side, ff) => {
   let bSide = side
+  if (!bSide) bSide = 'L'
   if (g.bL[3].x[bSide]) bSide = bSide === 'L' ? 'R' : 'L'
-  if (g.bL[3].x[bSide]) animateBaubleLayer04()
-  else animateBaubleLayer03(bSide)
+  if (g.bL[3].x[bSide]) animateBaubleLayer04(ff)
+  else animateBaubleLayer03(bSide, ff)
 }
 
 export { animateBaubleLayer03or04, setBaubleLayer04 }

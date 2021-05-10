@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import assFoetusEye00 from 'url:/src/img/foetuses/foetusEye-00.png'

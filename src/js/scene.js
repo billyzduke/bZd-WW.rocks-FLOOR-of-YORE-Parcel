@@ -1,6 +1,5 @@
 import g from './glob'
-import { padStr } from './utils'
-/* eslint-disable import/no-cycle */
+import { padStr, setAddOn, upperCaseFirstLetter } from './utils'
 import { scene00, setScene00 } from './scenes/scene-00'
 import { scene01, setScene01 } from './scenes/scene-01'
 import { scene02, setScene02 } from './scenes/scene-02'
@@ -13,6 +12,7 @@ import { scene08, setScene08 } from './scenes/scene-08'
 import { scene09, setScene09 } from './scenes/scene-09'
 import { scene10, setScene10 } from './scenes/scene-10'
 import { scene11, setScene11 } from './scenes/scene-11'
+import { rollEmOut } from './owl-ram'
 
 const scenes = [
   scene00,
@@ -37,9 +37,12 @@ const cleanScene = s => {
   if (cleanUps.length) {
     if (g.dev) console.log(`running ${cleanUps.length} cleanUp${cleanUps.length !== 1 ? 's' : ''} for scene ${s}`)
     cleanUps.forEach(([ c, u ], i) => {
-      if (typeof u === 'function' && u()) {
-        if (g.dev) console.log(`${i + 1} - ${c}: this pipe is clean`)
-      }
+      if (typeof u === 'function') {
+        const uu = u()
+        if (typeof uu === 'boolean' && uu) {
+          if (g.dev) console.log(`${i + 1} - ${c}: this pipe is clean`)
+        } else if (g.dev) console.log(`${i + 1} - ${c}: pipe cleaning function failed, returned:`, uu)
+      } else if (g.dev) console.log(`${i + 1} - ${c}: pipe cleaning failed: no function`, u)
     })
     g.scene.forCleanUp[s] = {}
   }
@@ -48,7 +51,6 @@ const cleanScene = s => {
 
 const setScene = (toScene = 0) => {
   g.scene.action = 'set'
-  // console.log({ scene, toScene })
   if (!toScene || toScene === g.scene.current + 1) {
     const setScenes = [
       () => setScene00(0, 1),
@@ -78,13 +80,20 @@ const setScene = (toScene = 0) => {
         if (toScene >= g.scene.skip.target) {
           g.scene.skip.ff = 0
           g.tL.yore.timeScale(1)
-        } else g.scene.action = 'skip'
+        } else {
+          g.scene.action = 'skip'
+          const parentScene = `scene${g.scene.current}`
+          if (g.subScene[parentScene]) {
+            Object.keys(g.subScene[parentScene]).forEach(subScene => {
+              skipSubScene(g.scene.current, subScene)
+            })
+          }
+        }
         const nextSceneSet = setScenes[toScene]()
         console.log({ nextSceneSet })
         if (nextSceneSet) {
           g.scene.current = toScene
           console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
-          // eslint-disable-next-line no-use-before-define
           setSceneSkipper()
           return true
         }
@@ -112,21 +121,26 @@ const deActivateSubScene = (parentScene, subScene) => {
   g.subScene[parentScene].active = false
   if (g.dev) console.log(`${parentScene} all subScenes de-activated`)
   handleOtherTriggers(parentScene, subScene, false)
+  killSkipper(parentScene, subScene)
 }
 
 const subSceneProgress = (parentScene, subScene, progression) => {
   g.subScene[parentScene][subScene].progress = progression
   if (g.dev) console.log(`${parentScene} subScene ${subScene} progress: ${g.subScene[parentScene][subScene].progress}`)
-  if (progression === 'complete') deActivateSubScene(parentScene, subScene)
+  if (progression === 'complete') {
+    g.subScene[parentScene][subScene].ff = 0
+    deActivateSubScene(parentScene, subScene)
+  }
 }
 
 const setSubScenes = (scene, subScenes = []) => {
   const parentScene = `scene${padStr(scene)}`
   if (!g.subScene[parentScene]) g.subScene[parentScene] = { active: false, forCleanUp: {} }
   subScenes.forEach(subScene => {
-    g.subScene[parentScene][subScene] = { active: false }
+    g.subScene[parentScene][subScene] = { active: false, ff: 0 }
     subSceneProgress(parentScene, subScene, 'set')
   })
+  if (g.subScene[parentScene]) setSubSceneSkippers(scene)
 }
 
 const activateSubScene = (parentScene, subScene, progression) => {
@@ -152,7 +166,7 @@ const skipToScene = (toScene, e) => {
 
 const setSceneSkipper = () => {
   if (g.dev) {
-    if (!g.el.sceneSkipper.options.length) {
+    if (g.el.sceneSkipper && !g.el.sceneSkipper.options.length) {
       scenes.forEach((s, i) => {
         const ssOption = g.document.createElement('option')
         ssOption.value = i
@@ -174,10 +188,79 @@ const setSceneSkipper = () => {
         }
       }
     }
-  } else if (g.el.sceneSkipper && g.el.sceneSkipper.parentNode) {
-    g.el.sceneSkipper.parentNode.removeChild(g.el.sceneSkipper)
-    g.el.sceneSkipper = undefined
+  } else {
+    if (g.el.sceneSkipper && g.el.sceneSkipper.parentNode) {
+      g.el.sceneSkipper.parentNode.removeChild(g.el.sceneSkipper)
+      g.el.sceneSkipper = undefined
+    }
+    if (g.el.subSceneSkipper && g.el.subSceneSkipper.parentNode) {
+      g.el.subSceneSkipper.parentNode.removeChild(g.el.subSceneSkipper)
+      g.el.subSceneSkipper = undefined
+    }
   }
+}
+
+const setSubSceneSkippers = scene => {
+  if (scene && g.dev) {
+    const parentScene = `scene${padStr(scene)}`
+    if (g.el.subSceneSkippers.children.length) {
+      g.el.subSceneSkippers.children.forEach(ssSk => {
+        ssSk.parentNode.removeChild(ssSk)
+      })
+    }
+    if (g.el.subSceneSkippers && g.subScene[parentScene]) {
+      Object.keys(g.subScene[parentScene]).forEach(subScene => {
+        if (![ 'active', 'ff', 'forCleanUp' ].includes(subScene)) {
+          const ss = `ss${upperCaseFirstLetter(subScene)}`
+          const skipButton = g.document.createElement('input')
+          skipButton.type = 'checkbox'
+          skipButton.id = ss
+          skipButton.value = subScene
+          skipButton.classList.add('onOffSwitch')
+          const skipLabel = g.document.createElement('label')
+          skipLabel.classList.add('onOffWrapper')
+          const skipSpan = g.document.createElement('span')
+          skipSpan.classList.add('onOffLabel')
+          skipSpan.innerHTML = subScene
+          skipSpan.for = subScene
+          skipLabel.appendChild(skipButton)
+          skipLabel.appendChild(skipSpan)
+          g.el.subSceneSkippers.appendChild(skipLabel)
+          g.scene.forCleanUp[scene][ss] = setAddOn(`#${ss}`, 'click', () => skipSubScene(scene, subScene))
+        }
+      })
+    }
+  }
+}
+
+const cleanSkipper = (scene, ss) => {
+  if (g.scene.forCleanUp[scene][ss] && typeof g.scene.forCleanUp[scene][ss] === 'function') {
+    g.scene.forCleanUp[scene][ss]()
+    g.scene.forCleanUp[scene][ss] = undefined
+  }
+}
+
+const skipSubScene = (scene, subScene) => {
+  const parentScene = `scene${padStr(scene)}`
+  const ss = `ss${upperCaseFirstLetter(subScene)}`
+  cleanSkipper(scene, ss)
+  g.subScene[parentScene][subScene].ff = 0.1
+  if (scene === 11 && subScene === 'folklore') {
+    g.folklore.binary.folkLoreMaskIncrementX = 225
+    rollEmOut()
+  } else {
+    const ssTrigger = g.document.querySelector(`.${parentScene}.subSceneTrigger.${subScene}`)
+    ssTrigger.click()
+  }
+}
+
+const killSkipper = (parentScene, subScene) => {
+  const scene = parentScene.substr(5)
+  const ss = `ss${upperCaseFirstLetter(subScene)}`
+  cleanSkipper(scene, ss)
+  const skipButton = g.document.querySelector(`#${ss}`)
+  skipButton.checked = true
+  skipButton.disabled = true
 }
 
 export {

@@ -78,15 +78,21 @@ const gsapToOrSet = (tL, too, too2, pos, set = false) => {
 }
 
 const gsapUnTick = tickFunc => {
-  gsap.ticker.remove(tickFunc)
-  if (g.dev) console.log(`${tickFunc.name}() removed from gsap.ticker`)
-  return true
+  if (gsap.ticker._listeners.includes(tickFunc)) {
+    gsap.ticker.remove(tickFunc)
+    if (g.dev) console.log(`${tickFunc.name}() removed from gsap.ticker`)
+    return true
+  }
+  return [ tickFunc, gsap.ticker._listeners, gsap.ticker._listeners.includes(tickFunc) ]
 }
 
 const gsapTick = tickFunc => {
-  gsap.ticker.add(tickFunc)
-  if (g.dev) console.log(`${tickFunc.name}() added to gsap.ticker`)
-  return () => gsapUnTick(tickFunc)
+  if (!gsap.ticker._listeners.includes(tickFunc)) {
+    gsap.ticker.add(tickFunc)
+    if (g.dev) console.log(`${tickFunc.name}() added to gsap.ticker`)
+    return () => gsapUnTick(tickFunc)
+  }
+  return false
 }
 
 // eslint-disable-next-line no-undef
@@ -319,6 +325,8 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
   return tl
 }
 
+export const upperCaseFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1)
+
 const uuidv4 = () => {
   const c = '0123456789abcdef'.split('')
   const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.split('')
@@ -369,6 +377,7 @@ export {
   getTranslateValues,
   gsapToOrSet,
   gsapTick,
+  gsapUnTick,
   isNode,
   isSet,
   padStr,

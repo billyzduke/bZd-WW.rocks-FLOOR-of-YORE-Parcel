@@ -19,10 +19,10 @@ const setBaubleLayer03 = () => {
   // }
 }
 
-const animateBaubleLayer03 = side => {
+const animateBaubleLayer03 = (side, ff) => {
   const bLL = g.bL[3].b.length
   gsap.to(`#bL03 #bW03 div.b.bL03_${side}`, {
-    duration: 2.5,
+    duration: ff || 2.5,
     ease: 'none',
     motionPath: {
       align: `#bL03_${side}`,
@@ -47,7 +47,7 @@ const animateBaubleLayer03 = side => {
     opacity: 1,
     scale: 0.9,
     stagger: {
-      each: 0.15,
+      each: ff || 0.15,
     },
   })
 }
