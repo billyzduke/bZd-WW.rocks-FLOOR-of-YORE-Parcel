@@ -29,12 +29,12 @@ import ramIconHornRoll25 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-25.png'
 import ramIconHornRoll26 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-26.png'
 import ramIconHornRoll27 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-27.png'
 import ramIconHornRoll28 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-28.png'
+import autoprefixer from 'autoprefixer'
 import g from './glob'
 import { convertTextToBinary, gsapTick, setRemoveOn } from './utils'
 /* eslint-disable import/no-cycle */
 import { printOutBinary } from './folklore'
 import { activateSubScene, subSceneProgress } from './scene'
-import autoprefixer from 'autoprefixer'
 /* eslint-enable import/no-cycle */
 
 const setRamIconHorns = () => {
@@ -110,7 +110,7 @@ const ramIconHornsRollOutTick = () => {
     g.qss.ramIconHorns.both[nextHornRollFrame](1)
     g.ramIcon.horns.both = nextHornRollFrame
   } else {
-    g.ramIcon.unTick()
+    if (typeof g.ramIcon.unTick === 'function') g.ramIcon.unTick()
     subSceneProgress('scene11', 'folklore', 'ramUnrolled')
     const textLyrics = "The cows are coming home for dinner/The cynic's circus slops their trough with memes/They'll never deign to touch the feed I pour for them again/They'll starve themselves awaiting greener dreams/The zeitgeist is in need of reupholstering/We shabby dolls bereft of dopamine/A cop in every kitchen and a chef in every pot/All our streets paved o'er with baby bumps/We've made ourselves immune to revolution/Wittgenstein escaped in a balloon/Our actions speak so loud that we can't hear the words no more/Binary folklore/Engraven on all fours/You've just enough blood left to paint the door/Gone are the days of yore/Gone are the days of yore/They won't be back no more/Gone are the days of yore"
     subSceneProgress('scene11', 'folklore', 'prepLyrics')
@@ -126,7 +126,7 @@ const ramIconHornsRollInIncTick = horn => {
     g.qss.ramIconHorns[horn][nextHornRollFrame](1)
     g.ramIcon.horns[horn].from = nextHornRollFrame
   } else {
-    g.ramIcon.unTick()
+    if (typeof g.ramIcon.unTick === 'function') g.ramIcon.unTick()
     // subSceneProgress('scene11', 'folklore', 'ramRolled')
     // const switcherooTL = new TL()
     // switcherooTL.to('#theOwl', {

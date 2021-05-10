@@ -275,10 +275,10 @@ const scanFolkLoreTick = (f, mv = 0, rv = false) => {
     subSceneProgress('scene11', 'folklore', 'ramPrimingOut')
     const primeRamLaserUnTick = gsapTick(primeRamLaserTick)
     gsap.to('#ramLaser', {
-      duration: 0.36,
+      duration: g.subScene.scene11.folklore.ff || 0.36,
       height: 0,
       onComplete() {
-        primeRamLaserUnTick()
+        if (typeof primeRamLaserUnTick === 'function') primeRamLaserUnTick()
         g.folklore.binary.ramLaserQuickSetter(g.folklore.binary.cssQuickReSetters.o)
         subSceneProgress('scene11', 'folklore', 'ramScanned')
         if (!g.folklore.lore.length) {
@@ -410,8 +410,9 @@ const chewMe = () => {
         scaleY: 1.16,
       }, '<')
     for (let gn = 0; gn < 5; gn++) {
-      if (!g.folklore.colorHelper.mp) g.folklore.colorHelper.mo += 0.05
-      else g.folklore.colorHelper.mp -= 5
+      if (!g.folklore.colorHelper.mp) {
+        if (!g.folklore.colorHelper.mo < 100) g.folklore.colorHelper.mo += 0.05
+      } else g.folklore.colorHelper.mp -= 5
       const rollAmount = g.folklore.binary.gnawSkew > 9 || gn < 1 || gn > 3 ? 1 : 2
       g.tL.cowWow.to(`#cow${whichCow}`, {
         duration: 0.25,
@@ -926,7 +927,7 @@ const scanFolkLore = () => {
         duration: g.subScene.scene11.folklore.ff || 0.36,
         height: 600,
         onComplete() {
-          primeRamLaserUnTick()
+          if (typeof primeRamLaserUnTick === 'function') primeRamLaserUnTick()
           subSceneProgress('scene11', 'folklore', 'ramScanning')
           scanFolkLoreTick(thisFolkLore, 0, g.folklore.binary.drawCharsReversed)
         },

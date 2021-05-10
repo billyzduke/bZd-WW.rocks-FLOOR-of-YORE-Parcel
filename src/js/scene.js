@@ -149,6 +149,7 @@ const activateSubScene = (parentScene, subScene, progression) => {
   g.subScene[parentScene][subScene].active = true
   if (g.dev) console.log(`${parentScene} subScene ${subScene} activated`)
   handleOtherTriggers(parentScene, subScene, true)
+  killSkipper(parentScene, subScene)
   subSceneProgress(parentScene, subScene, progression)
 }
 

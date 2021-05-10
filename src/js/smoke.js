@@ -279,7 +279,7 @@ const smokeTick = (smokeId, loop = false, slowFactor = 1) => {
       g.qss.smoke[smokeId][g.smoke[smokeId].frame](1)
       g.smoke[smokeId].frame++
     } else {
-      g.smoke[smokeId].unTick()
+      if (g.smoke[smokeId].unTick && typeof g.smoke[smokeId].unTick === 'function') g.smoke[smokeId].unTick()
       g.smoke[smokeId].frame = 0
     }
     g.smoke[smokeId].slow = 1
