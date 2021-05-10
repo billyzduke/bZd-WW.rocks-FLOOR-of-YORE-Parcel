@@ -2,7 +2,6 @@ import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { setAddOn } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
@@ -13,6 +12,7 @@ import { clearShaiHulud } from '../shai-hulud'
 const scene08 = 'Sparks Fly / Enter the Lion / Reveal Disco Wall'
 
 const setScene08 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].gankyilClick = setAddOn('#gankyil', 'click', () => setScene(n))
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(5)
   g.scene.forCleanUp[c].clearDrWorm = clearShaiHulud

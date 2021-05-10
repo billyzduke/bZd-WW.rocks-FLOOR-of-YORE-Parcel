@@ -4,10 +4,8 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import assGemGuyIdle from 'url:/src/img/tShirt/gem-guy-on.gif'
 import g from '../glob'
 import { setAddOn } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
-// eslint-disable-next-line import/no-cycle
 import { revertTshirt, transformTshirt } from '../lion-t-shirt'
 import { setLightningRods } from '../lightning-rods'
 
@@ -18,6 +16,7 @@ const scene09 = 'Wake Up GemGuy / Bauble Layer 02'
 g.tL.b = new TL({ defaults: { overwrite: 'auto' } })
 
 const setScene09 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].vajraClick = setAddOn('#crossMyHeart', 'click', () => setScene(n))
   setAddOn('#heartChakra', 'mouseenter', transformTshirt)
   setAddOn('#heartChakra', 'mouseleave', revertTshirt)

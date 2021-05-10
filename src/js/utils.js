@@ -144,7 +144,7 @@ const setRemoveOn = (domSelector, onEvent, doFunc, cursorOn = 'no-drop') => {
   domElements.forEach(domEl => {
     domEl.removeEventListener(onEvent, doFunc)
     if (g.dev) console.log(`event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
-    if (onEvent === 'click') domEl.style.cursor = cursorOn
+    domEl.style.cursor = cursorOn
   })
   return true
 }

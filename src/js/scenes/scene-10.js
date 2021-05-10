@@ -4,7 +4,6 @@ import assHandEyeBlinkL from 'url:/src/img/lion/lion-hand-eye-left-blink.gif'
 import assHandEyeBlinkR from 'url:/src/img/lion/lion-hand-eye-right-blink.gif'
 import g from '../glob'
 import { gsapTick, setAddOn } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { lionShockTick, relieveTheLion, shockTheLion } from '../lion'
 import { ex, setExcs } from '../lion-head'
 import { setFoetuses } from '../foetuses'
@@ -16,6 +15,7 @@ import { setFolkLore } from '../folklore'
 const scene10 = 'Shock the Lion / Open All Eyes / Release the Owl'
 
 const setScene10 = (c, n) => {
+  g.scene.setting = c
   shockTheLion()
   g.scene.forCleanUp[c].lionShockTicker = gsapTick(lionShockTick)
 

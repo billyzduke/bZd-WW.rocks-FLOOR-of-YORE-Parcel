@@ -2,7 +2,6 @@ import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { gsapTick, setAddOn, setClearActors } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
@@ -54,6 +53,7 @@ const shiftSegment = rib => {
 }
 
 const setScene06 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].spinRingTicker = gsapTick(spinRing)
   g.scene.forCleanUp[c].clearDirt = () => setClearActors('#dirtVidWrapper')

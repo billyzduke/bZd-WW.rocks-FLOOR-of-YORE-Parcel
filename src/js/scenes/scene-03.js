@@ -2,7 +2,6 @@ import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { gsapTick, setAddOn, setClearActors } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
@@ -14,6 +13,7 @@ import { setBronze } from '../bronze'
 const scene03 = 'Reveal Curtain / Floor of Yore'
 
 const setScene03 = (c, n) => {
+  g.scene.setting = c
   g.crtns.crtnMaskSizeObj = { value: g.main.h }
   g.crtns.crtnMaskQuickSetter = gsap.quickSetter('#cc1', 'css')
   g.scene.forCleanUp[c].crtnMaskTicker = gsapTick(embiggenCrtnMaskTick)

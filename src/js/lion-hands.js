@@ -38,7 +38,7 @@ import g from './glob'
 import { gsapTick, setAddOn, setRemoveOn } from './utils'
 import { closeFoetusEye, openFoetusEye } from './foetuses'
 // eslint-disable-next-line import/no-cycle
-import { activateSubScene, subSceneProgress } from './scene'
+import { activateSubScene, setScene, subSceneProgress } from './scene'
 import { animateBaubleLayer03or04 } from './baubles/layer-04'
 
 const say = (who, what) => {
@@ -166,8 +166,9 @@ const bloodDrop = side => {
         ease: 'power2.in',
         onComplete: () => {
           g.foetus.unTick = gsapTick(side === 'L' ? bloodSplashL : bloodSplashR)
-          setAddOn(`#womb${side}`, 'mouseenter', () => openFoetusEye(side))
-          setAddOn(`#womb${side}`, 'mouseleave', () => closeFoetusEye(side))
+          g.foetus.forCleanUp.push(setAddOn(`#womb${side}`, 'mouseenter', () => openFoetusEye(side), 'wait'))
+          g.foetus.forCleanUp.push(setAddOn(`#womb${side}`, 'mouseleave', () => closeFoetusEye(side), 'wait'))
+          if (g.foetus[side === 'L' ? 'R' : 'L'].drop && g.subScene.scene11.folklore.progress === 'complete') setScene(12)
         },
         opacity: 0.52,
         rotateZ: side === 'L' ? 232 : -240,

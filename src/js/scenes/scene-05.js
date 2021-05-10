@@ -2,7 +2,6 @@ import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { setAddOn, setClearActors } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
@@ -14,6 +13,7 @@ g.tL.gankyil = new TL({ defaults: { overwrite: 'auto' } })
 g.tL.bronze = new TL({ defaults: { overwrite: 'auto' } })
 
 const setScene05 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].clearBronze = () => setClearActors('#bronzeVidWrapper')
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)

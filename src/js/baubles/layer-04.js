@@ -6,7 +6,7 @@ import { animateBaubleLayer03 } from './layer-03'
 const setBaubleLayer04 = () => {
   const bL = 4
   // eslint-disable-next-line array-bracket-newline, array-element-newline
-  g.bL[bL] = setBaublesInLayer(bL, 26, { d: { b: [ 0, 1 ], v: g.b.d * 1.25 } })
+  g.bL[bL] = setBaublesInLayer(bL, 28, { d: { b: [ 0, 1 ], v: g.b.d * 1.25 } })
   if (g.bL[bL]) {
     g.bL[bL].b.forEach((b, i) => {
       b.classList.add(`bL${padStr(bL)}_${i % 2 ? 'L' : 'R'}`)
@@ -29,7 +29,7 @@ const animateBaubleLayer04 = ff => {
         align: '#bL04_L',
         alignOrigin: [ 0.5, 0.5 ],
         path: '#bL04_L',
-        end: i => ((Math.abs(bLL / 2 - i) / (bLL * 2)) * 0.75) + 0.79,
+        end: i => ((Math.abs(bLL / 2 - i) / (bLL * 2)) * 0.8) + 0.79,
       },
       opacity: 1,
       scale: 0.9,
@@ -53,7 +53,7 @@ const animateBaubleLayer04 = ff => {
             default:
               n = 0.77
           }
-          return ((Math.abs(bLL / 2 - i) / (bLL * 2)) * 0.75) + n
+          return ((Math.abs(bLL / 2 - i) / (bLL * 2)) * 0.8) + n
         },
       },
       onComplete: function () {

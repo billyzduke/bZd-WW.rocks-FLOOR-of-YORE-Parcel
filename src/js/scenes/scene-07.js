@@ -2,7 +2,6 @@ import { gsap } from 'gsap'
 
 import g from '../glob'
 import { gsapTick, setAddOn } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
@@ -46,6 +45,7 @@ const shiftStars = () => {
 }
 
 const setScene07 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].orbitRingTicker = gsapTick(orbitRing)
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(5)

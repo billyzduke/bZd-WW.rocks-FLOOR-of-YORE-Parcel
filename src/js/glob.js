@@ -10,7 +10,9 @@ const g = {
     max: 42,
     which: 0,
   },
-  foetus: {},
+  foetus: {
+    forCleanUp: [],
+  },
   folklore: {
     binary: {},
     lore: [],
@@ -50,6 +52,7 @@ const g = {
     action: '',
     forCleanUp: [],
     current: 0,
+    setting: 0,
     skip: {
       ff: 0,
       target: 0,

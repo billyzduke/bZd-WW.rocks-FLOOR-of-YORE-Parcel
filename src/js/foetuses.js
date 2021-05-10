@@ -6,6 +6,8 @@ import assFoetusEye02 from 'url:/src/img/foetuses/foetusEye-02.png'
 import assFoetusEye03 from 'url:/src/img/foetuses/foetusEye-03.png'
 import assFoetusEye04 from 'url:/src/img/foetuses/foetusEye-04.png'
 import g from './glob'
+import { setAddOn } from './utils'
+import { activateSubScene } from './scene'
 
 const setFoetuses = () => {
   const assFoetusEyeFrames = [
@@ -47,9 +49,11 @@ const openFoetusEyeTick = foe => {
     g.foetus[foe].eye = nextOpenEyeFrame
   } else {
     gsap.ticker.remove(foe === 'L' ? openFoetusEyeL : openFoetusEyeR)
-    setTimeout(() => {
-      gsap.ticker.add(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
-    }, 4242)
+    if (![ g.scene.current, g.scene.setting ].includes(12)) {
+      setTimeout(() => {
+        gsap.ticker.add(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
+      }, 4242)
+    }
   }
 }
 
@@ -92,4 +96,15 @@ const closeFoetusEye = foe => {
   gsap.ticker.add(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
 }
 
-export { closeFoetusEye, openFoetusEye, setFoetuses }
+const wakeFoetuses = () => {
+  g.foetus.forCleanUp.forEach(clup => {
+    if (typeof clup === 'function') clup()
+  })
+  openFoetusEye('L')
+  openFoetusEye('R')
+  g.scene.forCleanUp[12].annoyedFoetuses = setAddOn('.womb', 'click', () => activateSubScene('scene12', 'future', 'callTheCar'))
+}
+
+export {
+  closeFoetusEye, openFoetusEye, setFoetuses, wakeFoetuses,
+}

@@ -4,7 +4,6 @@ import assCurtainSectionMask from 'url:/src/img/curtains/curtain-section-mask.sv
 import assCurtainPeekMask from 'url:/src/img/curtains/curtains-peek-mask.svg'
 import g from '../glob'
 import { gsapTick, setAddOn, setClearActors } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { obscureGrandiose } from '../obscuro'
 import { blurCrtnsTick } from '../curtains'
@@ -13,6 +12,7 @@ import { evadeMouseTick } from '../baubles/layer-01'
 const scene02 = 'Blur Curtain / Bauble Layer 01'
 
 const setScene02 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].blurCtrnsTicker = gsapTick(blurCrtnsTick)
   g.scene.forCleanUp[c].evadeMouseTicker = gsapTick(evadeMouseTick)

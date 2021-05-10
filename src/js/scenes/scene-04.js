@@ -2,7 +2,6 @@ import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { gsapTick, setAddOn, setClearActors } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscure } from '../obscuro'
@@ -12,6 +11,7 @@ import { setDirt } from '../dirt'
 const scene04 = 'Raise Curtain / Reveal Cauldron of Bronze'
 
 const setScene04 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].flingRingTicker = gsapTick(flingRingTick)
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].clearCrtns = () => setClearActors('#curtains')

@@ -1,7 +1,6 @@
 import { gsap } from 'gsap'
 
 import g from '../glob'
-// eslint-disable-next-line import/no-cycle
 import { setScene, setSubScenes } from '../scene'
 import { setSmokes } from '../smoke'
 import { readyFolkLore, unReadyFolkLore } from '../folklore'
@@ -9,9 +8,10 @@ import { setAddOn } from '../utils'
 import { setBaubleLayer03 } from '../baubles/layer-03'
 import { setBaubleLayer04 } from '../baubles/layer-04'
 
-const scene11 = 'Relieve the Lion / Lightning Rods Off'
+const scene11 = 'Relieve the Lion / Binary Folklore / Breed Foetuses'
 
 const setScene11 = (c, n) => {
+  g.scene.setting = c
   g.scene.forCleanUp[c].ramOverClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseenter', readyFolkLore)
   g.scene.forCleanUp[c].ramOutUnClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseleave', unReadyFolkLore, 'wait')
 

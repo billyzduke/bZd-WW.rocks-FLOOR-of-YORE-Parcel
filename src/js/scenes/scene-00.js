@@ -2,7 +2,6 @@ import { TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { setAddOn } from '../utils'
-// eslint-disable-next-line import/no-cycle
 import { setScene } from '../scene'
 import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
@@ -12,6 +11,7 @@ const scene00 = 'Fade In / DAYS OF YORE'
 g.tL.yore = new TL({ defaults: { overwrite: 'auto' } }) // general use global timeline
 
 const setScene00 = (c, n) => {
+  g.scene.setting = c
   // Only functions that return a boolean can be included in forCleanUp
   g.scene.forCleanUp[c].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
   g.scene.forCleanUp[c].obscureNextScene = () => obscure(3)

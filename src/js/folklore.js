@@ -23,7 +23,7 @@ import {
 import { setCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
 import { rollEmInInc, rollEmOut } from './owl-ram'
-import { subSceneProgress } from './scene'
+import { setScene, subSceneProgress } from './scene'
 import { animateBaubleLayer03or04 } from './baubles/layer-04'
 
 gsap.registerPlugin(MorphSVGPlugin)
@@ -484,6 +484,7 @@ const chewMe = () => {
 
                 animateBaubleLayer03or04(null, g.subScene.scene11.folklore.ff)
                 subSceneProgress('scene11', 'folklore', 'complete')
+                if (g.foetus.L.drop && g.foetus.R.drop) setScene(12)
               },
             }, '>')
             .to('#cowL .cowBell', {

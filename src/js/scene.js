@@ -12,6 +12,7 @@ import { scene08, setScene08 } from './scenes/scene-08'
 import { scene09, setScene09 } from './scenes/scene-09'
 import { scene10, setScene10 } from './scenes/scene-10'
 import { scene11, setScene11 } from './scenes/scene-11'
+import { scene12, setScene12 } from './scenes/scene-12'
 import { rollEmOut } from './owl-ram'
 
 const scenes = [
@@ -27,10 +28,27 @@ const scenes = [
   scene09,
   scene10,
   scene11,
+  scene12,
 ]
 scenes.forEach((_, s) => {
   g.scene.forCleanUp[s] = {}
 })
+
+const setScenes = [
+  () => setScene00(0, 1),
+  () => setScene01(1, 2),
+  () => setScene02(2, 3),
+  () => setScene03(3, 4),
+  () => setScene04(4, 5),
+  () => setScene05(5, 6),
+  () => setScene06(6, 7),
+  () => setScene07(7, 8),
+  () => setScene08(8, 9),
+  () => setScene09(9, 10),
+  () => setScene10(10, 11),
+  () => setScene11(11, 12),
+  () => setScene12(12, 13),
+]
 
 const cleanScene = s => {
   const cleanUps = Object.entries(g.scene.forCleanUp[s])
@@ -52,20 +70,6 @@ const cleanScene = s => {
 const setScene = (toScene = 0) => {
   g.scene.action = 'set'
   if (!toScene || toScene === g.scene.current + 1) {
-    const setScenes = [
-      () => setScene00(0, 1),
-      () => setScene01(1, 2),
-      () => setScene02(2, 3),
-      () => setScene03(3, 4),
-      () => setScene04(4, 5),
-      () => setScene05(5, 6),
-      () => setScene06(6, 7),
-      () => setScene07(7, 8),
-      () => setScene08(8, 9),
-      () => setScene09(9, 10),
-      () => setScene10(10, 11),
-      () => setScene11(11, 12),
-    ]
     if (setScenes[toScene]) {
       if (g.dev) console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
       let prevSceneCleaned = false
@@ -93,6 +97,7 @@ const setScene = (toScene = 0) => {
         console.log({ nextSceneSet })
         if (nextSceneSet) {
           g.scene.current = toScene
+          g.scene.setting = 0
           console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
           setSceneSkipper()
           return true
@@ -204,8 +209,8 @@ const setSceneSkipper = () => {
 const setSubSceneSkippers = scene => {
   if (scene && g.dev) {
     const parentScene = `scene${padStr(scene)}`
-    if (g.el.subSceneSkippers.children.length) {
-      g.el.subSceneSkippers.children.forEach(ssSk => {
+    if (g.el.subSceneSkippers.hasChildNodes()) {
+      [ ...g.el.subSceneSkippers.children ].forEach(ssSk => {
         ssSk.parentNode.removeChild(ssSk)
       })
     }
