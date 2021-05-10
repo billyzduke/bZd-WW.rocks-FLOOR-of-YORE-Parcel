@@ -35,6 +35,8 @@ const loadApp = () => {
       'discoWall',
       'drWorm',
       'excWrapper',
+      'foetusCryL',
+      'foetusCryR',
       'foetusEyeL',
       'foetusEyeR',
       'gemGuy',

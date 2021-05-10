@@ -40,18 +40,25 @@ div.foetusEye {
   width: 14px;
   height: 17px;
   z-index: 3;
+  img:not(:first-child) {
+    opacity: 0;
+  }
+  &#foetusEyeL {
+    top: 60px;
+    left: 61px;
+    transform: scaleX(-1);
+  }
+  &#foetusEyeR {
+    left: 75px;
+    top: 61px;
+  }
 }
-div.foetusEye img:not(:first-child) {
-  opacity: 0;
-}
-div#foetusEyeL {
-  top: 60px;
-  left: 61px;
-  transform: scaleX(-1);
-}
-div#foetusEyeR {
-  left: 75px;
-  top: 61px;
+div.foetusCry {
+  height: 100%;
+  width: 100%;
+  img {
+    opacity: 0;
+  }
 }
 img.bloodDrop {
   top: -348px;

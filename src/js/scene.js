@@ -265,8 +265,10 @@ const killSkipper = (parentScene, subScene) => {
   const ss = `ss${upperCaseFirstLetter(subScene)}`
   cleanSkipper(scene, ss)
   const skipButton = g.document.querySelector(`#${ss}`)
-  skipButton.checked = true
-  skipButton.disabled = true
+  if (skipButton) {
+    skipButton.checked = true
+    skipButton.disabled = true
+  }
 }
 
 export {

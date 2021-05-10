@@ -43,7 +43,7 @@ const g = {
   ],
   qss: { // gsap quickSetters
     bloodSplashes: {},
-    foetusEyes: {},
+    foetus: {},
     lightningRods: {},
     smoke: {},
   },
