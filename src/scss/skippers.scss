@@ -10,6 +10,11 @@
   right: 23px;
   transition: opacity 0.5s ease-in-out;
   z-index: 10000;
+  &.transVerted {
+    transform-origin: 100% 0%;
+    transform: rotateZ(90deg);
+    top: calc(100vh - 24px);
+  }
   &:hover {
     opacity: 0.88;
   }
@@ -83,6 +88,13 @@
       &:checked + .onOffLabel:before {
         right: 0px;
       }
+    }
+  }
+
+  &.transVerted {
+    padding: 0 88px 124px 0;
+    .onOffWrapper {
+      width: 142px;
     }
   }
 }

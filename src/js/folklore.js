@@ -474,7 +474,7 @@ const chewMe = () => {
                 setAddOn('#cowR', 'mouseenter', idleChewR)
                 setAddOn('#cowR', 'mouseleave', idleCow)
                 gsap.set('.cow', {
-                  pointerEvents: 'auto',
+                  pointerEvents: 'no-drop',
                 })
                 const cleanUpUsedEls = g.document.querySelectorAll('#ramIcon #binaryFolklore, #ramIcon .laser')
                 cleanUpUsedEls.forEach(el => {

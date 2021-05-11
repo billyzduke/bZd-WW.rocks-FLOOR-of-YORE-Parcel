@@ -1,22 +1,10 @@
 div.pW {
   height: 1220px;
   margin: -42px 0 84px 0;
-  position: absolute;
   transform-origin: 50% 0%;
   transform: scale(0.985);
   width: 1220px;
   z-index: 0;
-  * {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background-position: 0px 0px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    box-sizing: border-box;
-    margin: 0;
-    position: absolute;
-    transform-origin: 50% 50%;
-    transform-style: preserve-3d;
-  }
   // &#lolf01 {
   //   background-image: url(../img/ref/1200x1200.png);
   //   background-size: 1200px 1200px;
@@ -45,5 +33,21 @@ div.pW {
     &.pCR {
       left: 935px;
     }
+  }
+}
+
+div.animBlock {
+  position: absolute;
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    display: block;
+    margin: 0;
+    position: absolute;
+    transform-origin: 50% 50%;
+    transform-style: preserve-3d;
   }
 }

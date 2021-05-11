@@ -1,7 +1,143 @@
 div#future {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+  z-index: 650;
+
+  div#flux {
+    width: 373px;
+    height: 540px;
+    top: 728px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    cursor: no-drop;
+    img.fluxCapacitor {
+      width: 100%;
+      height: 100%;
+      &#fluxCapacitorOff {
+        z-index: -1;
+      }
+      &#fluxCapacitorOn {
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        filter: drop-shadow(0 0 8.8px coloring(anchorOff, 0.42));
+      }
+    }
+
+    div#fluxMeter {
+      width: 108px;
+      height: 62px;
+      left: 242px;
+      top: 432px;
+      overflow: hidden;
+      z-index: 1;
+      border-radius: 4px;
+      cursor: no-drop;
+      img.fluxMeterLight {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+      }
+      div#fluxMeterNeedle {
+        width: 2px;
+        height: 70px;
+        left: 50%;
+        bottom: -15px;
+        transform-origin: 50% 100%;
+        transform: rotate(-44deg);
+        img#fluxMeterNeedleWobble {
+          width: 100%;
+          height: 100%;
+          transform-origin: 50% 100%;
+          animation: needleWobble 0.075s ease-in-out infinite alternate forwards;
+          animation-play-state: paused;
+        }
+      }
+    }
+
+    div#fluxDisplay {
+      width: 138px;
+      height: 124px;
+      left: 12px;
+      top: 416px;
+      cursor: wait;
+      img#fluxDisplayDirective {
+        width: 140px;
+        height: 26px;
+        top: 98px;
+        opacity: 0;
+      }
+      div.fluxDisplayNumber {
+        width: 46px;
+        height: 67px;
+        top: 18px;
+        z-index: 2;
+        img.fluxDisplayDigit {
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+        }
+      }
+      div#fluxDisplay10 {
+        left: 14px;
+      }
+      div#fluxDisplay01 {
+        left: 78px;
+      }
+    }
+
+    img#fluxButton {
+      width: 59px;
+      height: 59px;
+      left: 160px;
+      top: 448px;
+      z-index: 3;
+      animation: fadeIn 0.5s ease-in-out infinite alternate forwards;
+      transition: opacity 0.5s ease-in-out;
+      cursor: pointer;
+    }
+
+    div#fluxEchoes {
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      div.fluxEchoLR {
+        width: 120px;
+        height: 232px;
+        &:before {
+          background-image: url(../img/future/flux-echo-LR.png);
+          background-size: 100% 100%;
+          content: '';
+          display: block;
+          height: 100%;
+          width: 100%;
+          .fluxEchoR & {
+            transform: scaleX(-1);
+          }
+        }
+      }
+      div.fluxEchoC {
+        width: 218px;
+        height: 99px;
+        background-image: url(../img/future/flux-echo-C.png);
+        background-size: 100% 100%;
+      }
+    }
+
+    &.fluxOn {
+      img#fluxMeterNeedleWobble {
+        animation-play-state: running !important;
+      }
+      img#fluxButton {
+        animation: fadeOut 0.5s ease-in-out forwards;
+        cursor: no-drop;
+      }
+    }
+  }
+
   div#deLorean {
     width: 700px;
     height: 300px;

@@ -163,8 +163,8 @@ const rollEmInInc = (horn, rollAmount) => {
 const rollEmOut = () => {
   if (!g.subScene.scene11.active) {
     activateSubScene('scene11', 'folklore', 'unrollRam')
-    g.scene.forCleanUp[11].ramOverClickable()
-    g.scene.forCleanUp[11].ramOutUnClickable()
+    if (typeof g.scene.forCleanUp[11].ramOverClickable === 'function') g.scene.forCleanUp[11].ramOverClickable()
+    if (typeof g.scene.forCleanUp[11].ramOutUnClickable === 'function') g.scene.forCleanUp[11].ramOutUnClickable()
     g.scene.forCleanUp[11].ramOverClickable = g.scene.forCleanUp[11].ramOutUnClickable = undefined
     gsap.set('#theOwlIsNotWhatItSeems', {
       cursor: 'auto',

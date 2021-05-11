@@ -58,10 +58,10 @@ div.ottomanWrapper:before {
   filter: blur(6px);
   transform: translateX(-3px);
 }
-div.ottomanWrapper:hover div.ottomanBubble svg {
+div.ottomanWrapper:hover:not(.wayLaid) div.ottomanBubble svg {
   transform: scale(1.1);
 }
-div.ottomanWrapper:hover div.ottomanBubble svg path {
+div.ottomanWrapper:hover:not(.wayLaid) div.ottomanBubble svg path {
   fill: #ca0000;
 }
 div#sayCeren {

@@ -81,6 +81,15 @@
   }
 }
 
+@keyframes needleWobble {
+  from {
+    transform: rotate(-1.5deg);
+  }
+  to {
+    transform: rotate(1.5deg);
+  }
+}
+
 @keyframes pulseDryOrb {
   from {
     background-color: rgb(243, 6, 3);
