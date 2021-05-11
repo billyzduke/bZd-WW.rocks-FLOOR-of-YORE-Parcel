@@ -52,15 +52,98 @@ const setFluxDisplay = () => {
 }
 
 const setFluxEchoes = () => {
-  for (let fle = 0; fle < 10; fle++) {
+  const echosPerAxis = 7
+  for (let fle = 0; fle < echosPerAxis * 2; fle++) {
     const fluxEchoLR = g.document.createElement('div')
-    fluxEchoLR.classList.add('fluxEcho', 'fluxEchoLR', `fluxEcho${fle < 5 ? 'L' : 'R'}`)
+    fluxEchoLR.classList.add('fluxEcho', 'fluxEchoLR', `fluxEcho${fle < echosPerAxis ? 'L' : 'R'}`)
     g.el[`fluxEchoes${fle < 5 ? 'L' : 'R'}`].appendChild(fluxEchoLR)
-    if (fle < 5) {
+    if (fle < echosPerAxis) {
       const fluxEchoC = g.document.createElement('div')
       fluxEchoC.classList.add('fluxEcho', 'fluxEchoC')
       g.el.fluxEchoesC.appendChild(fluxEchoC)
     }
+  }
+  // div#future.animBlock div#flux div#fluxEchoes div.fluxEchoAxis#fluxEchosL div.fluxEcho.fluxEchoLR
+  gsap.set('.fluxEcho', {
+    scale: 0.42,
+    opacity: 0.12,
+  })
+  gsap.set('.fluxEchoL', {
+    translateX: -124,
+    translateY: 88,
+  })
+  gsap.set('.fluxEchoR', {
+    translateX: 124,
+    translateY: 88,
+  })
+  gsap.set('.fluxEchoC', {
+    translateY: -88,
+  })
+  gsap.to('.fluxEchoL', {
+    duration: 3,
+    ease: 'power2.in',
+    opacity: 1,
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    stagger: {
+      each: 0.5,
+      repeat: -1,
+    },
+  })
+  gsap.to('.fluxEchoR', {
+    duration: 3,
+    ease: 'power2.in',
+    opacity: 1,
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    stagger: {
+      each: 0.5,
+      repeat: -1,
+    },
+  })
+  gsap.to('.fluxEchoC', {
+    duration: 3,
+    ease: 'power2.in',
+    opacity: 1,
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    stagger: {
+      each: 0.5,
+      repeat: -1,
+    },
+  })
+  gsap.ticker.add(unMaskFlux)
+}
+
+const unMaskFlux = () => {
+  if (g.flux.mask <= 100) {
+    g.qss.flux.mask[0]({
+      // opacity: g.flux.mask / 100,
+      scale: g.flux.mask / 100,
+      borderRadius: `${(100 - g.flux.mask) / 2}%`,
+      translateY: '+=0.45',
+    })
+    g.qss.flux.mask[1]({
+      scale: 100 / g.flux.mask,
+      translateY: '-=0.45',
+    })
+    g.flux.mask++
+  } else {
+    gsap.ticker.remove(unMaskFlux)
+    gsap.to('#fluxEchoes', {
+      duration: 3,
+      onComplete: function () {
+        gsap.set('.fluxEcho', {
+          scale: 1,
+          opacity: 0,
+          overwrite: 'auto',
+        })
+      },
+      opacity: 0,
+    })
   }
 }
 
@@ -100,6 +183,7 @@ const incrementFluxDisplay = () => {
     dimFluxMeter()
     lightFluxMeter('FLUX')
     gsap.ticker.remove(incrementFluxDisplay)
+    gsap.set('#fluxDisplay', { cursor: 'no-drop' })
   }
 }
 const decrementFluxDisplay = () => {
@@ -199,9 +283,7 @@ const flickOnFluxDisplayDirective = () => {
 }
 
 const randomizeFluxDisplay = () => {
-  gsap.set('#fluxDisplay', {
-    cursor: 'wait',
-  })
+  gsap.set('#fluxDisplay', { cursor: 'wait' })
   flickOnFluxDisplayDirective()
   gsap.ticker.add(randomizeFluxDisplayTick10)
   gsap.ticker.add(randomizeFluxDisplayTick01)
@@ -212,10 +294,17 @@ const setFluxMeter = () => {
 }
 
 const setFlux = () => {
-  g.flux = {}
+  g.flux = {
+    mask: 1,
+  }
   g.qss.flux = {
     capacitor: gsap.quickSetter('#fluxCapacitorOn', 'css'),
+    mask: [ gsap.quickSetter('#fluxMask', 'css'), gsap.quickSetter('#fluxUnMask', 'css') ],
   }
+
+  gsap.set('#fluxMask', { scale: 0, translateY: -45 })
+  gsap.set('#fluxUnMask', { scale: 100, translateY: 45 })
+
   setFluxDisplay()
   setFluxEchoes()
   setFluxMeter()

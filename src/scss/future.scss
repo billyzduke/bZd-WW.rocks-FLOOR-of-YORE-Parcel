@@ -100,30 +100,44 @@ div#future {
     }
 
     div#fluxEchoes {
-      width: 100%;
-      height: 100%;
+      width: 218px;
+      height: 232px;
+      top: 132px;
+      left: 50%;
+      transform: translateX(calc(-50% - 1px));
       z-index: 4;
       pointer-events: none;
-      div.fluxEchoLR {
-        width: 120px;
-        height: 232px;
-        &:before {
-          background-image: url(../img/future/flux-echo-LR.png);
-          background-size: 100% 100%;
-          content: '';
-          display: block;
-          height: 100%;
+      overflow: visible;
+      div.fluxEchoAxis {
+        width: 100%;
+        height: 100%;
+        div.fluxEcho {
           width: 100%;
-          .fluxEchoR & {
-            transform: scaleX(-1);
+          height: 100%;
+          &.fluxEchoLR {
+            width: 120px;
+            &:before {
+              position: absolute;
+              background-image: url(../img/future/flux-echo-LR.png);
+              background-size: 100% 100%;
+              content: '';
+              display: block;
+              height: 100%;
+              width: 120px;
+            }
+          }
+          &.fluxEchoR {
+            left: calc(50% - 10.5px);
+            &:before {
+              transform: scaleX(-1);
+            }
+          }
+          &.fluxEchoC {
+            height: 99px;
+            background-image: url(../img/future/flux-echo-C.png);
+            background-size: 100% 100%;
           }
         }
-      }
-      div.fluxEchoC {
-        width: 218px;
-        height: 99px;
-        background-image: url(../img/future/flux-echo-C.png);
-        background-size: 100% 100%;
       }
     }
 
@@ -134,6 +148,20 @@ div#future {
       img#fluxButton {
         animation: fadeOut 0.5s ease-in-out forwards;
         cursor: no-drop;
+      }
+    }
+
+    div.fluxMask {
+      width: 100%;
+      height: 100%;
+      &#fluxMask {
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      &#fluxUnMask {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
       }
     }
   }

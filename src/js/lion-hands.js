@@ -176,6 +176,10 @@ const bloodDrop = side => {
       }, '<')
       .to(`#bloodDrop${side}`, {
         duration: 0.15,
+        onComplete: () => {
+          animateBaubleLayer03or04(side, g.subScene.scene11[`foetus${side}`].ff)
+          subSceneProgress('scene11', `foetus${side}`, 'complete')
+        },
         opacity: 0,
         scaleY: 0.2,
         translateY: 670,
@@ -183,10 +187,6 @@ const bloodDrop = side => {
       .to(`#womb${side}`, {
         duration: 6,
         ease: 'elastic.out(1, 0.3)',
-        onComplete: () => {
-          animateBaubleLayer03or04(side, g.subScene.scene11[`foetus${side}`].ff)
-          subSceneProgress('scene11', `foetus${side}`, 'complete')
-        },
         opacity: 1,
         rotateZ: 0,
         scale: 1,
