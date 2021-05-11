@@ -1,5 +1,5 @@
 import g from './glob'
-import { padStr, setAddOn, upperCaseFirstLetter } from './utils'
+import { isFunction, padStr, setAddOn, upperCaseFirstLetter } from './utils'
 import { scene00, setScene00 } from './scenes/scene-00'
 import { scene01, setScene01 } from './scenes/scene-01'
 import { scene02, setScene02 } from './scenes/scene-02'
@@ -55,7 +55,7 @@ const cleanScene = s => {
   if (cleanUps.length) {
     if (g.dev) console.log(`running ${cleanUps.length} cleanUp${cleanUps.length !== 1 ? 's' : ''} for scene ${s}`)
     cleanUps.forEach(([ c, u ], i) => {
-      if (typeof u === 'function') {
+      if (isFunction(u)) {
         const uu = u()
         if (typeof uu === 'boolean' && uu) {
           if (g.dev) console.log(`${i + 1} - ${c}: this pipe is clean`)
@@ -262,7 +262,7 @@ const setSubSceneSkippers = scene => {
 }
 
 const cleanSkipper = (scene, ss) => {
-  if (g.scene.forCleanUp[scene][ss] && typeof g.scene.forCleanUp[scene][ss] === 'function') {
+  if (isFunction(g.scene.forCleanUp[scene][ss])) {
     g.scene.forCleanUp[scene][ss]()
     g.scene.forCleanUp[scene][ss] = undefined
   }

@@ -18,7 +18,7 @@ import assFolkloreFinal07 from 'url:/src/img/binaryFolklore/folklore-final-form-
 import { random } from 'gsap/gsap-core'
 import g from './glob'
 import {
-  gsapTick, gsapUnTick, setAddOn, randOnum, setClearActors, shuffleArray,
+  gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, setAddOn, randOnum, setClearActors, shuffleArray,
 } from './utils'
 import { setCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
@@ -278,7 +278,7 @@ const scanFolkLoreTick = (f, mv = 0, rv = false) => {
       duration: g.subScene.scene11.folklore.ff || 0.36,
       height: 0,
       onComplete() {
-        if (typeof primeRamLaserUnTick === 'function') primeRamLaserUnTick()
+        ifFunctionThenCall(primeRamLaserUnTick)
         g.folklore.binary.ramLaserQuickSetter(g.folklore.binary.cssQuickReSetters.o)
         subSceneProgress('scene11', 'folklore', 'ramScanned')
         if (!g.folklore.lore.length) {
@@ -811,7 +811,7 @@ const clearAwayTheStone = () => {
           g.smoke.stoneSmoke2.unTick = gsapTick(g.folklore.binary.stoneDemolition === 2 ? stoneSmokeTick3 : stoneSmokeTick2)
           setTimeout(() => {
             g.folklore.binary.stoneColdLaserUnTick.forEach(ut => {
-              ut()
+              ifFunctionThenCall(ut)
             })
             iceIceBaby(1)
             g.folklore.binary.stoneWrapper.removeChild(g.folklore.binary.currentStone)
@@ -821,13 +821,12 @@ const clearAwayTheStone = () => {
                 duration: g.subScene.scene11.folklore.ff || g.folklore.binary.stoneLaserTimer / 200,
                 ease: 'power2.out',
                 onComplete: function () {
-                  if (typeof g.smoke.stoneSmoke1.unTick === 'function') g.smoke.stoneSmoke1.unTick()
-                  // eslint-disable-next-line no-underscore-dangle
+                  if (isFunction(g.smoke.stoneSmoke1.unTick)) g.smoke.stoneSmoke1.unTick()
                   else {
                     console.log(g.smoke.stoneSmoke1.unTick)
                     gsapUnTick(stoneSmokeTick1)
                   }
-                  g.smoke.stoneSmoke2.unTick()
+                  ifFunctionThenCall(g.smoke.stoneSmoke2.unTick)
                 },
                 opacity: 0,
                 overwrite: 'auto',
@@ -928,7 +927,7 @@ const scanFolkLore = () => {
         duration: g.subScene.scene11.folklore.ff || 0.36,
         height: 600,
         onComplete() {
-          if (typeof primeRamLaserUnTick === 'function') primeRamLaserUnTick()
+          ifFunctionThenCall(primeRamLaserUnTick)
           subSceneProgress('scene11', 'folklore', 'ramScanning')
           scanFolkLoreTick(thisFolkLore, 0, g.folklore.binary.drawCharsReversed)
         },
@@ -951,7 +950,7 @@ const readyFolkLore = () => {
 }
 
 const unReadyFolkLore = () => {
-  if (g.folklore.unReady && typeof g.folklore.unReady === 'function') g.folklore.unReady()
+  ifFunctionThenCall(g.folklore.unReady)
 }
 
 export {

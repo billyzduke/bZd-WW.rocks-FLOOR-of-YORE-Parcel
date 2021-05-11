@@ -11,7 +11,7 @@ div#future {
     top: 728px;
     left: 50%;
     transform: translateX(-50%);
-    pointer-events: auto;
+    pointer-events: none;
     cursor: no-drop;
     img.fluxCapacitor {
       width: 100%;
@@ -64,6 +64,7 @@ div#future {
       left: 12px;
       top: 416px;
       cursor: wait;
+      pointer-events: auto;
       img#fluxDisplayDirective {
         width: 140px;
         height: 26px;
@@ -98,6 +99,7 @@ div#future {
       animation: fadeIn 0.5s ease-in-out infinite alternate forwards;
       transition: opacity 0.5s ease-in-out;
       cursor: pointer;
+      pointer-events: auto;
     }
 
     div#fluxEchoes {

@@ -119,6 +119,7 @@ import assSmoke2frame55 from 'url:/src/img/smoke/smoke_2_55.png'
 import assSmoke2frame56 from 'url:/src/img/smoke/smoke_2_56.png'
 import assSmoke2frame57 from 'url:/src/img/smoke/smoke_2_57.png'
 import g from './glob'
+import { ifFunctionThenCall } from './utils'
 
 const setSmokes = () => {
   const assSmokeFrames = {
@@ -279,7 +280,7 @@ const smokeTick = (smokeId, loop = false, slowFactor = 1) => {
       g.qss.smoke[smokeId][g.smoke[smokeId].frame](1)
       g.smoke[smokeId].frame++
     } else {
-      if (g.smoke[smokeId].unTick && typeof g.smoke[smokeId].unTick === 'function') g.smoke[smokeId].unTick()
+      ifFunctionThenCall(g.smoke[smokeId].unTick)
       g.smoke[smokeId].frame = 0
     }
     g.smoke[smokeId].slow = 1

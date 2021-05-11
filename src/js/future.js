@@ -84,11 +84,25 @@ const setFluxEchoes = () => {
   gsap.set('.fluxEchoC', {
     translateY: -88,
   })
+  gsap.to(`.fluxEchoR`, {
+    duration: 3,
+    ease: 'power2.in',
+    opacity: 1,
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    stagger: {
+      each: 0.5,
+      repeat: -1,
+    },
+  })
 }
 
 const echoCry = axis => {
-  console.log(axis, `.fluxEchoAxis#fluxEchoes${axis}`, g.document.querySelector(`.fluxEchoAxis#fluxEchoes${axis}`))
-  gsap.to(`.fluxEchoAxis#fluxEchoes${axis}`)
+  gsap.to(`.fluxEchoAxis#fluxEchoes${axis}`, {
+    duration: 0.5,
+    opacity: 1,
+  })
   gsap.to(`.fluxEcho${axis}`, {
     duration: 3,
     ease: 'power2.in',
@@ -100,6 +114,7 @@ const echoCry = axis => {
       each: 0.5,
       repeat: -1,
     },
+    overwrite: true,
   })
   g.flux.echo[axis] = true
   let testAxes = true

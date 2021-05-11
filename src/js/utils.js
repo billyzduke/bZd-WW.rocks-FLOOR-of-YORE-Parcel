@@ -95,6 +95,10 @@ const gsapTick = tickFunc => {
   return false
 }
 
+const ifFunctionThenCall = func => (isFunction(func) ? func() : false)
+
+const isFunction = func => ((typeof func === 'function') ? func.name || true : false)
+
 // eslint-disable-next-line no-undef
 const isNode = o => (typeof Node === 'object' ? o instanceof Node : o && typeof o === 'object' && typeof o.nodeType === 'number' && typeof o.nodeName === 'string')
 
@@ -378,6 +382,8 @@ export {
   gsapToOrSet,
   gsapTick,
   gsapUnTick,
+  ifFunctionThenCall,
+  isFunction,
   isNode,
   isSet,
   padStr,

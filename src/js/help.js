@@ -225,7 +225,9 @@ const makisusan = () => {
 
     g.el.helpToggle.addEventListener('click', () => helpToggle())
     g.el.helpScreen.addEventListener('click', () => helpToggle())
-    g.el.helpScreen.style.backgroundImage = `url(${assFloorBGtile})`
+    setTimeout(() => {
+      g.el.helpScreen.style.backgroundImage = `url(${assFloorBGtile})`
+    }, 1001)
   }
 }
 
