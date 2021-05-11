@@ -15,6 +15,7 @@ import assFoetusCryLoop04 from 'url:/src/img/foetuses/foetus-cry-repeat-04.png'
 import assFoetusCryLoop05 from 'url:/src/img/foetuses/foetus-cry-repeat-05.png'
 import g from './glob'
 import { randOnum, setAddOn } from './utils'
+import { echoCry } from './future'
 // import { activateSubScene } from './scene'
 
 const setFoetuses = () => {
@@ -166,6 +167,7 @@ const annoyFoetusTick = foe => {
 
 const annoyFoetusR = () => {
   annoyFoetusTick('R')
+  echoCry('R')
 }
 
 const annoyFoetus = foe => {

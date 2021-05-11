@@ -70,6 +70,15 @@ const cleanScene = s => {
 const setScene = (toScene = 0) => {
   g.scene.action = 'set'
   if (!toScene || toScene === g.scene.current + 1) {
+    const parentScene = `scene${g.scene.current}`
+    if (g.subScene[parentScene] && g.scene.skip.ff) {
+      Object.keys(g.subScene[parentScene]).forEach(subScene => {
+        if (subScene !== 'ss' && g.subScene[parentScene][subScene].progress !== 'complete') {
+          skipSubScene(g.scene.current, subScene)
+          return true
+        }
+      })
+    }
     if (setScenes[toScene]) {
       if (g.dev) console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
       let prevSceneCleaned = false
@@ -86,21 +95,18 @@ const setScene = (toScene = 0) => {
           g.tL.yore.timeScale(1)
         } else {
           g.scene.action = 'skip'
-          const parentScene = `scene${g.scene.current}`
-          if (g.subScene[parentScene]) {
-            Object.keys(g.subScene[parentScene]).forEach(subScene => {
-              skipSubScene(g.scene.current, subScene)
-            })
-          }
         }
-        const nextSceneSet = setScenes[toScene]()
-        console.log({ nextSceneSet })
-        if (nextSceneSet) {
-          g.scene.current = toScene
-          g.scene.setting = 0
-          console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
-          setSceneSkipper()
-          return true
+        console.log(g.subScene[parentScene])
+        if (!g.subScene[parentScene] || g.subScene[parentScene].ss.allComplete) {
+          const nextSceneSet = setScenes[toScene]()
+          console.log({ nextSceneSet })
+          if (nextSceneSet) {
+            g.scene.current = toScene
+            g.scene.setting = 0
+            console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
+            setSceneSkipper()
+            return true
+          }
         }
         if (g.dev) console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
       } else if (g.dev) console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
@@ -123,10 +129,26 @@ const handleOtherTriggers = (parentScene, subScene, on) => {
 const deActivateSubScene = (parentScene, subScene) => {
   g.subScene[parentScene][subScene].active = false
   if (g.dev) console.log(`${parentScene} subScene ${subScene} de-activated`)
-  g.subScene[parentScene].active = false
+  g.subScene[parentScene].ss.active = false
   if (g.dev) console.log(`${parentScene} all subScenes de-activated`)
   handleOtherTriggers(parentScene, subScene, false)
   killSkipper(parentScene, subScene)
+  let allComplete = true
+  let skipAnother = true
+  Object.keys(g.subScene[parentScene]).forEach(ss => {
+    if (ss !== 'ss' && g.subScene[parentScene][ss].progress !== 'complete') allComplete = false
+  })
+  if (allComplete) {
+    g.subScene[parentScene].ss.allComplete = true
+    if (g.scene.skip.ff) setScene(g.scene.current + 1)
+  } else if (g.scene.skip.ff) {
+    Object.keys(g.subScene[parentScene]).forEach(ss => {
+      if (ss !== 'ss' && g.subScene[parentScene][ss].progress !== 'complete' && skipAnother) {
+        skipSubScene(g.scene.current, ss)
+        skipAnother = false
+      }
+    })
+  }
 }
 
 const subSceneProgress = (parentScene, subScene, progression) => {
@@ -140,7 +162,7 @@ const subSceneProgress = (parentScene, subScene, progression) => {
 
 const setSubScenes = (scene, subScenes = []) => {
   const parentScene = `scene${padStr(scene)}`
-  if (!g.subScene[parentScene]) g.subScene[parentScene] = { active: false, forCleanUp: {} }
+  if (!g.subScene[parentScene]) g.subScene[parentScene] = { ss: { active: false, forCleanUp: {}, allComplete: false } }
   subScenes.forEach(subScene => {
     g.subScene[parentScene][subScene] = { active: false, ff: 0 }
     subSceneProgress(parentScene, subScene, 'set')
@@ -149,7 +171,7 @@ const setSubScenes = (scene, subScenes = []) => {
 }
 
 const activateSubScene = (parentScene, subScene, progression) => {
-  g.subScene[parentScene].active = true
+  g.subScene[parentScene].ss.active = true
   if (g.dev) console.log(`${parentScene} any subScene activated`)
   g.subScene[parentScene][subScene].active = true
   if (g.dev) console.log(`${parentScene} subScene ${subScene} activated`)
@@ -216,7 +238,7 @@ const setSubSceneSkippers = scene => {
     }
     if (g.el.subSceneSkippers && g.subScene[parentScene]) {
       Object.keys(g.subScene[parentScene]).forEach(subScene => {
-        if (![ 'active', 'ff', 'forCleanUp' ].includes(subScene)) {
+        if (subScene !== 'ss') {
           const ss = `ss${upperCaseFirstLetter(subScene)}`
           const skipButton = g.document.createElement('input')
           skipButton.type = 'checkbox'
@@ -248,6 +270,7 @@ const cleanSkipper = (scene, ss) => {
 
 const skipSubScene = (scene, subScene) => {
   const parentScene = `scene${padStr(scene)}`
+  if (g.dev) console.log(`skipping ${parentScene} subScene ${subScene}`)
   const ss = `ss${upperCaseFirstLetter(subScene)}`
   cleanSkipper(scene, ss)
   g.subScene[parentScene][subScene].ff = 0.1

@@ -68,7 +68,7 @@ const setFluxEchoes = () => {
       g.el.fluxEchoesC.appendChild(fluxEchoC)
     }
   }
-  // div#future.animBlock div#flux div#fluxEchoes div.fluxEchoAxis#fluxEchosL div.fluxEcho.fluxEchoLR
+  gsap.set('.fluxEchoAxis', { opacity: 0 })
   gsap.set('.fluxEcho', {
     scale: 0.42,
     opacity: 0.12,
@@ -87,6 +87,8 @@ const setFluxEchoes = () => {
 }
 
 const echoCry = axis => {
+  console.log(axis, `.fluxEchoAxis#fluxEchoes${axis}`, g.document.querySelector(`.fluxEchoAxis#fluxEchoes${axis}`))
+  gsap.to(`.fluxEchoAxis#fluxEchoes${axis}`)
   gsap.to(`.fluxEcho${axis}`, {
     duration: 3,
     ease: 'power2.in',
@@ -303,6 +305,7 @@ const setFlux = () => {
 
 const setFuture = () => {
   setFlux()
+  gsap.set('#future', { opacity: 1 })
 }
 
 const dimFluxMeter = () => {
@@ -334,4 +337,4 @@ const eOnFlux = () => {
   lightFluxMeter('SUX')
 }
 
-export { eOnFlux, setFuture }
+export { echoCry, eOnFlux, setFuture }
