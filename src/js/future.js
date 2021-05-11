@@ -52,6 +52,11 @@ const setFluxDisplay = () => {
 }
 
 const setFluxEchoes = () => {
+  g.flux.echo = {
+    C: false,
+    L: false,
+    R: false,
+  }
   const echosPerAxis = 7
   for (let fle = 0; fle < echosPerAxis * 2; fle++) {
     const fluxEchoLR = g.document.createElement('div')
@@ -79,7 +84,10 @@ const setFluxEchoes = () => {
   gsap.set('.fluxEchoC', {
     translateY: -88,
   })
-  gsap.to('.fluxEchoL', {
+}
+
+const echoCry = axis => {
+  gsap.to(`.fluxEcho${axis}`, {
     duration: 3,
     ease: 'power2.in',
     opacity: 1,
@@ -91,31 +99,14 @@ const setFluxEchoes = () => {
       repeat: -1,
     },
   })
-  gsap.to('.fluxEchoR', {
-    duration: 3,
-    ease: 'power2.in',
-    opacity: 1,
-    scale: 1,
-    translateX: 0,
-    translateY: 0,
-    stagger: {
-      each: 0.5,
-      repeat: -1,
-    },
+  g.flux.echo[axis] = true
+  let testAxes = true
+  Object.keys(g.flux.echo).forEach(ax => {
+    if (!g.flux.echo[ax]) testAxes = false
   })
-  gsap.to('.fluxEchoC', {
-    duration: 3,
-    ease: 'power2.in',
-    opacity: 1,
-    scale: 1,
-    translateX: 0,
-    translateY: 0,
-    stagger: {
-      each: 0.5,
-      repeat: -1,
-    },
-  })
-  gsap.ticker.add(unMaskFlux)
+  if (testAxes) {
+    gsap.ticker.add(unMaskFlux)
+  }
 }
 
 const unMaskFlux = () => {
