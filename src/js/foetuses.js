@@ -14,7 +14,9 @@ import assFoetusCryLoop03 from 'url:/src/img/foetuses/foetus-cry-repeat-03.png'
 import assFoetusCryLoop04 from 'url:/src/img/foetuses/foetus-cry-repeat-04.png'
 import assFoetusCryLoop05 from 'url:/src/img/foetuses/foetus-cry-repeat-05.png'
 import g from './glob'
-import { ifFunctionThenCall, isFunction, randOnum, setAddOn } from './utils'
+import {
+ ifFunctionThenCall, isFunction, randOnum, setAddOn
+} from './utils'
 import { echoCry } from './future'
 // import { activateSubScene } from './scene'
 
@@ -145,9 +147,8 @@ const wakeFoetuses = () => {
   })
   openFoetusEye('L')
   openFoetusEye('R')
-  g.scene.forCleanUp[12].annoyedFoetusL = setAddOn('#wombL', 'click', () => annoyFoetus('L'))
-  g.scene.forCleanUp[12].annoyedFoetusR = setAddOn('#wombR', 'click', () => annoyFoetus('R'))
-  // g.scene.forCleanUp[12].annoyedFoetusL = setAddOn('#wombL', 'click', () => activateSubScene('scene12', 'future', 'annoyFoetus'))
+  g.flux.forCleanUp.L = setAddOn('#wombL', 'click', () => annoyFoetus('L'))
+  g.flux.forCleanUp.R = setAddOn('#wombR', 'click', () => annoyFoetus('R'))
 }
 
 const annoyFoetusTick = foe => {
@@ -165,12 +166,15 @@ const annoyFoetusTick = foe => {
   }
 }
 
+const annoyFoetusL = () => {
+  annoyFoetusTick('L')
+}
 const annoyFoetusR = () => {
   annoyFoetusTick('R')
-  echoCry('R')
 }
 
 const annoyFoetus = foe => {
+  echoCry(foe)
   gsap.ticker.add(foe === 'L' ? annoyFoetusL : annoyFoetusR)
 }
 

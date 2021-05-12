@@ -160,9 +160,14 @@ const setRemoveOn = (domSelector, onEvent, doFunc, cursorOn = 'no-drop') => {
 const setAddOn = (domSelector, onEvent, doFunc, cursorOn = 'pointer', cursorOff = 'no-drop') => {
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
-    domEl.addEventListener(onEvent, doFunc)
-    devLog(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
-    domEl.style.cursor = cursorOn
+    if (isFunction(doFunc)) {
+      domEl.addEventListener(onEvent, doFunc)
+      devLog(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name || 'f'}()`)
+      domEl.style.cursor = cursorOn
+    } else {
+      devLog("You done func'd up", { domSelector, onEvent })
+      return false
+    }
   })
   return () => setRemoveOn(domSelector, onEvent, doFunc, cursorOff)
 }

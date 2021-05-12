@@ -12,7 +12,7 @@ import assFluxDisplay7 from 'url:/src/img/future/flux-display-7.png'
 import assFluxDisplay8 from 'url:/src/img/future/flux-display-8.png'
 import assFluxDisplay9 from 'url:/src/img/future/flux-display-9.png'
 import g from './glob'
-import { randOnum, setAddOn } from './utils'
+import { ifFunctionThenCall, randOnum, setAddOn } from './utils'
 
 const assFluxDisplayDigits = [
   assFluxDisplay0,
@@ -57,7 +57,8 @@ const setFluxEchoes = () => {
     L: false,
     R: false,
   }
-  const echosPerAxis = 7
+  g.flux.forCleanUp = {}
+  const echosPerAxis = 8
   for (let fle = 0; fle < echosPerAxis * 2; fle++) {
     const fluxEchoLR = g.document.createElement('div')
     fluxEchoLR.classList.add('fluxEcho', 'fluxEchoLR', `fluxEcho${fle < echosPerAxis ? 'L' : 'R'}`)
@@ -68,69 +69,69 @@ const setFluxEchoes = () => {
       g.el.fluxEchoAxisC.appendChild(fluxEchoC)
     }
   }
-  gsap.set('.fluxEchoAxis', { opacity: 0 })
+  // gsap.set('.fluxEchoAxis', { opacity: 0 })
   gsap.set('.fluxEcho', {
     scale: 0.42,
-    opacity: 0.12,
+    opacity: 0,
+    translateY: 156,
   })
   gsap.set('.fluxEchoL', {
-    translateX: -124,
-    translateY: 88,
+    translateX: -169,
   })
   gsap.set('.fluxEchoR', {
-    translateX: 124,
-    translateY: 88,
+    translateX: 169,
   })
   gsap.set('.fluxEchoC', {
-    translateY: -88,
+    translateY: -108,
   })
-  g.tL.cryMeACapacitor = {
-    C: new TL({ defaults: { overwrite: 'auto' } }),
-    L: new TL({ defaults: { overwrite: 'auto' } }),
-    R: new TL({ defaults: { overwrite: 'auto' } }),
-  }
-  g.tL.cryMeACapacitor.L.to('#fluxEchoAxisL', {
-    duration: 0.5,
-    opacity: 1,
-  })
-    .to('.fluxEchoL', {
-      duration: 3,
-      ease: 'power2.in',
-      opacity: 1,
-      scale: 1,
-      translateX: 0,
-      translateY: 0,
-      stagger: {
-        each: 0.5,
-        repeat: -1,
-      },
-    }, '<')
 }
 
 const echoCry = axis => {
-  g.tL.cryMeACapacitor[axis].to(`#fluxEchoAxis${axis}`, {
-    duration: 0.5,
+  ifFunctionThenCall(g.flux.forCleanUp[axis])
+  gsap.to('.folkloreFinalForm', {
+    duration: 1.5,
+    opacity: 0.12,
+  })
+  gsap.set(`#fluxEchoAxis${axis}`, {
     opacity: 1,
   })
-    .to(`.fluxEcho${axis}`, {
-      duration: 3,
-      ease: 'power2.in',
-      opacity: 1,
-      scale: 1,
-      translateX: 0,
-      translateY: 0,
-      stagger: {
-        each: 0.5,
-        repeat: -1,
-      },
-    }, '<')
+  gsap.to(`.fluxEcho${axis}:first-child`, {
+    duration: 3,
+    ease: 'power2.in',
+    opacity: 1,
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+  })
+  gsap.to(`.fluxEcho${axis}:not(:first-child)`, {
+    delay: 0.5,
+    duration: 3,
+    ease: 'power2.in',
+    opacity: 1,
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    stagger: {
+      each: 0.5,
+      repeat: -1,
+    },
+  })
   g.flux.echo[axis] = true
   let testAxes = true
   Object.keys(g.flux.echo).forEach(ax => {
     if (!g.flux.echo[ax]) testAxes = false
   })
   if (testAxes) {
-    gsap.ticker.add(unMaskFlux)
+    setTimeout(() => {
+      gsap.to('#fluxFlash', {
+        duration: 0.36,
+        opacity: 1,
+        scale: 2.4,
+        repeat: 1,
+        yoyo: true,
+      })
+      gsap.ticker.add(unMaskFlux)
+    }, 4242)
   }
 }
 
@@ -329,6 +330,7 @@ const setFlux = () => {
 const setFuture = () => {
   setFlux()
   gsap.set('#future', { opacity: 1 })
+  g.flux.forCleanUp.C = setAddOn('#theOwlIsNotWhatItSeems', 'click', () => echoCry('C'))
 }
 
 const dimFluxMeter = () => {

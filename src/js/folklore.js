@@ -482,9 +482,23 @@ const chewMe = () => {
                 cleanUpUsedEls.forEach(el => {
                   el.parentNode.removeChild(el)
                 })
+                gsap.set('#ramIcon', {
+                  cursor: 'no-drop',
+                })
+                gsap.set('#seemlyOwl', {
+                  opacity: 0,
+                })
+                gsap.set('#unSeemlyOwl', {
+                  opacity: 1,
+                })
                 animateBaubleLayer03or04(null, g.subScene.scene11.folklore.ff)
                 subSceneProgress('scene11', 'folklore', 'complete')
-                if (g.foetus.L.drop && g.foetus.R.drop) setScene(12)
+                if (g.foetus.L.drop && g.foetus.R.drop) {
+                  gsap.set('#ramIcon', {
+                    cursor: 'pointer', // to keep the cursor from changing when hovering over owl
+                  })
+                  setScene(12)
+                }
               },
             }, '>')
             .to('#cowL .cowBell', {
@@ -497,12 +511,9 @@ const chewMe = () => {
             }, '<')
             .set('#theOwlIsNotWhatItSeems', {
               attr: {
-                class: '',
+                class: 'flyAndCry',
               },
             }, '<0.5')
-            .set('#ramIcon', {
-              cursor: 'no-drop',
-            }, '>0.5')
         }
       },
       skewX: 0,
