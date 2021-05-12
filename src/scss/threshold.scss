@@ -59,6 +59,11 @@ div.foetusCry {
   img {
     opacity: 0;
   }
+  &#foetusCryL {
+    transform: scaleX(-1);
+    top: 3px;
+    left: 4.5px;
+  }
 }
 img.bloodDrop {
   top: -348px;

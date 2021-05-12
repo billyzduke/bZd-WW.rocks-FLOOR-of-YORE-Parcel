@@ -13,9 +13,13 @@ import assFoetusCryLoop02 from 'url:/src/img/foetuses/foetus-cry-repeat-02.png'
 import assFoetusCryLoop03 from 'url:/src/img/foetuses/foetus-cry-repeat-03.png'
 import assFoetusCryLoop04 from 'url:/src/img/foetuses/foetus-cry-repeat-04.png'
 import assFoetusCryLoop05 from 'url:/src/img/foetuses/foetus-cry-repeat-05.png'
+import assFoetusEyeSquinch01 from 'url:/src/img/foetuses/foetusEyeSquinch-01.png'
+import assFoetusEyeSquinch02 from 'url:/src/img/foetuses/foetusEyeSquinch-02.png'
+import assFoetusEyeSquinch03 from 'url:/src/img/foetuses/foetusEyeSquinch-03.png'
+import assFoetusEyeSquinch04 from 'url:/src/img/foetuses/foetusEyeSquinch-04.png'
 import g from './glob'
 import {
- ifFunctionThenCall, isFunction, randOnum, setAddOn
+  ifFunctionThenCall, isFunction, randOnum, setAddOn,
 } from './utils'
 import { echoCry } from './future'
 // import { activateSubScene } from './scene'
@@ -30,6 +34,13 @@ const setFoetuses = () => {
     assFoetusEye02,
     assFoetusEye03,
     assFoetusEye04,
+  ]
+
+  const assFoetusEyeSquinchFrames = [
+    assFoetusEyeSquinch01,
+    assFoetusEyeSquinch02,
+    assFoetusEyeSquinch03,
+    assFoetusEyeSquinch04,
   ]
 
   const assFoetusCryFrames = {
@@ -49,6 +60,8 @@ const setFoetuses = () => {
       eye: 0,
       splash: 0,
       cry: 0,
+      squinch: 0,
+      slow: 1,
     }
     g.qss.foetus[foe] = {
       cry: {
@@ -56,6 +69,7 @@ const setFoetuses = () => {
         start: [],
       },
       eye: [],
+      squinch: [],
     }
     g.tL.tearsOfBlood[foe] = new TL({ defaults: { overwrite: 'auto' } })
     if (g.el[`foetusEye${foe}`]) {
@@ -80,6 +94,13 @@ const setFoetuses = () => {
           fCryLoopFrame.classList.add('foetusCryLoopFrame', `fCryLoop${foe}`)
           g.el[`foetusCry${foe}`].appendChild(fCryLoopFrame)
           g.qss.foetus[foe].cry.loop.push(gsap.quickSetter(fCryLoopFrame, 'opacity'))
+        }
+        if (assFoetusEyeSquinchFrames[fE]) {
+          const fEyeSquinchFrame = g.document.createElement('img')
+          fEyeSquinchFrame.src = assFoetusEyeSquinchFrames[fE]
+          fEyeSquinchFrame.classList.add('foetusEyeSquinchFrame', `fSquinch${foe}`)
+          g.el[`foetusEye${foe}`].appendChild(fEyeSquinchFrame)
+          g.qss.foetus[foe].squinch.push(gsap.quickSetter(fEyeSquinchFrame, 'opacity'))
         }
       }
     }
@@ -110,7 +131,33 @@ const closeFoetusEyeTick = foe => {
     g.foetus[foe].eye = nextCloseEyeFrame
   } else {
     gsap.ticker.remove(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
+    if (g.scene.current === 12) {
+      g.qss.foetus[foe].eye[g.foetus[foe].eye](0)
+      squinchFoetusEye(foe)
+    }
   }
+}
+
+const squinchFoetusEyeTick = foe => {
+  if (g.foetus[foe].slow === 3) {
+    let nextSquinchEyeFrame = g.foetus[foe].squinch + 1
+    if (!g.qss.foetus[foe].squinch[nextSquinchEyeFrame]) nextSquinchEyeFrame = 1
+    if (g.qss.foetus[foe].squinch[g.foetus[foe].squinch]) g.qss.foetus[foe].squinch[g.foetus[foe].squinch](0)
+    g.qss.foetus[foe].squinch[nextSquinchEyeFrame](1)
+    g.foetus[foe].squinch = nextSquinchEyeFrame
+    g.foetus[foe].slow = 1
+  } else g.foetus[foe].slow++
+}
+
+const squinchFoetusEyeL = () => {
+  squinchFoetusEyeTick('L')
+}
+
+const squinchFoetusEyeR = () => {
+  squinchFoetusEyeTick('R')
+}
+const squinchFoetusEye = foe => {
+  gsap.ticker.add(foe === 'L' ? squinchFoetusEyeL : squinchFoetusEyeR)
 }
 
 const openFoetusEyeL = () => {

@@ -60,6 +60,7 @@ const loadApp = () => {
       'lionHead',
       'lolf01',
       'lolf02',
+      'owlBeak',
       'owlLaser',
       'phasingRainbow',
       'ramIcon',

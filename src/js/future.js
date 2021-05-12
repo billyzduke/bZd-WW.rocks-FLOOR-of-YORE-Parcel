@@ -12,7 +12,11 @@ import assFluxDisplay7 from 'url:/src/img/future/flux-display-7.png'
 import assFluxDisplay8 from 'url:/src/img/future/flux-display-8.png'
 import assFluxDisplay9 from 'url:/src/img/future/flux-display-9.png'
 import g from './glob'
-import { ifFunctionThenCall, randOnum, setAddOn } from './utils'
+import {
+  gsapTick, ifFunctionThenCall, randOnum, setAddOn,
+} from './utils'
+import { closeFoetusEye } from './foetuses'
+import { owlCawTick } from './owl-ram'
 
 const assFluxDisplayDigits = [
   assFluxDisplay0,
@@ -87,7 +91,10 @@ const setFluxEchoes = () => {
 }
 
 const echoCry = axis => {
+  console.log(g.owl, g.qss.owl)
   ifFunctionThenCall(g.flux.forCleanUp[axis])
+  if (axis === 'C') g.flux.forCleanUp[axis] = gsapTick(owlCawTick)
+  else closeFoetusEye(axis)
   gsap.to('.folkloreFinalForm', {
     duration: 1.5,
     opacity: 0.12,
