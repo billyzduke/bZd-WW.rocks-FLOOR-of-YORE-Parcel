@@ -139,6 +139,7 @@ const deActivateSubScene = (parentScene, subScene) => {
   Object.keys(g.subScene[parentScene]).forEach(ss => {
     if (ss !== 'ss' && g.subScene[parentScene][ss].progress !== 'complete') allComplete = false
   })
+  devLog(g.scene.skip.ff)
   if (allComplete) {
     g.subScene[parentScene].ss.allComplete = true
     if (g.scene.skip.ff) setScene(g.scene.current + 1)

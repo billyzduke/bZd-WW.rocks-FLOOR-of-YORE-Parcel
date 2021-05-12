@@ -20,6 +20,7 @@ import { isSet } from './utils'
 import '/src/scss/app.scss'
 
 const loadApp = () => {
+  if (g.document.body.classList.contains('dev') && !isSet(g.dev)) g.dev = true
   // All the DOM elements we are going to need to directly manipulate later on
   const el = {
     ...htmEl([
@@ -126,8 +127,6 @@ const loadApp = () => {
   if (g.scene.current >= 3) resetCtrRing()
 
   if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
-
-  if (g.el.body.classList.contains('dev') && !isSet(g.dev)) g.dev = true
 
   if (g.dev && g.el.sceneSkipper) setSceneSkipper()
 

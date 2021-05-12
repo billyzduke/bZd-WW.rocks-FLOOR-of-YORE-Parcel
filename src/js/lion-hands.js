@@ -168,7 +168,6 @@ const bloodDrop = side => {
           g.foetus.unTick = gsapTick(side === 'L' ? bloodSplashL : bloodSplashR)
           g.foetus.forCleanUp.push(setAddOn(`#womb${side}`, 'mouseenter', () => openFoetusEye(side), 'wait'))
           g.foetus.forCleanUp.push(setAddOn(`#womb${side}`, 'mouseleave', () => closeFoetusEye(side), 'wait'))
-          if (g.foetus[side === 'L' ? 'R' : 'L'].drop && g.subScene.scene11.folklore.progress === 'complete') setScene(12)
         },
         opacity: 0.52,
         rotateZ: side === 'L' ? 232 : -240,
@@ -179,6 +178,7 @@ const bloodDrop = side => {
         onComplete: () => {
           animateBaubleLayer03or04(side, g.subScene.scene11[`foetus${side}`].ff)
           subSceneProgress('scene11', `foetus${side}`, 'complete')
+          if (!g.scene.skip.ff && g.subScene.scene11[`foetus${side === 'L' ? 'R' : 'L'}`].progress === 'complete' && g.subScene.scene11.folklore.progress === 'complete') setScene(12)
         },
         opacity: 0,
         scaleY: 0.2,
