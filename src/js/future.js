@@ -208,6 +208,12 @@ const incrementFluxDisplay = () => {
     lightFluxMeter('FLUX')
     gsap.ticker.remove(incrementFluxDisplay)
     gsap.set('#fluxDisplay', { cursor: 'no-drop' })
+    gsap.to('.fluxDisplayNumber', {
+      duration: 0.75,
+      opacity: 0,
+      repeat: -1,
+      yoyo: true,
+    })
   }
 }
 const decrementFluxDisplay = () => {
