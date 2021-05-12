@@ -22,6 +22,10 @@ const convertTextToBinary = txt => {
   return bi
 }
 
+const devLog = log => {
+  if (g.dev) console.log(log)
+}
+
 const getTranslateValues = element => {
   if (isSet(g.window)) {
     // eslint-disable-next-line no-undef
@@ -80,7 +84,7 @@ const gsapToOrSet = (tL, too, too2, pos, set = false) => {
 const gsapUnTick = tickFunc => {
   if (gsap.ticker._listeners.includes(tickFunc)) {
     gsap.ticker.remove(tickFunc)
-    if (g.dev) console.log(`${tickFunc.name}() removed from gsap.ticker`)
+    devLog(`${tickFunc.name}() removed from gsap.ticker`)
     return true
   }
   return [ tickFunc, gsap.ticker._listeners, gsap.ticker._listeners.includes(tickFunc) ]
@@ -89,7 +93,7 @@ const gsapUnTick = tickFunc => {
 const gsapTick = tickFunc => {
   if (!gsap.ticker._listeners.includes(tickFunc)) {
     gsap.ticker.add(tickFunc)
-    if (g.dev) console.log(`${tickFunc.name}() added to gsap.ticker`)
+    devLog(`${tickFunc.name}() added to gsap.ticker`)
     return () => gsapUnTick(tickFunc)
   }
   return false
@@ -147,7 +151,7 @@ const setRemoveOn = (domSelector, onEvent, doFunc, cursorOn = 'no-drop') => {
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     domEl.removeEventListener(onEvent, doFunc)
-    if (g.dev) console.log(`event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
+    devLog(`event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
     domEl.style.cursor = cursorOn
   })
   return true
@@ -157,7 +161,7 @@ const setAddOn = (domSelector, onEvent, doFunc, cursorOn = 'pointer', cursorOff 
   const domElements = g.document.querySelectorAll(domSelector)
   domElements.forEach(domEl => {
     domEl.addEventListener(onEvent, doFunc)
-    if (g.dev) console.log(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
+    devLog(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
     domEl.style.cursor = cursorOn
   })
   return () => setRemoveOn(domSelector, onEvent, doFunc, cursorOff)
@@ -325,7 +329,7 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
         tl.totalTime(0).invalidate().play(time > 0.001 ? time + 1.25 : 0)
       },
     })
-  } else if (g.dev) console.log('Please load Draggable for findMorphOrigin() to work.')
+  } else devLog('Please load Draggable for findMorphOrigin() to work.')
   return tl
 }
 
@@ -378,6 +382,7 @@ const uuidv4 = () => {
 export {
   addCSSRule,
   convertTextToBinary,
+  devLog,
   getTranslateValues,
   gsapToOrSet,
   gsapTick,

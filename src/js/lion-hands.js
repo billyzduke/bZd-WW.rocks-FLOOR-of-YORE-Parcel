@@ -196,7 +196,7 @@ const bloodDrop = side => {
 }
 
 const bloodDropL = () => {
-  if (!g.subScene.scene11.active) {
+  if (!g.subScene.scene11.ss.active) {
     activateSubScene('scene11', 'foetusL', 'cryBlood')
     setRemoveOn('#sayCeren', 'click', bloodDropL)
     bloodDrop('L')
@@ -204,7 +204,7 @@ const bloodDropL = () => {
 }
 
 const bloodDropR = () => {
-  if (!g.subScene.scene11.active) {
+  if (!g.subScene.scene11.ss.active) {
     activateSubScene('scene11', 'foetusR', 'cryBlood')
     setRemoveOn('#saySinan', 'click', bloodDropR)
     bloodDrop('R')

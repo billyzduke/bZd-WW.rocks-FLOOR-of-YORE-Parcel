@@ -124,7 +124,7 @@ const ramIconHornsRollInIncTick = horn => {
     g.ramIcon.horns[horn].from = nextHornRollFrame
   } else {
     // eslint-disable-next-line no-lonely-if
-    ifFunctionThenCall(g.ramIcon.unTick())
+    ifFunctionThenCall(g.ramIcon.unTick)
     // subSceneProgress('scene11', 'folklore', 'ramRolled')
     // const switcherooTL = new TL()
     // switcherooTL.to('#theOwl', {
@@ -159,7 +159,7 @@ const rollEmInInc = (horn, rollAmount) => {
 // }
 
 const rollEmOut = () => {
-  if (!g.subScene.scene11.active) {
+  if (!g.subScene.scene11.ss.active) {
     activateSubScene('scene11', 'folklore', 'unrollRam')
     ifFunctionThenCall(g.scene.forCleanUp[11].ramOverClickable)
     ifFunctionThenCall(g.scene.forCleanUp[11].ramOutUnClickable)

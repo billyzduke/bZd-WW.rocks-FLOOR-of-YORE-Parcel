@@ -18,7 +18,7 @@ import assFolkloreFinal07 from 'url:/src/img/binaryFolklore/folklore-final-form-
 import { random } from 'gsap/gsap-core'
 import g from './glob'
 import {
-  gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, setAddOn, randOnum, setClearActors, shuffleArray,
+  devLog, gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, setAddOn, randOnum, setClearActors, shuffleArray,
 } from './utils'
 import { setCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
@@ -92,8 +92,7 @@ const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
       onComplete() {
         subSceneProgress('scene11', 'folklore', 'lyricsPrinted')
         g.folklore.binary.drawCharsReversed = false
-        ifFunctionThenCall(g.ramIcon.unClick)
-        g.ramIcon.unClick = setAddOn('#ramIcon', 'click', scanFolkLore)
+        if (ifFunctionThenCall(g.ramIcon.unClick)) g.ramIcon.unClick = setAddOn('#ramIcon', 'click', scanFolkLore)
         if (g.subScene.scene11.folklore.ff) g.el.ramIcon.click()
       },
       opacity: 0,
@@ -107,22 +106,23 @@ const printSpeed = () => {
 }
 
 const printOutBinary = biBlob => {
-  subSceneProgress('scene11', 'folklore', 'printLyrics')
-  g.tL.binary = new TL({ defaults: { overwrite: 'auto' }, paused: true })
-  if (g.subScene.scene11.folklore.ff) g.tL.binary.timeScale(1 / g.subScene.scene11.folklore.ff)
-  const biRegex = new RegExp(`[01]{1,${g.folklore.binary.charsPerPrintedLine}}`, 'g')
-  const biBlobRows = biBlob.match(biRegex).slice(0, 33).reverse()
-  biBlobRows.unshift('', '', '')
-  biBlobRows.push('')
-  biBlobRows.forEach((bbr, i) => {
-    printOutRow(i + 1, bbr, biBlobRows.length)
-  })
-  g.tL.binary.set('.binaryPath', {
-    opacity: 0,
-  }, 0)
-  g.tL.binary.play()
-  ifFunctionThenCall(g.ramIcon.unClick)
-  g.ramIcon.unClick = setAddOn('#ramIcon', 'click', printSpeed, 'copy')
+  if (g.subScene.scene11.folklore.progress === 'prepLyrics') {
+    subSceneProgress('scene11', 'folklore', 'printLyrics')
+    g.tL.binary = new TL({ defaults: { overwrite: 'auto' }, paused: true })
+    if (g.subScene.scene11.folklore.ff) g.tL.binary.timeScale(1 / g.subScene.scene11.folklore.ff)
+    const biRegex = new RegExp(`[01]{1,${g.folklore.binary.charsPerPrintedLine}}`, 'g')
+    const biBlobRows = biBlob.match(biRegex).slice(0, 33).reverse()
+    biBlobRows.unshift('', '', '')
+    biBlobRows.push('')
+    biBlobRows.forEach((bbr, i) => {
+      printOutRow(i + 1, bbr, biBlobRows.length)
+    })
+    g.tL.binary.set('.binaryPath', {
+      opacity: 0,
+    }, 0)
+    g.tL.binary.play()
+    g.ramIcon.unClick = setAddOn('#ramIcon', 'click', printSpeed, 'copy')
+  }
 }
 
 const setFolkLore = () => {
@@ -482,8 +482,6 @@ const chewMe = () => {
                 cleanUpUsedEls.forEach(el => {
                   el.parentNode.removeChild(el)
                 })
-                console.log(gsap.ticker)
-
                 animateBaubleLayer03or04(null, g.subScene.scene11.folklore.ff)
                 subSceneProgress('scene11', 'folklore', 'complete')
                 if (g.foetus.L.drop && g.foetus.R.drop) setScene(12)
@@ -826,7 +824,7 @@ const clearAwayTheStone = () => {
                 onComplete: function () {
                   if (isFunction(g.smoke.stoneSmoke1.unTick)) g.smoke.stoneSmoke1.unTick()
                   else {
-                    console.log(g.smoke.stoneSmoke1.unTick)
+                    devLog(g.smoke.stoneSmoke1.unTick)
                     gsapUnTick(stoneSmokeTick1)
                   }
                   ifFunctionThenCall(g.smoke.stoneSmoke2.unTick)

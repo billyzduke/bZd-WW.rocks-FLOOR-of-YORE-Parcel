@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
 import g from './glob'
-import { randOnum } from './utils'
+import { devLog, randOnum } from './utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from './scene'
 
@@ -30,7 +30,7 @@ const setLion = () => {
 }
 
 const shockTheLion = () => {
-  if (g.dev) console.log('shock the lion')
+  devLog('shock the lion')
   g.lion.blur2X = gsap.quickSetter('#lionBlur2', 'css')
 }
 

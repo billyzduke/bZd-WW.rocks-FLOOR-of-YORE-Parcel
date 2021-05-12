@@ -1,5 +1,7 @@
 import g from './glob'
-import { isFunction, padStr, setAddOn, upperCaseFirstLetter } from './utils'
+import {
+  devLog, isFunction, padStr, setAddOn, upperCaseFirstLetter,
+} from './utils'
 import { scene00, setScene00 } from './scenes/scene-00'
 import { scene01, setScene01 } from './scenes/scene-01'
 import { scene02, setScene02 } from './scenes/scene-02'
@@ -53,14 +55,14 @@ const setScenes = [
 const cleanScene = s => {
   const cleanUps = Object.entries(g.scene.forCleanUp[s])
   if (cleanUps.length) {
-    if (g.dev) console.log(`running ${cleanUps.length} cleanUp${cleanUps.length !== 1 ? 's' : ''} for scene ${s}`)
+    devLog(`running ${cleanUps.length} cleanUp${cleanUps.length !== 1 ? 's' : ''} for scene ${s}`)
     cleanUps.forEach(([ c, u ], i) => {
       if (isFunction(u)) {
         const uu = u()
         if (typeof uu === 'boolean' && uu) {
-          if (g.dev) console.log(`${i + 1} - ${c}: this pipe is clean`)
-        } else if (g.dev) console.log(`${i + 1} - ${c}: pipe cleaning function failed, returned:`, uu)
-      } else if (g.dev) console.log(`${i + 1} - ${c}: pipe cleaning failed: no function`, u)
+          devLog(`${i + 1} - ${c}: this pipe is clean`)
+        } else devLog(`${i + 1} - ${c}: pipe cleaning function failed, returned:`, uu)
+      } else devLog(`${i + 1} - ${c}: pipe cleaning failed: no function`, u)
     })
     g.scene.forCleanUp[s] = {}
   }
@@ -80,13 +82,13 @@ const setScene = (toScene = 0) => {
       })
     }
     if (setScenes[toScene]) {
-      if (g.dev) console.log(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
+      devLog(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
       let prevSceneCleaned = false
       if (toScene) {
         prevSceneCleaned = cleanScene(g.scene.current)
-        if (g.dev) console.log({ prevSceneCleaned })
+        devLog({ prevSceneCleaned })
       } else {
-        if (g.dev) console.log({ prevSceneCleaned })
+        devLog({ prevSceneCleaned })
         prevSceneCleaned = true
       }
       if (prevSceneCleaned) {
@@ -96,24 +98,23 @@ const setScene = (toScene = 0) => {
         } else {
           g.scene.action = 'skip'
         }
-        console.log(g.subScene[parentScene])
         if (!g.subScene[parentScene] || g.subScene[parentScene].ss.allComplete) {
           const nextSceneSet = setScenes[toScene]()
-          console.log({ nextSceneSet })
+          devLog({ nextSceneSet })
           if (nextSceneSet) {
             g.scene.current = toScene
             g.scene.setting = 0
-            console.log(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
+            devLog(`scene ${g.scene.current} ${g.scene.action} complete: ${scenes[g.scene.current]}`, g)
             setSceneSkipper()
             return true
           }
         }
-        if (g.dev) console.log(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
-      } else if (g.dev) console.log(`a problem occurred while attempting to cleanUp scene ${toScene}`)
-    } else if (g.dev) console.log(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
+        devLog(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
+      } else devLog(`a problem occurred while attempting to cleanUp scene ${toScene}`)
+    } else devLog(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
   } else if (toScene !== g.scene.current) {
     // We're gonna ignore calls to change a scene to itself and not throw errors... Event listeners, it turns out, can accumulate on a single event, esp when using anon funcs
-    if (g.dev) console.log(`invalid scene ${g.scene.action} attempted: current scene ${g.scene.current} cannot be ${g.scene.action} to target scene ${toScene}`)
+    devLog(`invalid scene ${g.scene.action} attempted: current scene ${g.scene.current} cannot be ${g.scene.action} to target scene ${toScene}`)
   }
   return false
 }
@@ -128,9 +129,9 @@ const handleOtherTriggers = (parentScene, subScene, on) => {
 
 const deActivateSubScene = (parentScene, subScene) => {
   g.subScene[parentScene][subScene].active = false
-  if (g.dev) console.log(`${parentScene} subScene ${subScene} de-activated`)
+  devLog(`${parentScene} subScene ${subScene} de-activated`)
   g.subScene[parentScene].ss.active = false
-  if (g.dev) console.log(`${parentScene} all subScenes de-activated`)
+  devLog(`${parentScene} all subScenes de-activated`)
   handleOtherTriggers(parentScene, subScene, false)
   killSkipper(parentScene, subScene)
   let allComplete = true
@@ -153,7 +154,7 @@ const deActivateSubScene = (parentScene, subScene) => {
 
 const subSceneProgress = (parentScene, subScene, progression) => {
   g.subScene[parentScene][subScene].progress = progression
-  if (g.dev) console.log(`${parentScene} subScene ${subScene} progress: ${g.subScene[parentScene][subScene].progress}`)
+  devLog(`${parentScene} subScene ${subScene} progress: ${g.subScene[parentScene][subScene].progress}`)
   if (progression === 'complete') {
     g.subScene[parentScene][subScene].ff = 0
     deActivateSubScene(parentScene, subScene)
@@ -172,9 +173,9 @@ const setSubScenes = (scene, subScenes = []) => {
 
 const activateSubScene = (parentScene, subScene, progression) => {
   g.subScene[parentScene].ss.active = true
-  if (g.dev) console.log(`${parentScene} any subScene activated`)
+  devLog(`${parentScene} any subScene activated`)
   g.subScene[parentScene][subScene].active = true
-  if (g.dev) console.log(`${parentScene} subScene ${subScene} activated`)
+  devLog(`${parentScene} subScene ${subScene} activated`)
   handleOtherTriggers(parentScene, subScene, true)
   killSkipper(parentScene, subScene)
   subSceneProgress(parentScene, subScene, progression)
@@ -270,7 +271,7 @@ const cleanSkipper = (scene, ss) => {
 
 const skipSubScene = (scene, subScene) => {
   const parentScene = `scene${padStr(scene)}`
-  if (g.dev) console.log(`skipping ${parentScene} subScene ${subScene}`)
+  devLog(`skipping ${parentScene} subScene ${subScene}`)
   const ss = `ss${upperCaseFirstLetter(subScene)}`
   cleanSkipper(scene, ss)
   g.subScene[parentScene][subScene].ff = 0.1

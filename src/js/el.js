@@ -1,4 +1,6 @@
 /* eslint-disable no-undef */
+import { devLog } from './utils'
+
 export const htmEl = (find, findByType = 'id', returnMulti = false) => {
   if (!find || (typeof find !== 'string' && !Array.isArray(find))) return null
   const labels = typeof find === 'string' ? [ find ] : find
@@ -18,7 +20,7 @@ export const htmEl = (find, findByType = 'id', returnMulti = false) => {
         el[lbl] = document.getElementById(lbl)
     }
   })
-  // console.log(el)
+  devLog(el)
   return el
 }
 
