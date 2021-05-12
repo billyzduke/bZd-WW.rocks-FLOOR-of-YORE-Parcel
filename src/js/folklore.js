@@ -92,7 +92,8 @@ const printOutRow = (pLine = 1, biBlobRow = '', pLines) => {
       onComplete() {
         subSceneProgress('scene11', 'folklore', 'lyricsPrinted')
         g.folklore.binary.drawCharsReversed = false
-        if (g.ramIcon.unClick()) g.ramIcon.unClick = setAddOn('#ramIcon', 'click', scanFolkLore)
+        ifFunctionThenCall(g.ramIcon.unClick)
+        g.ramIcon.unClick = setAddOn('#ramIcon', 'click', scanFolkLore)
         if (g.subScene.scene11.folklore.ff) g.el.ramIcon.click()
       },
       opacity: 0,
@@ -120,6 +121,7 @@ const printOutBinary = biBlob => {
     opacity: 0,
   }, 0)
   g.tL.binary.play()
+  ifFunctionThenCall(g.ramIcon.unClick)
   g.ramIcon.unClick = setAddOn('#ramIcon', 'click', printSpeed, 'copy')
 }
 
@@ -454,7 +456,7 @@ const chewMe = () => {
           })
           if (g.subScene.scene11.folklore.ff) g.el.ramIcon.click()
         } else {
-          g.ramIcon.unClick()
+          ifFunctionThenCall(g.ramIcon.unClick)
           const extricatedFolkloreFinalForm = g.el.folkloreFinalForm.cloneNode(true)
           extricatedFolkloreFinalForm.style.opacity = 0
           extricatedFolkloreFinalForm.style.cursor = 'no-drop'
@@ -571,7 +573,8 @@ const printOutCows = () => {
             colorHelper.id = 'ffColorHelper'
             colorHelper.style.opacity = 0
             g.el.binaryScroll.appendChild(colorHelper)
-            if (g.ramIcon.unClick()) g.ramIcon.unClick = setAddOn('#ramIcon', 'click', chewMe)
+            ifFunctionThenCall(g.ramIcon.unClick)
+            g.ramIcon.unClick = setAddOn('#ramIcon', 'click', chewMe)
             if (g.subScene.scene11.folklore.ff) g.el.ramIcon.click()
           },
           opacity: 0,

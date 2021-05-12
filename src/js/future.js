@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { gsap } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import assFluxDisplay0 from 'url:/src/img/future/flux-display-0.png'
 import assFluxDisplay1 from 'url:/src/img/future/flux-display-1.png'
@@ -61,11 +61,11 @@ const setFluxEchoes = () => {
   for (let fle = 0; fle < echosPerAxis * 2; fle++) {
     const fluxEchoLR = g.document.createElement('div')
     fluxEchoLR.classList.add('fluxEcho', 'fluxEchoLR', `fluxEcho${fle < echosPerAxis ? 'L' : 'R'}`)
-    g.el[`fluxEchoes${fle < 5 ? 'L' : 'R'}`].appendChild(fluxEchoLR)
+    g.el[`fluxEchoAxis${fle < echosPerAxis ? 'L' : 'R'}`].appendChild(fluxEchoLR)
     if (fle < echosPerAxis) {
       const fluxEchoC = g.document.createElement('div')
       fluxEchoC.classList.add('fluxEcho', 'fluxEchoC')
-      g.el.fluxEchoesC.appendChild(fluxEchoC)
+      g.el.fluxEchoAxisC.appendChild(fluxEchoC)
     }
   }
   gsap.set('.fluxEchoAxis', { opacity: 0 })
@@ -84,38 +84,46 @@ const setFluxEchoes = () => {
   gsap.set('.fluxEchoC', {
     translateY: -88,
   })
-  gsap.to(`.fluxEchoR`, {
-    duration: 3,
-    ease: 'power2.in',
-    opacity: 1,
-    scale: 1,
-    translateX: 0,
-    translateY: 0,
-    stagger: {
-      each: 0.5,
-      repeat: -1,
-    },
-  })
-}
-
-const echoCry = axis => {
-  gsap.to(`.fluxEchoAxis#fluxEchoes${axis}`, {
+  g.tL.cryMeACapacitor = {
+    C: new TL({ defaults: { overwrite: 'auto' } }),
+    L: new TL({ defaults: { overwrite: 'auto' } }),
+    R: new TL({ defaults: { overwrite: 'auto' } }),
+  }
+  g.tL.cryMeACapacitor.L.to('#fluxEchoAxisL', {
     duration: 0.5,
     opacity: 1,
   })
-  gsap.to(`.fluxEcho${axis}`, {
-    duration: 3,
-    ease: 'power2.in',
+    .to('.fluxEchoL', {
+      duration: 3,
+      ease: 'power2.in',
+      opacity: 1,
+      scale: 1,
+      translateX: 0,
+      translateY: 0,
+      stagger: {
+        each: 0.5,
+        repeat: -1,
+      },
+    }, '<')
+}
+
+const echoCry = axis => {
+  g.tL.cryMeACapacitor[axis].to(`#fluxEchoAxis${axis}`, {
+    duration: 0.5,
     opacity: 1,
-    scale: 1,
-    translateX: 0,
-    translateY: 0,
-    stagger: {
-      each: 0.5,
-      repeat: -1,
-    },
-    overwrite: true,
   })
+    .to(`.fluxEcho${axis}`, {
+      duration: 3,
+      ease: 'power2.in',
+      opacity: 1,
+      scale: 1,
+      translateX: 0,
+      translateY: 0,
+      stagger: {
+        each: 0.5,
+        repeat: -1,
+      },
+    }, '<')
   g.flux.echo[axis] = true
   let testAxes = true
   Object.keys(g.flux.echo).forEach(ax => {
