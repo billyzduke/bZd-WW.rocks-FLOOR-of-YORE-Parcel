@@ -34,11 +34,15 @@ const assFluxDisplayDigits = [
 const setFluxDisplay = () => {
   g.flux.display = [ {
     dispose: false,
-    track: 24,
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    pre: [ 0, 0, 1, 1, 2, 4 ],
+    current: 18,
   },
   {
     dispose: false,
-    track: 32,
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    pre: [ 4, 8, 5, 6, 3, 2 ],
+    current: 18,
   } ]
   g.qss.flux.display = [ [], [] ]
   assFluxDisplayDigits.forEach(afdd => {
@@ -131,9 +135,9 @@ const echoCry = axis => {
   if (testAxes) {
     setTimeout(() => {
       gsap.to('#fluxFlash', {
-        duration: 0.36,
+        duration: 0.24,
         opacity: 1,
-        scale: 2.4,
+        scale: 1.24,
         repeat: 1,
         yoyo: true,
       })
@@ -171,7 +175,7 @@ const unMaskFlux = () => {
   }
 }
 
-const getCurrentSpeed = () => Number(`${g.flux.display[0].track}${g.flux.display[1].track}`)
+const getCurrentSpeed = () => Number(`${g.flux.display[0].current}${g.flux.display[1].current}`)
 
 const incrementFluxDisplay = () => {
   const currentSpeed = getCurrentSpeed()
@@ -183,20 +187,20 @@ const incrementFluxDisplay = () => {
       g.qss.flux.display[1][g.flux.display[1].dispose](0)
       g.flux.display[1].dispose = false
     }
-    g.flux.display[1].dispose = g.flux.display[1].track // for next time
-    if (g.flux.display[1].track < 9) {
-      g.flux.display[1].track++
+    g.flux.display[1].dispose = g.flux.display[1].current // for next time
+    if (g.flux.display[1].current < 9) {
+      g.flux.display[1].current++
     } else {
-      g.flux.display[1].track = 0
+      g.flux.display[1].current = 0
       if (g.qss.flux.display[0][g.flux.display[0].dispose]) {
         g.qss.flux.display[0][g.flux.display[0].dispose](0)
         g.flux.display[0].dispose = false
       }
-      g.flux.display[0].track++
-      g.qss.flux.display[0][g.flux.display[0].track](1)
-      g.flux.display[0].dispose = g.flux.display[0].track // for next time
+      g.flux.display[0].current++
+      g.qss.flux.display[0][g.flux.display[0].current](1)
+      g.flux.display[0].dispose = g.flux.display[0].current // for next time
     }
-    g.qss.flux.display[1][g.flux.display[1].track](1)
+    g.qss.flux.display[1][g.flux.display[1].current](1)
     g.qss.flux.capacitor({
       opacity: '+=0.01',
     })
@@ -223,21 +227,21 @@ const decrementFluxDisplay = () => {
       g.qss.flux.display[1][g.flux.display[1].dispose](0)
       g.flux.display[1].dispose = false
     }
-    g.flux.display[1].dispose = g.flux.display[1].track // for next time
-    if (!g.flux.display[1].track && g.flux.display[0].track) {
-      g.flux.display[1].track = 9
+    g.flux.display[1].dispose = g.flux.display[1].current // for next time
+    if (!g.flux.display[1].current && g.flux.display[0].current) {
+      g.flux.display[1].current = 9
       if (g.qss.flux.display[0][g.flux.display[0].dispose]) {
         g.qss.flux.display[0][g.flux.display[0].dispose](0)
         g.flux.display[0].dispose = false
       }
-      g.flux.display[0].track--
-      g.qss.flux.display[0][g.flux.display[0].track](1)
-      g.flux.display[0].dispose = g.flux.display[0].track // for next time
+      g.flux.display[0].current--
+      g.qss.flux.display[0][g.flux.display[0].current](1)
+      g.flux.display[0].dispose = g.flux.display[0].current // for next time
     } else {
-      g.flux.display[1].track--
+      g.flux.display[1].current--
     }
-    if (g.flux.display[1].track >= 0) {
-      g.qss.flux.display[1][g.flux.display[1].track](1)
+    if (g.flux.display[1].current >= 0) {
+      g.qss.flux.display[1][g.flux.display[1].current](1)
       g.qss.flux.capacitor({
         opacity: '-=0.01',
       })
@@ -245,7 +249,7 @@ const decrementFluxDisplay = () => {
         rotateZ: '-=1',
       })
     } else {
-      g.flux.display[1].track = 0
+      g.flux.display[1].current = 0
       g.flux.display[1].dispose = false
       g.qss.flux.display[0][0](1)
       g.flux.display[0].dispose = 0
@@ -270,7 +274,7 @@ const randomizeTargetReached = d => {
     gsap.ticker.remove(randomizeFluxDisplayTick10)
   }
   g.qss.flux.display[d][0](1)
-  g.flux.display[0].track = g.flux.display[1].track = 0
+  g.flux.display[0].current = g.flux.display[1].current = 0
   g.scene.forCleanUp[12].fluxDisplayHold = setAddOn('#fluxDisplay', 'mousedown', activateFluxDisplay)
   g.scene.forCleanUp[12].fluxDisplayHold = setAddOn('#fluxDisplay', 'mouseup', activateFluxDisplay)
   gsap.set('#fluxDisplay', { cursor: 'pointer' })
@@ -281,11 +285,11 @@ const randomizeFluxDisplayTick = d => {
     g.qss.flux.display[d][g.flux.display[d].dispose](0)
     g.flux.display[d].dispose = false
   }
-  if (g.flux.display[d].track > 0) {
+  if (g.flux.display[d].current > 0) {
     const nextNumberFrame = randOnum(0, 9)
     g.qss.flux.display[d][nextNumberFrame](1)
     g.flux.display[d].dispose = nextNumberFrame
-    g.flux.display[d].track--
+    g.flux.display[d].current--
   } else {
     randomizeTargetReached(d)
   }
@@ -296,6 +300,28 @@ const randomizeFluxDisplayTick10 = () => {
 }
 const randomizeFluxDisplayTick01 = () => {
   randomizeFluxDisplayTick(1)
+}
+
+const preRandomizeFluxDisplayTick = d => {
+  if (g.qss.flux.display[d][g.flux.display[d].dispose]) {
+    g.qss.flux.display[d][g.flux.display[d].dispose](0)
+    g.flux.display[d].dispose = false
+  }
+  if (g.flux.display[d].pre.length) {
+    const nextNotSoRandomNumber = g.flux.display[d].pre.shift()
+    g.qss.flux.display[d][nextNotSoRandomNumber](1)
+    g.flux.display[d].dispose = nextNotSoRandomNumber
+  } else {
+    gsap.ticker.remove(d ? preRandomizeFluxDisplayTick01 : preRandomizeFluxDisplayTick10)
+    gsap.ticker.add(d ? randomizeFluxDisplayTick01 : randomizeFluxDisplayTick10)
+  }
+}
+
+const preRandomizeFluxDisplayTick10 = () => {
+  preRandomizeFluxDisplayTick(0)
+}
+const preRandomizeFluxDisplayTick01 = () => {
+  preRandomizeFluxDisplayTick(1)
 }
 
 const flickTick = () => {
@@ -315,8 +341,8 @@ const flickOnFluxDisplayDirective = () => {
 const randomizeFluxDisplay = () => {
   gsap.set('#fluxDisplay', { cursor: 'wait' })
   flickOnFluxDisplayDirective()
-  gsap.ticker.add(randomizeFluxDisplayTick10)
-  gsap.ticker.add(randomizeFluxDisplayTick01)
+  gsap.ticker.add(preRandomizeFluxDisplayTick10)
+  gsap.ticker.add(preRandomizeFluxDisplayTick01)
 }
 
 const setFluxMeter = () => {
