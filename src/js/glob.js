@@ -15,10 +15,12 @@ const g = {
   },
   folklore: {
     binary: {},
+    forCleanUp: {},
     lore: [],
   },
   lion: {
     eyes: {},
+    forCleanUp: {},
     tShirt: false,
   },
   m: {}, // mouse position
@@ -47,7 +49,9 @@ const g = {
     lightningRods: {},
     smoke: {},
   },
-  ramIcon: {},
+  ramIcon: {
+    forCleanUp: [],
+  },
   scene: { // global scene manager
     action: '',
     forCleanUp: [],

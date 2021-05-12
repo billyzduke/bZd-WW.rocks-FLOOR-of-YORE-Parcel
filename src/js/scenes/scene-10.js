@@ -1,15 +1,11 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
-import assHandEyeBlinkL from 'url:/src/img/lion/lion-hand-eye-left-blink.gif'
-import assHandEyeBlinkR from 'url:/src/img/lion/lion-hand-eye-right-blink.gif'
 import g from '../glob'
-import { gsapTick, setAddOn } from '../utils'
+import { gsapTick } from '../utils'
 import { lionShockTick, relieveTheLion, shockTheLion } from '../lion'
-import { ex, setExcs } from '../lion-head'
+import { setLionHead } from '../lion-head'
+import { setLionHands } from '../lion-hands'
 import { setFoetuses } from '../foetuses'
-// eslint-disable-next-line object-curly-newline
-import { bloodDropL, bloodDropR, sayCeren, sayNothing, saySinan, setBloodSplashes } from '../lion-hands'
-import { setRamIconHorns } from '../owl-ram'
 import { setFolkLore } from '../folklore'
 
 const scene10 = 'Shock the Lion / Open All Eyes / Release the Owl'
@@ -19,39 +15,11 @@ const setScene10 = (c, n) => {
   shockTheLion()
   g.scene.forCleanUp[c].lionShockTicker = gsapTick(lionShockTick)
 
+  setLionHead()
+  setLionHands()
   setFoetuses()
-  setBloodSplashes()
-  setRamIconHorns()
   setFolkLore()
-  setExcs()
 
-  setAddOn('#handEyeLeft, #saySinan', 'mouseenter', saySinan)
-  setAddOn('#handEyeLeft, #saySinan', 'mouseleave', sayNothing)
-  setAddOn('#saySinan', 'click', bloodDropR)
-  setAddOn('#handEyeRight, #sayCeren', 'mouseenter', sayCeren)
-  setAddOn('#handEyeRight, #sayCeren', 'mouseleave', sayNothing)
-  setAddOn('#sayCeren', 'click', bloodDropL)
-  setAddOn('#thirdEyeWrapper', 'click', ex)
-
-  g.qss.ramIconHorns.both[0](1)
-
-  gsap.set('#lionHead', {
-    attr: {
-      class: 'jarp',
-    },
-  })
-  gsap.set('#thirdEyeClosed', {
-    attr: {
-      class: 'open',
-    },
-  })
-  g.el.handEyeLeft.src = assHandEyeBlinkL
-  g.el.handEyeRight.src = assHandEyeBlinkR
-  gsap.set('.handEyeWrapper', {
-    attr: {
-      class: 'handEyeWrapper open',
-    },
-  })
   gsap.fromTo('#theOwlIsNotWhatItSeems', {
     translateY: '-=76',
   }, {

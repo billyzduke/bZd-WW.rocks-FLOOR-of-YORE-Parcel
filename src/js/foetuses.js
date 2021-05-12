@@ -19,10 +19,10 @@ import assFoetusEyeSquinch03 from 'url:/src/img/foetuses/foetusEyeSquinch-03.png
 import assFoetusEyeSquinch04 from 'url:/src/img/foetuses/foetusEyeSquinch-04.png'
 import g from './glob'
 import {
-  ifFunctionThenCall, isFunction, randOnum, setAddOn,
+  ifFunctionThenCall, randOnum, setAddOn,
 } from './utils'
-import { echoCry } from './future'
-// import { activateSubScene } from './scene'
+import { setBloodSplashes } from './lion-hands'
+import { echoCry } from './flux'
 
 const setFoetuses = () => {
   const foetuses = [ 'L', 'R' ]
@@ -105,6 +105,8 @@ const setFoetuses = () => {
       }
     }
   })
+
+  setBloodSplashes()
 }
 
 const openFoetusEyeTick = foe => {

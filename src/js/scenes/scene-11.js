@@ -12,8 +12,6 @@ const scene11 = 'Relieve the Lion / Binary Folklore / Breed Foetuses'
 
 const setScene11 = (c, n) => {
   g.scene.setting = c
-  g.scene.forCleanUp[c].ramOverClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseenter', readyFolkLore)
-  g.scene.forCleanUp[c].ramOutUnClickable = setAddOn('#theOwlIsNotWhatItSeems', 'mouseleave', unReadyFolkLore, 'wait')
 
   setBaubleLayer03()
   setBaubleLayer04()

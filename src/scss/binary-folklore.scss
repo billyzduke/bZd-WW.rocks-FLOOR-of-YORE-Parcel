@@ -92,6 +92,7 @@ div.cow {
   width: 110px; /* 108px; */
   height: 90px; /* 88px; */
   top: 62px;
+  pointer-events: auto;
   .cowBell {
     top: calc(100% + 4px);
     left: 50%;
@@ -133,6 +134,7 @@ a#folkloreFinal {
   left: 50%;
   top: 92px;
   transform: translateX(-50%);
+  pointer-events: auto;
   svg#engravenOnAllFours {
     width: 100%;
     height: 100%;

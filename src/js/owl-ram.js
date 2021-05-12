@@ -1,4 +1,4 @@
-import { gsap, TimelineMax as TL } from 'gsap'
+import { gsap } from 'gsap'
 
 import assRamIconHornRoll00 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-00.png'
 import assRamIconHornRoll01 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-01.png'
@@ -39,7 +39,7 @@ import {
 import { printOutBinary } from './folklore'
 import { activateSubScene, subSceneProgress } from './scene'
 
-const setRamIconHorns = () => {
+const setRamIcon = () => {
   const assRamIconHornRollFrames = [
     assRamIconHornRoll00,
     assRamIconHornRoll01,
@@ -122,6 +122,27 @@ const setRamIconHorns = () => {
   }
 }
 
+const rollEmOut = () => {
+  if (!g.subScene.scene11.ss.active) {
+    activateSubScene('scene11', 'folklore', 'unrollRam')
+    g.ramIcon.forCleanUp.ready.forEach(cleanUp => {
+      ifFunctionThenCall(cleanUp)
+    })
+    gsap.set('#theOwlIsNotWhatItSeems', {
+      cursor: 'auto',
+    })
+    gsap.set('#ramIcon', {
+      cursor: 'wait',
+    })
+    g.ramIcon.unTick = gsapTick(ramIconHornsRollOutTick)
+    gsap.set('#theOwlIsNotWhatItSeems', {
+      attr: {
+        class: 'open',
+      },
+    })
+  }
+}
+
 const ramIconHornsRollOutTick = () => {
   const nextHornRollFrame = g.ramIcon.horns.both + 1
   if (g.qss.ramIconHorns.both[nextHornRollFrame]) {
@@ -138,6 +159,16 @@ const ramIconHornsRollOutTick = () => {
   }
 }
 
+const rollEmInInc = (horn, rollAmount) => {
+  g.ramIcon.horns[horn].to = g.ramIcon.horns[horn].from - rollAmount
+  g.ramIcon.unTick = gsapTick(horn === 'L' ? rollEmInIncTickL : rollEmInIncTickR)
+}
+const rollEmInIncTickL = () => {
+  ramIconHornsRollInIncTick('L')
+}
+const rollEmInIncTickR = () => {
+  ramIconHornsRollInIncTick('R')
+}
 const ramIconHornsRollInIncTick = horn => {
   const nextHornRollFrame = g.ramIcon.horns[horn].from - 1
   if (g.ramIcon.horns[horn].from > g.ramIcon.horns[horn].to && g.qss.ramIconHorns[horn][nextHornRollFrame]) {
@@ -145,40 +176,6 @@ const ramIconHornsRollInIncTick = horn => {
     g.qss.ramIconHorns[horn][nextHornRollFrame](1)
     g.ramIcon.horns[horn].from = nextHornRollFrame
   } else ifFunctionThenCall(g.ramIcon.unTick)
-}
-
-const rollEmInIncTickL = () => {
-  ramIconHornsRollInIncTick('L')
-}
-
-const rollEmInIncTickR = () => {
-  ramIconHornsRollInIncTick('R')
-}
-
-const rollEmInInc = (horn, rollAmount) => {
-  g.ramIcon.horns[horn].to = g.ramIcon.horns[horn].from - rollAmount
-  g.ramIcon.unTick = gsapTick(horn === 'L' ? rollEmInIncTickL : rollEmInIncTickR)
-}
-
-const rollEmOut = () => {
-  if (!g.subScene.scene11.ss.active) {
-    activateSubScene('scene11', 'folklore', 'unrollRam')
-    ifFunctionThenCall(g.scene.forCleanUp[11].ramOverClickable)
-    ifFunctionThenCall(g.scene.forCleanUp[11].ramOutUnClickable)
-    g.scene.forCleanUp[11].ramOverClickable = g.scene.forCleanUp[11].ramOutUnClickable = undefined
-    gsap.set('#theOwlIsNotWhatItSeems', {
-      cursor: 'auto',
-    })
-    gsap.set('#ramIcon', {
-      cursor: 'wait',
-    })
-    g.ramIcon.unTick = gsapTick(ramIconHornsRollOutTick)
-    gsap.set('#theOwlIsNotWhatItSeems', {
-      attr: {
-        class: 'open',
-      },
-    })
-  }
 }
 
 const owlCawTick = () => {
@@ -205,5 +202,5 @@ const owlCawTick = () => {
 }
 
 export {
-  owlCawTick, rollEmInInc, rollEmOut, setRamIconHorns,
+  owlCawTick, rollEmInInc, rollEmOut, setRamIcon,
 }

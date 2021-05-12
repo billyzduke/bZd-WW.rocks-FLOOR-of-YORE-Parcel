@@ -1,4 +1,4 @@
-/* eslint-disable func-names, guard-for-in, no-restricted-syntax, no-underscore-dangle, vars-on-top */ /* <-- This is all for the gsap helper function that I don't feel like spending time cleaning up */
+/* eslint-disable guard-for-in, no-restricted-syntax, vars-on-top */ /* <-- This is all for the gsap helper function that I don't feel like spending time cleaning up */
 /* eslint-disable no-bitwise */ /* <-- This is for the uuidv4 generator */
 import { gsap } from 'gsap'
 import { Draggable } from 'gsap/Draggable'
@@ -108,6 +108,8 @@ const isNode = o => (typeof Node === 'object' ? o instanceof Node : o && typeof 
 
 const isSet = value => !(typeof value === 'undefined')
 
+const navToNewTab = dest => g.window.open(dest)
+
 const padStr = (input, padLen = 2, padWith = '0', start = true) => (start ? input.toString().padStart(padLen, padWith) : input.toString().padEnd(padLen, padWith))
 
 const randOnum = (mn = 0, mx = 1, inc = 1) => {
@@ -152,7 +154,7 @@ const setRemoveOn = (domSelector, onEvent, doFunc, cursorOn = 'no-drop') => {
   domElements.forEach(domEl => {
     domEl.removeEventListener(onEvent, doFunc)
     devLog(`event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
-    domEl.style.cursor = cursorOn
+    if (cursorOn) domEl.style.cursor = cursorOn
   })
   return true
 }
@@ -163,9 +165,10 @@ const setAddOn = (domSelector, onEvent, doFunc, cursorOn = 'pointer', cursorOff 
     if (isFunction(doFunc)) {
       domEl.addEventListener(onEvent, doFunc)
       devLog(`event listener added to #${domEl.id}: ${onEvent} => ${doFunc.name || 'f'}()`)
-      domEl.style.cursor = cursorOn
+      domEl.style.pointerEvents = 'auto'
+      if (cursorOn) domEl.style.cursor = cursorOn
     } else {
-      devLog("You done func'd up", { domSelector, onEvent })
+      devLog("Yuh done func'd up, BOY!", { domSelector, onEvent })
       return false
     }
   })
@@ -396,6 +399,7 @@ export {
   isFunction,
   isNode,
   isSet,
+  navToNewTab,
   padStr,
   randOnum,
   randOcolor,

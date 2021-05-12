@@ -4,17 +4,22 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
 import g from './glob'
 // eslint-disable-next-line object-curly-newline
-import { padStr, randOnum, randOcolor, shuffleArray } from './utils'
+import { padStr, randOnum, randOcolor, setAddOn, shuffleArray } from './utils'
 
 gsap.registerPlugin(MorphSVGPlugin, MotionPathPlugin)
 
-const moveLionEyes = () => {
-  const thirdEyeDeets = g.el.phasingRainbow.getBoundingClientRect()
-  let translateY = -((thirdEyeDeets.y + 50 - g.m.y) / 42)
-  if (translateY < 0) translateY *= 1.5
-  g.lion.eyes.followMouseQuickSetter({
-    translateX: gsap.utils.clamp(-16, 12.44, -(thirdEyeDeets.x + (thirdEyeDeets.width / 2) - g.m.x) / 54),
-    translateY: gsap.utils.clamp(-7, 9.55, translateY),
+const setLionHead = () => {
+  setExcs()
+  setAddOn('#thirdEyeWrapper', 'click', ex)
+  gsap.set('#lionHead', {
+    attr: {
+      class: 'jarp',
+    },
+  })
+  gsap.set('#thirdEyeClosed', {
+    attr: {
+      class: 'open',
+    },
   })
 }
 
@@ -88,6 +93,40 @@ const setExcs = () => {
   })
 }
 
+const ex = () => {
+  if (g.scene.current >= 11) {
+    const excTL01 = new TL({ defaults: { overwrite: 'auto' } })
+    const padEx = padStr(g.exc.which)
+    excTL01.fromTo(`#ex${padEx}`, {
+      opacity: 1,
+      rotateX: -108,
+      scaleX: 3,
+      scaleY: 0,
+      transformOrigin: '50% 100%',
+      translateX: 148,
+      translateY: 604.5,
+      translateZ: -164,
+    }, {
+      duration: 0.25,
+      scaleX: 1,
+      scaleY: 1,
+      overwrite: true,
+    })
+      .to(`#ex${padEx}`, {
+        duration: 0.75,
+        ease: 'power1.out',
+        scale: 1.5,
+        translateZ: -86,
+        translateX: '+=4',
+        onComplete: () => {
+          claim(padEx)
+        },
+      }, '>')
+    g.exc.which++
+    if (g.exc.which >= g.exc.max) g.exc.which = 0
+  }
+}
+
 const claim = whEx => {
   if (g.scene.current >= 11) {
     const excTL02 = new TL({ defaults: { overwrite: 'auto' } })
@@ -132,38 +171,14 @@ const claim = whEx => {
   }
 }
 
-const ex = () => {
-  if (g.scene.current >= 11) {
-    const excTL01 = new TL({ defaults: { overwrite: 'auto' } })
-    const padEx = padStr(g.exc.which)
-    excTL01.fromTo(`#ex${padEx}`, {
-      opacity: 1,
-      rotateX: -108,
-      scaleX: 3,
-      scaleY: 0,
-      transformOrigin: '50% 100%',
-      translateX: 148,
-      translateY: 604.5,
-      translateZ: -164,
-    }, {
-      duration: 0.25,
-      scaleX: 1,
-      scaleY: 1,
-      overwrite: true,
-    })
-      .to(`#ex${padEx}`, {
-        duration: 0.75,
-        ease: 'power1.out',
-        scale: 1.5,
-        translateZ: -86,
-        translateX: '+=4',
-        onComplete: () => {
-          claim(padEx)
-        },
-      }, '>')
-    g.exc.which++
-    if (g.exc.which >= g.exc.max) g.exc.which = 0
-  }
+const moveLionEyes = () => {
+  const thirdEyeDeets = g.el.phasingRainbow.getBoundingClientRect()
+  let translateY = -((thirdEyeDeets.y + 50 - g.m.y) / 42)
+  if (translateY < 0) translateY *= 1.5
+  g.lion.eyes.followMouseQuickSetter({
+    translateX: gsap.utils.clamp(-16, 12.44, -(thirdEyeDeets.x + (thirdEyeDeets.width / 2) - g.m.x) / 54),
+    translateY: gsap.utils.clamp(-7, 9.55, translateY),
+  })
 }
 
-export { ex, moveLionEyes, setExcs }
+export { moveLionEyes, setLionHead }

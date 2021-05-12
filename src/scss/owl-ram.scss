@@ -76,6 +76,9 @@ div#threshold > div.folkloreFinalForm {
   svg {
     filter: drop-shadow(0 0 4.4px rgba(0, 255, 0, 0.66));
   }
+  &.faded * {
+    pointer-events: none;
+  }
 }
 div#theRamBack {
   background-image: url(../img/ramIcon/ramIcon-center-bottom.png);
