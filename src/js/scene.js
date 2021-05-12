@@ -81,24 +81,24 @@ const setScene = (toScene = 0) => {
         }
       })
     }
-    if (setScenes[toScene]) {
-      devLog(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
-      let prevSceneCleaned = false
-      if (toScene) {
-        prevSceneCleaned = cleanScene(g.scene.current)
-        devLog({ prevSceneCleaned })
-      } else {
-        devLog({ prevSceneCleaned })
-        prevSceneCleaned = true
-      }
-      if (prevSceneCleaned) {
-        if (toScene >= g.scene.skip.target) {
-          g.scene.skip.ff = 0
-          g.tL.yore.timeScale(1)
+    if (!g.subScene[parentScene] || g.subScene[parentScene].ss.allComplete) {
+      if (setScenes[toScene]) {
+        devLog(`scene ${toScene} ${g.scene.action} started: ${scenes[toScene]}`)
+        let prevSceneCleaned = false
+        if (toScene) {
+          prevSceneCleaned = cleanScene(g.scene.current)
+          devLog({ prevSceneCleaned })
         } else {
-          g.scene.action = 'skip'
+          devLog({ prevSceneCleaned })
+          prevSceneCleaned = true
         }
-        if (!g.subScene[parentScene] || g.subScene[parentScene].ss.allComplete) {
+        if (prevSceneCleaned) {
+          if (toScene >= g.scene.skip.target) {
+            g.scene.skip.ff = 0
+            g.tL.yore.timeScale(1)
+          } else {
+            g.scene.action = 'skip'
+          }
           const nextSceneSet = setScenes[toScene]()
           devLog({ nextSceneSet })
           if (nextSceneSet) {
@@ -108,10 +108,10 @@ const setScene = (toScene = 0) => {
             setSceneSkipper()
             return true
           }
-        }
-        devLog(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
-      } else devLog(`a problem occurred while attempting to cleanUp scene ${toScene}`)
-    } else devLog(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
+          devLog(`a problem occurred while attempting to ${g.scene.action} scene ${toScene}`)
+        } else devLog(`a problem occurred while attempting to cleanUp scene ${toScene}`)
+      } else devLog(`invalid scene ${g.scene.action} attempted: scene ${toScene} does not exist`)
+    }
   } else if (toScene !== g.scene.current) {
     // We're gonna ignore calls to change a scene to itself and not throw errors... Event listeners, it turns out, can accumulate on a single event, esp when using anon funcs
     devLog(`invalid scene ${g.scene.action} attempted: current scene ${g.scene.current} cannot be ${g.scene.action} to target scene ${toScene}`)
