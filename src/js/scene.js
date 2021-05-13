@@ -120,7 +120,7 @@ const setScene = (toScene = 0) => {
 }
 
 const handleOtherTriggers = (parentScene, subScene, on) => {
-  const otherTriggers = g.document.querySelectorAll(`.${parentScene}.subSceneTrigger:not(.${subScene})`)
+  const otherTriggers = g.document.querySelectorAll(`#sceneSkipper, #subSceneSkippers, .${parentScene}.subSceneTrigger:not(.${subScene})`)
   otherTriggers.forEach(ot => {
     if (on) ot.classList.add('wayLaid')
     else ot.classList.remove('wayLaid')
@@ -178,7 +178,7 @@ const activateSubScene = (parentScene, subScene, progression) => {
   g.subScene[parentScene][subScene].active = true
   devLog(`${parentScene} subScene ${subScene} activated`)
   handleOtherTriggers(parentScene, subScene, true)
-  killSkipper(parentScene, subScene)
+  maimSkipper(parentScene, subScene)
   subSceneProgress(parentScene, subScene, progression)
 }
 
@@ -285,14 +285,22 @@ const skipSubScene = (scene, subScene) => {
   }
 }
 
-const killSkipper = (parentScene, subScene) => {
+const maimSkipper = (parentScene, subScene) => {
   const scene = parentScene.substr(5)
   const ss = `ss${upperCaseFirstLetter(subScene)}`
   cleanSkipper(scene, ss)
   const skipButton = g.document.querySelector(`#${ss}`)
   if (skipButton) {
     skipButton.checked = true
-    skipButton.disabled = true
+    return skipButton
+  }
+  return false
+}
+
+const killSkipper = (parentScene, subScene) => {
+  const maimedButton = maimSkipper(parentScene, subScene)
+  if (maimedButton) {
+    maimedButton.disabled = true
   }
 }
 
