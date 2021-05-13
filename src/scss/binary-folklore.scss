@@ -128,7 +128,7 @@ div#binaryFolklore div#binaryScroll div#rosetta div div.stoneBlock {
   width: 10.5px;
   height: 12.5px;
 }
-a#folkloreFinal {
+div#folkloreFinal {
   width: 404px;
   height: 132px;
   left: 50%;
@@ -141,6 +141,9 @@ a#folkloreFinal {
     img {
       opacity: 0;
     }
+  }
+  div.folkloreFinalForm.faded & {
+    pointer-events: none !important;
   }
 }
 

@@ -70,8 +70,8 @@ const setFolkLore = () => {
       'contrast(180%)',
       'grayscale(100%)',
       'hue-rotate(180deg)',
-      'invert(100%)',
-      'opacity(42%)',
+      'invert(50%)',
+      'opacity(64%)',
       'saturate(10)',
       'sepia(100%)',
     ],
@@ -151,13 +151,13 @@ const readyFolkLore = () => {
       cursor: 'wait',
     })
     setTimeout(() => {
-      g.folklore.forCleanUp.ready[2] = setAddOn('#theOwlIsNotWhatItSeems', 'click', rollEmOut, 'pointer', 'pointer')
+      g.ramIcon.forCleanUp.ready[2] = setAddOn('#theOwlIsNotWhatItSeems', 'click', rollEmOut, 'pointer', 'pointer')
     }, 500)
   }
 }
 
 const unReadyFolkLore = () => {
-  ifFunctionThenCall(g.folklore.forCleanUp.ready[2])
+  ifFunctionThenCall(g.ramIcon.forCleanUp.ready[2])
 }
 
 // readyFolklore() -> rollEmOut() -> ramIconHornsRollOutTick() -> printOutBinary()
@@ -894,14 +894,17 @@ const chewMe = () => {
                 gsap.set('#unSeemlyOwl', {
                   opacity: 1,
                 })
+                gsap.set('#theOwlIsNotWhatItSeems', {
+                  attr: {
+                    class: 'flyAndCry',
+                  },
+                })
+                gsap.set('#theOwl', {
+                  cursor: 'wait',
+                })
                 animateBaubleLayer03or04(null, g.subScene.scene11.folklore.ff)
                 subSceneProgress('scene11', 'folklore', 'complete')
-                if (g.foetus.L.drop && g.foetus.R.drop) {
-                  gsap.set('#ramIcon', {
-                    cursor: 'pointer', // to keep the cursor from changing when hovering over owl
-                  })
-                  setScene(12)
-                }
+                if (g.foetus.L.drop && g.foetus.R.drop) setScene(12)
               },
             }, '>')
             .to('#cowL .cowBell', {
@@ -912,11 +915,6 @@ const chewMe = () => {
               duration: 1,
               scaleY: -1,
             }, '<')
-            .set('#theOwlIsNotWhatItSeems', {
-              attr: {
-                class: 'flyAndCry',
-              },
-            }, '<0.5')
         }
       },
       skewX: 0,

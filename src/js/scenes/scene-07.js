@@ -46,7 +46,7 @@ const shiftStars = () => {
 
 const setScene07 = (c, n) => {
   g.scene.setting = c
-  g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
+  g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n), 'pointer', false)
   g.scene.forCleanUp[c].orbitRingTicker = gsapTick(orbitRing)
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(5)
 

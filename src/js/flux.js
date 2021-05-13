@@ -12,25 +12,48 @@ import assFluxDisplay8 from 'url:/src/img/future/flux-display-8.png'
 import assFluxDisplay9 from 'url:/src/img/future/flux-display-9.png'
 import g from './glob'
 import {
-  devLog, gsapTick, ifFunctionThenCall, randOnum, setAddOn,
+  gsapTick, ifFunctionThenCall, randOnum, setAddOn,
 } from './utils'
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
 
-const assFluxDisplayDigits = [
-  assFluxDisplay0,
-  assFluxDisplay1,
-  assFluxDisplay2,
-  assFluxDisplay3,
-  assFluxDisplay4,
-  assFluxDisplay5,
-  assFluxDisplay6,
-  assFluxDisplay7,
-  assFluxDisplay8,
-  assFluxDisplay9,
-]
+const setFlux = () => {
+  g.flux = {
+    forCleanUp: {
+      C: setAddOn('#theOwl', 'click', () => echoCry('C')),
+    },
+    mask: 1,
+  }
+  g.qss.flux = {
+    capacitor: gsap.quickSetter('#fluxCapacitorOn', 'css'),
+    mask: [ gsap.quickSetter('#fluxMask', 'css'), gsap.quickSetter('#fluxUnMask', 'css') ],
+  }
+
+  gsap.set('#fluxMask', { scale: 0, translateY: -45 })
+  gsap.set('#fluxUnMask', { scale: 100, translateY: 45 })
+
+  setFluxDisplay()
+  setFluxEchoes()
+  setFluxMeter()
+
+  g.flux.forCleanUp.button = setAddOn('#fluxButton', 'click', eOnFlux)
+
+  g.el.flux.classList.remove('tuct')
+}
 
 const setFluxDisplay = () => {
+  const assFluxDisplayDigits = [
+    assFluxDisplay0,
+    assFluxDisplay1,
+    assFluxDisplay2,
+    assFluxDisplay3,
+    assFluxDisplay4,
+    assFluxDisplay5,
+    assFluxDisplay6,
+    assFluxDisplay7,
+    assFluxDisplay8,
+    assFluxDisplay9,
+  ]
   g.flux.display = [ {
     dispose: false,
     // eslint-disable-next-line array-bracket-newline, array-element-newline
@@ -92,8 +115,11 @@ const setFluxEchoes = () => {
   })
 }
 
+const setFluxMeter = () => {
+  g.qss.flux.meter = gsap.quickSetter('#fluxMeterNeedle', 'css')
+}
+
 const echoCry = axis => {
-  console.log(g.owl, g.qss.owl)
   ifFunctionThenCall(g.flux.forCleanUp[axis])
   if (axis === 'C') g.flux.forCleanUp[axis] = gsapTick(owlCawTick)
   else closeFoetusEye(axis)
@@ -146,17 +172,16 @@ const echoCry = axis => {
 }
 
 const unMaskFlux = () => {
-  devLog(g.flux.mask)
   if (g.flux.mask <= 100) {
     g.qss.flux.mask[0]({
       // opacity: g.flux.mask / 100,
       scale: g.flux.mask / 100,
       borderRadius: `${(100 - g.flux.mask) / 2}%`,
-      translateY: '+=0.45',
+      translateY: '+=0.9',
     })
     g.qss.flux.mask[1]({
       scale: 100 / g.flux.mask,
-      translateY: '-=0.45',
+      translateY: '-=0.9',
     })
     g.flux.mask += 2
   } else {
@@ -185,7 +210,122 @@ const unMaskFlux = () => {
   }
 }
 
+const eOnFlux = () => {
+  g.flux.forCleanUp.button()
+  g.el.flux.classList.add('fluxOn')
+  gsap.to('#fluxCapacitorOn', {
+    duration: 0.5,
+    opacity: 0.12,
+  })
+  bootUpFluxDisplay()
+  lightFluxMeter('SUX')
+}
+
+const bootUpFluxDisplay = () => {
+  gsap.set('#fluxDisplay', { cursor: 'wait' })
+  flickOnFluxDisplayDirective()
+  gsap.ticker.add(preRandomizeFluxDisplayTick10)
+  gsap.ticker.add(preRandomizeFluxDisplayTick01)
+}
+
+const lightFluxMeter = ux => {
+  gsap.to(`#fluxMeterLight${ux}`, {
+    duration: 0.75,
+    opacity: 1,
+    overwrite: true,
+    repeat: -1,
+    yoyo: true,
+  })
+}
+
+const flickOnFluxDisplayDirective = () => {
+  gsap.ticker.add(flickTick)
+}
+
+const flickTick = () => {
+  if (g.flux.directive) {
+    g.qss.flux.directive(randOnum())
+    g.flux.directive--
+  } else {
+    gsap.ticker.remove(flickTick)
+    g.qss.flux.directive(1)
+  }
+}
+
+const preRandomizeFluxDisplayTick10 = () => {
+  preRandomizeFluxDisplayTick(0)
+}
+const preRandomizeFluxDisplayTick01 = () => {
+  preRandomizeFluxDisplayTick(1)
+}
+const preRandomizeFluxDisplayTick = d => {
+  if (g.qss.flux.display[d][g.flux.display[d].dispose]) {
+    g.qss.flux.display[d][g.flux.display[d].dispose](0)
+    g.flux.display[d].dispose = false
+  }
+  if (g.flux.display[d].pre.length) {
+    const nextNotSoRandomNumber = g.flux.display[d].pre.shift()
+    g.qss.flux.display[d][nextNotSoRandomNumber](1)
+    g.flux.display[d].dispose = nextNotSoRandomNumber
+  } else {
+    gsap.ticker.remove(d ? preRandomizeFluxDisplayTick01 : preRandomizeFluxDisplayTick10)
+    gsap.ticker.add(d ? randomizeFluxDisplayTick01 : randomizeFluxDisplayTick10)
+  }
+}
+
+const randomizeFluxDisplayTick10 = () => {
+  randomizeFluxDisplayTick(0)
+}
+const randomizeFluxDisplayTick01 = () => {
+  randomizeFluxDisplayTick(1)
+}
+const randomizeFluxDisplayTick = d => {
+  if (g.qss.flux.display[d][g.flux.display[d].dispose]) {
+    g.qss.flux.display[d][g.flux.display[d].dispose](0)
+    g.flux.display[d].dispose = false
+  }
+  if (g.flux.display[d].current > 0) {
+    const nextNumberFrame = randOnum(1, 9)
+    g.qss.flux.display[d][nextNumberFrame](randOnum(23, 88) / 100)
+    g.flux.display[d].dispose = nextNumberFrame
+    g.flux.display[d].current--
+  } else {
+    randomizeTargetReached(d)
+  }
+}
+
+const randomizeTargetReached = d => {
+  if (d && gsap.ticker._listeners.includes(randomizeFluxDisplayTick01)) {
+    gsap.ticker.remove(randomizeFluxDisplayTick01)
+  } else if (gsap.ticker._listeners.includes(randomizeFluxDisplayTick10)) {
+    gsap.ticker.remove(randomizeFluxDisplayTick10)
+  }
+  g.qss.flux.display[d][0](1)
+  g.flux.display[d].current = 0
+  if (!g.flux.display[d ? 0 : 1].current) {
+    g.flux.forCleanUp.display = [ setAddOn('#fluxDisplay', 'mousedown', activateFluxDisplay), setAddOn('#fluxDisplay', 'mouseup', activateFluxDisplay) ]
+    gsap.set('#fluxDisplay', { cursor: 'pointer' })
+  }
+}
+
+const activateFluxDisplay = e => {
+  if (e.type === 'mousedown') {
+    if (!gsap.ticker._listeners.includes(incrementFluxDisplay)) gsap.ticker.add(incrementFluxDisplay)
+  } else {
+    gsap.ticker.remove(incrementFluxDisplay)
+    gsap.ticker.add(decrementFluxDisplay)
+  }
+}
+
 const getCurrentSpeed = () => Number(`${g.flux.display[0].current}${g.flux.display[1].current}`)
+
+const dimFluxMeter = () => {
+  gsap.to('#fluxMeterLightSUX', {
+    duration: 0.25,
+    opacity: 0,
+    overwrite: true,
+  })
+}
 
 const incrementFluxDisplay = () => {
   const currentSpeed = getCurrentSpeed()
@@ -225,14 +365,16 @@ const incrementFluxDisplay = () => {
     lightFluxMeter('FLUX')
     gsap.ticker.remove(incrementFluxDisplay)
     gsap.set('#fluxDisplay', { cursor: 'no-drop' })
+    g.qss.flux.directive(0)
     gsap.to('.fluxDisplayNumber', {
-      duration: 0.25,
+      duration: 0.42,
       opacity: 0,
       repeat: -1,
       yoyo: true,
     })
   }
 }
+
 const decrementFluxDisplay = () => {
   const currentSpeed = getCurrentSpeed()
   if (currentSpeed >= 0 && currentSpeed < 88) {
@@ -270,150 +412,6 @@ const decrementFluxDisplay = () => {
       lightFluxMeter('SUX')
     }
   }
-}
-const activateFluxDisplay = e => {
-  if (e.type === 'mousedown') {
-    if (!gsap.ticker._listeners.includes(incrementFluxDisplay)) gsap.ticker.add(incrementFluxDisplay)
-  } else {
-    gsap.ticker.remove(incrementFluxDisplay)
-    gsap.ticker.add(decrementFluxDisplay)
-  }
-}
-
-const randomizeTargetReached = d => {
-  if (d && gsap.ticker._listeners.includes(randomizeFluxDisplayTick01)) {
-    gsap.ticker.remove(randomizeFluxDisplayTick01)
-  } else if (gsap.ticker._listeners.includes(randomizeFluxDisplayTick10)) {
-    gsap.ticker.remove(randomizeFluxDisplayTick10)
-  }
-  g.qss.flux.display[d][0](1)
-  g.flux.display[d].current = 0
-  if (!g.flux.display[d ? 0 : 1].current) {
-    g.flux.forCleanUp.display = [ setAddOn('#fluxDisplay', 'mousedown', activateFluxDisplay), setAddOn('#fluxDisplay', 'mouseup', activateFluxDisplay) ]
-    gsap.set('#fluxDisplay', { cursor: 'pointer' })
-  }
-}
-
-const randomizeFluxDisplayTick = d => {
-  if (g.qss.flux.display[d][g.flux.display[d].dispose]) {
-    g.qss.flux.display[d][g.flux.display[d].dispose](0)
-    g.flux.display[d].dispose = false
-  }
-  if (g.flux.display[d].current > 0) {
-    const nextNumberFrame = randOnum(1, 9)
-    g.qss.flux.display[d][nextNumberFrame](randOnum(23, 88) / 100)
-    g.flux.display[d].dispose = nextNumberFrame
-    g.flux.display[d].current--
-  } else {
-    randomizeTargetReached(d)
-  }
-}
-
-const randomizeFluxDisplayTick10 = () => {
-  randomizeFluxDisplayTick(0)
-}
-const randomizeFluxDisplayTick01 = () => {
-  randomizeFluxDisplayTick(1)
-}
-
-const preRandomizeFluxDisplayTick = d => {
-  if (g.qss.flux.display[d][g.flux.display[d].dispose]) {
-    g.qss.flux.display[d][g.flux.display[d].dispose](0)
-    g.flux.display[d].dispose = false
-  }
-  if (g.flux.display[d].pre.length) {
-    const nextNotSoRandomNumber = g.flux.display[d].pre.shift()
-    g.qss.flux.display[d][nextNotSoRandomNumber](1)
-    g.flux.display[d].dispose = nextNotSoRandomNumber
-  } else {
-    gsap.ticker.remove(d ? preRandomizeFluxDisplayTick01 : preRandomizeFluxDisplayTick10)
-    gsap.ticker.add(d ? randomizeFluxDisplayTick01 : randomizeFluxDisplayTick10)
-  }
-}
-
-const preRandomizeFluxDisplayTick10 = () => {
-  preRandomizeFluxDisplayTick(0)
-}
-const preRandomizeFluxDisplayTick01 = () => {
-  preRandomizeFluxDisplayTick(1)
-}
-
-const flickTick = () => {
-  if (g.flux.directive) {
-    g.qss.flux.directive(randOnum())
-    g.flux.directive--
-  } else {
-    gsap.ticker.remove(flickTick)
-    g.qss.flux.directive(1)
-  }
-}
-
-const flickOnFluxDisplayDirective = () => {
-  gsap.ticker.add(flickTick)
-}
-
-const bootUpFluxDisplay = () => {
-  gsap.set('#fluxDisplay', { cursor: 'wait' })
-  flickOnFluxDisplayDirective()
-  gsap.ticker.add(preRandomizeFluxDisplayTick10)
-  gsap.ticker.add(preRandomizeFluxDisplayTick01)
-}
-
-const setFluxMeter = () => {
-  g.qss.flux.meter = gsap.quickSetter('#fluxMeterNeedle', 'css')
-}
-
-const setFlux = () => {
-  g.flux = {
-    forCleanUp: {
-      C: setAddOn('#theOwl', 'click', () => echoCry('C')),
-    },
-    mask: 1,
-  }
-  g.qss.flux = {
-    capacitor: gsap.quickSetter('#fluxCapacitorOn', 'css'),
-    mask: [ gsap.quickSetter('#fluxMask', 'css'), gsap.quickSetter('#fluxUnMask', 'css') ],
-  }
-
-  gsap.set('#fluxMask', { scale: 0, translateY: -45 })
-  gsap.set('#fluxUnMask', { scale: 100, translateY: 45 })
-
-  setFluxDisplay()
-  setFluxEchoes()
-  setFluxMeter()
-
-  g.flux.forCleanUp.button = setAddOn('#fluxButton', 'click', eOnFlux)
-
-  g.el.flux.classList.remove('tuct')
-}
-
-const dimFluxMeter = () => {
-  gsap.to('#fluxMeterLightSUX', {
-    duration: 0.25,
-    opacity: 0,
-    overwrite: true,
-  })
-}
-
-const lightFluxMeter = ux => {
-  gsap.to(`#fluxMeterLight${ux}`, {
-    duration: 0.75,
-    opacity: 1,
-    overwrite: true,
-    repeat: -1,
-    yoyo: true,
-  })
-}
-
-const eOnFlux = () => {
-  g.flux.forCleanUp.button()
-  g.el.flux.classList.add('fluxOn')
-  gsap.to('#fluxCapacitorOn', {
-    duration: 0.5,
-    opacity: 0.12,
-  })
-  bootUpFluxDisplay()
-  lightFluxMeter('SUX')
 }
 
 export { echoCry, eOnFlux, setFlux }

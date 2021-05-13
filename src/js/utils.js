@@ -155,6 +155,7 @@ const setRemoveOn = (domSelector, onEvent, doFunc, cursorOn = 'no-drop') => {
     domEl.removeEventListener(onEvent, doFunc)
     devLog(`event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()`)
     if (cursorOn) domEl.style.cursor = cursorOn
+    else domEl.style.pointerEvents = 'none'
   })
   return true
 }
