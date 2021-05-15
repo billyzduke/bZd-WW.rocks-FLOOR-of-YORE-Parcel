@@ -8,7 +8,7 @@ import assTruffulaTree04 from 'url:/src/img/jungle/TruffulaTree-4.png'
 import assWildTree01 from 'url:/src/img/jungle/WildTree-1.png'
 import assWildTree02 from 'url:/src/img/jungle/WildTree-2.png'
 import g from './glob'
-import { padStr, randOnum } from './utils'
+import { padStr, randOnum, shuffleArray } from './utils'
 
 const assJungleLayers = [
   assWildTree01,
@@ -54,13 +54,20 @@ const setJungleLayer = (ajl, lyr) => {
   g.el.jungL.appendChild(jungLayerL)
   g.el.jungR.appendChild(jungLayerR)
   const startPos = {
-    translateX: jungleJumble ? '-125%' : '-100%',
+    translateX: '-100%',
     // zIndex: lyr,
   }
-  if (jungleJumble) startPos.translateZ = -randOnum(3, 15) / 100
+  if (jungleJumble) {
+    const recedeByPx = g.jungle.lyr.shift()
+    const adjustFraction = ((assJungleLayers.length + recedeByPx) / assJungleLayers.length)
+    startPos.translateZ = recedeByPx / 5
+    startPos.filter = `brightness(${adjustFraction * 100}%)` // drop-shadow(0 4.2px 4.2px rgba(0,66,0,0.76)) 
+    startPos.opacity = adjustFraction
+    console.log(startPos)
+  }
   gsap.set(`.${jungLayerClass}`, startPos)
   gsap.to(`.${jungLayerClass}`, {
-    delay: lyr ** 2 / 2,
+    delay: lyr ** 2 * 0.76,
     duration: !jungleJumble ? 180 : randOnum(60, 120),
     ease: 'none',
     onRepeat: function () {
@@ -72,6 +79,8 @@ const setJungleLayer = (ajl, lyr) => {
 }
 
 const setJungleLayers = () => {
+  g.jungle.lyr = Array.from({ length: assJungleLayers.length }, (_, i) => -(i + 1))
+  g.jungle.lyr = shuffleArray(g.jungle.lyr)
   assJungleLayers.forEach((ajl, lyr) => {
     setJungleLayer(ajl, lyr + 1)
   })
@@ -83,6 +92,7 @@ const setJungleMotion = () => {
 }
 
 const setJungle = () => {
+  g.jungle = {}
   gsap.set('.jungBackDrop, .jungScreen, .jungSagan', {
     height: g.main.h * 1.25,
   })
