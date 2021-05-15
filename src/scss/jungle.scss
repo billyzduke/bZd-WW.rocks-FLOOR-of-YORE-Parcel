@@ -6,13 +6,12 @@ div#jungle {
   opacity: 0;
   z-index: -400;
   div.jungPane,
-  div.jungScreen,
-  div.jungBackdrop {
+  div.jungPane > * {
     top: 0;
     height: 100%;
     width: 100%;
   }
-  div.jungPane{
+  div.jungPane {
     width: 50%;
     perspective: 750px;
     perspective-origin: 100% 90.5%;
@@ -21,20 +20,23 @@ div#jungle {
       left: 50%;
       transform: scaleX(-1);
     }
-  }
-  div.jungBackdrop,
-  div.jungScreen {
-    left: 9.6%;
-    top: -33%;
-    transform: rotateY(36deg);
-  }
-  div.jungBackdrop {
-    background: linear-gradient(0deg, rgba(19,56,25,1) 0%, rgba(253,187,45,1) 32%, rgba(45,253,249,1) 88%);
-    opacity: 0.64;
-  }
-  div.jungScreen {
-    background: linear-gradient(0deg, rgba(45,253,249,0) 0%, rgba(45,253,249,0.64) 88%);
+    div.jungBackDrop,
+    div.jungScreen,
     div.jungSagan {
+      left: 9.6%;
+      top: -33%;
+      transform: rotateY(36deg);
+    }
+    div.jungBackDrop1 {
+      background: linear-gradient(0deg, rgba(19,56,25,1) 10%, rgba(253,187,45,1) 32%, rgba(45,253,249,1) 88%);
+      opacity: 0.64;
+      z-index: -2;
+    }
+    div.jungBackDrop2 {
+      background: linear-gradient(0deg, rgba(45,253,249,0) 0%, rgba(45,253,249,0.64) 88%);
+      z-index: -1;
+    }
+    div.jungSagan div.saganIpsum {
       color: rgba(45,253,249,1);
       width: 102%;
       height: 100%;
@@ -42,20 +44,20 @@ div#jungle {
       mix-blend-mode: difference;
       opacity: 0;
       overflow: hidden;
-      z-index: 0;
       &:nth-child(2) {
         top: 100%;
       }
     }
-    &.jungR {
-      left: 50%;
-      transform: rotateY(36deg) scaleX(-1);
-    }
-    img {
-      transform-origin: 100% 100%;
-      position: absolute;
-      bottom: 1.5%;
-      z-index: 1;
+    div.jungScreen {
+      transform: rotateY(36deg) translateZ(0.1px);
+      &.jungR {
+        left: 50%;
+        transform: rotateY(36deg) translateZ(0.1px) scaleX(-1);
+      }
+      .jungLayer {
+        transform-origin: 100% 100%;
+        bottom: 1.5%;
+      }
     }
   }
 }

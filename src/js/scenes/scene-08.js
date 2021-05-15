@@ -8,7 +8,7 @@ import { obscureGrandiose } from '../obscuro'
 import { resetCtrRing } from '../baubles/layer-01'
 import { setBaubleLayer02 } from '../baubles/layer-02'
 import { clearShaiHulud } from '../shai-hulud'
-import { setJungSagan } from '../jungle'
+import { setJungleMotion } from '../jungle'
 
 const scene08 = 'Sparks Fly / Enter the Lion / The Mighty Jungle'
 
@@ -74,7 +74,7 @@ const setScene08 = (c, n) => {
     .to(g.el.theLion, {
       duration: 7,
       ease: 'power3.out',
-      onComplete: setJungSagan,
+      onComplete: setJungleMotion,
       rotation: 0,
       scale: 1,
     }, '<')

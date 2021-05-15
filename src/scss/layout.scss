@@ -48,6 +48,6 @@ div.animBlock {
     margin: 0;
     position: absolute;
     transform-origin: 50% 50%;
-    transform-style: preserve-3d;
+    transform-style: preserve-3d !important;
   }
 }

@@ -57,6 +57,8 @@ const loadApp = () => {
       'helpToggle',
       'home',
       'jungle',
+      'jungSaganL',
+      'jungSaganR',
       'jungL',
       'jungR',
       'lightningRodsWrapper',
