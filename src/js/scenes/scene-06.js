@@ -31,11 +31,6 @@ const presetScene08 = () => {
     rotateZ: -1080,
     scale: 0,
   })
-  if (g.el.discoWall) {
-    setTimeout(() => {
-      g.el.discoWall.src = 'https://wrongwindows.rocks/disco-wall'
-    }, 3000)
-  }
 }
 
 g.tL.ribs = new TL({ defaults: { overwrite: false } })

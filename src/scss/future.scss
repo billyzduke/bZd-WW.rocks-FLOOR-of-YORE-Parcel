@@ -186,5 +186,15 @@ div#future {
   div#deLorean {
     width: 700px;
     height: 300px;
+    #deLorean3d {
+      width: 100%;
+      height: 100%;
+    }
+    #astronaut {
+      width: 600px;
+      height: 800px;
+      right: 0;
+      pointer-events: auto;
+    }
   }
 }

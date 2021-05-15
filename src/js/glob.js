@@ -18,6 +18,7 @@ const g = {
     forCleanUp: {},
     lore: [],
   },
+  jungle: [],
   lion: {
     eyes: {},
     forCleanUp: {},

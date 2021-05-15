@@ -6,6 +6,7 @@ import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
 import { orbitRing } from '../baubles/layer-01'
+import { setJungle } from '../jungle'
 
 const scene07 = 'Explicitly Orbital / Cosmic Digestion'
 
@@ -49,6 +50,8 @@ const setScene07 = (c, n) => {
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n), 'pointer', false)
   g.scene.forCleanUp[c].orbitRingTicker = gsapTick(orbitRing)
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(5)
+
+  setJungle()
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)
