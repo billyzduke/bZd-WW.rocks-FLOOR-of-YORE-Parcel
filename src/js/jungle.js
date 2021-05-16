@@ -31,7 +31,7 @@ const setJungleSagan = () => {
   }
 
   gsap.to('.saganIpsum', {
-    duration: 10,
+    duration: 20,
     opacity: 0.64,
     overwrite: 'auto',
   })
@@ -61,19 +61,28 @@ const setJungleLayer = (ajl, lyr) => {
     const recedeByPx = g.jungle.lyr.shift()
     const adjustFraction = ((assJungleLayers.length + recedeByPx) / assJungleLayers.length)
     startPos.translateZ = recedeByPx / 5
-    startPos.filter = `brightness(${adjustFraction * 100}%)` // drop-shadow(0 4.2px 4.2px rgba(0,66,0,0.76)) 
+    startPos.filter = `brightness(${adjustFraction * 100}%)` // drop-shadow(0 4.2px 4.2px rgba(0,66,0,0.76))
     startPos.opacity = adjustFraction
-    console.log(startPos)
   }
   gsap.set(`.${jungLayerClass}`, startPos)
+  const jl = {
+    lr: jungLayerClass,
+    from: startPos,
+    to: {
+      dl: jungleJumble ? lyr ** 2 * 0.76 + randOnum(0, 140) : 0,
+      dr: !jungleJumble ? 180 : (jungleJumble * 60) + 140,
+      tx: !jungleJumble ? '51%' : (jungLayerL.getBoundingClientRect().width * 2) + g.document.querySelector('.jungScreen').getBoundingClientRect().width,
+    },
+  }
+  console.log(jl)
   gsap.to(`.${jungLayerClass}`, {
-    delay: lyr ** 2 * 0.76,
-    duration: !jungleJumble ? 180 : randOnum(60, 120),
+    delay: jl.to.dl,
+    duration: jl.to.dr,
     ease: 'none',
     onRepeat: function () {
       randOjung(`.${jungLayerClass}`)
     },
-    translateX: !jungleJumble ? '51%' : (jungLayerL.getBoundingClientRect().width * 2) + g.document.querySelector('.jungScreen').getBoundingClientRect().width,
+    translateX: jl.to.tx,
     repeat: -1,
   })
 }

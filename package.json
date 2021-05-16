@@ -26,6 +26,18 @@
       "name": "CreativeTier",
       "email": "contact@creativetier.com",
       "url": "https://codecanyon.net/item/code-rain-javascript-matrix-effect/25307087"
+    },
+    {
+      "name": "Carl Sagan",
+      "url": "http://saganipsum.com/"
+    },
+    {
+      "name": "Theodor Seuss Geisel",
+      "url": "https://www.seussville.com/"
+    },
+    {
+      "name": "Maurice Sendak",
+      "url": "https://www.sendakfoundation.org/"
     }
   ],
   "version": "1.0.0",

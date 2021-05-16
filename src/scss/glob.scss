@@ -53,6 +53,19 @@ main {
   }
 }
 
+a,
+a:visited {
+  color: coloring('anchorOff');
+  text-decoration: none;
+  transition: color 0.25s ease-in-out;
+}
+a:hover,
+a:active {
+  color: coloring('anchorOn');
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 iframe#discoWall {
   display: block;
   position: absolute;

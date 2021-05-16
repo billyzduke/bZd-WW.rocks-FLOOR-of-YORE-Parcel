@@ -175,10 +175,19 @@ div#help.open div#helpList {
   display: block;
   transform: translateZ(0.1px);
   transform-origin: 50% 0% !important;
-}
-.mkNode hr {
-  margin-block-start: 0;
-  margin-block-end: 0;
+  hr {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  &#mkNode23 a {
+    display: inline-block;
+    width: 100%;
+    font-size: 15px;
+    letter-spacing: 2px;
+    transform: scaleY(1.2);
+    margin-top: 8px;
+    text-shadow: 4px -1px 2px #0033ff, -1px 1px 2px #dfe6f7;
+  }
 }
 .mkMeat {
   position: relative;

@@ -215,9 +215,18 @@ const makisusan = () => {
       const childNode = makisu(mk, mkNodes)
       if (isNode(childNode)) mkRoot.appendChild(childNode)
     })
+
+    // IF EDITS NEED TO BE MADE TO HELP TEXT, THEY MUST BE APPLIED AFTER ALL THE CHARACTER-LENGTH-BASED CALCULATIONS...
     const editNodesI = []
     editNodesI[2] = [ 'Days of Yore', '<i>Days of Yore</i>' ]
-    editNodesI[18] = [ 'next', '<i>next</i>' ]
+    editNodesI[7] = [ 'click', '<strong style="font-family:Menlo;font-weight:900">click</strong>' ]
+    editNodesI[9] = [ 'Adobe Photoshop', '<i>Adobe Photoshop</i>' ]
+    editNodesI[11] = [ 'red hand', '<strong style="font-family:Menlo;font-weight:900;color:#990000">red hand</strong>' ]
+    editNodesI[14] = [ 'bright arrows', '<strong style="color:white">bright arrows</strong>' ]
+    editNodesI[15] = [ 'next', '<i>next</i>' ]
+    editNodesI[19] = [ 'click', '<strong style="font-family:Menlo;font-weight:900">click</strong>' ]
+    editNodesI[23] = [ 'floorofyore@wrongwindows.rocks', '<a href="mailto:floorofyore@wrongwindows.rocks">floorofyore@wrongwindows.rocks</a>' ]
+
     editNodesI.forEach((nRe, nI) => {
       const editNode = g.document.getElementById(`mkNode${nI}`)
       editNode.innerHTML = editNode.innerHTML.replace(nRe[0], nRe[1])
