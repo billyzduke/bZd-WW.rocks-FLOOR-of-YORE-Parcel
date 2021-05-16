@@ -1,4 +1,4 @@
-import { TimelineMax as TL } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { setAddOn } from '../utils'
@@ -20,6 +20,7 @@ const setScene00 = (c, n) => {
 
   g.tL.yore.to('#tpTitleScreen', {
     duration: 2,
+    onComplete: spinTime,
     opacity: 0,
   })
     .set('#tpTitles', {
@@ -27,6 +28,36 @@ const setScene00 = (c, n) => {
     }, '>')
 
   return true
+}
+
+const spinTime = () => {
+  gsap.set('#deLorean', {
+    rotateX: -108,
+    rotateY: 40,
+    rotateZ: 0,
+    scale: 1.25,
+  })
+  gsap.to('#deLorean', {
+    duration: 10,
+    ease: 'none',
+    repeat: -1,
+    rotateX: 360,
+    yoyo: true,
+  })
+  gsap.to('#deLorean', {
+    duration: 20,
+    ease: 'none',
+    repeat: -1,
+    rotateY: 360,
+    yoyo: true,
+  })
+  gsap.to('#deLorean', {
+    duration: 30,
+    ease: 'none',
+    repeat: -1,
+    rotateX: 360,
+    yoyo: true,
+  })
 }
 
 export { scene00, setScene00 }
