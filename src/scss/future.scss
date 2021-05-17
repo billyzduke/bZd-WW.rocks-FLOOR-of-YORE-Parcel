@@ -355,8 +355,33 @@ div#future {
       }
     }
 
+    div.es {
+      background-image: url(../img/future/bodyEngineUpperRight.png);
+      width: 85.5px;
+      height: 157px;
+      top: 689.5px;
+      left: 30px;
+      transform: translateZ(-155px) rotateY(47.5deg);
+      &#engineLeft {
+        background-image: url(../img/future/bodyEngineUpperLeft.png);
+        left: calc(100% - 30px);
+        transform: translateZ(-155px) rotateY(132.5deg);
+      }
+    }
+
+    div#engineTop {
+      background:white;
+      opacity:0.64;
+      // background-image: url(../img/future/bodyEngineTop.png);
+      width: 242px;
+      height: 195px;
+      left: 90px;
+      top: 679px;
+      transform: translateZ(-220.5px);
+    }
+
     div.brLower {
-      background-image: url(../img/future/bodyRearLowerLeft.png);
+      background-image: url(../img/future/bodyRearLower.png);
       width: 77px;
       height: 126px;
       top: 848px;
@@ -375,6 +400,18 @@ div#future {
       &#bodyRearMiddleLeft {
         left: 100%;
         transform: translateZ(-103px) rotateZ(12.325deg) rotateY(120deg);
+      }
+    }
+    div.brUpper {
+      background-image: url(../img/future/bodyRearUpper.png);
+      width: 50px;
+      height: 98px;
+      top: 842px;
+      left: 29px;
+      transform: translateZ(-154px) rotateZ(-12.325deg) rotateY(50.5deg);
+      &#bodyRearUpperLeft {
+        left: calc(100% - 29px);
+        transform: translateZ(-154px) rotateZ(12.325deg) rotateY(129.5deg);
       }
     }
     div.brCorner {
