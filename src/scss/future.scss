@@ -1,10 +1,10 @@
 div#future {
   width: 100%;
   height: 100%;
-  pointer-events: none;
   z-index: 650;
   perspective: 64rem;
   perspective-origin: 50% 50%;
+  // pointer-events: none;
   // opacity: 0;
 
   background-color: #00ff00;
@@ -188,11 +188,11 @@ div#future {
   }
 
   div#deLorean {
-    top: 100px;
-    left: 400px;
+    top: 50%;
+    left: 50%;
     width: 423px;
     height: 1000px;
-    transform: translateZ(-250px) rotateZ(90deg) rotateY(90deg) rotateX(45deg);
+    transform: translate(-50%, -50%) translateZ(-250px) rotateZ(90deg) rotateY(90deg) rotateX(45deg);
     #deLorean3d {
       width: 100%;
       height: 100%;
@@ -206,6 +206,7 @@ div#future {
     div {
       transform-origin: 0 0;
     }
+
     div.underCarriage {
       width: 423px;
       background-image: url(../img/future/undercarriage.png);
@@ -228,6 +229,40 @@ div#future {
         transform: translateZ(-26px) rotateX(-7.125deg);
       }
     }
+
+    div.brLower {
+      background-image: url(../img/future/bodyRearLowerLeft.png);
+      width: 77px;
+      height: 126px;
+      top: 848px;
+      transform: translateZ(-26px) rotateY(90deg) rotateX(13deg);
+      &#bodyRearLowerLeft {
+        left: 100%;
+        transform: translateZ(-26px) rotateY(90deg) rotateX(-13deg);
+      }
+    }
+    div.brMiddle {
+      background-image: url(../img/future/bodyRearMiddle.png);
+      width: 60px;
+      height: 126px;
+      top: 848px;
+      transform: translateZ(-103px) rotateZ(-12.325deg) rotateY(60deg);
+      &#bodyRearMiddleLeft {
+        left: 100%;
+        transform: translateZ(-103px) rotateZ(12.325deg) rotateY(120deg);
+      }
+    }
+    div.brCorner {
+      background-image: url(../img/future/bodyRearCorner.png);
+      width: 27px;
+      height: 17px;
+      top: 831px;
+      transform: translateZ(-76px) rotateY(90deg);
+      &#bodyRearCornerLeft {
+        left: 100%;
+      }
+    }
+
     div.bfLower {
       background-image: url(../img/future/bodyFrontLower.png);
       width: 81px;
@@ -242,15 +277,74 @@ div#future {
     div.bfUpper {
       background-image: url(../img/future/bodyFrontUpper.png);
       width: 43px;
-      height: 119px;
-      top: 1px;
+      height: 121px;
+      top: -1px;
       transform-origin: 0 100%;
-      transform: translateZ(-103px) rotateY(60deg) rotateX(-12.325deg);
+      transform: translateZ(-103px) rotateZ(12.325deg) rotateY(60deg);
       &#bodyFrontUpperLeft {
         left: 100%;
-        transform: translateZ(-103px) rotateY(120deg) rotateX(12.325deg);
+        transform: translateZ(-103px) rotateZ(-12.325deg) rotateY(120deg);
       }
     }
+    div.bfCorner {
+      background-image: url(../img/future/bodyFrontCorner.png);
+      width: 24px;
+      height: 17px;
+      top: 119px;
+      transform: translateZ(-79px) rotateY(90deg);
+      &#bodyFrontCornerLeft {
+        left: 100%;
+      }
+    }
+
+    div.bcLower {
+      background-image: url(../img/future/bodyCenterLower.png);
+      width: 103px;
+      height: 460px;
+      top: 244px;
+      transform: rotateY(90deg);
+      &#bodyCenterLowerLeft {
+        left: 100%;
+      }
+    }
+    div.bcMiddle {
+      background-image: url(../img/future/bodyCenterMiddle.png);
+      width: 60px;
+      height: 729px;
+      top: 119px;
+      transform: translateZ(-103px) rotateY(60deg);
+      &#bodyCenterMiddleLeft {
+        left: 100%;
+        transform: translateZ(-103px) rotateY(120deg);
+      }
+    }
+
+    div.bumperRear {
+      background: black;
+      width: 370px;
+      left: 26px;
+      transform-origin: 50% 0;
+      &#bumperRearLower {
+        background-color: #18171d;
+        height: 32px;
+        top: 964px;
+        transform: translateZ(-41px) rotateX(-90deg);
+      }
+      &#bumperRearMiddle {
+        height: 9px;
+        top: 962px;
+        transform: translateZ(-72px);
+      }
+      &#bumperRearUpper {
+        background-color: #101010;
+        left: 28px;
+        top: 971px;
+        height: 33px;
+        width: 367px;
+        transform: translateZ(-71px) rotateX(-90deg);
+      }
+    }
+
     div.bumperFront {
       background: black;
       width: 377px;
@@ -276,6 +370,7 @@ div#future {
         transform: translateZ(-69px) rotateX(20.3deg);
       }
     }
+
     div.uc {
       &.ucNS {
         background-color: black;
@@ -314,32 +409,11 @@ div#future {
       }
       &#wheelWellsTop {
         background-color: black;
-        width: 395px;
+        width: 393px;
         height: 729px;
         top: 119px;
-        left: 14px;
+        left: 15px;
         transform: translateZ(-127px);
-      }
-    }
-    div.bcLower {
-      background-image: url(../img/future/bodyCenterLower.png);
-      width: 103px;
-      height: 460px;
-      top: 244px;
-      transform: rotateY(90deg);
-      &#bodyCenterLowerLeft {
-        left: 100%;
-      }
-    }
-    div.bcMiddle {
-      background-image: url(../img/future/bodyCenterMiddle.png);
-      width: 60px;
-      height: 729px;
-      top: 119px;
-      transform: translateZ(-103px) rotateY(60deg);
-      &#bodyCenterMiddleLeft {
-        left: 100%;
-        transform: translateZ(-103px) rotateY(120deg);
       }
     }
   }
