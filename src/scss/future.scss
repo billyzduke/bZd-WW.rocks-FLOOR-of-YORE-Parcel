@@ -295,13 +295,20 @@ div#future {
     }
 
     div#windshield {
-      background: white;
-      opacity: 0.64;
-      width: 275.5px; // 367px;
-      left: 73.5px; // 28px;
-      height: 158px;
+      background-image: url(../img/future/windshield.png);
+      width: 364px;
+      left: 29.5px;
+      height: 165px;
       top: 333px;
-      transform: translateZ(-155px) rotateX(-15.42deg);
+      transform: translateZ(-155px) rotateX(-23.5deg);
+    }
+    div#roof {
+      background-image: url(../img/future/roof.png);
+      width: 242px;
+      height: 195px;
+      left: 90px;
+      top: 484px;
+      transform: translateZ(-220.5px);
     }
 
     div.bcLower {
@@ -328,20 +335,21 @@ div#future {
     div.bcUpper,
     div.sw {
       background-image: url(../img/future/bodyCenterUpper.png);
-      width: 68px;
+      width: 100px;
       height: 359px;
       top: 331px;
       left: 30px;
-      transform: translateZ(-155px) rotateY(44.5deg);
+      transform: translateZ(-155px) rotateY(47.5deg);
       &#bodyCenterUpperLeft,
       &#sideWindowLeft {
         left: calc(100% - 30px);
-        transform: translateZ(-155px) rotateY(137deg);
+        transform: translateZ(-155px) rotateY(132.5deg);
       }
     }
     div.sw {
       background-image: url(../img/future/sideWindow.png);
       left: 30.5px;
+      opacity: 0.76;
       &#sideWindowLeft {
         left: calc(100% - 30.5px);
       }
@@ -508,13 +516,19 @@ div#future {
           top: 848px;
         }
       }
-      &#wheelWellsTop {
+      &.ww {
         background-color: black;
         width: 393px;
-        height: 729px;
-        top: 119px;
         left: 15px;
         transform: translateZ(-127px);
+        &#wheelWellsAxleFront {
+          height: 150px;
+          top: 119px;
+        }
+        &#wheelWellsAxleBack {
+          height: 157px;
+          top: 691px;
+        }
       }
     }
   }
