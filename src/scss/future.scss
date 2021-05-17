@@ -233,6 +233,15 @@ div#future {
       }
     }
 
+    div#lightBarFront {
+      background-image: url(../img/future/lightBarFront.png);
+      width: 373px;
+      left: 25px;
+      height: 36px;
+      top: 3.5px;
+      transform: translateZ(-67px) rotateX(-90deg);
+    }
+
     div#grille {
       background-image: url(../img/future/grille.png);
       width: 374px;
@@ -285,6 +294,16 @@ div#future {
       }
     }
 
+    div#windshield {
+      background: white;
+      opacity: 0.64;
+      width: 275.5px; // 367px;
+      left: 73.5px; // 28px;
+      height: 158px;
+      top: 333px;
+      transform: translateZ(-155px) rotateX(-15.42deg);
+    }
+
     div.bcLower {
       background-image: url(../img/future/bodyCenterLower.png);
       width: 103px;
@@ -313,7 +332,7 @@ div#future {
       height: 359px;
       top: 331px;
       left: 30px;
-      transform: translateZ(-155px) rotateY(47deg);
+      transform: translateZ(-155px) rotateY(44.5deg);
       &#bodyCenterUpperLeft,
       &#sideWindowLeft {
         left: calc(100% - 30px);
