@@ -319,6 +319,49 @@ div#future {
       }
     }
 
+    div.ep {
+      background-image: url(../img/future/exhaustPipe.png);
+      width: 18px;
+      height: 40px;
+      top: 957px;
+      transform: translateZ(-57.5px) rotateX(-7.125deg) rotateY(180deg);
+      &#exhaustPipeLeftTop {
+        left: 341px;
+      }
+      &#exhaustPipeRightTop {
+        left: 106px;
+      }
+      &.epSide {
+        &#exhaustPipeLeftLeft {
+          transform: translateZ(-57.5px) rotateY(-90deg) rotateZ(7.125deg);
+          left: 341px;
+        }
+        &#exhaustPipeLeftRight {
+          transform: translateZ(-39.5px) rotateY(90deg) rotateZ(-7.125deg);
+          left: 323px;
+        }
+        &#exhaustPipeRightLeft {
+          transform: translateZ(-57.5px) rotateY(-90deg) rotateZ(7.125deg);
+          left: 106px;
+        }
+        &#exhaustPipeRightRight {
+          transform: translateZ(-39.5px) rotateY(90deg) rotateZ(-7.125deg);
+          left: 88px;
+        }
+      }
+    }
+    div.epc {
+      background-color: black;
+      width: 16px;
+      height: 16px;
+      top: 986px;
+      left: 89px;
+      transform: translateZ(-44px) rotateX(-97.125deg);
+      &#exhaustPipeLeftCap {
+        left: 324px;
+      }
+    }
+
     div.bumperRear {
       background: black;
       width: 370px;
