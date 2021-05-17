@@ -207,59 +207,29 @@ div#future {
       transform-origin: 0 0;
     }
 
-    div.underCarriage {
-      width: 423px;
-      background-image: url(../img/future/undercarriage.png);
-      background-size: 423px 1000px;
-      background-position: 0 0;
-      &#underCarriageFront {
-        height: 119px;
-        transform-origin: 50% 100%;
-        transform: translateZ(-23px) rotateX(6.71deg);
+    div.bumperFront {
+      background: black;
+      width: 377px;
+      left: 23px;
+      transform-origin: 50% 0;
+      &#bumperFrontLower {
+        background-color: #2f2f2f;
+        top: 1px;
+        height: 24px;
+        transform: translateZ(-37px) rotateX(-40.6deg);
       }
-      &#underCarriageCenter {
-        top: 119px;
-        background-position: 0 -119px;
-        height: 729px;
+      &#bumperFrontMiddle {
+        width: 381px;
+        left: 20px;
+        height: 24px;
+        top: 18px;
+        transform: translateZ(-42px) rotateX(-90deg);
       }
-      &#underCarriageRear {
-        top: 848px;
-        background-position: 0 -848px;
-        height: 152px;
-        transform: translateZ(-26px) rotateX(-7.125deg);
-      }
-    }
-
-    div.brLower {
-      background-image: url(../img/future/bodyRearLowerLeft.png);
-      width: 77px;
-      height: 126px;
-      top: 848px;
-      transform: translateZ(-26px) rotateY(90deg) rotateX(13deg);
-      &#bodyRearLowerLeft {
-        left: 100%;
-        transform: translateZ(-26px) rotateY(90deg) rotateX(-13deg);
-      }
-    }
-    div.brMiddle {
-      background-image: url(../img/future/bodyRearMiddle.png);
-      width: 60px;
-      height: 126px;
-      top: 848px;
-      transform: translateZ(-103px) rotateZ(-12.325deg) rotateY(60deg);
-      &#bodyRearMiddleLeft {
-        left: 100%;
-        transform: translateZ(-103px) rotateZ(12.325deg) rotateY(120deg);
-      }
-    }
-    div.brCorner {
-      background-image: url(../img/future/bodyRearCorner.png);
-      width: 27px;
-      height: 17px;
-      top: 831px;
-      transform: translateZ(-76px) rotateY(90deg);
-      &#bodyRearCornerLeft {
-        left: 100%;
+      &#bumperFrontUpper {
+        background-color: #18171d;
+        top: 2px;
+        height: 24px;
+        transform: translateZ(-69px) rotateX(20.3deg);
       }
     }
 
@@ -318,6 +288,109 @@ div#future {
         transform: translateZ(-103px) rotateY(120deg);
       }
     }
+    div.bcUpper,
+    div.sw {
+      background-image: url(../img/future/bodyCenterUpper.png);
+      width: 68px;
+      height: 359px;
+      top: 331px;
+      left: 30px;
+      transform: translateZ(-155px) rotateY(47deg);
+      &#bodyCenterUpperLeft,
+      &#sideWindowLeft {
+        left: calc(100% - 30px);
+        transform: translateZ(-155px) rotateY(137deg);
+      }
+    }
+    div.sw {
+      background-image: url(../img/future/sideWindow.png);
+      left: 30.5px;
+      &#sideWindowLeft {
+        left: calc(100% - 30.5px);
+      }
+    }
+
+    div.brLower {
+      background-image: url(../img/future/bodyRearLowerLeft.png);
+      width: 77px;
+      height: 126px;
+      top: 848px;
+      transform: translateZ(-26px) rotateY(90deg) rotateX(13deg);
+      &#bodyRearLowerLeft {
+        left: 100%;
+        transform: translateZ(-26px) rotateY(90deg) rotateX(-13deg);
+      }
+    }
+    div.brMiddle {
+      background-image: url(../img/future/bodyRearMiddle.png);
+      width: 60px;
+      height: 126px;
+      top: 848px;
+      transform: translateZ(-103px) rotateZ(-12.325deg) rotateY(60deg);
+      &#bodyRearMiddleLeft {
+        left: 100%;
+        transform: translateZ(-103px) rotateZ(12.325deg) rotateY(120deg);
+      }
+    }
+    div.brCorner {
+      background-image: url(../img/future/bodyRearCorner.png);
+      width: 27px;
+      height: 17px;
+      top: 831px;
+      transform: translateZ(-76px) rotateY(90deg);
+      &#bodyRearCornerLeft {
+        left: 100%;
+      }
+    }
+
+    div.bumperRear {
+      background: black;
+      width: 370px;
+      left: 26px;
+      transform-origin: 50% 0;
+      &#bumperRearLower {
+        background-color: #18171d;
+        height: 32px;
+        top: 964px;
+        transform: translateZ(-41px) rotateX(-90deg);
+      }
+      &#bumperRearMiddle {
+        height: 9px;
+        top: 962px;
+        transform: translateZ(-72px);
+      }
+      &#bumperRearUpper {
+        background-color: #101010;
+        left: 28px;
+        top: 971px;
+        height: 33px;
+        width: 367px;
+        transform: translateZ(-71px) rotateX(-90deg);
+      }
+    }
+
+    div.underCarriage {
+      width: 423px;
+      background-image: url(../img/future/undercarriage.png);
+      background-size: 423px 1000px;
+      background-position: 0 0;
+      &#underCarriageFront {
+        height: 119px;
+        transform-origin: 50% 100%;
+        transform: translateZ(-23px) rotateX(6.71deg);
+      }
+      &#underCarriageCenter {
+        top: 119px;
+        background-position: 0 -119px;
+        height: 729px;
+      }
+      &#underCarriageRear {
+        top: 848px;
+        background-position: 0 -848px;
+        height: 152px;
+        transform: translateZ(-26px) rotateX(-7.125deg);
+      }
+    }
 
     div.ep {
       background-image: url(../img/future/exhaustPipe.png);
@@ -351,7 +424,7 @@ div#future {
       }
     }
     div.epc {
-      background-color: black;
+      background: radial-gradient(circle closest-side, black 0, #91827e 100%);
       width: 16px;
       height: 16px;
       top: 986px;
@@ -359,58 +432,6 @@ div#future {
       transform: translateZ(-44px) rotateX(-97.125deg);
       &#exhaustPipeLeftCap {
         left: 324px;
-      }
-    }
-
-    div.bumperRear {
-      background: black;
-      width: 370px;
-      left: 26px;
-      transform-origin: 50% 0;
-      &#bumperRearLower {
-        background-color: #18171d;
-        height: 32px;
-        top: 964px;
-        transform: translateZ(-41px) rotateX(-90deg);
-      }
-      &#bumperRearMiddle {
-        height: 9px;
-        top: 962px;
-        transform: translateZ(-72px);
-      }
-      &#bumperRearUpper {
-        background-color: #101010;
-        left: 28px;
-        top: 971px;
-        height: 33px;
-        width: 367px;
-        transform: translateZ(-71px) rotateX(-90deg);
-      }
-    }
-
-    div.bumperFront {
-      background: black;
-      width: 377px;
-      left: 23px;
-      transform-origin: 50% 0;
-      &#bumperFrontLower {
-        background-color: #2f2f2f;
-        top: 1px;
-        height: 24px;
-        transform: translateZ(-37px) rotateX(-40.6deg);
-      }
-      &#bumperFrontMiddle {
-        width: 381px;
-        left: 20px;
-        height: 24px;
-        top: 18px;
-        transform: translateZ(-42px) rotateX(-90deg);
-      }
-      &#bumperFrontUpper {
-        background-color: #18171d;
-        top: 2px;
-        height: 24px;
-        transform: translateZ(-69px) rotateX(20.3deg);
       }
     }
 
