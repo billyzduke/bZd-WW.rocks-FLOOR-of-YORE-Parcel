@@ -233,6 +233,24 @@ div#future {
       }
     }
 
+    div#grille {
+      background-image: url(../img/future/grille.png);
+      width: 374px;
+      left: 25px;
+      height: 36px;
+      top: 3px;
+      transform: translateZ(-102px) rotateX(-59.5deg);
+    }
+
+    div#hood {
+      background-image: url(../img/future/hood.png);
+      width: 381px;
+      left: 21px;
+      height: 314px;
+      top: 20px;
+      transform: translateZ(-133px) rotateX(-4deg);
+    }
+
     div.bfLower {
       background-image: url(../img/future/bodyFrontLower.png);
       width: 81px;
