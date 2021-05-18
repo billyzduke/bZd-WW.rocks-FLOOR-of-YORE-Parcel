@@ -38,15 +38,15 @@ const spinTime = () => {
     scale: 1.23,
   })
   gsap.to('#deLorean', {
-    duration: 10,
-    ease: 'none',
+    duration: 20,
+    ease: 'steps(25)',
     repeat: -1,
     rotateX: -90,
     yoyo: true,
   })
   gsap.to('#deLorean', {
-    duration: 20,
-    ease: 'none',
+    duration: 40,
+    ease: 'steps(50)',
     repeat: -1,
     rotateY: 270,
     yoyo: true,
