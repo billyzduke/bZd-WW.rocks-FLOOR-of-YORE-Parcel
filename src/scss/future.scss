@@ -208,7 +208,7 @@ div#future {
     }
 
     div.bumperFront {
-      background: black;
+      background: #101010;
       width: 377px;
       left: 23px;
       transform-origin: 50% 0;
@@ -449,7 +449,7 @@ div#future {
     }
 
     div.bumperRear {
-      background: black;
+      background: #101010;
       width: 370px;
       left: 26px;
       transform-origin: 50% 0;
@@ -465,12 +465,116 @@ div#future {
         transform: translateZ(-72px);
       }
       &#bumperRearUpper {
-        background-color: #101010;
+        background-color: #2f2f2f;
         left: 28px;
         top: 971px;
         height: 33px;
         width: 367px;
         transform: translateZ(-71px) rotateX(-90deg);
+      }
+    }
+
+    div#backBar {
+      width: 92px;
+      height: 20px;
+      top: 756px;
+      left: 50%;
+      transform: translateZ(-240px) translateX(calc(-50% + 2px));
+      div {
+        background-image: url(../img/future/backBarFace.png);
+        &.barFace {
+          width: 100%;
+          height: 40px;
+          transform: rotateX(90deg);
+          &#barFaceBack {
+            left: 100%;
+            top: 15px;
+            transform: rotateX(90deg) rotateY(180deg);
+          }
+        }
+        &.barSide {
+          background-position: 0 0;
+          background-size: 92px 40px;
+          width: 15px;
+          height: 40px;
+          transform: rotateX(90deg) rotateY(90deg);
+          &#barSideOutLeft {
+            left: 100%;
+          }
+          &.barSideIn {
+            left: 15px;
+            &#barSideInLeft {
+              left: calc(100% - 15px);
+            }
+          }
+          &.bar {
+            width: 100%;
+            height: 15px;
+            &#barTop {
+              transform: none;
+            }
+            &#barBottom {
+              transform: translateZ(15px);
+            }
+          }
+        }
+      }
+    }
+
+    div#mrFusion {
+      left: 50%;
+      width: 84px;
+      height: 84px;
+      top: 801px;
+      transform: translateZ(-152px) translateX(-50%);
+      div#fusionBase {
+        width: 100%;
+        height: 100%;
+        div.fusionBaseSide {
+          background-image: url(../img/future/fusionBaseSide.png);
+          width: 50px;
+          height: 35px;
+          &:first-child {
+            left: 50%;
+            transform: translateX(-17.5px) rotateY(90deg) rotateX(90deg);
+          }
+          &:nth-child(2) {
+            top: 100%;
+            transform: translateY(-25px) rotateY(90deg) rotateX(45deg);
+          }
+          &:nth-child(3) {
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%) rotateY(90deg);
+          }
+          &:nth-child(4) {
+            left: 100%;
+            transform: translateX(-25px) rotateY(90deg) rotateX(45deg);
+          }
+          &:nth-child(5) {
+            top: 50%;
+            transform: translateY(-50%) rotateY(90deg);
+          }
+          &:nth-child(6) {
+            transform: translateX(25px) rotateY(90deg) rotateX(-45deg);
+          }
+          &:nth-child(7) {
+            left: 50%;
+            top: 100%;
+            transform: translateX(-17.5px) rotateY(90deg) rotateX(90deg);
+          }
+          &:nth-child(8) {
+            top: 100%;
+            left: 100%;
+            transform: translateY(-25px) rotateY(90deg) rotateX(-45deg);
+          }
+        }
+        div#fusionBaseTop {
+          width: 100%;
+          height: 100%;
+          background-image: url(../img/future/fusionBaseTop.png);
+          transform: translateZ(-50px);
+        }
       }
     }
 
