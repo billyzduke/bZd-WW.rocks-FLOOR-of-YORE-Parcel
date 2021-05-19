@@ -1,5 +1,4 @@
 import { gsap, TimelineMax as TL } from 'gsap'
-import '@google/model-viewer'
 
 // import g from './glob'
 import { setFlux } from './flux'

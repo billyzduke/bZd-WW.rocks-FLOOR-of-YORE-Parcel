@@ -33,8 +33,8 @@ const setScene00 = (c, n) => {
 
 const spinTime = () => {
   gsap.set('#deLorean', {
-    rotateX: -30,
-    rotateY: 150,
+    rotateX: -25,
+    rotateY: 180,
     rotateZ: 0,
     scale: 1.23,
   })

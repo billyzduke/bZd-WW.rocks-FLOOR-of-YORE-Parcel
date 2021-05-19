@@ -294,6 +294,16 @@ div#future {
       }
     }
 
+    div.lightBar {
+      div {
+        background: rgba(0,216,255,0.88);
+        filter: drop-shadow(0 0 12px rgba(0,216,255,0.64));
+        transform-origin: 50% 50%;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
     div#windshield {
       background-image: url(../img/future/windshield.png);
       width: 364px;
@@ -316,13 +326,16 @@ div#future {
         top: 164px;
         transform: translateZ(-12px);
         div {
-          background: rgba(0,216,255,0.88);
-          width: 96%;
-          height: 27px;
+          width: calc(100% - 6px);
+          height: calc(100% - 4px);
           top: 2px;
-          left: 2%;
-          transform: translateZ(6px);
-          box-shadow: 0 0 12px rgba(0,216,255,0.64);
+          left: 3px;
+          &:first-child {
+            transform: translateZ(3px) rotateX(5deg);
+          }
+          &:last-child {
+            transform: translateZ(3px) rotateX(-5deg);
+          }
         }
       }
     }
@@ -412,6 +425,67 @@ div#future {
         left: 100%;
         transform: translateZ(-26px) rotateY(90deg) rotateX(-13deg);
       }
+      div.lightBar {
+        background-image: url(../img/future/bodyRearLowerLightBar.png);
+        width: 100%;
+        height: 100%;
+        > div {
+          background-color: transparent !important;
+          background-image: url(../img/future/bodyRearLowerLight.png);
+          width: 100%;
+          height: 100%;
+        }
+        &#bodyRearLowerLeftLightBar {
+          transform: translateZ(10px) translateX(5px);
+          > div {
+            &:first-child {
+              transform: translateZ(-5px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(-5px) rotateY(-5deg);
+            }
+          }
+        }
+        &#bodyRearLowerRightLightBar {
+          transform: translateZ(-10px) translateX(5px);
+          > div {
+            &:first-child {
+              transform: translateZ(5px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(5px) rotateY(-5deg);
+            }
+          }
+        }
+      }
+      div.lightBarTerminal {
+        width: 29px;
+        height: 24px;
+        transform: rotateZ(-24.5deg) translateZ(1px);
+        top: 76px;
+        left: 9.5px;
+        div {
+          width: 12px;
+          height: 22px;
+          background: #1150a0;
+          transform: rotateY(-56deg) translateZ(-1px);
+          &:first-child {
+            top: 2px;
+            left: 1.5px;
+            width: 9.5px;
+            height: 30px;
+            background: #2e69bf;
+            transform: rotateY(-90deg) rotateX(-94deg) skewY(32deg) translateZ(-2.5px);
+          }
+          &:last-child {
+            top: calc(100% + 9.5px);
+            width: 10px;
+            height: 29px;
+            background: #2e69bf;
+            transform: rotateY(-90deg) rotateX(-85deg) skewY(32deg) translateZ(-10.5px);
+          }
+        }
+      }
     }
     div.brMiddle {
       background-image: url(../img/future/bodyRearMiddle.png);
@@ -422,6 +496,39 @@ div#future {
       &#bodyRearMiddleLeft {
         left: 100%;
         transform: translateZ(-103px) rotateZ(12.325deg) rotateY(120deg);
+      }
+      div.lightBar {
+        background-image: url(../img/future/bodyRearMiddleLightBar.png);
+        width: 100%;
+        height: 69px;
+        > div {
+          background-color: transparent !important;
+          background-image: url(../img/future/bodyRearMiddleLight.png);
+          width: 100%;
+          height: 100%;
+        }
+        &#bodyRearMiddleLeftLightBar {
+          transform: translateZ(12px);
+          > div {
+            &:first-child {
+              transform: translateZ(-6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(-6px) rotateY(-5deg);
+            }
+          }
+        }
+        &#bodyRearMiddleRightLightBar {
+          transform: translateZ(-12px);
+          > div {
+            &:first-child {
+              transform: translateZ(6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(6px) rotateY(-5deg);
+            }
+          }
+        }
       }
     }
     div.brUpper {

@@ -52,7 +52,6 @@
     "build": "parcel build yore.html"
   },
   "dependencies": {
-    "@google/model-viewer": "^1.6.0",
     "@gsap/shockingly": "^3.6.1",
     "css-animation-sync": "^0.2.0",
     "gsap": "npm:@gsap/shockingly",
