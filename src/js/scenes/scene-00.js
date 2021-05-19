@@ -49,7 +49,7 @@ const spinTime = () => {
     duration: 40,
     ease: 'steps(50)',
     repeat: -1,
-    rotateY: 240,
+    rotateY: 60,
     yoyo: true,
   })
   // gsap.to('#deLorean', {

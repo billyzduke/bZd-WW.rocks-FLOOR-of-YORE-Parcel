@@ -486,6 +486,11 @@ div#future {
           }
         }
       }
+      &#bodyRearLowerRight {
+        div.lightBarTerminal {
+          transform: rotateZ(-24.5deg) scaleZ(-1) translateZ(1px);
+        }
+      }
     }
     div.brMiddle {
       background-image: url(../img/future/bodyRearMiddle.png);
