@@ -27,6 +27,7 @@ const setScene00 = (c, n) => {
       cursor: 'pointer',
     }, '>')
 
+  console.log(g.document.querySelector('#fusionBottomWhite > div > div').getBoundingClientRect())
   return true
 }
 
@@ -41,7 +42,7 @@ const spinTime = () => {
     duration: 20,
     ease: 'steps(25)',
     repeat: -1,
-    rotateX: -75,
+    rotateX: -60,
     yoyo: true,
   })
   gsap.to('#deLorean', {
