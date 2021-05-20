@@ -193,18 +193,20 @@ div#future {
     width: 423px;
     height: 1000px;
     transform: translate(-50%, -50%) translateZ(-250px) rotateZ(90deg) rotateY(90deg) rotateX(45deg);
-    #deLorean3d {
-      width: 100%;
-      height: 100%;
-    }
-    #astronaut {
-      width: 600px;
-      height: 800px;
-      right: 0;
-      pointer-events: auto;
-    }
     div {
       transform-origin: 0 0;
+    }
+
+    div.lightBar {
+      div {
+        // opacity: 0;
+        background: rgba(0,216,255,0.88);
+        background-repeat: no-repeat !important;
+        // filter: drop-shadow(0 0 12px rgba(0,216,255,0.64));
+        transform-origin: 50% 50%;
+        width: 100%;
+        height: 100%;
+      }
     }
 
     div.bumperFront {
@@ -240,6 +242,25 @@ div#future {
       height: 36px;
       top: 3.5px;
       transform: translateZ(-67px) rotateX(-90deg);
+      div#frontLightBar {
+        background-image: url(../img/future/frontLightBar.png);
+        width: 393px;
+        height: 30px;
+        transform: translateZ(-12px);
+        left: -10px;
+        top: 9px;
+        div {
+          width: 385px;
+          left: 2px;
+          height: calc(100% - 4px);
+          &:first-child {
+            transform: translateZ(6px) rotateX(5deg);
+          }
+          &:last-child {
+            transform: translateZ(6px) rotateX(-5deg);
+          }
+        }
+      }
     }
 
     div#grille {
@@ -270,6 +291,79 @@ div#future {
         left: 100%;
         transform: translateZ(-23px) rotateY(90deg) rotateX(12.325deg);
       }
+      div.lightBar {
+        background-image: url(../img/future/bodyFrontLowerLightBar.png);
+        height: calc(100% + 8px);
+        width: 100%;
+        left: 2px;
+        top: -10px;
+        > div {
+          background-color: transparent !important;
+          background-image: url(../img/future/bodyFrontLowerLight.png);
+          width: 100%;
+          height: calc(100% - 2px);
+          top: 4px;
+        }
+        &#bodyFrontLowerLeftLightBar {
+          transform: translateZ(12px);
+          > div {
+            &:first-child {
+              transform: translateZ(-6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(-6px) rotateY(-5deg);
+            }
+          }
+        }
+        &#bodyFrontLowerRightLightBar {
+          transform: translateZ(-12px);
+          > div {
+            &:first-child {
+              transform: translateZ(6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(6px) rotateY(-5deg);
+            }
+          }
+        }
+      }
+      div.lightBarTerminalFront {
+        width: 35px;
+        height: 39px;
+        transform: rotateZ(-90deg) translateZ(1px);
+        top: 112px;
+        left: 49px;
+        div { // back
+          width: 14px;
+          height: 39px;
+          background: #1150a0;
+          transform: rotateY(-56deg) translateZ(-1px);
+          &:first-child { // BOTTOM
+            top: 4px;
+            height: 72px;
+            background: #2e69bf;
+            transform: rotateY(-90deg) rotateX(-90deg) skewY(32deg) translateX(-3px);
+          }
+          &:nth-child(3) {
+            top: 100%;
+            height: 40px;
+            background: #2e69bf;
+            transform: rotateY(-90deg) rotateX(-90deg) skewY(32deg) translateX(-3px);
+          }
+          &:nth-child(4) {
+            top: calc(100% - 5px);
+            height: 72px;
+            background: #1150a0;
+            transform: rotateY(-90deg) rotateX(-90deg) skewY(32deg) translateX(-3px);
+          }
+        }
+      }
+      &#bodyFrontLowerRight {
+        div.lightBarTerminalFront {
+          transform: rotateZ(-90deg) scaleZ(-1) translateZ(1px);
+        }
+      }
+
     }
     div.bfUpper {
       background-image: url(../img/future/bodyFrontUpper.png);
@@ -282,6 +376,17 @@ div#future {
         left: 100%;
         transform: translateZ(-103px) rotateZ(-12.325deg) rotateY(120deg);
       }
+      div.lightBar {
+        left: -4px;
+        top: 0.5px;
+        transform: translateZ(12.5px);
+        background-image: url(../img/future/bodyFrontUpperLightBar.png);
+        width: 100%;
+        height: 100%;
+        &#bodyFrontUpperRightLightBar {
+          transform: translateZ(-12.5px);
+        }
+      }
     }
     div.bfCorner {
       background-image: url(../img/future/bodyFrontCorner.png);
@@ -291,18 +396,6 @@ div#future {
       transform: translateZ(-79px) rotateY(90deg);
       &#bodyFrontCornerLeft {
         left: 100%;
-      }
-    }
-
-    div.lightBar {
-      div {
-        // opacity: 0;
-        background: rgba(0,216,255,0.88);
-        background-repeat: no-repeat !important;
-        // filter: drop-shadow(0 0 12px rgba(0,216,255,0.64));
-        transform-origin: 50% 50%;
-        width: 100%;
-        height: 100%;
       }
     }
 
@@ -326,14 +419,14 @@ div#future {
         width: 102%;
         height: 31px;
         top: 164px;
-        transform: translateZ(-12px);
+        transform: translateZ(-14px);
         div {
           height: calc(100% - 4px);
           &:first-child {
-            transform: translateZ(6px) rotateX(5deg);
+            transform: translateZ(7px) rotateX(5deg);
           }
           &:last-child {
-            transform: translateZ(6px) rotateX(-5deg);
+            transform: translateZ(7px) rotateX(-5deg);
           }
         }
       }
@@ -563,7 +656,7 @@ div#future {
           }
         }
       }
-      div.lightBarTerminal {
+      div.lightBarTerminalRear {
         width: 29px;
         height: 24px;
         transform: rotateZ(-24.5deg) translateZ(1px);
@@ -592,7 +685,7 @@ div#future {
         }
       }
       &#bodyRearLowerRight {
-        div.lightBarTerminal {
+        div.lightBarTerminalRear {
           transform: rotateZ(-24.5deg) scaleZ(-1) translateZ(1px);
         }
       }
