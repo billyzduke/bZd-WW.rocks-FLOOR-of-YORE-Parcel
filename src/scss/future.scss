@@ -296,7 +296,9 @@ div#future {
 
     div.lightBar {
       div {
+        opacity: 0;
         background: rgba(0,216,255,0.88);
+        background-repeat: no-repeat !important;
         filter: drop-shadow(0 0 12px rgba(0,216,255,0.64));
         transform-origin: 50% 50%;
         width: 100%;
@@ -321,20 +323,17 @@ div#future {
       transform: translateZ(-220.5px);
       div#roofLightBar {
         background-image: url(../img/future/roofLightBar.png);
-        width: 100%;
+        width: 102%;
         height: 31px;
         top: 164px;
         transform: translateZ(-12px);
         div {
-          width: calc(100% - 6px);
           height: calc(100% - 4px);
-          top: 2px;
-          left: 3px;
           &:first-child {
-            transform: translateZ(3px) rotateX(5deg);
+            transform: translateZ(6px) rotateX(5deg);
           }
           &:last-child {
-            transform: translateZ(3px) rotateX(-5deg);
+            transform: translateZ(6px) rotateX(-5deg);
           }
         }
       }
@@ -360,6 +359,41 @@ div#future {
         left: 100%;
         transform: translateZ(-103px) rotateY(120deg);
       }
+      div.lightBar {
+        background-image: url(../img/future/bodyCenterMiddleLightBar.png);
+        top: 555px;
+        left: 31px;
+        width: 29px;
+        height: 174px;
+        > div {
+          background-color: transparent !important;
+          background-image: url(../img/future/bodyCenterMiddleLight.png);
+          width: 100%;
+          height: 100%;
+        }
+        &#bodyCenterMiddleLeftLightBar {
+          transform: translateZ(12px);
+          > div {
+            &:first-child {
+              transform: translateZ(-6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(-6px) rotateY(-5deg);
+            }
+          }
+        }
+        &#bodyCenterMiddleRightLightBar {
+          transform: translateZ(-12px);
+          > div {
+            &:first-child {
+              transform: translateZ(6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(6px) rotateY(-5deg);
+            }
+          }
+        }
+      }
     }
     div.bcUpper,
     div.sw {
@@ -383,6 +417,43 @@ div#future {
         left: calc(100% - 30.5px);
       }
     }
+    div.bcUpper {
+      div.lightBar {
+        background-image: url(../img/future/bodyCenterUpperLightBar.png);
+        width: 100px;
+        height: 36px;
+        top: 323px;
+        > div {
+          background-color: transparent !important;
+          background-image: url(../img/future/bodyCenterUpperLight.png);
+          width: 100px;
+          height: 36px;
+          background-size: 100% 100%;
+        }
+        &#bodyCenterUpperLeftLightBar {
+          transform: translateZ(12px);
+          > div {
+            &:first-child {
+              transform: translateZ(-6px) rotateX(5deg);
+            }
+            &:last-child {
+              transform: translateZ(-6px) rotateX(-5deg);
+            }
+          }
+        }
+        &#bodyCenterUpperRightLightBar {
+          transform: translateZ(-12px);
+          > div {
+            &:first-child {
+              transform: translateZ(6px) rotateX(5deg);
+            }
+            &:last-child {
+              transform: translateZ(6px) rotateX(-5deg);
+            }
+          }
+        }
+      }
+    }
 
     div.es {
       background-image: url(../img/future/bodyEngineUpperRight.png);
@@ -395,6 +466,39 @@ div#future {
         background-image: url(../img/future/bodyEngineUpperLeft.png);
         left: calc(100% - 30px);
         transform: translateZ(-155px) rotateY(132.5deg);
+      }
+      div.lightBar {
+        background-image: url(../img/future/bodyEngineUpperLightBar.png);
+        width: 100%;
+        height: 100%;
+        > div {
+          background-color: transparent !important;
+          background-image: url(../img/future/bodyEngineUpperLight.png);
+          width: 100%;
+          height: 100%;
+        }
+        &#bodyEngineUpperLeftLightBar {
+          transform: translateZ(12px);
+          > div {
+            &:first-child {
+              transform: translateZ(-6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(-6px) rotateY(-5deg);
+            }
+          }
+        }
+        &#bodyEngineUpperRightLightBar {
+          transform: translateZ(-12px);
+          > div {
+            &:first-child {
+              transform: translateZ(6px) rotateY(5deg);
+            }
+            &:last-child {
+              transform: translateZ(6px) rotateY(-5deg);
+            }
+          }
+        }
       }
     }
 

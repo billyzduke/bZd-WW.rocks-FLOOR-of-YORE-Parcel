@@ -34,22 +34,22 @@ const setScene00 = (c, n) => {
 const spinTime = () => {
   gsap.set('#deLorean', {
     rotateX: -25,
-    rotateY: 180,
+    rotateY: 150,
     rotateZ: 0,
     scale: 1.23,
   })
   gsap.to('#deLorean', {
     duration: 20,
-    ease: 'steps(25)',
+    ease: 'none',
     repeat: -1,
     rotateX: -90,
     yoyo: true,
   })
   gsap.to('#deLorean', {
     duration: 40,
-    ease: 'steps(50)',
+    ease: 'none',
     repeat: -1,
-    rotateY: 60,
+    rotateY: 240,
     yoyo: true,
   })
   // gsap.to('#deLorean', {
