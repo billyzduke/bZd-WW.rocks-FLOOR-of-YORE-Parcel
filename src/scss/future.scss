@@ -296,10 +296,10 @@ div#future {
 
     div.lightBar {
       div {
-        opacity: 0;
+        // opacity: 0;
         background: rgba(0,216,255,0.88);
         background-repeat: no-repeat !important;
-        filter: drop-shadow(0 0 12px rgba(0,216,255,0.64));
+        // filter: drop-shadow(0 0 12px rgba(0,216,255,0.64));
         transform-origin: 50% 50%;
         width: 100%;
         height: 100%;
@@ -427,17 +427,18 @@ div#future {
           background-color: transparent !important;
           background-image: url(../img/future/bodyCenterUpperLight.png);
           width: 100px;
-          height: 36px;
+          height: 50px;
+          top: -13px;
           background-size: 100% 100%;
         }
         &#bodyCenterUpperLeftLightBar {
           transform: translateZ(12px);
           > div {
             &:first-child {
-              transform: translateZ(-6px) rotateX(5deg);
+              transform: translateZ(-6px) rotateX(3deg);
             }
             &:last-child {
-              transform: translateZ(-6px) rotateX(-5deg);
+              transform: translateZ(-6px) rotateX(-3deg);
             }
           }
         }
@@ -445,10 +446,10 @@ div#future {
           transform: translateZ(-12px);
           > div {
             &:first-child {
-              transform: translateZ(6px) rotateX(5deg);
+              transform: translateZ(6px) rotateX(3deg);
             }
             &:last-child {
-              transform: translateZ(6px) rotateX(-5deg);
+              transform: translateZ(6px) rotateX(-3deg);
             }
           }
         }
