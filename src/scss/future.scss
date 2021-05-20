@@ -489,38 +489,126 @@ div#future {
         left: 50%;
         top: 158px;
         transform: translateX(-50%) translateZ(-28px);
-        div {
-          &:first-child {
-            background: #666666;
-            height: 38px;
-            width: 8px;
-            transform: rotateY(135deg);
+        &:before {
+          background: linear-gradient(0, rgba(68,68,68,0.64) 0%, rgba(17,17,17,0) 100%);
+          content: '';
+          position: absolute;
+          height: 30px;
+          width: 30px;
+          border-bottom: solid 1px black;
+          border-top: solid 1px black;
+        }
+        > div {
+          &:not(#laserSnouts) {
+            &:before {
+              background: linear-gradient(0, rgba(68,68,68,0.64) 0%, rgba(17,17,17,0) 100%);
+              content: '';
+              position: absolute;
+              height: 30px;
+              width: 8px;
+              border-bottom: solid 1px black;
+              border-top: solid 1px black;
+            }
+            &:first-child {
+              background: #666666;
+              height: 38px;
+              width: 8px;
+              transform: rotateY(135deg);
+            }
+            &:nth-child(2) {
+              background: #666666;
+              height: 38px;
+              width: 8px;
+              left: 100%;
+              transform: rotateY(45deg);
+            }
+            &:nth-child(3) {
+              background: #999999;
+              height: 38px;
+              width: 8px;
+              transform: translateZ(-11px) rotateY(225deg);
+            }
+            &:nth-child(4) {
+              background: #999999;
+              height: 38px;
+              width: 8px;
+              left: 100%;
+              transform: translateZ(-11px) rotateY(-45deg);
+            }
+            &:nth-child(5) {
+              height: 38px;
+              width: 30px;
+              background: #cccccc;
+              transform: translateZ(-11px);
+              &:before {
+                width: 30px;
+              }
+            }
+            &:nth-child(6) {
+              background-color: transparent !important;
+              background-image: url(../img/future/roofLaserFace.png);
+              height: 11px;
+              width: 40px;
+              left: 50%;
+              top: 4px;
+              transform: translateX(calc(-50% - 0.5px)) translateZ(-11px) rotateX(90deg);
+              &:before {
+                display: none;
+              }
+            }
+            &:nth-child(7) {
+              background-color: transparent !important;
+              background-image: url(../img/future/roofLaserFace.png);
+              height: 11px;
+              width: 40px;
+              left: 50%;
+              top: 100%;
+              transform: translateX(calc(-50% - 0.5px)) translateZ(-11px) rotateX(90deg);
+              &:before {
+                display: none;
+              }
+            }
           }
-          &:nth-child(2) {
-            background: #666666;
-            height: 38px;
-            width: 8px;
-            left: 100%;
-            transform: rotateY(45deg);
-          }
-          &:nth-child(3) {
-            background: #999999;
-            height: 38px;
-            width: 8px;
-            transform: translateZ(-11px) rotateY(225deg);
-          }
-          &:nth-child(4) {
-            background: #999999;
-            height: 38px;
-            width: 8px;
-            left: 100%;
-            transform: translateZ(-11px) rotateY(-45deg);
-          }
-          &:nth-child(5) {
-            height: 38px;
-            width: 30px;
-            background: #cccccc;
-            transform: translateZ(-11px);
+          &#laserSnouts {
+            width: 20px;
+            height: 32px;
+            left: 50%;
+            top: -10px;
+            transform: translateX(-50%) translateZ(-2px);
+            div.laserSnout {
+              width: 6.5px;
+              height: 100%;
+              div {
+                width: 4.5px;
+                height: 100%;
+                background: #cccccc;
+                left: 50%;
+                &:before {
+                  background: linear-gradient(0, rgba(68,68,68,0.64) 0%, rgba(17,17,17,0) 100%);
+                  content: '';
+                  position: absolute;
+                  height: 7.5px;
+                  width: 4.5px;
+                  border-bottom: solid 1px black;
+                  border-top: solid 1px black;
+                }
+                &:first-child {
+                  transform: rotateY(135deg);
+                }
+                &:nth-child(2) {
+                  transform: rotateY(45deg);
+                }
+                &:nth-child(3) {
+                  transform: translateZ(-6.5px) rotateY(225deg);
+                }
+                &:last-child {
+                  transform: translateZ(-6.5px) rotateY(-45deg);
+                }
+              }
+              &:last-child {
+                left: 15px;
+              }
+            }
           }
         }
       }
@@ -619,6 +707,7 @@ div#future {
           background-size: 100% 100%;
         }
         &#bodyCenterUpperLeftLightBar {
+          left: -2px;
           transform: translateZ(12px);
           > div {
             &:first-child {
