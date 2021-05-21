@@ -3,18 +3,16 @@ import { gsap } from 'gsap'
 import g from '../glob'
 import { setScene, setSubScenes } from '../scene'
 import { setSmokes } from '../smoke'
-import { readyFolkLore, unReadyFolkLore } from '../folklore'
-import { setAddOn } from '../utils'
-import { setBaubleLayer03 } from '../baubles/layer-03'
-import { setBaubleLayer04 } from '../baubles/layer-04'
+// import { setBaubleLayer03 } from '../baubles/layer-03'
+// import { setBaubleLayer04 } from '../baubles/layer-04'
 
 const scene11 = 'Relieve the Lion / Binary Folklore / Breed Foetuses'
 
 const setScene11 = (c, n) => {
   g.scene.setting = c
 
-  setBaubleLayer03()
-  setBaubleLayer04()
+  // setBaubleLayer03()
+  // setBaubleLayer04()
 
   setSubScenes(c, [ 'foetusL', 'foetusR', 'folklore' ])
   setSmokes()

@@ -6,11 +6,10 @@ import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
 import { resetCtrRingPos1 } from '../baubles/layer-01'
-import { setBaubleLayer02 } from '../baubles/layer-02'
+// import { setBaubleLayer02 } from '../baubles/layer-02'
 import { clearShaiHulud } from '../shai-hulud'
 import { setJungleMotion } from '../jungle'
-import { toggleLionEyes } from '../lion-head'
-import { toggleLionHalos } from '../lion'
+import { toggleLionEyes, toggleLionHalos } from '../lion-head'
 
 const scene08 = 'Sparks Fly / Enter the Lion / The Mighty Jungle'
 
@@ -19,7 +18,7 @@ const setScene08 = (c, n) => {
   g.scene.forCleanUp[c].gankyilClick = setAddOn('#gankyil', 'click', () => setScene(n))
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(5)
 
-  setBaubleLayer02()
+  // setBaubleLayer02()
   resetCtrRingPos1(5.75)
   toggleLionEyes()
   toggleLionHalos()

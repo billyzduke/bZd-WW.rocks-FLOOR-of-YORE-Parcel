@@ -37,6 +37,8 @@ const loadApp = () => {
       'drWorm',
       'excWrapper',
       'flux',
+      'fluxButton',
+      'fluxDisplay',
       'fluxDisplay10',
       'fluxDisplay01',
       'fluxEchoAxisC',

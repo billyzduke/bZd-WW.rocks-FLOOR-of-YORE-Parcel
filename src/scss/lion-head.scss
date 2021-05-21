@@ -5,9 +5,8 @@ div#conicalRainbow {
   left: 175px;
   top: 20px;
   width: 300px;
-}
-.anim div#conicalRainbow {
   animation: spinZ 1s linear infinite reverse;
+  animation-play-state: paused;
 }
 div#lionHead {
   background-image: url(../img/lion/lions-roar-2021.png);
@@ -16,6 +15,8 @@ div#lionHead {
   top: 0;
   transition: transform 0.5s linear;
   width: 343px;
+  animation: jarp 3s linear infinite;
+  animation-play-state: paused;
 }
 div#lionEyes {
   width: 100%;
@@ -26,12 +27,12 @@ svg.lionEye {
   height: 18.5px;
   border-radius: 50%;
   top: 144.5px;
-}
-svg#lionEyeR {
-  left: 120.5px;
-}
-svg#lionEyeL {
-  right: 124.5px;
+  &#lionEyeR {
+    left: 120.5px;
+  }
+  &#lionEyeL {
+    right: 124.5px;
+  }
 }
 img#lionLensFlares {
   width: 122px;
@@ -39,9 +40,7 @@ img#lionLensFlares {
   left: 107px;
   opacity: 0.76;
 }
-.anim div#lionHead.jarp:hover {
-  animation: jarp 3s linear infinite;
-}
+
 div#thirdEyeWrapper {
   background: radial-gradient(circle, rgba(0, 212, 255, 0.5) 0%, rgba(0, 212, 255, 0.25) 25%, rgba(0, 212, 255, 0) 96%);
   border: dashed 2px transparent;
@@ -51,6 +50,8 @@ div#thirdEyeWrapper {
   left: 147px;
   top: 95px;
   width: 48px;
+  animation: spinZ 5s linear infinite;
+  animation-play-state: paused;
 }
 div#phasingRainbow {
   border-radius: 50%;
@@ -59,15 +60,10 @@ div#phasingRainbow {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-}
-.anim div#phasingRainbow {
   animation: rainbowPhase 1.42s linear infinite;
+  animation-play-state: paused;
 }
-.anim .jarp div#thirdEyeWrapper:hover {
-  animation: spinZ 5s linear infinite;
-  border: dashed 2px red;
-  cursor: pointer;
-}
+
 div#thirdEyeClosed {
   background: none;
   cursor: wait;
@@ -79,16 +75,14 @@ div#thirdEyeClosed {
   transform-origin: 50% 32%;
   width: 50px;
   z-index: 2;
-}
-.anim div#thirdEyeClosed.open {
   animation: fadeOut 0.5s ease-in forwards;
-  cursor: pointer;
-}
-div#thirdEyeClosed img {
-  display: block;
-  height: 22px;
-  position: absolute;
-  width: 50px;
+  animation-play-state: paused;
+  img {
+    display: block;
+    height: 22px;
+    position: absolute;
+    width: 50px;
+  }
 }
 div#thirdEyeClosedWaiter {
   height: 7px;
@@ -107,40 +101,34 @@ div#thirdEyeClosedWaiting {
   position: absolute;
   top: 1px;
   width: 58px;
-}
-.anim div#thirdEyeClosedWaiting {
   animation: spinZ 5s linear infinite;
+  animation-play-state: paused;
 }
 
 div#lionPsychHalos {
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease-in-out;
+  img.lionPsychHalo {
+    animation-play-state: paused;
+    &:first-of-type {
+      animation: rememberTheGlow 2.5s ease-in infinite;
+    }
+    &:nth-of-type(2) {
+      animation: rememberTheGlow 2.5s ease-in 0.5s infinite;
+    }
+    &:nth-of-type(3) {
+      animation: rememberTheGlow 2.5s ease-in 1s infinite;
+    }
+    &:nth-of-type(4) {
+      animation: rememberTheGlow 2.5s ease-in 1.5s infinite;
+    }
+    &:nth-of-type(5) {
+      animation: rememberTheGlow 2.5s ease-in 2s infinite;
+    }
+  }
 }
-.jarp:hover div#lionPsychHalos {
-  opacity: 1;
-}
-.anim .jarp img.lionPsychHalo:first-of-type {
-  animation: rememberTheGlow 2.5s ease-in infinite;
-}
-.anim .jarp img.lionPsychHalo:nth-of-type(2) {
-  animation: rememberTheGlow 2.5s ease-in 0.5s infinite;
-}
-.anim .jarp img.lionPsychHalo:nth-of-type(3) {
-  animation: rememberTheGlow 2.5s ease-in 1s infinite;
-}
-.anim .jarp img.lionPsychHalo:nth-of-type(4) {
-  animation: rememberTheGlow 2.5s ease-in 1.5s infinite;
-}
-.anim .jarp img.lionPsychHalo:nth-of-type(5) {
-  animation: rememberTheGlow 2.5s ease-in 2s infinite;
-}
-.jarp img.lionPsychHalo {
-  animation-play-state: paused;
-}
-.jarp:hover img.lionPsychHalo {
-  animation-play-state: running !important;
-}
+
 div#excWrapper {
   border-radius: 50%;
   height: 650px;
@@ -170,4 +158,30 @@ svg.excOrbit {
 }
 .xPath {
   display: none !important;
+}
+
+div#theLion.anim {
+  div#conicalRainbow,
+  div#lionHead.jarp:hover,
+  div#phasingRainbow,
+  div#thirdEyeClosedWaiting {
+    animation-play-state: running;
+  }
+  div#lionHead.jarp div#thirdEyeWrapper:hover {
+    animation-play-state: running;
+    border: dashed 2px red;
+    cursor: pointer;
+  }
+  div#thirdEyeClosed.open {
+    animation-play-state: running;
+    cursor: pointer;
+  }
+  div#lionHead.jarp:hover {
+    div#lionPsychHalos {
+      opacity: 1;
+    }
+    img.lionPsychHalo {
+      animation-play-state: running !important;
+    }
+  }
 }

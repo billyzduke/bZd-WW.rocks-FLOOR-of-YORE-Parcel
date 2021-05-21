@@ -37,8 +37,6 @@ const setFlux = () => {
   setFluxEchoes()
   setFluxMeter()
 
-  g.flux.forCleanUp.button = setAddOn('#fluxButton', 'click', eOnFlux)
-
   g.el.flux.classList.remove('tuct')
 }
 
@@ -202,6 +200,10 @@ const unMaskFlux = () => {
       onComplete: function () {
         gsap.set('.fluxEcho', {
           scale: 1,
+          onComplete: function () {
+            g.flux.forCleanUp.button = setAddOn('#fluxButton', 'click', eOnFlux)
+            if (g.scene.skip.ff) g.el.fluxButton.click()
+          },
           opacity: 0,
           overwrite: 'auto',
         })
@@ -223,7 +225,7 @@ const eOnFlux = () => {
 }
 
 const bootUpFluxDisplay = () => {
-  gsap.set('#fluxDisplay', { cursor: 'wait' })
+  gsap.set(g.el.fluxDisplay, { cursor: 'wait' })
   flickOnFluxDisplayDirective()
   gsap.ticker.add(preRandomizeFluxDisplayTick10)
   gsap.ticker.add(preRandomizeFluxDisplayTick01)
@@ -250,6 +252,7 @@ const flickTick = () => {
   } else {
     gsap.ticker.remove(flickTick)
     g.qss.flux.directive(1)
+    if (g.scene.skip.ff) g.el.fluxDisplay.click()
   }
 }
 
@@ -304,13 +307,13 @@ const randomizeTargetReached = d => {
   g.qss.flux.display[d][0](1)
   g.flux.display[d].current = 0
   if (!g.flux.display[d ? 0 : 1].current) {
-    g.flux.forCleanUp.display = [ setAddOn('#fluxDisplay', 'mousedown', activateFluxDisplay), setAddOn('#fluxDisplay', 'mouseup', activateFluxDisplay) ]
-    gsap.set('#fluxDisplay', { cursor: 'pointer' })
+    g.flux.forCleanUp.display = [ setAddOn('#fluxDisplay', 'click', activateFluxDisplay), setAddOn('#fluxDisplay', 'mousedown', activateFluxDisplay), setAddOn('#fluxDisplay', 'mouseup', activateFluxDisplay) ]
+    gsap.set(g.el.fluxDisplay, { cursor: 'pointer' })
   }
 }
 
 const activateFluxDisplay = e => {
-  if (e.type === 'mousedown') {
+  if (e.type === 'mousedown' || (e.type === 'click' && g.scene.skip.ff)) {
     if (!gsap.ticker._listeners.includes(incrementFluxDisplay)) gsap.ticker.add(incrementFluxDisplay)
   } else {
     gsap.ticker.remove(incrementFluxDisplay)

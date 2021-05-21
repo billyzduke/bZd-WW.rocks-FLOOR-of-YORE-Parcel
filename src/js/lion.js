@@ -5,35 +5,13 @@ import { devLog, randOnum } from './utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from './scene'
 import { toggleGemGuy } from './lion-t-shirt'
-import { toggleLionEyes, toggleLionHead } from './lion-head'
+import { toggleLionEyes, toggleLionHalos, toggleLionJarp } from './lion-head'
 import { toggleLionHands } from './lion-hands'
-
-const toggleLionHalos = () => {
-  if (g.el.theLion.classList.contains('anim')) {
-    g.el.theLion.classList.remove('anim')
-    devLog('lionHalo animations paused')
-  } else {
-    g.el.theLion.classList.add('anim')
-    devLog('lionHalo animations active')
-  }
-}
-
-const toggleLionJarp = () => {
-  if (g.el.lionHead.classList.contains('jarp')) {
-    g.el.lionHead.classList.remove('jarp')
-    devLog('lionJarp animations paused')
-  } else {
-    g.el.lionHead.classList.add('jarp')
-    devLog('lionJarp animations active')
-  }
-}
 
 const toggleLion = () => {
   toggleGemGuy()
   toggleLionEyes()
   toggleLionHalos()
-  toggleLionJarp()
-  toggleLionHead()
   toggleLionHands()
 }
 
@@ -79,4 +57,4 @@ const relieveTheLion = () => {
 }
 
 // eslint-disable-next-line object-curly-newline
-export { lionShockTick, relieveTheLion, setLion, shockTheLion, toggleLion, toggleLionHalos, toggleLionJarp }
+export { lionShockTick, relieveTheLion, setLion, shockTheLion, toggleLion }

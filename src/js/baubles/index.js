@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
-import sync from 'css-animation-sync'
+// import sync from 'css-animation-sync'
 
-import { padStr } from '../utils'
+import { devLog, padStr } from '../utils'
 import g from '../glob'
 import { setBaubleLayer01 } from './layer-01'
 import { setBaubleLayer02 } from './layer-02'
@@ -24,6 +24,7 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
     x: {},
   }
   if (bL.bW) {
+    bL.bW.classList.add('paused')
     const bLyrClass = `bL${padLyr}`
     for (let b = 0; b < bCnt; b++) {
       bL.bD[b] = g.b.d
@@ -46,7 +47,7 @@ const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
       }
     }
   }
-  sync('rockabye')
+  // sync('rockabye')
   return bL
 }
 
@@ -55,6 +56,13 @@ const setBaubleLayers = () => {
   setBaubleLayer02()
   setBaubleLayer03()
   setBaubleLayer04()
+  // setTimeout(() => {
+  console.log(g.bL)
+  g.bL.forEach((_, i) => {
+    devLog(`baubleLayer${padStr(i)} animations active`)
+    g.bL[i].bW.classList.remove('paused')
+  })
+  // }, 2000)
 }
 
 const toggleBaubleLayer = bLyr => {

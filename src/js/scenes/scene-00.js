@@ -1,10 +1,11 @@
-import { gsap, TimelineMax as TL } from 'gsap'
+import { TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { setAddOn } from '../utils'
 import { setScene } from '../scene'
-import { setBaubleLayer01 } from '../baubles/layer-01'
+// import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
+import { setBaubleLayers } from '../baubles'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
@@ -16,7 +17,8 @@ const setScene00 = (c, n) => {
   g.scene.forCleanUp[c].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
   g.scene.forCleanUp[c].obscureNextScene = () => obscure(3)
 
-  setBaubleLayer01()
+  // setBaubleLayer01()
+  setBaubleLayers()
 
   g.tL.yore.to('#tpTitleScreen', {
     duration: 2,

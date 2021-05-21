@@ -12,21 +12,36 @@ div.handEyeWrapper {
     transform: rotate(-4deg);
   }
   img {
+    &.handEyeBlink {
+      opacity: 0;
+      transition: opacity 0.15s ease-in-out;
+    }
     &.handEyeClosed {
       transition: opacity 0.15s ease-in-out 0.15s;
     }
     &.handEyeOpen {
       opacity: 0;
-      transition: opacity 0.15s ease-in-out;
+      transition: opacity 0.15s ease-in-out 0.15s;
     }
   }
-  &.open img {
+  &.blink img {
+    cursor: context-menu;
     &.handEyeClosed {
       opacity: 0;
     }
-    &.handEyeOpen {
+    &.handEyeBlink {
       opacity: 1;
-      cursor: context-menu !important;
+    }
+  }
+  &.open {
+    cursor: wait;
+    img {
+      &.handEyeClosed {
+        opacity: 0;
+      }
+      &.handEyeOpen {
+        opacity: 1;
+      }
     }
   }
 }

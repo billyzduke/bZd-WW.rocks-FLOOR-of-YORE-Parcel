@@ -1,7 +1,9 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from './glob'
-import { devLog, gsapTick, ifFunctionThenCall, setAddOn } from './utils'
+import {
+  devLog, gsapTick, ifFunctionThenCall, setAddOn,
+} from './utils'
 import {
   bloodSplashL, bloodSplashR, closeFoetusEye, openFoetusEye,
 } from './foetuses'
@@ -9,17 +11,17 @@ import { activateSubScene, setScene, subSceneProgress } from './scene'
 import { animateBaubleLayer03or04 } from './baubles/layer-04'
 
 const toggleLionHands = () => {
-  if (g.el.handEyeWrapper.classList.contains('open')) {
+  if (g.el.handEyeWrapper.classList.contains('blink')) {
     gsap.set('.handEyeWrapper', {
       attr: {
-        class: 'handEyeWrapper',
+        class: 'handEyeWrapper open',
       },
     })
     devLog('lionHands animations paused')
   } else {
     gsap.set('.handEyeWrapper', {
       attr: {
-        class: 'handEyeWrapper open',
+        class: 'handEyeWrapper blink',
       },
     })
     devLog('lionHands animations active')
@@ -32,10 +34,10 @@ const setLionHands = () => {
   // When referencing all subsequent animations that spring forth from the lion's hand's eyes,
   //    directional labels are THEREAFTER FLIPPED, now referring to
   //    their orientation / position relative to the screen facing the viewer
-  setAddOn('#handEyeLeft, #saySinan', 'mouseenter', saySinan)
-  setAddOn('#handEyeLeft, #saySinan', 'mouseleave', sayNothing)
-  setAddOn('#handEyeRight, #sayCeren', 'mouseenter', sayCeren)
-  setAddOn('#handEyeRight, #sayCeren', 'mouseleave', sayNothing)
+  setAddOn('#handEyeLeft, #saySinan', 'mouseenter', saySinan, false)
+  setAddOn('#handEyeLeft, #saySinan', 'mouseleave', sayNothing, false)
+  setAddOn('#handEyeRight, #sayCeren', 'mouseenter', sayCeren, false)
+  setAddOn('#handEyeRight, #sayCeren', 'mouseleave', sayNothing, false)
   g.lion.forCleanUp.hands = {
     L: setAddOn('#saySinan', 'click', bloodDropR), // The lion's left hand is on the right side of the screen
     R: setAddOn('#sayCeren', 'click', bloodDropL), // Likewise, the lion's right hand is on the left side of the screen
@@ -44,13 +46,15 @@ const setLionHands = () => {
 }
 
 const say = (who, what) => {
-  who.forEach(sayWhat => {
-    if (what) {
-      sayWhat.classList.add('saySaySay')
-    } else {
-      sayWhat.classList.remove('saySaySay')
-    }
-  })
+  if (g.el.theLion.classList.contains('anim')) {
+    who.forEach(sayWhat => {
+      if (what) {
+        sayWhat.classList.add('saySaySay')
+      } else {
+        sayWhat.classList.remove('saySaySay')
+      }
+    })
+  }
 }
 
 const saySinan = () => say([ g.el.saySinan ], 1)

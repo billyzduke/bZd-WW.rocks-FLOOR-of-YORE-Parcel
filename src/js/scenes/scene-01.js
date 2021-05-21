@@ -3,7 +3,7 @@ import { setAddOn } from '../utils'
 import { setScene } from '../scene'
 import { obscure } from '../obscuro'
 import { setCtrRing } from '../baubles/layer-01'
-import { toggleLionJarp } from '../lion'
+import { toggleLionJarp } from '../lion-head'
 
 const scene01 = 'EXPLORE'
 
