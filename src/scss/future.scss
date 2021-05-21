@@ -4,10 +4,10 @@ div#future {
   z-index: 650;
   perspective: 64rem;
   perspective-origin: 50% 998px;
-  pointer-events: none;
-  opacity: 0;
+  // pointer-events: none;
+  // opacity: 0;
 
-  // background-color: #00ff00;
+  background-color: #00ff00;
 
   div#flux {
     width: 373px;
@@ -188,13 +188,13 @@ div#future {
   }
 
   div#deLorean {
-    opacity: 0;
-    pointer-events: none;
+    // opacity: 0;
+    // pointer-events: none;
     top: calc(50% - 500px);
     left: calc(50% - 211.5px);
     width: 423px;
     height: 1000px;
-    transform: rotateX(90deg) rotateY(180deg) rotateZ(180deg) translateZ(500px) translateY(-1100px);
+    // transform: rotateX(90deg) rotateY(180deg) rotateZ(180deg) translateZ(500px) translateY(-1100px);
     div {
       transform-origin: 0 0;
     }
@@ -1581,6 +1581,28 @@ div#future {
             top: 578px;
             div.hubCap {
               background-image: url(../img/future/hubCapRear.png);
+            }
+          }
+          div.rocket {
+            width: 193px;
+            height: 494px;
+            left: -82px;
+            top: 71px;
+            transform: translateZ(-18px) rotateX(90deg);
+            div {
+              background-image: url(../img/future/rocket-flare-1.gif);
+              height: 100%;
+              width: 100%;
+              transform-origin: 50% 0;
+              transform: scale(1.42, 0.76);
+              &:first-child {
+                background-image: url(../img/future/rocket-flare-2.gif);
+                transform: scale(1.42, 0.76) rotateY(120deg);
+              }
+              &:last-child {
+                background-image: url(../img/future/rocket-flare-3.gif);
+                transform: scale(1.42, 0.76) rotateY(240deg);
+              }
             }
           }
         }
