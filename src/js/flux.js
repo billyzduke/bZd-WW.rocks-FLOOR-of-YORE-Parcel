@@ -16,6 +16,7 @@ import {
 } from './utils'
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
+import { setScene } from './scene'
 
 const setFlux = () => {
   g.flux = {
@@ -265,7 +266,7 @@ const preRandomizeFluxDisplayTick = d => {
   }
   if (g.flux.display[d].pre.length) {
     const nextNotSoRandomNumber = g.flux.display[d].pre.shift()
-    g.qss.flux.display[d][nextNotSoRandomNumber](1)
+    g.qss.flux.display[d][nextNotSoRandomNumber](randOnum(12, 69) / 100)
     g.flux.display[d].dispose = nextNotSoRandomNumber
   } else {
     gsap.ticker.remove(d ? preRandomizeFluxDisplayTick01 : preRandomizeFluxDisplayTick10)
@@ -286,7 +287,7 @@ const randomizeFluxDisplayTick = d => {
   }
   if (g.flux.display[d].current > 0) {
     const nextNumberFrame = randOnum(1, 9)
-    g.qss.flux.display[d][nextNumberFrame](randOnum(23, 88) / 100)
+    g.qss.flux.display[d][nextNumberFrame](randOnum(12, 69) / 100)
     g.flux.display[d].dispose = nextNumberFrame
     g.flux.display[d].current--
   } else {
@@ -372,6 +373,7 @@ const incrementFluxDisplay = () => {
       repeat: -1,
       yoyo: true,
     })
+    setScene(13)
   }
 }
 

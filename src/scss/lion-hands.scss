@@ -2,42 +2,36 @@ div.handEyeWrapper {
   cursor: not-allowed;
   height: 56px;
   width: 42px;
+  &#handEyeRight img.handEye {
+    left: 103px;
+    top: 365px;
+  }
+  &#handEyeLeft img.handEye {
+    left: 509px;
+    top: 367px;
+    transform: rotate(-4deg);
+  }
+  img {
+    &.handEyeClosed {
+      transition: opacity 0.15s ease-in-out 0.15s;
+    }
+    &.handEyeOpen {
+      opacity: 0;
+      transition: opacity 0.15s ease-in-out;
+    }
+  }
+  &.open img {
+    &.handEyeClosed {
+      opacity: 0;
+    }
+    &.handEyeOpen {
+      opacity: 1;
+      cursor: context-menu !important;
+    }
+  }
 }
-div.handEyeWrapper.open img.handEye {
-  cursor: context-menu !important;
-}
-img#handEyeRight {
-  left: 103px;
-  top: 365px;
-}
-img#handEyeLeft {
-  left: 509px;
-  top: 367px;
-  transform: rotate(-4deg);
-}
-div.ottomanWrapper {
-  cursor: pointer;
-  opacity: 0;
-  top: 276px;
-  transform: scale(0);
-  transition: all 0.25s ease-in-out;
-}
-div.ottomanBubble {
-  background: #fff;
-  border-radius: 50px;
-  box-shadow: 0 6px 12px black;
-  padding: 16px;
-  position: relative;
-  text-align: center;
-}
-div.ottomanBubble svg {
-  position: relative;
-  margin: 0 14px;
-  transition: all 0.25s ease-in-out;
-}
-div.ottomanBubble svg path {
-  transition: all 0.25s ease-in-out;
-}
+
+div.ottomanBubble svg
 div.ottomanWrapper:before,
 div.ottomanBubble:before {
   border-bottom: 20px solid transparent;
@@ -51,37 +45,63 @@ div.ottomanBubble:before {
   position: absolute;
   width: 0px;
 }
-div.ottomanWrapper:before {
-  border-left: 24px solid #000;
-  border-top: 12px solid #000;
-  bottom: -32px;
-  filter: blur(6px);
-  transform: translateX(-3px);
+div.ottomanWrapper {
+  cursor: pointer;
+  opacity: 0;
+  top: 276px;
+  transform: scale(0);
+  transition: all 0.25s ease-in-out;
+  &:before {
+    border-left: 24px solid #000;
+    border-top: 12px solid #000;
+    bottom: -32px;
+    filter: blur(6px);
+    transform: translateX(-3px);
+  }
+  div.ottomanBubble {
+    background: #fff;
+    border-radius: 50px;
+    box-shadow: 0 6px 12px black;
+    padding: 16px;
+    position: relative;
+    text-align: center;
+    svg {
+      position: relative;
+      margin: 0 14px;
+      transition: all 0.25s ease-in-out;
+      path {
+        transition: all 0.25s ease-in-out;
+      }
+    }
+  }
+  &:hover:not(.wayLaid) div.ottomanBubble svg {
+    transform: scale(1.1);
+    path {
+      fill: #ca0000;
+    }
+  }
+  &#sayCeren {
+    left: -148px;
+    transform-origin: calc(100% - 48px) bottom;
+    &:before,
+    div.ottomanBubble:before {
+      transform: scaleX(-1);
+      left: auto;
+      right: 48px;
+    }
+    &:before {
+      transform: scaleX(-1) translateX(-3px);
+    }
+  }
+
+  &#saySinan {
+    left: 496px;
+    transform-origin: 48px bottom;
+  }
+  &.saySaySay {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-div.ottomanWrapper:hover:not(.wayLaid) div.ottomanBubble svg {
-  transform: scale(1.1);
-}
-div.ottomanWrapper:hover:not(.wayLaid) div.ottomanBubble svg path {
-  fill: #ca0000;
-}
-div#sayCeren {
-  left: -148px;
-  transform-origin: calc(100% - 48px) bottom;
-}
-div#sayCeren:before,
-div#sayCeren .ottomanBubble:before {
-  transform: scaleX(-1);
-  left: auto;
-  right: 48px;
-}
-div#sayCeren:before {
-  transform: scaleX(-1) translateX(-3px);
-}
-div#saySinan {
-  left: 496px;
-  transform-origin: 48px bottom;
-}
-div.saySaySay {
-  opacity: 1;
-  transform: scale(1);
-}
+
+

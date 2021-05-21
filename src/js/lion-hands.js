@@ -1,7 +1,5 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
-import assHandEyeBlinkL from 'url:/src/img/lion/lion-hand-eye-left-blink.gif'
-import assHandEyeBlinkR from 'url:/src/img/lion/lion-hand-eye-right-blink.gif'
 import g from './glob'
 import { gsapTick, ifFunctionThenCall, setAddOn } from './utils'
 import {
@@ -24,8 +22,6 @@ const setLionHands = () => {
     L: setAddOn('#saySinan', 'click', bloodDropR), // The lion's left hand is on the right side of the screen
     R: setAddOn('#sayCeren', 'click', bloodDropL), // Likewise, the lion's right hand is on the left side of the screen
   }
-  g.el.handEyeLeft.src = assHandEyeBlinkL
-  g.el.handEyeRight.src = assHandEyeBlinkR
   gsap.set('.handEyeWrapper', {
     attr: {
       class: 'handEyeWrapper open',

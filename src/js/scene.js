@@ -15,6 +15,7 @@ import { scene09, setScene09 } from './scenes/scene-09'
 import { scene10, setScene10 } from './scenes/scene-10'
 import { scene11, setScene11 } from './scenes/scene-11'
 import { scene12, setScene12 } from './scenes/scene-12'
+import { scene13, setScene13 } from './scenes/scene-13'
 import { rollEmOut } from './owl-ram'
 
 const scenes = [
@@ -31,6 +32,7 @@ const scenes = [
   scene10,
   scene11,
   scene12,
+  scene13,
 ]
 scenes.forEach((_, s) => {
   g.scene.forCleanUp[s] = {}
@@ -50,6 +52,7 @@ const setScenes = [
   () => setScene10(10, 11),
   () => setScene11(11, 12),
   () => setScene12(12, 13),
+  () => setScene13(13, 14),
 ]
 
 const cleanScene = s => {

@@ -1,3 +1,7 @@
+import gsap from 'gsap/gsap-core'
+
+import { ifFunctionThenCall } from './utils'
+
 const g = {
   b: {
     d: 12, // global bauble diameter
@@ -86,4 +90,28 @@ g.b.r = g.b.d / 2
 g.cyOffPx = g.b.d * 1.5 // magic number
 g.worm.ring.rO = g.worm.ring.dO / 2
 
-export default g
+const toggleTime = (pause = true, exceptTLs = []) => {
+  if (pause) {
+    if (g.scene.current >= 11) {
+      gsap.set('.handEyeWrapper', {
+        attr: {
+          class: 'handEyeWrapper',
+        },
+      })
+    }
+    Object.keys(g.tL).forEach(tL => {
+      if (g.tL[tL]) ifFunctionThenCall(g.tL[tL].pause)
+    })
+  } else {
+    // eslint-disable-next-line no-lonely-if
+    if (g.scene.current >= 11) {
+      gsap.set('.handEyeWrapper', {
+        attr: {
+          class: 'handEyeWrapper',
+        },
+      })
+    }
+  }
+}
+
+export { g as default, toggleTime }

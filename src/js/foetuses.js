@@ -271,6 +271,13 @@ const wakeFoetuses = () => {
   openFoetusEye('R')
   g.flux.forCleanUp.L = setAddOn('#wombL', 'click', () => annoyFoetus('L'))
   g.flux.forCleanUp.R = setAddOn('#wombR', 'click', () => annoyFoetus('R'))
+  if (g.scene.skip.ff) {
+    setTimeout(() => {
+      g.el.theOwl.click()
+      g.el.wombL.click()
+      g.el.wombR.click()
+    }, 100)
+  }
 }
 
 const annoyFoetus = foe => {
