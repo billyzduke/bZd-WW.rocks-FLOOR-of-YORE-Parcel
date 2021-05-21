@@ -96,6 +96,13 @@ const spinTime = () => {
 
 
   // // CONVERT FROM FLYING TO DRIVING MODE
+  // //TURN OFF WHEEL ROCKETS
+  // gsap.to('#deLorean #wheels .wheel .rocket', {
+  //   delay: 5,
+  //   duration: 1.25,
+  //   scaleY: 0,
+  // })
+  // // SET WHEELS IN WELLS
   // gsap.to('#wheelsLeft', {
   //   duration: 4,
   //   rotateY: 90,

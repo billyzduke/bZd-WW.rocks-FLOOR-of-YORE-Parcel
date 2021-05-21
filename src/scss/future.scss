@@ -4,10 +4,8 @@ div#future {
   z-index: 650;
   perspective: 64rem;
   perspective-origin: 50% 998px;
-  // pointer-events: none;
-  // opacity: 0;
-
-  background-color: #00ff00;
+  pointer-events: none;
+  opacity: 0;
 
   div#flux {
     width: 373px;
@@ -188,13 +186,13 @@ div#future {
   }
 
   div#deLorean {
-    // opacity: 0;
-    // pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
     top: calc(50% - 500px);
     left: calc(50% - 211.5px);
     width: 423px;
     height: 1000px;
-    // transform: rotateX(90deg) rotateY(180deg) rotateZ(180deg) translateZ(500px) translateY(-1100px);
+    transform: rotateX(90deg) rotateY(180deg) rotateZ(180deg) translateZ(500px) translateY(-1100px);
     div {
       transform-origin: 0 0;
     }
@@ -628,7 +626,7 @@ div#future {
     }
     div.bcMiddle {
       background-image: url(../img/future/bodyCenterMiddle.png);
-      width: 60px;
+      width: 61px;
       height: 729px;
       top: 119px;
       transform: translateZ(-103px) rotateY(60deg);
@@ -732,6 +730,21 @@ div#future {
           }
         }
       }
+      div.sideViewMirror {
+        top: 56px;
+        transform: rotateY(133.5deg);
+        div {
+          &:first-child {
+            background: black;
+            width: 50px;
+            height: 20px;
+          }
+          &:nth-child(2) {
+            width: 50px;
+            transform: rotateX(90deg);
+          }
+        }
+      }
     }
 
     div.es {
@@ -757,7 +770,7 @@ div#future {
           height: 100%;
         }
         &#bodyEngineUpperLeftLightBar {
-          transform: translateZ(12px);
+          transform: translateZ(12px) translateX(-1.5px);
           > div {
             &:first-child {
               transform: translateZ(-6px) rotateY(5deg);
@@ -768,7 +781,7 @@ div#future {
           }
         }
         &#bodyEngineUpperRightLightBar {
-          transform: translateZ(-12px);
+          transform: translateZ(-12px) translateX(-1.5px);
           > div {
             &:first-child {
               transform: translateZ(6px) rotateY(5deg);
@@ -877,7 +890,7 @@ div#future {
     }
     div.brMiddle {
       background-image: url(../img/future/bodyRearMiddle.png);
-      width: 60px;
+      width: 61px;
       height: 126px;
       top: 848px;
       transform: translateZ(-103px) rotateZ(-12.325deg) rotateY(60deg);
@@ -1609,4 +1622,19 @@ div#future {
       }
     }
   }
+
+  &.model {
+    pointer-events: auto;
+    opacity: 1;
+    background-color: #00ff00;
+    div#deLorean {
+      pointer-events: auto;
+      opacity: 1;
+      transform: none;
+      div#wheels {
+        display: none;
+      }
+    }
+  }
+
 }
