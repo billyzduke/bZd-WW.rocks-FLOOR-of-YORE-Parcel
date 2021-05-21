@@ -40,6 +40,10 @@ import { printOutBinary } from './folklore'
 import { activateSubScene, subSceneProgress } from './scene'
 
 const setRamIcon = () => {
+  g.ramIcon = {
+    forCleanUp: [],
+  }
+
   const assRamIconHornRollFrames = [
     assRamIconHornRoll00,
     assRamIconHornRoll01,

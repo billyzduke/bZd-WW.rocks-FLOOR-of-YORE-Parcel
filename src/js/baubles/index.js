@@ -57,4 +57,12 @@ const setBaubleLayers = () => {
   setBaubleLayer04()
 }
 
-export { setBaublesInLayer, setBaubleLayers }
+const toggleBaubleLayer = bLyr => {
+  if (g.bL[bLyr].bW.classList.contains('paused')) {
+    g.bL[bLyr].bW.classList.remove('paused')
+  } else {
+    g.bL[bLyr].bW.classList.add('paused')
+  }
+}
+
+export { setBaublesInLayer, setBaubleLayers, toggleBaubleLayer }

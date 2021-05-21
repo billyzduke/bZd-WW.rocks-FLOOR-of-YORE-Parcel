@@ -1,4 +1,4 @@
-import { gsap, TimelineMax as TL } from 'gsap'
+import { gsap } from 'gsap'
 
 import assBloodSplash01 from 'url:/src/img/tearsOFBlood/bloodSplash-01.png'
 import assBloodSplash02 from 'url:/src/img/tearsOFBlood/bloodSplash-02.png'
@@ -58,8 +58,13 @@ import {
 import { echoCry } from './flux'
 
 const setFoetuses = () => {
+  g.foetus = {
+    forCleanUp: [],
+  }
+  g.qss.bloodSplashes = {}
+  g.qss.foetus = {}
+
   const foetuses = [ 'L', 'R' ]
-  g.tL.tearsOfBlood = {}
 
   const assFoetusEyeFrames = [
     assFoetusEye00,
@@ -104,7 +109,6 @@ const setFoetuses = () => {
       eye: [],
       squinch: [],
     }
-    g.tL.tearsOfBlood[foe] = new TL({ defaults: { overwrite: 'auto' } })
     if (g.el[`foetusEye${foe}`]) {
       for (let fE = 0; fE <= 5; fE++) {
         if (assFoetusEyeFrames[fE]) {

@@ -1,12 +1,30 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from './glob'
-import { gsapTick, ifFunctionThenCall, setAddOn } from './utils'
+import { devLog, gsapTick, ifFunctionThenCall, setAddOn } from './utils'
 import {
   bloodSplashL, bloodSplashR, closeFoetusEye, openFoetusEye,
 } from './foetuses'
 import { activateSubScene, setScene, subSceneProgress } from './scene'
 import { animateBaubleLayer03or04 } from './baubles/layer-04'
+
+const toggleLionHands = () => {
+  if (g.el.handEyeWrapper.classList.contains('open')) {
+    gsap.set('.handEyeWrapper', {
+      attr: {
+        class: 'handEyeWrapper',
+      },
+    })
+    devLog('lionHands animations paused')
+  } else {
+    gsap.set('.handEyeWrapper', {
+      attr: {
+        class: 'handEyeWrapper open',
+      },
+    })
+    devLog('lionHands animations active')
+  }
+}
 
 const setLionHands = () => {
   // When referencing the lion's hands and the eyes they contain, the designators "Left" & "Right"
@@ -22,11 +40,7 @@ const setLionHands = () => {
     L: setAddOn('#saySinan', 'click', bloodDropR), // The lion's left hand is on the right side of the screen
     R: setAddOn('#sayCeren', 'click', bloodDropL), // Likewise, the lion's right hand is on the left side of the screen
   }
-  gsap.set('.handEyeWrapper', {
-    attr: {
-      class: 'handEyeWrapper open',
-    },
-  })
+  toggleLionHands()
 }
 
 const say = (who, what) => {
@@ -128,5 +142,5 @@ const bloodDropR = () => {
   }
 }
 
-export { setLionHands }
+export { setLionHands, toggleLionHands }
 

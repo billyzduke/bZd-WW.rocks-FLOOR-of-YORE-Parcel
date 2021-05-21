@@ -72,12 +72,12 @@ const setScene07 = (c, n) => {
     opacity: 1,
     stagger: -1.25,
   })
-  gsap.to('#gankyil', {
+  g.tL.gankyil.to('#gankyil', {
     duration: 5,
     ease: 'none',
     repeat: -1,
     rotateZ: '+=360',
-    overwrite: true,
+    overwrite: 'auto',
   })
   gsap.to('#solarCorona', {
     duration: g.scene.skip.ff || 2.5,

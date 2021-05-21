@@ -3,6 +3,7 @@ import { setAddOn } from '../utils'
 import { setScene } from '../scene'
 import { obscure } from '../obscuro'
 import { setCtrRing } from '../baubles/layer-01'
+import { toggleLionJarp } from '../lion'
 
 const scene01 = 'EXPLORE'
 
@@ -11,6 +12,7 @@ const setScene01 = (c, n) => {
   g.scene.forCleanUp[c].exploreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
   g.scene.forCleanUp[c].obscureNextScene = () => obscure(2.42)
 
+  toggleLionJarp()
   setCtrRing()
 
   g.tL.yore.to('#tpTitleYore', {

@@ -12,7 +12,7 @@ import { setCurtains } from './curtains'
 import { setFloor } from './floor'
 import { setShaiHulud } from './shai-hulud'
 import { setScene, setSceneSkipper } from './scene'
-import { resetCtrRing } from './baubles/layer-01'
+import { resetCtrRingPos1 } from './baubles/layer-01'
 import { isSet } from './utils'
 
 // import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
@@ -81,6 +81,7 @@ const loadApp = () => {
       'theOwl',
       'theOwlIsNotWhatItSeems',
       'theRam',
+      'thirdEyeClosed',
       'threshold',
       'wombL',
       'wombR',
@@ -100,6 +101,7 @@ const loadApp = () => {
     ...htmEl('.smoke', 'q', true),
     ...htmEl('.wormRingSegment', 'q', true),
     ...htmEl('.folkloreFinalForm', 'q', false),
+    ...htmEl('.handEyeWrapper', 'q', false),
   }
   el.bL = []
   g.el = el
@@ -131,7 +133,7 @@ const loadApp = () => {
   setCurtains()
   setFloor()
 
-  if (g.scene.current >= 3) resetCtrRing()
+  if (g.scene.current >= 3) resetCtrRingPos1()
 
   if (el.drWorm && g.el.wormSignScreen) setShaiHulud()
 

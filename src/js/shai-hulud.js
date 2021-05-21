@@ -15,6 +15,21 @@ const doTheWorm = (s, fH) => {
 }
 
 const setShaiHulud = () => {
+  g.worm = {
+    ribs: {
+      ntrvl: null,
+      which: 12,
+    },
+    ring: {
+      dO: 10692.6,
+      dI: 8192,
+    },
+    stars: {
+      ntrvl: null,
+    },
+  }
+  g.worm.ring.rO = g.worm.ring.dO / 2
+
   g.el.wormSignScreen.height = Number(g.window.getComputedStyle(g.el.drWorm, null).getPropertyValue('height').slice(0, -2))
   g.el.wormSignScreen.style.transform = `translateY(${(g.main.h - g.el.wormSignScreen.height) / 2}px) scale(0)`
   g.el.wormSignScreen.style.height = `${g.el.wormSignScreen.height}px`

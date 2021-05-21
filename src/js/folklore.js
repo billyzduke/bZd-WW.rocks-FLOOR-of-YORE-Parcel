@@ -20,7 +20,7 @@ import g from './glob'
 import {
   devLog, gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, navToNewTab, setAddOn, randOnum, setClearActors, shuffleArray,
 } from './utils'
-import { setCodeRain } from './code-rain'
+import { setCodeRain, unSetCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
 import { rollEmInInc, rollEmOut, setRamIcon } from './owl-ram'
 import { setScene, subSceneProgress } from './scene'
@@ -31,83 +31,83 @@ gsap.registerPlugin(MorphSVGPlugin)
 const setFolkLore = () => {
   setRamIcon()
 
-  g.folklore.binary = {
-    charsPerPrintedLine: 51,
-    cssQuickReSetters: {
-      o: {
-        opacity: 0,
-        mixBlendMode: g.mixBlendModes[0],
+  g.folklore = {
+    binary: {
+      charsPerPrintedLine: 51,
+      cssQuickReSetters: {
+        o: {
+          opacity: 0,
+          mixBlendMode: g.mixBlendModes[0],
+        },
+        s: {
+          scale: 0,
+          mixBlendMode: g.mixBlendModes[0],
+        },
       },
-      s: {
-        scale: 0,
-        mixBlendMode: g.mixBlendModes[0],
-      },
+      drawCharsReversed: false,
+      drawSingleCharS: 0.0125,
+      folkLoreMaskIncrementX: 10,
+      folkLoreMaskOffsetX: 450,
+      gnawSkew: 1.5,
+      laserActivation: 0,
+      owlLaserQuickSetter: gsap.quickSetter('#owlLaser', 'css'),
+      owlLaser2QuickSetter: gsap.quickSetter('#owlLaser2', 'css'),
+      ramLaserMaxTranslateX: 443,
+      ramLaserQuickSetter: gsap.quickSetter('#ramLaser', 'css'),
+      ramLaser2QuickSetter: gsap.quickSetter('#ramLaser2', 'css'),
+      ramLaser3QuickSetter: gsap.quickSetter('#ramLaser3', 'css'),
+      scrollCharsRowDurationS: 0.42,
+      scrollFirstLineIncPx: 24.1667,
+      scrollIncrementPx: 16.1667,
+      scrollInitialDelayS: 1.25,
+      scrollQuickSetter: gsap.quickSetter('#binaryScroll', 'css'),
+      stoneColdLaserMagnitude: [ 2, 6, 12 ],
+      stoneColdLaserUnTick: [],
+      stoneDemolition: 0,
+      stoneFilters: [
+        'drop-shadow(0 4.2px 4.2px rgba(0,0,0,0.76))',
+        'blur(5px)',
+        'brightness(250%)',
+        'contrast(180%)',
+        'grayscale(100%)',
+        'hue-rotate(180deg)',
+        'invert(50%)',
+        'opacity(64%)',
+        'saturate(10)',
+        'sepia(100%)',
+      ],
+      stoneLaserTimer: 1242,
+      timelinePadS: 0.01,
+      /* eslint-disable array-bracket-newline, array-element-newline */
+      path: [
+        'M1.26,2.42a.63.63,0,1,1-.63-.63A.63.63,0,0,1,1.26,2.42ZM.63,9a.63.63,0,1,0,.63.63A.63.63,0,0,0,.63,9Zm0-1.79a.63.63,0,1,0,.63.63A.63.63,0,0,0,.63,7.16Zm0-1.79A.63.63,0,1,0,1.26,6,.63.63,0,0,0,.63,5.37Zm0-1.79a.63.63,0,1,0,.63.63A.63.63,0,0,0,.63,3.58ZM7.82,1.79a.63.63,0,0,0,0,1.26.63.63,0,1,0,0-1.26ZM7.82,9a.63.63,0,1,0,0,1.26A.63.63,0,1,0,7.82,9Zm0-1.79a.63.63,0,0,0,0,1.26.63.63,0,0,0,0-1.26Zm0-1.79a.63.63,0,0,0,0,1.26.63.63,0,0,0,0-1.26Zm0-1.79a.63.63,0,0,0,0,1.26.63.63,0,0,0,0-1.26ZM2.43,7.16a.63.63,0,1,0,.62.63A.63.63,0,0,0,2.43,7.16Zm0,3.58a.63.63,0,1,0,.62.63A.63.63,0,0,0,2.43,10.74ZM2.43,0a.63.63,0,0,0,0,1.26A.63.63,0,0,0,3.05.63.63.63,0,0,0,2.43,0Zm1.8,5.37A.63.63,0,1,0,4.85,6,.63.63,0,0,0,4.23,5.37Zm0,5.37a.63.63,0,1,0,.62.63A.63.63,0,0,0,4.23,10.74ZM4.23,0a.63.63,0,0,0,0,1.26A.63.63,0,0,0,4.85.63.63.63,0,0,0,4.23,0ZM6,3.58a.63.63,0,1,0,.63.63A.63.63,0,0,0,6,3.58Zm0,7.16a.63.63,0,1,0,.63.63A.63.63,0,0,0,6,10.74ZM6,0A.63.63,0,0,0,5.4.63a.63.63,0,1,0,1.25,0A.63.63,0,0,0,6,0Z',
+        'M2.4,1.8c-0.3,0-0.6,0.3-0.6,0.6S2.1,3,2.4,3s0.6-0.3,0.6-0.6S2.8,1.8,2.4,1.8z M2.4,10.7c-0.3,0-0.6,0.3-0.6,0.6S2.1,12,2.4,12s0.6-0.3,0.6-0.6S2.8,10.7,2.4,10.7z M4.9,0.6c0,0.3-0.3,0.6-0.6,0.6C3.9,1.3,3.6,1,3.6,0.6S3.9,0,4.2,0C4.6,0,4.9,0.3,4.9,0.6z M4.2,1.8c-0.3,0-0.6,0.3-0.6,0.6S3.9,3,4.2,3c0.3,0,0.6-0.3,0.6-0.6S4.6,1.8,4.2,1.8z M4.2,3.6c-0.3,0-0.6,0.3-0.6,0.6s0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6S4.6,3.6,4.2,3.6z M4.2,5.4C3.9,5.4,3.6,5.7,3.6,6s0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6S4.6,5.4,4.2,5.4z M4.2,7.2c-0.3,0-0.6,0.3-0.6,0.6c0,0.3,0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6C4.8,7.4,4.6,7.2,4.2,7.2z M4.2,9C3.9,9,3.6,9.2,3.6,9.6s0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6S4.6,9,4.2,9z M4.2,10.7c-0.3,0-0.6,0.3-0.6,0.6S3.9,12,4.2,12c0.3,0,0.6-0.3,0.6-0.6S4.6,10.7,4.2,10.7z M6,10.7c-0.3,0-0.6,0.3-0.6,0.6C5.4,11.7,5.6,12,6,12s0.6-0.3,0.6-0.6C6.6,11,6.3,10.7,6,10.7z',
+      ],
     },
-    drawCharsReversed: false,
-    drawSingleCharS: 0.0125,
-    folkLoreMaskIncrementX: 10,
-    folkLoreMaskOffsetX: 450,
-    gnawSkew: 1.5,
-    laserActivation: 0,
-    owlLaserQuickSetter: gsap.quickSetter('#owlLaser', 'css'),
-    owlLaser2QuickSetter: gsap.quickSetter('#owlLaser2', 'css'),
-    ramLaserMaxTranslateX: 443,
-    ramLaserQuickSetter: gsap.quickSetter('#ramLaser', 'css'),
-    ramLaser2QuickSetter: gsap.quickSetter('#ramLaser2', 'css'),
-    ramLaser3QuickSetter: gsap.quickSetter('#ramLaser3', 'css'),
-    scrollCharsRowDurationS: 0.42,
-    scrollFirstLineIncPx: 24.1667,
-    scrollIncrementPx: 16.1667,
-    scrollInitialDelayS: 1.25,
-    scrollQuickSetter: gsap.quickSetter('#binaryScroll', 'css'),
-    stoneColdLaserMagnitude: [ 2, 6, 12 ],
-    stoneColdLaserUnTick: [],
-    stoneDemolition: 0,
-    stoneFilters: [
-      'drop-shadow(0 4.2px 4.2px rgba(0,0,0,0.76))',
-      'blur(5px)',
-      'brightness(250%)',
-      'contrast(180%)',
-      'grayscale(100%)',
-      'hue-rotate(180deg)',
-      'invert(50%)',
-      'opacity(64%)',
-      'saturate(10)',
-      'sepia(100%)',
+    /* eslint-enable array-bracket-newline, array-element-newline */
+    lore: [
+      'typewriter',
+      'blueprint',
+      'parchment',
+      'rosetta',
     ],
-    stoneLaserTimer: 1242,
-    timelinePadS: 0.01,
-  }
-  /* eslint-disable array-bracket-newline, array-element-newline */
-  g.folklore.binary.path = [
-    'M1.26,2.42a.63.63,0,1,1-.63-.63A.63.63,0,0,1,1.26,2.42ZM.63,9a.63.63,0,1,0,.63.63A.63.63,0,0,0,.63,9Zm0-1.79a.63.63,0,1,0,.63.63A.63.63,0,0,0,.63,7.16Zm0-1.79A.63.63,0,1,0,1.26,6,.63.63,0,0,0,.63,5.37Zm0-1.79a.63.63,0,1,0,.63.63A.63.63,0,0,0,.63,3.58ZM7.82,1.79a.63.63,0,0,0,0,1.26.63.63,0,1,0,0-1.26ZM7.82,9a.63.63,0,1,0,0,1.26A.63.63,0,1,0,7.82,9Zm0-1.79a.63.63,0,0,0,0,1.26.63.63,0,0,0,0-1.26Zm0-1.79a.63.63,0,0,0,0,1.26.63.63,0,0,0,0-1.26Zm0-1.79a.63.63,0,0,0,0,1.26.63.63,0,0,0,0-1.26ZM2.43,7.16a.63.63,0,1,0,.62.63A.63.63,0,0,0,2.43,7.16Zm0,3.58a.63.63,0,1,0,.62.63A.63.63,0,0,0,2.43,10.74ZM2.43,0a.63.63,0,0,0,0,1.26A.63.63,0,0,0,3.05.63.63.63,0,0,0,2.43,0Zm1.8,5.37A.63.63,0,1,0,4.85,6,.63.63,0,0,0,4.23,5.37Zm0,5.37a.63.63,0,1,0,.62.63A.63.63,0,0,0,4.23,10.74ZM4.23,0a.63.63,0,0,0,0,1.26A.63.63,0,0,0,4.85.63.63.63,0,0,0,4.23,0ZM6,3.58a.63.63,0,1,0,.63.63A.63.63,0,0,0,6,3.58Zm0,7.16a.63.63,0,1,0,.63.63A.63.63,0,0,0,6,10.74ZM6,0A.63.63,0,0,0,5.4.63a.63.63,0,1,0,1.25,0A.63.63,0,0,0,6,0Z',
-    'M2.4,1.8c-0.3,0-0.6,0.3-0.6,0.6S2.1,3,2.4,3s0.6-0.3,0.6-0.6S2.8,1.8,2.4,1.8z M2.4,10.7c-0.3,0-0.6,0.3-0.6,0.6S2.1,12,2.4,12s0.6-0.3,0.6-0.6S2.8,10.7,2.4,10.7z M4.9,0.6c0,0.3-0.3,0.6-0.6,0.6C3.9,1.3,3.6,1,3.6,0.6S3.9,0,4.2,0C4.6,0,4.9,0.3,4.9,0.6z M4.2,1.8c-0.3,0-0.6,0.3-0.6,0.6S3.9,3,4.2,3c0.3,0,0.6-0.3,0.6-0.6S4.6,1.8,4.2,1.8z M4.2,3.6c-0.3,0-0.6,0.3-0.6,0.6s0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6S4.6,3.6,4.2,3.6z M4.2,5.4C3.9,5.4,3.6,5.7,3.6,6s0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6S4.6,5.4,4.2,5.4z M4.2,7.2c-0.3,0-0.6,0.3-0.6,0.6c0,0.3,0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6C4.8,7.4,4.6,7.2,4.2,7.2z M4.2,9C3.9,9,3.6,9.2,3.6,9.6s0.3,0.6,0.6,0.6c0.3,0,0.6-0.3,0.6-0.6S4.6,9,4.2,9z M4.2,10.7c-0.3,0-0.6,0.3-0.6,0.6S3.9,12,4.2,12c0.3,0,0.6-0.3,0.6-0.6S4.6,10.7,4.2,10.7z M6,10.7c-0.3,0-0.6,0.3-0.6,0.6C5.4,11.7,5.6,12,6,12s0.6-0.3,0.6-0.6C6.6,11,6.3,10.7,6,10.7z',
-  ]
-  /* eslint-enable array-bracket-newline, array-element-newline */
-
-  g.folklore.lore = [
-    'typewriter',
-    'blueprint',
-    'parchment',
-    'rosetta',
-  ]
-
-  g.folklore.ass = {
-    binary: [
-      assFolkloreTypewriter,
-      assFolkloreBlueprint,
-      assFolkloreParchment,
-      assFolkloreRosetta,
-    ],
-    finalForm: [
-      assFolkloreFinal01,
-      assFolkloreFinal02,
-      assFolkloreFinal03,
-      assFolkloreFinal04,
-      assFolkloreFinal05,
-      assFolkloreFinal06,
-      assFolkloreFinal07,
-    ],
+    ass: {
+      binary: [
+        assFolkloreTypewriter,
+        assFolkloreBlueprint,
+        assFolkloreParchment,
+        assFolkloreRosetta,
+      ],
+      finalForm: [
+        assFolkloreFinal01,
+        assFolkloreFinal02,
+        assFolkloreFinal03,
+        assFolkloreFinal04,
+        assFolkloreFinal05,
+        assFolkloreFinal06,
+        assFolkloreFinal07,
+      ],
+    },
   }
 
   g.el.codeRain = g.document.createElement('div')
@@ -884,6 +884,7 @@ const chewMe = () => {
                 setAddOn('#cowL', 'mouseenter', idleChewL, 'no-drop')
                 setAddOn('#cowR', 'mouseleave', idleCow)
                 setAddOn('#cowR', 'mouseenter', idleChewR, 'no-drop')
+                unSetCodeRain(g.el.codeRain.id)
                 const cleanUpUsedEls = g.document.querySelectorAll('#ramIcon #binaryFolklore, #ramIcon .laser')
                 cleanUpUsedEls.forEach(el => {
                   el.parentNode.removeChild(el)

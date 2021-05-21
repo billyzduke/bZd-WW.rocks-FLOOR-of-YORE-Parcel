@@ -1,4 +1,4 @@
-import { gsap } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import assMandelBrush from 'url:/src/img/jungle/fractal-brush.png'
 import assTruffulaTree01 from 'url:/src/img/jungle/TruffulaTree-1.png'
@@ -35,10 +35,10 @@ const setJungleSagan = () => {
     opacity: 0.64,
     overwrite: 'auto',
   })
-  gsap.to('.saganIpsum', {
+  g.tL.saganIpsum = new TL({ defaults: { overwrite: 'auto' } })
+  g.tL.saganIpsum.to('.saganIpsum', {
     duration: 180,
     ease: 'none',
-    overwrite: 'auto',
     translateY: '-100%',
     repeat: -1,
   })
@@ -75,7 +75,8 @@ const setJungleLayer = (ajl, lyr) => {
     },
   }
   console.log(jl)
-  gsap.to(`.${jungLayerClass}`, {
+  g.tL[jungLayerClass] = new TL()
+  g.tL[jungLayerClass].to(`.${jungLayerClass}`, {
     delay: jl.to.dl,
     duration: jl.to.dr,
     ease: 'none',

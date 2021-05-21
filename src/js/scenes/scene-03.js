@@ -5,9 +5,9 @@ import { gsapTick, setAddOn, setClearActors } from '../utils'
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
-import { resetCtrRing, shockTick } from '../baubles/layer-01'
+import { resetCtrRingPos1, shockTick } from '../baubles/layer-01'
 import { embiggenCrtnMaskTick } from '../curtains'
-import { readTheFloor, scrubTheFloor } from '../floor'
+import { readTheFloor, scrubTheFloor, toggleFloor } from '../floor'
 import { setBronze } from '../bronze'
 
 const scene03 = 'Reveal Curtain / Floor of Yore'
@@ -21,7 +21,7 @@ const setScene03 = (c, n) => {
   g.scene.forCleanUp[c].clearMaskedCrtn = () => setClearActors('#cc1')
   g.scene.forCleanUp[c].clearGrove = () => setClearActors('#grove')
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(4)
-  gsapTick(shockTick)
+  g.tickers.shockTick = gsapTick(shockTick)
   setAddOn('#yoreFloor', 'mouseenter', readTheFloor)
   setAddOn('#yoreFloor', 'mouseleave', scrubTheFloor)
 
@@ -33,7 +33,8 @@ const setScene03 = (c, n) => {
     value: g.w.w * 4,
   })
 
-  resetCtrRing()
+  resetCtrRingPos1()
+  toggleFloor()
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)

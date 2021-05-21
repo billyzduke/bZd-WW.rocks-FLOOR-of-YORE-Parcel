@@ -1,12 +1,11 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
-import assGemGuyIdle from 'url:/src/img/tShirt/gem-guy-on.gif'
 import g from '../glob'
 import { setAddOn } from '../utils'
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
-import { revertTshirt, transformTshirt } from '../lion-t-shirt'
+import { revertTshirt, toggleGemGuy, transformTshirt } from '../lion-t-shirt'
 import { setLightningRods } from '../lightning-rods'
 
 gsap.registerPlugin(MotionPathPlugin)
@@ -21,6 +20,7 @@ const setScene09 = (c, n) => {
   setAddOn('#heartChakra', 'mouseenter', transformTshirt)
   setAddOn('#heartChakra', 'mouseleave', revertTshirt)
   setLightningRods()
+  toggleGemGuy()
 
   if (g.scene.skip.ff) g.tL.b.timeScale(1 / g.scene.skip.ff)
   else flashBulb(g.el.heartChakra)
@@ -28,7 +28,6 @@ const setScene09 = (c, n) => {
   gsap.set('#gankyil, #triskelion', {
     cursor: 'no-drop',
   })
-  g.el.gemGuy.src = assGemGuyIdle
 
   const bLL = g.bL[2].b.length
   g.tL.b.set('#gankyil', {

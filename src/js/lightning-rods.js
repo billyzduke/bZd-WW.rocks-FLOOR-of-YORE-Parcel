@@ -34,6 +34,8 @@ import g from './glob'
 import { padStr } from './utils'
 
 const setLightningRods = () => {
+  g.qss.lightningRods = {}
+
   const assLightningRods = [
     assLightningRod00,
     assLightningRod01,

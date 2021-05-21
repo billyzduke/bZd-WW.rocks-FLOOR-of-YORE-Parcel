@@ -5,7 +5,7 @@ import { setAddOn, setClearActors } from '../utils'
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
-import { resetCtrRingV2 } from '../baubles/layer-01'
+import { resetCtrRingPos2 } from '../baubles/layer-01'
 
 const scene05 = 'Distill Gankyil / Way Down in the Hole'
 
@@ -17,7 +17,7 @@ const setScene05 = (c, n) => {
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
   g.scene.forCleanUp[c].clearBronze = () => setClearActors('#bronzeVidWrapper')
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)
-  resetCtrRingV2()
+  resetCtrRingPos2()
 
   if (!g.scene.skip.ff) {
     flashBulb(g.bL[1].ctrRing)

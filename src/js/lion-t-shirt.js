@@ -1,16 +1,21 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
+import assGemGuyOff from 'url:/src/img/tShirt/gem-guy-off.gif'
 import assGemGuyIdle from 'url:/src/img/tShirt/gem-guy-on.gif'
 import assGemGuyOver from 'url:/src/img/tShirt/gem-guy-over.gif'
 import g from './glob'
 import { setScene } from './scene'
+
+const toggleGemGuy = () => {
+  g.el.gemGuy.src = g.el.gemGuy.src === assGemGuyIdle ? assGemGuyOff : assGemGuyIdle
+}
 
 const setShirtState = nuTsS => {
   g.lion.tShirt = nuTsS
 }
 
 const revertTshirt = () => {
-  if (typeof g.lion.tShirt === 'boolean' && g.lion.tShirt) {
+  if (typeof g.lion.tShirt === 'boolean' && g.lion.tShirt && g.el.theLion.classList.contains('anim')) {
     g.lion.tShirt = undefined
     g.tL.tShirtOff = gsap.timeline({ defaults: { overwrite: true } })
     gsap.set('#gemGuy', {
@@ -62,7 +67,7 @@ const revertTshirt = () => {
 }
 
 const transformTshirt = () => {
-  if (typeof g.lion.tShirt === 'boolean' && !g.lion.tShirt) {
+  if (typeof g.lion.tShirt === 'boolean' && !g.lion.tShirt && g.el.theLion.classList.contains('anim')) {
     g.lion.tShirt = undefined
     g.tL.tShirtOn = new TL({ defaults: { overwrite: true } })
     gsap.set('#gemGuy', {
@@ -128,4 +133,4 @@ const transformTshirt = () => {
   }
 }
 
-export { revertTshirt, transformTshirt }
+export { revertTshirt, toggleGemGuy, transformTshirt }

@@ -52,7 +52,7 @@ const setBaubleLayer01 = () => {
   }
 }
 
-const resetCtrRing = (dur = 0.25) => {
+const resetCtrRingPos1 = (dur = 0.25) => {
   if (g.bL[1] && g.bL[1].b && g.bL[1].b.length) {
     g.bL[1].b.forEach((b, i) => {
       const a = i * g.bL[1].st
@@ -78,8 +78,8 @@ const resetCtrRing = (dur = 0.25) => {
   }
 }
 
-const resetCtrRingV2 = () => {
-  resetCtrRing(1.5)
+const resetCtrRingPos2 = () => {
+  resetCtrRingPos1(1.5)
 }
 
 const setCtrRing = () => {
@@ -217,8 +217,8 @@ export {
   evadeMouseTick,
   flingRingTick,
   orbitRing,
-  resetCtrRing,
-  resetCtrRingV2,
+  resetCtrRingPos1,
+  resetCtrRingPos2,
   setBaubleLayer01,
   setCtrRing,
   shockTick,

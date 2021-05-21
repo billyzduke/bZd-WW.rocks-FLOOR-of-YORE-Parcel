@@ -5,6 +5,9 @@ import { Draggable } from 'gsap/Draggable'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
 import g from './glob'
+import { toggleBaubleLayer } from './baubles'
+import { toggleFloor } from './floor'
+import { toggleLion } from './lion'
 
 const addCSSRule = (sheet, selector, rules) => {
   if ('insertRule' in sheet) {
@@ -342,7 +345,59 @@ const svgPathsMorphOriginsHelper = (target1, target2, vars = {}) => {
   return tl
 }
 
-export const upperCaseFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1)
+const toggleFermata = (pause = true, { exceptTLs = [], exceptTickers = [], exceptEtc = [] } = {}) => {
+  // more conditionals would be strictly necessary here if this function was ever called prior to scene 13, but it's not, so...
+  if (pause) {
+    Object.keys(g.tL).forEach(tL => {
+      const timeLine = { [tL]: g.tL[tL] }
+      timeLine.shouldBePaused = !exceptTLs.includes(tL)
+      if (timeLine.shouldBePaused) {
+        timeLine.canBePaused = isFunction(g.tL[tL].pause)
+        if (timeLine.canBePaused) {
+          timeLine.paused = g.tL[tL].pause()
+        }
+      }
+      devLog(timeLine)
+    })
+    Object.keys(g.tickers).forEach(ticker => {
+      const tckr = { [ticker]: g.tickers[ticker] }
+      tckr.shouldBeUnTicked = !exceptTickers.includes(ticker)
+      if (tckr.shouldBeUnTicked) {
+        tckr.wasUnTicked = ifFunctionThenCall(g.tickers[ticker])
+        // eslint-disable-next-line prefer-destructuring
+        if (tckr.wasUnTicked) g.tickers[ticker] = tckr.wasUnTicked[0]
+      }
+      devLog(tckr)
+    })
+  } else {
+    Object.keys(g.tL).forEach(tL => {
+      const timeLine = { [tL]: g.tL[tL] }
+      timeLine.shouldBePlayed = !exceptTLs.includes(tL)
+      if (timeLine.shouldBePlayed) {
+        timeLine.canBePlayed = isFunction(g.tL[tL].play)
+        if (timeLine.canBePlayed) {
+          timeLine.played = g.tL[tL].play()
+        }
+      }
+      devLog(timeLine)
+    })
+    Object.keys(g.tickers).forEach(ticker => {
+      const tckr = { [ticker]: g.tickers[ticker] }
+      tckr.shouldBeReTicked = !exceptTickers.includes(ticker)
+      if (tckr.shouldBeReTicked) {
+        tckr.wasReTicked = g.tickers[ticker] = gsapTick(g.tickers[ticker])
+      }
+      devLog(tckr)
+    })
+  }
+  if (!exceptEtc.includes('lion')) toggleLion()
+  if (!exceptEtc.includes('floor')) toggleFloor()
+  g.bL.forEach((_, i) => {
+    if (!exceptEtc.includes(`bL${padStr(i)}`)) toggleBaubleLayer(i)
+  })
+}
+
+const upperCaseFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1)
 
 const uuidv4 = () => {
   const c = '0123456789abcdef'.split('')
@@ -411,5 +466,7 @@ export {
   setRemoveOn,
   shuffleArray,
   svgPathsMorphOriginsHelper,
+  toggleFermata,
+  upperCaseFirstLetter,
   uuidv4,
 }

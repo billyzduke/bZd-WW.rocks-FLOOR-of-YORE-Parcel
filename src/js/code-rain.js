@@ -90,7 +90,7 @@ const stopRaining = (rId, clear) => {
   }
 }
 
-const destroyRain = rId => {
+const unSetCodeRain = rId => {
   if (g.codeRain[rId]) {
     stopRaining(rId, true)
 
@@ -117,6 +117,7 @@ const setCodeRain = config => {
     if (!isSet(config.autoStart)) {
       config.autoStart = false
     }
+    g.codeRain = {}
     g.codeRain[rId] = config
     g.codeRain[rId].canvas1 = g.document.createElement('canvas')
     g.codeRain[rId].element.appendChild(g.codeRain[rId].canvas1)
@@ -156,5 +157,5 @@ const setCodeRain = config => {
 }
 
 export {
-  destroyRain, isRaining, setCodeRain, startRaining, stopRaining,
+  isRaining, setCodeRain, startRaining, stopRaining, unSetCodeRain
 }

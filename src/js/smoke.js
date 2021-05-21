@@ -122,6 +122,9 @@ import g from './glob'
 import { ifFunctionThenCall } from './utils'
 
 const setSmokes = () => {
+  g.smoke = {}
+  g.qss.smoke = {}
+
   const assSmokeFrames = {
     smoke1: [
       assSmoke1frame00,

@@ -2,7 +2,9 @@ import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { gsapTick } from '../utils'
-import { lionShockTick, relieveTheLion, shockTheLion } from '../lion'
+import {
+  lionShockTick, relieveTheLion, shockTheLion, toggleLionJarp,
+} from '../lion'
 import { setLionHead } from '../lion-head'
 import { setLionHands } from '../lion-hands'
 import { setFoetuses } from '../foetuses'
@@ -15,10 +17,11 @@ const setScene10 = (c, n) => {
   shockTheLion()
   g.scene.forCleanUp[c].lionShockTicker = gsapTick(lionShockTick)
 
-  setLionHead()
-  setLionHands()
   setFoetuses()
   setFolkLore()
+  setLionHead()
+  setLionHands()
+  toggleLionJarp()
 
   gsap.fromTo('#theOwlIsNotWhatItSeems', {
     translateY: '-=76',

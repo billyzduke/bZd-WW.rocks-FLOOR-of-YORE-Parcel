@@ -31,6 +31,7 @@ const presetScene08 = () => {
     rotateZ: -1080,
     scale: 0,
   })
+  return true
 }
 
 g.tL.ribs = new TL({ defaults: { overwrite: false } })
@@ -105,7 +106,7 @@ const setScene06 = (c, n) => {
     ease: 'none',
     repeat: -1,
     rotateZ: '+=360',
-    overwrite: true,
+    overwrite: 'auto',
   })
 
   if (g.scene.skip.ff) setTimeout(() => setScene(n), 100)

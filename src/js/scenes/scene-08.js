@@ -5,10 +5,12 @@ import { setAddOn } from '../utils'
 import { setScene } from '../scene'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
-import { resetCtrRing } from '../baubles/layer-01'
+import { resetCtrRingPos1 } from '../baubles/layer-01'
 import { setBaubleLayer02 } from '../baubles/layer-02'
 import { clearShaiHulud } from '../shai-hulud'
 import { setJungleMotion } from '../jungle'
+import { toggleLionEyes } from '../lion-head'
+import { toggleLionHalos } from '../lion'
 
 const scene08 = 'Sparks Fly / Enter the Lion / The Mighty Jungle'
 
@@ -18,10 +20,9 @@ const setScene08 = (c, n) => {
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(5)
 
   setBaubleLayer02()
-  resetCtrRing(5.75)
-
-  g.el.theLion.classList.add('anim')
-  g.lion.eyes.active = true
+  resetCtrRingPos1(5.75)
+  toggleLionEyes()
+  toggleLionHalos()
 
   if (g.scene.skip.ff) {
     g.tL.bronze.timeScale(1 / g.scene.skip.ff)

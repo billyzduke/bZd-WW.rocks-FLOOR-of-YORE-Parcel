@@ -1,6 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
-import g, { toggleTime } from '../glob'
+import g from '../glob'
+import { toggleFermata } from '../utils'
 
 const scene13 = 'Enter the DeLorean'
 
@@ -14,8 +15,6 @@ const setScene13 = (c, n) => {
 
   return true
 }
-
-
 
 const spinTime = () => {
   // gsap.set('#deLorean', {
@@ -53,7 +52,7 @@ const spinTime = () => {
     duration: 3,
     ease: 'power2.in',
     onComplete: function () {
-      toggleTime(true, [])
+      toggleFermata(true, { exceptTLs: [ 'bttf' ] })
     },
     opacity: 1,
   })

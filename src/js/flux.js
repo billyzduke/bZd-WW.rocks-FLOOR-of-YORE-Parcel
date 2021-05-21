@@ -59,13 +59,13 @@ const setFluxDisplay = () => {
     dispose: false,
     // eslint-disable-next-line array-bracket-newline, array-element-newline
     pre: [ 0, 0, 1, 1, 2, 4 ],
-    current: 18,
+    current: 8, // how many other random digits should flash before fluxDisplay is ready for click
   },
   {
     dispose: false,
     // eslint-disable-next-line array-bracket-newline, array-element-newline
     pre: [ 4, 8, 5, 6, 3, 2 ],
-    current: 24,
+    current: 12, // how many other random digits should flash before fluxDisplay is ready for click
   } ]
   g.qss.flux.display = [ [], [] ]
   assFluxDisplayDigits.forEach(afdd => {
@@ -79,7 +79,7 @@ const setFluxDisplay = () => {
     g.qss.flux.display[1].push(gsap.quickSetter(fdd01, 'opacity'))
   })
   g.qss.flux.directive = gsap.quickSetter('#fluxDisplayDirective', 'opacity')
-  g.flux.directive = 24
+  g.flux.directive = 30 // how many times the fluxDirective light flickers before settling ON
 }
 
 const setFluxEchoes = () => {

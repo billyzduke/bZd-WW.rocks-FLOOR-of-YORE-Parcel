@@ -31,4 +31,12 @@ const readTheFloor = () => {
   })
 }
 
-export { scrubTheFloor, readTheFloor, setFloor }
+const toggleFloor = () => {
+  if (g.el.yoreFloor.classList.contains('anim')) {
+    g.el.yoreFloor.classList.remove('anim')
+  } else {
+    g.el.yoreFloor.classList.add('anim')
+  }
+}
+
+export { scrubTheFloor, readTheFloor, setFloor, toggleFloor }
