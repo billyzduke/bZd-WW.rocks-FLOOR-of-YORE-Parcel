@@ -36,14 +36,14 @@ const spinTime = () => {
   gsap.set('#deLorean', {
     rotateX: 60,
     rotateY: 60,
-    rotateZ: 180,
+    rotateZ: 160,
     translateY: 400,
   })
   gsap.to('#deLorean', {
     duration: 20,
     ease: 'none',
     repeat: -1,
-    rotateX: 120,
+    rotateZ: 120,
     yoyo: true,
   })
   gsap.to('#deLorean', {
