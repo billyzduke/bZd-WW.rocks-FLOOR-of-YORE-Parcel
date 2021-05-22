@@ -152,12 +152,6 @@ const loadApp = () => {
     g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
   }
 
-  if (g.el.x3d) {
-    g.el.x3d.width = `${g.main.w}px`
-    g.el.x3d.height = `${g.main.h}px`
-    require('x3dom')
-  }
-
   return true
 }
 

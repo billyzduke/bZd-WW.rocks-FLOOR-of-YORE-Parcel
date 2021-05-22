@@ -55,8 +55,7 @@
     "@gsap/shockingly": "^3.6.1",
     "css-animation-sync": "^0.2.0",
     "gsap": "npm:@gsap/shockingly",
-    "howler": "^2.2.1",
-    "x3dom": "^1.8.1"
+    "howler": "^2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
