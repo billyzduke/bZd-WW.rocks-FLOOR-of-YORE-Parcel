@@ -1,6 +1,10 @@
 import { gsap } from 'gsap'
 import { TextPlugin } from 'gsap/TextPlugin'
 
+import assUnderCarriageF from 'url:/src/img/future/underCarriageF.jpg'
+import assUnderCarriageC from 'url:/src/img/future/underCarriageC.jpg'
+import assUnderCarriageA from 'url:/src/img/future/underCarriageA.jpg'
+import g from './glob'
 import { setFlux } from './flux'
 import { setAddOn } from './utils'
 
@@ -44,4 +48,37 @@ const setModel = () => {
   setAddOn('#translateZ1', 'change', e => { moveModel('translate', 'Z', 1, e.target.value) })
 }
 
-export { setFuture, setModel }
+const pFiver = p5 => {
+  g.p5bin = {}
+
+  p5.preload = () => {
+    g.p5bin.underCarriageF = p5.loadImage(assUnderCarriageF)
+    g.p5bin.underCarriageC = p5.loadImage(assUnderCarriageC)
+    g.p5bin.underCarriageA = p5.loadImage(assUnderCarriageA)
+  }
+  p5.setup = () => {
+    p5.createCanvas(g.main.w, g.main.h, p5.WEBGL)
+    p5.angleMode(p5.DEGREES)
+  }
+
+  p5.draw = () => {
+    p5.fill(0,0,0,0)
+    p5.texture(g.p5bin.underCarriageF)
+    p5.translate(0, 0, -23)
+    p5.rotateX(6.71)
+    p5.plane(423, 119)
+
+    p5.fill(0,0,0,0)
+    p5.texture(g.p5bin.underCarriageC)
+    p5.translate(0, 119, 0)
+    p5.plane(423, 729)
+
+    p5.fill(0,0,0,0)
+    p5.texture(g.p5bin.underCarriageA)
+    p5.translate(0, 848, -26)
+    p5.rotateX(-7.125)
+    p5.plane(423, 152)
+  }
+}
+
+export { pFiver, setFuture, setModel }

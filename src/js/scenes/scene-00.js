@@ -1,4 +1,5 @@
 import { gsap, TimelineMax as TL } from 'gsap'
+import p5 from 'p5'
 
 import g from '../glob'
 import { setAddOn } from '../utils'
@@ -6,7 +7,7 @@ import { setScene } from '../scene'
 // import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
 import { setBaubleLayers } from '../baubles'
-import { setModel } from '../future'
+import { pFiver, setModel } from '../future'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
@@ -26,6 +27,9 @@ const setScene00 = (c, n) => {
     duration: 2,
     onComplete: function () {
       if (g.el.deLorean && g.el.model && g.el.future.classList.contains('model')) spinTime()
+
+      // eslint-disable-next-line new-cap
+      g.p5 = new p5(pFiver, 'p5')
     },
     opacity: 0,
   })
