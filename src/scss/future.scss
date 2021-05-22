@@ -1285,52 +1285,52 @@ div#future {
       }
     }
 
-    div.spoiler {
+    div.rearVent {
       width: 74px;
       left: 83px;
       top: 857px;
       transform: translateZ(-176px) rotateX(-30deg);
-      div.spoilerTop {
-        background-image: url(../img/future/spoilerTop.png);
+      div.rearVentTop {
+        background-image: url(../img/future/rearVentTop.png);
         width: 100%;
         height: 116px;
       }
-      div.spoilerBottom {
+      div.rearVentBottom {
         background: #191e34;
         height: 92px;
         width: 100%;
         transform: translateZ(100px);
       }
-      div.spoilerSide {
-        background-image: url(../img/future/spoilerSide.png);
+      div.rearVentSide {
+        background-image: url(../img/future/rearVentSide.png);
         width: 100px;
         height: 116px;
         transform: rotateY(-90deg);
-        &.spoilerSideLeft {
+        &.rearVentSideLeft {
           left: 100%;
         }
       }
-      div.spoilerBackTop {
-        background-image: url(../img/future/spoilerRightBackTop.png);
+      div.rearVentBackTop {
+        background-image: url(../img/future/rearVentRightBackTop.png);
         width: 100%;
         height: 60px;
         top: 114px;
         transform: rotateX(90deg);
       }
-      div.spoilerBackBottom {
-        background-image: url(../img/future/spoilerRightBackBottom.png);
+      div.rearVentBackBottom {
+        background-image: url(../img/future/rearVentRightBackBottom.png);
         width: 100%;
         height: 48px;
         top: 114px;
         transform: translateZ(60px) rotateX(120deg);
       }
-      &#spoilerLeft {
+      &#rearVentLeft {
         left: 267px;
-        div.spoilerBackTop {
-          background-image: url(../img/future/spoilerLeftBackTop.png);
+        div.rearVentBackTop {
+          background-image: url(../img/future/rearVentLeftBackTop.png);
         }
-        div.spoilerBackBottom {
-          background-image: url(../img/future/spoilerLeftBackBottom.png);
+        div.rearVentBackBottom {
+          background-image: url(../img/future/rearVentLeftBackBottom.png);
         }
       }
     }
