@@ -1315,7 +1315,7 @@ div#future {
       top: 857px;
       transform: translateZ(-176px) rotateX(-30deg);
       div.rearVentTop {
-        background-image: url(../img/future/spoilerTop.png);
+        background-image: url(../img/future/rearVentTop.png);
         width: 100%;
         height: 116px;
       }
@@ -1326,7 +1326,7 @@ div#future {
         transform: translateZ(100px);
       }
       div.rearVentSide {
-        background-image: url(../img/future/spoilerSide.png);
+        background-image: url(../img/future/rearVentSide.png);
         width: 100px;
         height: 116px;
         transform: rotateY(-90deg);
@@ -1335,14 +1335,14 @@ div#future {
         }
       }
       div.rearVentBackTop {
-        background-image: url(../img/future/spoilerRightBackTop.png);
+        background-image: url(../img/future/rearVentRightBackTop.png);
         width: 100%;
         height: 60px;
         top: 114px;
         transform: rotateX(90deg);
       }
       div.rearVentBackBottom {
-        background-image: url(../img/future/spoilerRightBackBottom.png);
+        background-image: url(../img/future/rearVentRightBackBottom.png);
         width: 100%;
         height: 48px;
         top: 114px;
@@ -1351,10 +1351,10 @@ div#future {
       &#rearVentLeft {
         left: 267px;
         div.rearVentBackTop {
-          background-image: url(../img/future/spoilerLeftBackTop.png);
+          background-image: url(../img/future/rearVentLeftBackTop.png);
         }
         div.rearVentBackBottom {
-          background-image: url(../img/future/spoilerLeftBackBottom.png);
+          background-image: url(../img/future/rearVentLeftBackBottom.png);
         }
       }
     }
