@@ -1,4 +1,4 @@
-<div id="future" class="animBlock model">
+<div id="future" class="animBlock">
   <div id="flux" class="tuct">
     <div id="fluxEchoes">
       <div id="fluxEchoAxisC" class="fluxEchoAxis"></div>
@@ -31,8 +31,10 @@
     <div id="underCarriageFront" class="underCarriage"></div>
     <div id="underCarriageCenter" class="underCarriage"></div>
     <div id="underCarriageRear" class="underCarriage"></div>
-    <div id="ucL" class="uc ucNS"></div>
-    <div id="ucR" class="uc ucNS"></div>
+    <div id="ucVNL" class="uc ucV ucVL ucVN"></div>
+    <div id="ucVNR" class="uc ucV ucVR ucVN"></div>
+    <div id="ucVSL" class="uc ucV ucVL ucVS"></div>
+    <div id="ucVSR" class="uc ucV ucVR ucVS"></div>
     <div id="ucCrossFrontAxleFront" class="uc ucEW"></div>
     <div id="ucCrossFrontAxleBack" class="uc ucEW"></div>
     <div id="ucCrossRearAxleFront" class="uc ucEW"></div>
@@ -318,21 +320,21 @@
         <div id="fusionLockRight" class="fusionLockFace"></div>
       </div>
     </div>
-    <div id="spoilerLeft" class="spoiler">
-      <div class="spoilerTop"></div>
-      <div class="spoilerSideLeft spoilerSide"></div>
-      <div class="spoilerSideRight spoilerSide"></div>
-      <div class="spoilerBackTop"></div>
-      <div class="spoilerBackBottom"></div>
-      <div class="spoilerBottom"></div>
+    <div id="rearVentLeft" class="rearVent">
+      <div class="rearVentTop"></div>
+      <div class="rearVentSideLeft rearVentSide"></div>
+      <div class="rearVentSideRight rearVentSide"></div>
+      <div class="rearVentBackTop"></div>
+      <div class="rearVentBackBottom"></div>
+      <div class="rearVentBottom"></div>
     </div>
-    <div id="spoilerRight" class="spoiler">
-      <div class="spoilerTop"></div>
-      <div class="spoilerSideLeft spoilerSide"></div>
-      <div class="spoilerSideRight spoilerSide"></div>
-      <div class="spoilerBackTop"></div>
-      <div class="spoilerBackBottom"></div>
-      <div class="spoilerBottom"></div>
+    <div id="rearVentRight" class="rearVent">
+      <div class="rearVentTop"></div>
+      <div class="rearVentSideLeft rearVentSide"></div>
+      <div class="rearVentSideRight rearVentSide"></div>
+      <div class="rearVentBackTop"></div>
+      <div class="rearVentBackBottom"></div>
+      <div class="rearVentBottom"></div>
     </div>
 
     <div id="wheels">
@@ -756,6 +758,43 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="model">
+    <div>
+      <h1>RIGHT SIDE MIRROR PIECE 1</h1>
+      <h2>ROTATION</h2>
+      <label>X: <input type="range" id="rotateX1" name="rotateX1" min="-360" max="360"
+        min="0" max="11" value="0"/> <span id="rotationX1">0</span></label>
+      <label>Y: <input type="range" id="rotateY1" name="rotateY1" min="-360" max="360"
+        min="0" max="11" value="0"/> <span id="rotationY1">0</span></label>
+      <label>Z: <input type="range" id="rotateZ1" name="rotateZ1" min="-360" max="360"
+        min="0" max="11" value="0"/> <span id="rotationZ1">0</span></label>
+      <h2>TRANSLATION</h2>
+      <label>X: <input type="range" id="translateX1" name="translateX1" min="-50" max="50"
+        min="0" max="11" value="0"/> <span id="translationX1">0</span></label>
+      <label>Y: <input type="range" id="translateY1" name="translateY1" min="-50" max="50"
+        min="0" max="11" value="0"/> <span id="translationY1">0</span></label>
+      <label>Z: <input type="range" id="translateZ1" name="translateZ1" min="-50" max="50"
+        min="0" max="11" value="0"/> <span id="translationZ1">0</span></label>
+    </div>
+    <div>
+      <h1>MODEL</h1>
+      <h2>ROTATION</h2>
+      <label>X: <input type="range" id="rotateX0" name="rotateX0" min="-360" max="360"
+        min="0" max="11" value="0"/> <span id="rotationX0">0</span></label>
+      <label>Y: <input type="range" id="rotateY0" name="rotateY0" min="-360" max="360"
+        min="0" max="11" value="0"/> <span id="rotationY0">0</span></label>
+      <label>Z: <input type="range" id="rotateZ0" name="rotateZ0" min="-360" max="360"
+        min="0" max="11" value="0"/> <span id="rotationZ0">0</span></label>
+      <h2>TRANSLATION</h2>
+      <label>X: <input type="range" id="translateX0" name="translateX0" min="-500" max="500"
+        min="0" max="11" value="0"/> <span id="translationX0">0</span></label>
+      <label>Y: <input type="range" id="translateY0" name="translateY0" min="-500" max="500"
+        min="0" max="11" value="0"/> <span id="translationY0">0</span></label>
+      <label>Z: <input type="range" id="translateZ0" name="translateZ0" min="-500" max="500"
+        min="0" max="11" value="0"/> <span id="translationZ0">0</span></label>
     </div>
   </div>
 </div>
