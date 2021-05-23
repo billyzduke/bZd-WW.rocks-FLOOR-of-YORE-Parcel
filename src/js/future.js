@@ -9,6 +9,7 @@ import assUnderCarriageA from 'url:/src/img/future/underCarriageA.png'
 import g from './glob'
 import { setFlux } from './flux'
 import { gsapTick, randOnum, setAddOn, toggleFermata } from './utils'
+import { Plane } from 'three'
 
 gsap.registerPlugin(TextPlugin)
 
@@ -165,69 +166,51 @@ const setThree = () => {
     obj: {},
   }
   g.three.scene = new THREE.Scene()
-  g.three.camera = new THREE.PerspectiveCamera( 75, g.main.w / g.main.h, 0.1, 2000 )
+  g.three.camera = new THREE.PerspectiveCamera(75, g.main.w / g.main.h, 0.1, 2000)
 
-  g.three.renderer = new THREE.WebGLRenderer( { alpha: true } )
-  g.three.renderer.setSize( g.main.w, g.main.h )
-  g.el.three.appendChild( g.three.renderer.domElement )
+  g.three.renderer = new THREE.WebGLRenderer({ alpha: true })
+  g.three.renderer.setSize(g.main.w, g.main.h)
+  g.el.three.appendChild(g.three.renderer.domElement)
 
   g.three.camera.position.z = 5
 
-  g.three.controls = new OrbitControls( g.three.camera, g.three.renderer.domElement );
+  g.three.controls = new OrbitControls(g.three.camera, g.three.renderer.domElement);
 
-
-  g.three.obj.underCarriageF = {
-    geo: new THREE.PlaneGeometry( 432, 119 ),
-    txt: new THREE.TextureLoader().load( assUnderCarriageF ),
+  g.three.makeObjs = {
+    deLorean: {
+      position: [0, 0, -750],
+      children: {
+        underCarriage: {
+          children: {
+            bottom: {
+              children: {
+                f: {
+                  size: [432, 119, 0],
+                  txtAss: assUnderCarriageF,
+                  pivot: [0, 59.5, 0],
+                  position: [0, 364.5, -23],
+                  rotation: [-6.71, 0, 0],
+                },
+                c: {
+                  size: [432, 729, 0],
+                  txtAss: assUnderCarriageC,
+                },
+                a: {
+                  size: [432, 152, 0],
+                  txtAss: assUnderCarriageA,
+                  pivot: [0, -76, 0],
+                  position: [0, -364.5, -26],
+                  rotation: [7.125, 0, 0],
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   }
-  g.three.obj.underCarriageF.mat = new THREE.MeshBasicMaterial({
-    alphaTest: 0.5,
-    map: g.three.obj.underCarriageF.txt,
-    side: THREE.DoubleSide,
-    transparent: true,
-  })
-  g.three.obj.underCarriageF.geo.translate(0, 59.5, 0)
-  g.three.obj.underCarriageF.msh = new THREE.Mesh( g.three.obj.underCarriageF.geo, g.three.obj.underCarriageF.mat )
-  g.three.obj.underCarriageF.msh.position.y = 364.5
-  g.three.obj.underCarriageF.msh.position.z = -23
-  g.three.obj.underCarriageF.msh.rotateX(THREE.Math.degToRad(-6.71))
 
-
-  g.three.obj.underCarriageC = {
-    geo: new THREE.PlaneGeometry( 432, 729 ),
-    txt: new THREE.TextureLoader().load( assUnderCarriageC ),
-  }
-  g.three.obj.underCarriageC.mat = new THREE.MeshBasicMaterial({
-    alphaTest: 0.5,
-    map: g.three.obj.underCarriageC.txt,
-    side: THREE.DoubleSide,
-    transparent: true,
-  })
-  g.three.obj.underCarriageC.msh = new THREE.Mesh( g.three.obj.underCarriageC.geo, g.three.obj.underCarriageC.mat )
-
-
-  g.three.obj.underCarriageA = {
-    geo: new THREE.PlaneGeometry( 432, 152 ),
-    txt: new THREE.TextureLoader().load( assUnderCarriageA ),
-  }
-  g.three.obj.underCarriageA.mat = new THREE.MeshBasicMaterial({
-    alphaTest: 0.5,
-    map: g.three.obj.underCarriageA.txt,
-    side: THREE.DoubleSide,
-    transparent: true,
-  })
-  g.three.obj.underCarriageA.geo.translate(0, -76, 0)
-  g.three.obj.underCarriageA.msh = new THREE.Mesh( g.three.obj.underCarriageA.geo, g.three.obj.underCarriageA.mat )
-  g.three.obj.underCarriageA.msh.position.y = -364.5
-  g.three.obj.underCarriageA.msh.position.z = -26
-  g.three.obj.underCarriageA.msh.rotateX(THREE.Math.degToRad(7.125))
-
-
-  g.three.grp.deLorean = new THREE.Group()
-  g.three.grp.deLorean.add(g.three.obj.underCarriageF.msh)
-  g.three.grp.deLorean.add(g.three.obj.underCarriageC.msh)
-  g.three.grp.deLorean.add(g.three.obj.underCarriageA.msh)
-  g.three.grp.deLorean.position.set( 0, 0, -750 )
+  Object.keys(g.three.makeObjs).forEach(obj => makeThreeObj(obj, g.three.makeObjs[obj]))
 
   g.three.scene.add(g.three.grp.deLorean)
 
@@ -242,5 +225,57 @@ const setThree = () => {
   animate()
 }
 
+const cart = [ 'x', 'y', 'z' ]
+
+const makeThreeObj = (obj, makeObj) => {
+  if (makeObj.children) {
+    makeObj.geo = 'group'
+    Object.keys(makeObj.children).forEach(childObj => makeThreeObj(childObj, makeObj.children[childObj]))
+  } else if (!makeObj.geo) {
+    makeObj.geo = 'plane'
+  }
+  if (makeObj.geo !== 'group') g.three.obj[obj] = {}
+  let makeMesh
+  switch (makeObj.geo) {
+    case 'group':
+      g.three.grp[obj] = new THREE.Group()
+      break
+    case 'plane':
+    default:
+      g.three.obj[obj].geo = new THREE.PlaneGeometry(makeObj.size[0], makeObj.size[1])
+      makeMesh = {
+        alphaTest: 0.5,
+        side: THREE.DoubleSide,
+        transparent: true,
+      }
+      if (makeObj.txtAss) {
+        g.three.obj[obj].txt = new THREE.TextureLoader().load(makeObj.txtAss)
+        makeMesh.map = g.three.obj[obj].txt
+      }
+  }
+  if (g.three.obj[obj]) {
+    if (makeMesh) g.three.obj[obj].mat = new THREE.MeshBasicMaterial(makeMesh)
+    if (makeObj.pivot && g.three.obj[obj].geo) g.three.obj[obj].geo.translate(makeObj.pivot[0] || 0, makeObj.pivot[1] || 0, makeObj.pivot[2] || 0)
+    if (g.three.obj[obj].geo && g.three.obj[obj].mat) g.three.obj[obj].msh = new THREE.Mesh(g.three.obj[obj].geo, g.three.obj[obj].mat)
+    if (g.three.obj[obj].msh) {
+      if (makeObj.position) {
+        cart.forEach((axis, i) => {
+          if (typeof makeObj.position[i] !== 'undefined' && makeObj.position[i]) g.three.obj[obj].msh.position[axis] = makeObj.position[i]
+        })
+      }
+      if (makeObj.rotation) {
+        for (let r = 0; r < 3; r++) {
+          if (typeof makeObj.rotation[0] !== 'undefined' && makeObj.rotation[0]) g.three.obj[obj].msh[`rotate${cart[r].toUpperCase()}`](THREE.Math.degToRad(makeObj.rotation[r]))
+        }
+      }
+    }
+  }
+  if (makeObj.children && g.three.grp[obj]) {
+    Object.keys(makeObj.children).forEach(childObj => {
+      g.three.grp[obj].add( g.three.obj[childObj] ? g.three.obj[childObj].msh || g.three.obj[childObj] : g.three.grp[childObj] )
+    })
+    if (makeObj.position) g.three.grp[obj].position.set( makeObj.position[0] || 0, makeObj.position[1] || 0, makeObj.position[2] || 0 )
+  }
+}
 
 export { beginFuture, setFuture, setModel, setThree }
