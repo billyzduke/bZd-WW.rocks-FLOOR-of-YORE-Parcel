@@ -6,6 +6,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import assUnderCarriageF from 'url:/src/img/future/underCarriageF.png'
 import assUnderCarriageC from 'url:/src/img/future/underCarriageC.png'
 import assUnderCarriageA from 'url:/src/img/future/underCarriageA.png'
+import assCrossAxle from 'url:/src/img/future/crossAxle.png'
+import assCrossAxleF from 'url:/src/img/future/crossAxleFront.png'
+import assCrossAxleA from 'url:/src/img/future/crossAxleRear.png'
 import g from './glob'
 import { setFlux } from './flux'
 import { gsapTick, randOnum, setAddOn, toggleFermata } from './utils'
@@ -164,6 +167,7 @@ const setThree = () => {
   g.three = {
     grp: {},
     obj: {},
+    xyz: [ 'x', 'y', 'z' ],
   }
   g.three.scene = new THREE.Scene()
   g.three.camera = new THREE.PerspectiveCamera(75, g.main.w / g.main.h, 0.1, 2000)
@@ -185,23 +189,93 @@ const setThree = () => {
             bottom: {
               children: {
                 f: {
-                  size: [432, 119, 0],
+                  size: [432, 119],
                   txtAss: assUnderCarriageF,
-                  pivot: [0, 59.5, 0],
+                  pivot: [0, 59.5],
                   position: [0, 364.5, -23],
-                  rotation: [-6.71, 0, 0],
+                  rotation: [-6.71],
                 },
                 c: {
-                  size: [432, 729, 0],
+                  size: [432, 729],
                   txtAss: assUnderCarriageC,
                 },
                 a: {
-                  size: [432, 152, 0],
+                  size: [432, 152],
                   txtAss: assUnderCarriageA,
-                  pivot: [0, -76, 0],
+                  pivot: [0, -76],
                   position: [0, -364.5, -26],
-                  rotation: [7.125, 0, 0],
+                  rotation: [7.125],
                 },
+              },
+            },
+            top: {
+              children: {
+                ucWheelWallFL: {
+                  size: [127, 150],
+                  color: 0x000000,
+                  pivot: [63.5],
+                  position: [142, 289.5],
+                  rotation: [0, 90],
+                },
+                ucWheelWallFR: {
+                  size: [127, 150],
+                  color: 0x000000,
+                  pivot: [-63.5],
+                  position: [-142, 289.5],
+                  rotation: [0, -90],
+                },
+                ucWheelWallAL: {
+                  size: [127, 157],
+                  color: 0x000000,
+                  pivot: [63.5],
+                  position: [142, -286],
+                  rotation: [0, 90],
+                },
+                ucWheelWallAR: {
+                  size: [127, 157],
+                  color: 0x000000,
+                  pivot: [-63.5],
+                  position: [-142, -286],
+                  rotation: [0, -90],
+                },
+                ucAxleWallFF: {
+                  size: [432, 127],
+                  txtAss: assCrossAxleF,
+                  pivot: [0, -63.5],
+                  position: [0, 364.5],
+                  rotation: [90]
+                },
+                ucAxleWallFA: {
+                  size: [432, 127],
+                  txtAss: assCrossAxle,
+                  pivot: [0, -63.5],
+                  position: [0, 214.5],
+                  rotation: [90]
+                },
+                ucAxleWallAF: {
+                  size: [432, 127],
+                  txtAss: assCrossAxle,
+                  pivot: [0, -63.5],
+                  position: [0, -207.5],
+                  rotation: [90]
+                },
+                ucAxleWallAA: {
+                  size: [432, 127],
+                  txtAss: assCrossAxleA,
+                  pivot: [0, -63.5],
+                  position: [0, -364.5],
+                  rotation: [90]
+                },
+                ucWheelWellF: {
+                  color: 0x000000,
+                  size: [402, 150],
+                  position: [ 0, 289.5, -127 ],
+                },
+                ucWheelWellA: {
+                  color: 0x000000,
+                  size: [402, 157],
+                  position: [ 0, -286, -127 ],
+                }
               },
             },
           },
@@ -212,6 +286,7 @@ const setThree = () => {
 
   Object.keys(g.three.makeObjs).forEach(obj => makeThreeObj(obj, g.three.makeObjs[obj]))
 
+  console.log(g.three)
   g.three.scene.add(g.three.grp.deLorean)
 
   g.three.controls.target.copy(g.three.grp.deLorean.position);
@@ -225,8 +300,6 @@ const setThree = () => {
   animate()
 }
 
-const cart = [ 'x', 'y', 'z' ]
-
 const makeThreeObj = (obj, makeObj) => {
   if (makeObj.children) {
     makeObj.geo = 'group'
@@ -234,7 +307,7 @@ const makeThreeObj = (obj, makeObj) => {
   } else if (!makeObj.geo) {
     makeObj.geo = 'plane'
   }
-  if (makeObj.geo !== 'group') g.three.obj[obj] = {}
+  if (makeObj.geo !== 'group' && makeObj.size && makeObj.size.length && makeObj.size.length >= 2) g.three.obj[obj] = {}
   let makeMesh
   switch (makeObj.geo) {
     case 'group':
@@ -242,15 +315,15 @@ const makeThreeObj = (obj, makeObj) => {
       break
     case 'plane':
     default:
-      g.three.obj[obj].geo = new THREE.PlaneGeometry(makeObj.size[0], makeObj.size[1])
-      makeMesh = {
-        alphaTest: 0.5,
-        side: THREE.DoubleSide,
-        transparent: true,
-      }
-      if (makeObj.txtAss) {
-        g.three.obj[obj].txt = new THREE.TextureLoader().load(makeObj.txtAss)
-        makeMesh.map = g.three.obj[obj].txt
+      if (g.three.obj[obj]) {
+        g.three.obj[obj].geo = new THREE.PlaneGeometry(makeObj.size[0], makeObj.size[1])
+        makeMesh = {
+          alphaTest: 0.5,
+          side: THREE.DoubleSide,
+          transparent: true,
+        }
+        if (makeObj.txtAss) makeMesh.map = g.three.obj[obj].txt = new THREE.TextureLoader().load(makeObj.txtAss)
+        if (typeof makeObj.color !== 'undefined') makeMesh.color = g.three.obj[obj].hex = makeObj.color
       }
   }
   if (g.three.obj[obj]) {
@@ -259,20 +332,20 @@ const makeThreeObj = (obj, makeObj) => {
     if (g.three.obj[obj].geo && g.three.obj[obj].mat) g.three.obj[obj].msh = new THREE.Mesh(g.three.obj[obj].geo, g.three.obj[obj].mat)
     if (g.three.obj[obj].msh) {
       if (makeObj.position) {
-        cart.forEach((axis, i) => {
+        g.three.xyz.forEach((axis, i) => {
           if (typeof makeObj.position[i] !== 'undefined' && makeObj.position[i]) g.three.obj[obj].msh.position[axis] = makeObj.position[i]
         })
       }
       if (makeObj.rotation) {
-        for (let r = 0; r < 3; r++) {
-          if (typeof makeObj.rotation[0] !== 'undefined' && makeObj.rotation[0]) g.three.obj[obj].msh[`rotate${cart[r].toUpperCase()}`](THREE.Math.degToRad(makeObj.rotation[r]))
-        }
+        g.three.xyz.forEach((axis, i) => {
+          if (typeof makeObj.rotation[i] !== 'undefined' && makeObj.rotation[i]) g.three.obj[obj].msh[`rotate${axis.toUpperCase()}`](THREE.Math.degToRad(makeObj.rotation[i]))
+        })
       }
     }
   }
   if (makeObj.children && g.three.grp[obj]) {
     Object.keys(makeObj.children).forEach(childObj => {
-      g.three.grp[obj].add( g.three.obj[childObj] ? g.three.obj[childObj].msh || g.three.obj[childObj] : g.three.grp[childObj] )
+      if (g.three.grp[childObj] || g.three.obj[childObj]) g.three.grp[obj].add( g.three.obj[childObj] ? g.three.obj[childObj].msh || g.three.obj[childObj] : g.three.grp[childObj] )
     })
     if (makeObj.position) g.three.grp[obj].position.set( makeObj.position[0] || 0, makeObj.position[1] || 0, makeObj.position[2] || 0 )
   }
