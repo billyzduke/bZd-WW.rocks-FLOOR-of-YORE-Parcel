@@ -7,6 +7,14 @@ div#future {
   pointer-events: none;
   opacity: 0;
 
+  div#blindingFlash {
+    width: 100%;
+    height: 100%;
+    background: white;
+    mix-blend-mode: difference;
+    opacity: 0;
+  }
+
   div#flux {
     width: 373px;
     height: 540px;
@@ -194,7 +202,7 @@ div#future {
     height: 1000px;
     transform-origin: 50% 50% 50%;
     transform-style: preserve3d;
-    transform: rotateX(90deg) rotateY(180deg) rotateZ(180deg) translateZ(500px) translateY(-1100px);
+    transform: rotateX(90deg) rotateY(180deg) rotateZ(180deg) translateX(-2px) translateZ(491px) translateY(-950px);
     div {
       transform-origin: 0 0;
     }
@@ -1640,6 +1648,51 @@ div#future {
     }
   }
 
+  div#interior {
+    width: 422px;
+    left: 0.5px;
+    height: 359px;
+    top: 331px;
+    div#dashboard {
+      width: 373px;
+      height: 101px;
+      top: -14px;
+      left: 50%;
+      transform: translateX(50%) translateZ(-147px) rotateY(180deg);
+      div#dashTop {
+        background-image: url(../img/future/dashboard.jpg);
+        width: 100%;
+        height: 100%;
+      }
+      div#dashTopRight {
+        background-image: url(../img/future/dashTopRight.jpg);
+        width: 102px;
+        height: 38px;
+        left: 222px;
+        top: 57px;
+        transform-origin: 50% 0;
+        transform: rotateX(12deg);
+      }
+    }
+    div#interiorBack {
+      background-image: url(../img/future/fluxInteriorTest.png);
+      width: 421px;
+      left: 0.5px;
+      height: 218px;
+      transform-origin: 50% 100%;
+      top: 100%;
+      transform: translateY(calc(-100% - 0.5px)) rotateX(90deg);
+      div#interiorFlux {
+        background-image: url(../img/flux/flux-capacitor-fluxed.gif);
+        width: 82px;
+        height: 119px;
+        left: 172px;
+        top: 14px;
+        transform: translateZ(32px);
+      }
+    }
+  }
+
   #model {
     width: 100%;
     height: 100%;
@@ -1674,13 +1727,12 @@ div#future {
       pointer-events: auto;
       opacity: 1;
       transform: none;
-      // div#wheels,
+      div#wheels,
       div#roof,
       div#windshield,
       div.bcUpper {
         display: none;
       }
-
     }
     #model {
       display: flex;
