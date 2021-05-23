@@ -197,7 +197,7 @@ div#future {
     opacity: 0;
     pointer-events: none;
     top: calc(50% - 500px);
-    left: calc(50% - 211.5px);
+    left: calc(75% - 211.5px);
     width: 423px;
     height: 1000px;
     transform-origin: 50% 50% 50%;
@@ -1694,7 +1694,8 @@ div#future {
   }
 
   #model {
-    width: 100%;
+    left: 50%;
+    width: 50%;
     height: 100%;
     display: none;
     flex-direction: column;
@@ -1711,10 +1712,24 @@ div#future {
     }
     label {
       display: flex;
-      width: 100%;
+      justify-content: space-between;
+      max-width: 99%;
+      width: 99%;
       flex-direction: row;
+      align-content: center;
+      * {
+        display: inline-block;
+      }
       input {
-        width: 100%;
+        width: 93%;
+      }
+      span {
+        text-align: right;
+        width: 2%;
+        &:last-of-type {
+          width: 4%;
+          margin-right: 0.5%;
+        }
       }
     }
   }
@@ -1727,12 +1742,12 @@ div#future {
       pointer-events: auto;
       opacity: 1;
       transform: none;
-      div#wheels,
-      div#roof,
-      div#windshield,
-      div.bcUpper {
-        display: none;
-      }
+      // div#wheels,
+      // div#roof,
+      // div#windshield,
+      // div.bcUpper {
+      //   display: none;
+      // }
     }
     #model {
       display: flex;
@@ -1743,7 +1758,7 @@ div#future {
 #three {
   background: rgba(255,255,255,0.642);
   position: absolute;
-  width: 100%;
+  width: 50%;
   height: 100%;
   top: 0;
   left: 0;
