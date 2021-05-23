@@ -3,6 +3,9 @@ import { TextPlugin } from 'gsap/TextPlugin'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
+import assUnderCarriageF from 'url:/src/img/future/underCarriageF.png'
+import assUnderCarriageC from 'url:/src/img/future/underCarriageC.png'
+import assUnderCarriageA from 'url:/src/img/future/underCarriageA.png'
 import g from './glob'
 import { setFlux } from './flux'
 import { gsapTick, randOnum, setAddOn, toggleFermata } from './utils'
@@ -162,7 +165,7 @@ const setThree = () => {
     obj: {},
   }
   g.three.scene = new THREE.Scene()
-  g.three.camera = new THREE.PerspectiveCamera( 75, g.main.w / g.main.h, 0.1, 1000 )
+  g.three.camera = new THREE.PerspectiveCamera( 75, g.main.w / g.main.h, 0.1, 2000 )
 
   g.three.renderer = new THREE.WebGLRenderer( { alpha: true } )
   g.three.renderer.setSize( g.main.w, g.main.h )
@@ -172,17 +175,64 @@ const setThree = () => {
 
   g.three.controls = new OrbitControls( g.three.camera, g.three.renderer.domElement );
 
+
   g.three.obj.underCarriageF = {
-    geo: new THREE.PlaneGeometry( 432, 1000 ),
-    mat: new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } ) // transparent: true,
+    geo: new THREE.PlaneGeometry( 432, 119 ),
+    txt: new THREE.TextureLoader().load( assUnderCarriageF ),
   }
+  g.three.obj.underCarriageF.mat = new THREE.MeshBasicMaterial({
+    alphaTest: 0.5,
+    map: g.three.obj.underCarriageF.txt,
+    side: THREE.DoubleSide,
+    transparent: true,
+  })
+  g.three.obj.underCarriageF.geo.translate(0, 59.5, 0)
   g.three.obj.underCarriageF.msh = new THREE.Mesh( g.three.obj.underCarriageF.geo, g.three.obj.underCarriageF.mat )
-  g.three.obj.underCarriageF.msh.position.set( 0, 0, 0 )
+  g.three.obj.underCarriageF.msh.position.y = 364.5
+  g.three.obj.underCarriageF.msh.position.z = -23
+  g.three.obj.underCarriageF.msh.rotateX(THREE.Math.degToRad(-6.71))
+
+
+  g.three.obj.underCarriageC = {
+    geo: new THREE.PlaneGeometry( 432, 729 ),
+    txt: new THREE.TextureLoader().load( assUnderCarriageC ),
+  }
+  g.three.obj.underCarriageC.mat = new THREE.MeshBasicMaterial({
+    alphaTest: 0.5,
+    map: g.three.obj.underCarriageC.txt,
+    side: THREE.DoubleSide,
+    transparent: true,
+  })
+  g.three.obj.underCarriageC.msh = new THREE.Mesh( g.three.obj.underCarriageC.geo, g.three.obj.underCarriageC.mat )
+
+
+  g.three.obj.underCarriageA = {
+    geo: new THREE.PlaneGeometry( 432, 152 ),
+    txt: new THREE.TextureLoader().load( assUnderCarriageA ),
+  }
+  g.three.obj.underCarriageA.mat = new THREE.MeshBasicMaterial({
+    alphaTest: 0.5,
+    map: g.three.obj.underCarriageA.txt,
+    side: THREE.DoubleSide,
+    transparent: true,
+  })
+  g.three.obj.underCarriageA.geo.translate(0, -76, 0)
+  g.three.obj.underCarriageA.msh = new THREE.Mesh( g.three.obj.underCarriageA.geo, g.three.obj.underCarriageA.mat )
+  g.three.obj.underCarriageA.msh.position.y = -364.5
+  g.three.obj.underCarriageA.msh.position.z = -26
+  g.three.obj.underCarriageA.msh.rotateX(THREE.Math.degToRad(7.125))
+
 
   g.three.grp.deLorean = new THREE.Group()
-  g.three.grp.deLorean.add( g.three.obj.underCarriageF.msh )
+  g.three.grp.deLorean.add(g.three.obj.underCarriageF.msh)
+  g.three.grp.deLorean.add(g.three.obj.underCarriageC.msh)
+  g.three.grp.deLorean.add(g.three.obj.underCarriageA.msh)
+  g.three.grp.deLorean.position.set( 0, 0, -750 )
 
-  g.three.scene.add( g.three.grp.deLorean )
+  g.three.scene.add(g.three.grp.deLorean)
+
+  g.three.controls.target.copy(g.three.grp.deLorean.position);
+  g.three.controls.update();
 
   const animate = () => {
     requestAnimationFrame( animate )
