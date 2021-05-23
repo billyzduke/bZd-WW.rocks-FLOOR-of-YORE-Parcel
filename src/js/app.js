@@ -11,6 +11,7 @@ import { setTitles } from './titles'
 import { setCurtains } from './curtains'
 import { setFloor } from './floor'
 import { setShaiHulud } from './shai-hulud'
+import { setThree } from './future'
 import { setScene, setSceneSkipper } from './scene'
 import { resetCtrRingPos1 } from './baubles/layer-01'
 import { isSet } from './utils'
@@ -87,6 +88,7 @@ const loadApp = () => {
       'theOwlIsNotWhatItSeems',
       'theRam',
       'thirdEyeClosed',
+      'three',
       'threshold',
       'wombL',
       'wombR',
@@ -98,7 +100,6 @@ const loadApp = () => {
       'body',
       'header',
       'main',
-      'x3d',
     ], 'tag'),
     ...htmEl('.cw', 'q', true),
     ...htmEl('.makisu', 'q', true),
@@ -151,6 +152,8 @@ const loadApp = () => {
     g.el.body.style.backgroundImage = `url(${assBodyBackground})`
     g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
   }
+
+  if (g.el.three) setThree()
 
   return true
 }

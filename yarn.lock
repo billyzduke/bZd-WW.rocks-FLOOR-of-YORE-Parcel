@@ -7153,6 +7153,11 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+three@^0.128.0:
+  version "0.128.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.128.0.tgz#884dacca6a330e45600a09ec5439283f50b76aa6"
+  integrity sha512-i0ap/E+OaSfzw7bD1TtYnPo3VEplkl70WX5fZqZnfZsE3k3aSFudqrrC9ldFZfYFkn1zwDmBcdGfiIm/hnbyZA==
+
 timers-browserify@^2.0.11:
   version "2.0.12"
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.12.tgz#44a45c11fbf407f34f97bccd1577c652361b00ee"
@@ -7621,11 +7626,6 @@ ws@^7.0.0:
   version "7.4.5"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.5.tgz#a484dd851e9beb6fdb420027e3885e8ce48986c1"
   integrity sha512-xzyu3hFvomRfXKH8vOFMU3OguG6oOvhXMo3xsGy3xWExqaM2dxBbVxuD99O7m3ZUFMvvscsZDqxfgMaRr/Nr1g==
-
-x3dom@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/x3dom/-/x3dom-1.8.1.tgz#c5f2c48c37f6fcc4a74a5e66baf6551ba0091e8a"
-  integrity sha512-rlKMA0pWkBUqoC75fjSm1rRJhdlnqXcCgEP5MHsspcO5pdkr0J52oO5EmmR1eOCzex5U4qAlyG8aFVoZy8wtfA==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"

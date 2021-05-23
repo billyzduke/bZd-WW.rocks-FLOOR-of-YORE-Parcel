@@ -60,6 +60,7 @@ module.exports = {
         allowTemplateLiterals: true,
         avoidEscape: true,
       } ],
-    semi: [ 'error', 'never' ],
+    semi: ['error', 'never'],
+    'space-in-parens': ['error', 'always']
   },
 }

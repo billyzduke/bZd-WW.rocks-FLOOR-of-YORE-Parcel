@@ -1740,14 +1740,15 @@ div#future {
   }
 }
 
-x3d {
+#three {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   z-index: 651;
-  .x3dom-canvas {
+  canvas {
+    background: transparent;
     width: 100%;
     height: 100%;
     max-width: 100%;

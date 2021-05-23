@@ -1,5 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 import { TextPlugin } from 'gsap/TextPlugin'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import g from './glob'
 import { setFlux } from './flux'
@@ -12,6 +14,7 @@ const setFuture = () => {
   g.qss.wormHoler = gsap.quickSetter('#blindingFlash', 'css')
   setFlux()
   gsap.set('#future', { opacity: 1 })
+  setThree()
 }
 
 const wormHoleHexes = [
@@ -153,4 +156,41 @@ const setModel = () => {
   setAddOn('#translateZ1', 'change', e => { moveModel('translate', 'Z', 1, e.target.value) })
 }
 
-export { setFuture, setModel, beginFuture }
+const setThree = () => {
+  g.three = {
+    grp: {},
+    obj: {},
+  }
+  g.three.scene = new THREE.Scene()
+  g.three.camera = new THREE.PerspectiveCamera( 75, g.main.w / g.main.h, 0.1, 1000 )
+
+  g.three.renderer = new THREE.WebGLRenderer( { alpha: true } )
+  g.three.renderer.setSize( g.main.w, g.main.h )
+  g.el.three.appendChild( g.three.renderer.domElement )
+
+  g.three.camera.position.z = 5
+
+  g.three.controls = new OrbitControls( g.three.camera, g.three.renderer.domElement );
+
+  g.three.obj.underCarriageF = {
+    geo: new THREE.PlaneGeometry( 432, 1000 ),
+    mat: new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } ) // transparent: true,
+  }
+  g.three.obj.underCarriageF.msh = new THREE.Mesh( g.three.obj.underCarriageF.geo, g.three.obj.underCarriageF.mat )
+  g.three.obj.underCarriageF.msh.position.set( 0, 0, 0 )
+
+  g.three.grp.deLorean = new THREE.Group()
+  g.three.grp.deLorean.add( g.three.obj.underCarriageF.msh )
+
+  g.three.scene.add( g.three.grp.deLorean )
+
+  const animate = () => {
+    requestAnimationFrame( animate )
+    g.three.renderer.render( g.three.scene, g.three.camera )
+  }
+
+  animate()
+}
+
+
+export { beginFuture, setFuture, setModel, setThree }
