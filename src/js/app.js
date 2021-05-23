@@ -13,6 +13,7 @@ import { setFloor } from './floor'
 import { setShaiHulud } from './shai-hulud'
 import { setScene, setSceneSkipper } from './scene'
 import { resetCtrRingPos1 } from './baubles/layer-01'
+import { setX3d } from './x3d'
 import { isSet } from './utils'
 
 // import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
@@ -152,11 +153,7 @@ const loadApp = () => {
     g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
   }
 
-  if (g.el.x3d) {
-    g.el.x3d.width = `${g.main.w}px`
-    g.el.x3d.height = `${g.main.h}px`
-    require('x3dom')
-  }
+  if (g.el.x3d) setX3d()
 
   return true
 }
