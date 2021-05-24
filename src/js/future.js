@@ -2,6 +2,7 @@ import { gsap, TimelineMax as TL } from 'gsap'
 import { TextPlugin } from 'gsap/TextPlugin'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import Stats from 'stats.js'
 
 import assUnderCarriageF from 'url:/src/img/future/underCarriageF.png'
 import assUnderCarriageC from 'url:/src/img/future/underCarriageC.png'
@@ -312,7 +313,7 @@ const setThree = () => {
         opacity: 0.88,
         map: g.three.mkr.textureLoader(assRocketFlare),
       }
-      msh.alphaTest = 0.01
+      msh.alphaTest = 0.42
       flares[thisFlare] = {
         struct: [276, 376],
         pivot: [0, -188],
@@ -366,8 +367,14 @@ const setThree = () => {
 
   g.three.mkr.update = () => {
     const delta = g.three.clk.getDelta()
+    // ROCKET FLARE TEXTURES SWAP
     g.three.ani.forEach(ani => {
       ani(1000 * delta)
+    })
+    // TILT TEST
+    g.three.xyz.forEach(axis => {
+      g.three.scene.children[0].rotation[axis] = g.three.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) - 1)
+      if (g.three.scene.children[0].rotation[axis] > THREE.Math.degToRad(20) || g.three.scene.children[0].rotation[axis] < THREE.Math.degToRad(-20)) g.three.mkr.tlt[axis] = !g.three.mkr.tlt[axis]
     })
   }
 
@@ -537,8 +544,12 @@ const setThree = () => {
   g.three.flaresInScene.forEach(fls => {
     g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.forEach((_, flr) => {
       const drillDown = [ ...fls, flr]
-      g.three.ani.push(g.three.mkr.setTextureAnimator(g.three.ani.length, drillDown, 5, 1, 5, 25)) // texture, #horiz, #vert, #total, duration.
+      g.three.ani.push(g.three.mkr.setTextureAnimator(g.three.ani.length, drillDown, 5, 1, 5, 76)) // texture, #horiz, #vert, #total, duration.
     })
+  })
+  g.three.mkr.tlt = {}
+  g.three.xyz.forEach(axis => {
+    g.three.mkr.tlt[axis] = 0
   })
 
   g.three.controls.target.copy(g.three.grp.deLorean.position)
@@ -558,7 +569,17 @@ const setThree = () => {
     return false
   }
 
+
+  g.three.stats = new Stats()
+  g.three.stats.showPanel( 0 ) // 0: fps, 1: ms, 2: mb, 3+: custom
+  g.three.stats.showPanel( 1 ) // 0: fps, 1: ms, 2: mb, 3+: custom
+  g.three.stats.showPanel(2) // 0: fps, 1: ms, 2: mb, 3+: custom
+  g.three.stats.dom.id = 'threeStats'
+  g.el.three.appendChild( g.three.stats.dom )
+
   const animate = () => {
+    g.three.stats.begin()
+
     if (resize()) {
       g.three.camera.aspect = g.three.cvs[0] / g.three.cvs[1]
       g.three.camera.updateProjectionMatrix()
@@ -566,6 +587,8 @@ const setThree = () => {
     requestAnimationFrame( animate )
     g.three.renderer.render(g.three.scene, g.three.camera)
     g.three.mkr.update()
+
+    g.three.stats.end()
   }
 
   animate()

@@ -37,12 +37,18 @@ const setScene00 = (c, n) => {
 }
 
 const spinTime = () => {
-  // gsap.set('#deLorean', {
-  //   rotateX: -90,
-  //   // rotateY: 90,
-  //   // rotateZ: 180,
-  //   translateY: 400,
-  //   scale: 1.23,
+  // gsap.fromTo('#deLorean', {
+  //   rotateX: 20,
+  //   rotateY: 20,
+  //   rotateZ: 20,
+  // }, {
+  //   ease: 'none',
+  //   duration: 2,
+  //   rotateX: -20,
+  //   rotateY: -20,
+  //   rotateZ: -20,
+  //   repeat: -1,
+  //   yoyo: true,
   // })
   // gsap.to('#deLorean', {
   //   duration: 20,
