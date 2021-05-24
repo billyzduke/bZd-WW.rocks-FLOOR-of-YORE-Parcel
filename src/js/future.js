@@ -18,6 +18,11 @@ import assTireWallShort from 'url:/src/img/future/tireWallShort.png'
 import assTireHubCapF from 'url:/src/img/future/hubCapFront.png'
 import assTireHubCapA from 'url:/src/img/future/hubCapRear.png'
 import assRocketFlare from 'url:/src/img/future/skyrocket.png'
+import assBodyCenterLower from 'url:/src/img/future/bodyCenterLower.png'
+import assBodyCenterMiddle from 'url:/src/img/future/bodyCenterMiddle.png'
+import assBodyCenterUpper from 'url:/src/img/future/bodyCenterUpper.png'
+import assSideWindow from 'url:/src/img/future/sideWindow.png'
+import assRoof from 'url:/src/img/future/roof.png'
 import g from './glob'
 import { setFlux } from './flux'
 import { devLog, gsapTick, isFunction, randOnum, setAddOn, toggleFermata } from './utils'
@@ -384,7 +389,7 @@ const setThree = () => {
     deLorean: {
       struct: [432, 1000, 300],
       position: [0, 0, -1000],
-      rotation: [100, 0, -90],
+      rotation: [135, 0, -90],
       children: {
         underCarriage: {
           struct: [432, 1000, 127],
@@ -509,7 +514,91 @@ const setThree = () => {
         body: {
           struct: [432, 1000, 300],
           children: {
+            bcLowerL: {
+              txtAss: assBodyCenterLower,
+              struct: [103, 460],
+              pivot: [51.5],
+              position: [216, 9.5],
+              rotation: [0, 90],
+            },
+            bcLowerR: {
+              txtAss: assBodyCenterLower,
+              struct: [103, 460],
+              pivot: [51.5],
+              position: [-216, 9.5],
+              rotation: [0, 90],
+            },
+            bcMiddleL: {
+              txtAss: assBodyCenterMiddle,
+              struct: [61, 729],
+              pivot: [30.5],
+              position: [216, 0, -103],
+              rotation: [0, 120],
+            },
+            bcMiddleR: {
+              txtAss: assBodyCenterMiddle,
+              struct: [61, 729],
+              pivot: [30.5],
+              position: [-216, 0, -103],
+              rotation: [0, 60],
+            },
+            bcUpperL: {
+              struct: [100, 359],
+              pivot: [50],
+              position: [186, -27.5, -155],
+              children: {
+                bcUpperFrameL: {
+                  txtAss: assBodyCenterUpper,
+                  struct: [100, 359],
+                  pivot: [50],
+                  rotation: [0, 132.5],
+                },
+                sideViewMirrorL: {
 
+                },
+              },
+            },
+            bcUpperR: {
+              struct: [100, 359],
+              pivot: [50],
+              position: [-186, -27.5, -155],
+              children: {
+                bcUpperFrameR: {
+                  txtAss: assBodyCenterUpper,
+                  struct: [100, 359],
+                  pivot: [50],
+                  rotation: [0, 47.5],
+                },
+                sideViewMirrorR: {
+
+                },
+              },
+            },
+            sideWindowL: {
+              txtAss: assSideWindow,
+              struct: [100, 359],
+              pivot: [50],
+              position: [185.5, -27.5, -155],
+              rotation: [0, 132.5]
+            },
+            sideWindowR: {
+              txtAss: assSideWindow,
+              struct: [100, 359],
+              pivot: [50],
+              position: [-185.5, -27.5, -155],
+              rotation: [0, 47.5]
+            },
+            roof: {
+              txtAss: assRoof,
+              struct: [251.5, 195],
+              position: [0, -98.5, -220.5],
+              // background-image: url(../img/future/roof.png);
+              // width: 242px;
+              // height: 195px;
+              // left: 90px;
+              // top: 484px;
+              // transform: translateZ(-220.5px);
+            }
           },
         },
         wheels: {
