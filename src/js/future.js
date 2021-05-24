@@ -371,22 +371,26 @@ const setThree = () => {
     g.three.ani.forEach(ani => {
       ani(1000 * delta)
     })
-    // TILT TEST
-    g.three.xyz.forEach(axis => {
-      g.three.scene.children[0].rotation[axis] = g.three.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) - 1)
-      if (g.three.scene.children[0].rotation[axis] > THREE.Math.degToRad(20) || g.three.scene.children[0].rotation[axis] < THREE.Math.degToRad(-20)) g.three.mkr.tlt[axis] = !g.three.mkr.tlt[axis]
-    })
+    // // TILT TEST
+    // g.three.xyz.forEach(axis => {
+    //   g.three.scene.children[0].rotation[axis] = g.three.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) - 1)
+    //   if (g.three.scene.children[0].rotation[axis] > THREE.Math.degToRad(20) || g.three.scene.children[0].rotation[axis] < THREE.Math.degToRad(-20)) g.three.mkr.tlt[axis] = !g.three.mkr.tlt[axis]
+    // })
   }
 
   // it remains to be seen whether this approach will actually save any time or code... I think it will at least cut down some of three's repetition
   // just remember that ALL NAME/ID KEYS IN THE FOLLOWING OBJECT MUST BE UNIQUE, REGARDLESS OF NESTING LEVEL
   g.three.makeObjs = {
     deLorean: {
-      position: [0, 0, -848],
+      struct: [432, 1000, 300],
+      position: [0, 0, -1000],
+      rotation: [100, 0, -90],
       children: {
         underCarriage: {
+          struct: [432, 1000, 127],
           children: {
             bottom: {
+              struct: [432, 1000, 26],
               children: {
                 ucF: {
                   struct: [432, 119],
@@ -410,13 +414,16 @@ const setThree = () => {
                       pivot: [0, -76],
                     },
                     exhaustPipes: {
+                      struct: [432, 40, 19],
                       position: [0, -132, -9],
                       children: {
                         exPL: {
+                          struct: [19, 40, 19],
                           children: g.three.mkr.exhaustPipe('L'),
                           position: [123],
                         },
                         exPR: {
+                          struct: [19, 40, 19],
                           children: g.three.mkr.exhaustPipe('R'),
                           position: [-118],
                         }
@@ -427,6 +434,7 @@ const setThree = () => {
               },
             },
             top: {
+              struct: [432, 1000, 127],
               children: {
                 ucWheelWallFL: {
                   struct: [127, 150],
@@ -499,6 +507,7 @@ const setThree = () => {
           },
         },
         body: {
+          struct: [432, 1000, 300],
           children: {
 
           },
@@ -604,7 +613,7 @@ const makeThreeObj = (obj, makeObj) => {
     }
     let makeFail, makeMesh
     if (makeObj.geo !== 'group' && makeObj.struct && makeObj.struct.length && makeObj.struct.length >= 2) {
-      g.three.obj[obj] = {}
+      if (makeObj.geo !== 'group') g.three.obj[obj] = {}
       makeMesh = { ...g.three.msh }
       if (makeObj.msh) Object.keys(makeObj.msh).forEach(mshProp => makeMesh[mshProp] = makeObj.msh[mshProp])
       if (!makeObj.mat) makeObj.mat = THREE.MeshBasicMaterial
@@ -633,6 +642,8 @@ const makeThreeObj = (obj, makeObj) => {
       case 'group':
       default:
         g.three.grp[obj] = new THREE.Group()
+        // devLog(makeObj)
+        // g.three.grp[obj] = new THREE.Mesh(new THREE.BoxGeometry(makeObj.struct[0] || 1000, makeObj.struct[1] || 1000, makeObj.struct[2] || 1000), new makeObj.mat(makeMesh))
     }
     if (makeFail) devLog(makeFail)
     else if (g.three.obj[obj] && g.three.obj[obj].geo && makeMesh && makeObj.mat) {
@@ -656,6 +667,13 @@ const makeThreeObj = (obj, makeObj) => {
       }
     } else if (makeObj.children && g.three.grp[obj]) {
       Object.keys(makeObj.children).forEach(childObj => {
+        // if (g.three.grp[childObj]) devLog(g.three.grp[childObj])
+        // if (g.three.grp[childObj] || g.three.obj[childObj]) {
+        //   if (g.three.grp[childObj]) g.three.grp[childObj].updateMatrix()
+        //   else if (g.three.obj[childObj].msh) g.three.obj[childObj].msh.updateMatrix()
+        //   else g.three.obj[childObj].updateMatrix()
+        //   g.three.grp[obj].geometry.merge(g.three.obj[childObj] ? g.three.obj[childObj].msh.geometry || g.three.obj[childObj].geometry : g.three.grp[childObj].geometry, g.three.obj[childObj] ? g.three.obj[childObj].msh.matrix || g.three.obj[childObj].matrix : g.three.grp[childObj].matrix)
+        // }
         if (g.three.grp[childObj] || g.three.obj[childObj]) g.three.grp[obj].add(g.three.obj[childObj] ? g.three.obj[childObj].msh || g.three.obj[childObj] : g.three.grp[childObj])
       })
       if (makeObj.rotation) {
