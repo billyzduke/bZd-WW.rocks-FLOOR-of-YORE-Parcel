@@ -172,12 +172,12 @@ const setModel = () => {
 
 const setThree = () => {
   g.three = {
+    ani: [],
     clk: new THREE.Clock(),
     cvs: [g.main.cx, g.main.h],
+    flr: [],
     grp: {},
-    mkr: {
-      flr: []
-    },
+    mkr: {},
     msh: {
       alphaTest: 0.5,
       side: THREE.DoubleSide,
@@ -312,22 +312,20 @@ const setThree = () => {
         opacity: 0.88,
         map: g.three.mkr.textureLoader(assRocketFlare),
       }
+      msh.alphaTest = 0.01
       flares[thisFlare] = {
         struct: [276, 376],
         pivot: [0, -188],
         rotation: [0, 120 * flare],
-      }
-      const thisFlr = g.three.mkr.flr.length
-      g.three.mkr.flr.push({
-        cdt: 0,
-        ctl: 0,
-        mat: {
+        mat: new THREE.MeshBasicMaterial({
           ...msh,
           ...flareMat
-        },
+        })
+      }
+      g.three.flr.push({
+        cdt: 0,
+        ctl: 0,
       })
-      flares[thisFlare].mat = new THREE.MeshBasicMaterial(g.three.mkr.flr[thisFlr].mat)
-      g.three.mkr.flr[thisFlr].ani = g.three.mkr.setTextureAnimator(thisFlr, 5, 1, 5, 75) // texture, #horiz, #vert, #total, duration.
     }
     wheelies[`wheel${wheel}flares`] = {
       struct: [276, 276, 376],
@@ -343,32 +341,33 @@ const setThree = () => {
     }
   }
 
-  g.three.mkr.setTextureAnimator = (flr, hTiles, vTiles, totTiles, tileDisplayDuration) => {
+  g.three.mkr.setTextureAnimator = (flr, fls, hTiles, vTiles, totTiles, tileDisplayDuration) => {
     // note: texture passed by reference, will be updated by the update function // we hope
     // how many images does this spritesheet contain?
     //  usually equals tilesHoriz * tilesVert, but not necessarily,
     //  if there at blank tiles at the bottom of the spritesheet.
-    g.three.mkr.flr[flr].mat.map.wrapS = g.three.mkr.flr[flr].mat.map.wrapT = THREE.RepeatWrapping
-    g.three.mkr.flr[flr].mat.map.repeat.set(1 / hTiles, 1 / vTiles)
+    g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.wrapS = g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.wrapT = THREE.RepeatWrapping
+    g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.repeat.set(1 / hTiles, 1 / vTiles)
 
     return milliSec => {
-      g.three.mkr.flr[flr].cdt += milliSec
-      while (g.three.mkr.flr[flr].cdt > tileDisplayDuration) {
-        g.three.mkr.flr[flr].cdt -= tileDisplayDuration
-        let nextTile = g.three.mkr.flr[flr].ctl
-        while (nextTile === g.three.mkr.flr[flr].ctl) nextTile = randOnum(0, totTiles - 1)
-        var currentColumn = g.three.mkr.flr[flr].ctl % hTiles
-        g.three.mkr.flr[flr].mat.map.offset.x = currentColumn / hTiles
-        var currentRow = Math.floor( g.three.mkr.flr[flr].ctl / hTiles )
-        g.three.mkr.flr[flr].mat.map.offset.y = currentRow / vTiles
+      g.three.flr[flr].cdt += milliSec
+      while (g.three.flr[flr].cdt > tileDisplayDuration) {
+        g.three.flr[flr].cdt -= tileDisplayDuration
+        let nextTile = g.three.flr[flr].ctl
+        while (nextTile === g.three.flr[flr].ctl) nextTile = randOnum(0, totTiles - 1)
+        g.three.flr[flr].ctl = nextTile
+        var currentColumn = g.three.flr[flr].ctl % hTiles
+        g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.offset.x = currentColumn / hTiles
+        var currentRow = Math.floor( g.three.flr[flr].ctl / hTiles )
+        g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.offset.y = currentRow / vTiles
       }
     }
   }
 
   g.three.mkr.update = () => {
     const delta = g.three.clk.getDelta()
-    g.three.mkr.flr.forEach(flr => {
-      flr.ani(1000 * delta)
+    g.three.ani.forEach(ani => {
+      ani(1000 * delta)
     })
   }
 
@@ -529,6 +528,18 @@ const setThree = () => {
 
   console.log({ madeObjs: g.three })
   Object.keys(g.three.makeObjs).forEach(grp => g.three.scene.add(g.three.grp[grp]))
+  g.three.flaresInScene = [
+    [0, 2, 0, 0, 13],
+    [0, 2, 0, 1, 13],
+    [0, 2, 1, 0, 13],
+    [0, 2, 1, 1, 13],
+  ]
+  g.three.flaresInScene.forEach(fls => {
+    g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.forEach((_, flr) => {
+      const drillDown = [ ...fls, flr]
+      g.three.ani.push(g.three.mkr.setTextureAnimator(g.three.ani.length, drillDown, 5, 1, 5, 25)) // texture, #horiz, #vert, #total, duration.
+    })
+  })
 
   g.three.controls.target.copy(g.three.grp.deLorean.position)
   g.three.controls.update()
@@ -602,6 +613,7 @@ const makeThreeObj = (obj, makeObj) => {
     }
     if (makeFail) devLog(makeFail)
     else if (g.three.obj[obj] && g.three.obj[obj].geo && makeMesh && makeObj.mat) {
+      if (makeObj.mkr) g.three.obj[obj].mkr = makeObj.mkr
       if (makeObj.txtAss) makeMesh.map = g.three.obj[obj].txt = new THREE.TextureLoader().load(makeObj.txtAss)
       if (typeof makeObj.color !== 'undefined') makeMesh.color = g.three.obj[obj].hex = makeObj.color
       g.three.obj[obj].mat = isFunction(makeObj.mat) ? new makeObj.mat(makeMesh) : makeObj.mat
