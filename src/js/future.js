@@ -11,6 +11,11 @@ import assCrossAxleF from 'url:/src/img/future/crossAxleFront.png'
 import assCrossAxleA from 'url:/src/img/future/crossAxleRear.png'
 import assExhaustPipeOuter from 'url:/src/img/future/exhaustPipe.png'
 import assExhaustPipeInner from 'url:/src/img/future/exhaustPipeInner.png'
+import assTireTread from 'url:/src/img/future/tireTread.png'
+import assTireWallLong from 'url:/src/img/future/tireWallLong.png'
+import assTireWallShort from 'url:/src/img/future/tireWallShort.png'
+import assTireHubCapF from 'url:/src/img/future/hubCapFront.png'
+import assTireHubCapA from 'url:/src/img/future/hubCapRear.png'
 import g from './glob'
 import { setFlux } from './flux'
 import { devLog, gsapTick, isFunction, randOnum, setAddOn, toggleFermata } from './utils'
@@ -169,6 +174,11 @@ const setThree = () => {
     cvs: [g.main.cx, g.main.h],
     grp: {},
     mkr: {},
+    msh: {
+      alphaTest: 0.5,
+      side: THREE.DoubleSide,
+      transparent: true,
+    },
     obj: {},
     xyz: ['x', 'y', 'z'],
   }
@@ -227,34 +237,80 @@ const setThree = () => {
     return pipe
   }
 
-  g.three.mkr.wheel = () => {
-    const wheel = {}
-    for (let spoke = 0; spoke < 6; spoke++) {
-      // spokeLong
-      // spokeShort
+  g.three.mkr.textureLoader = txtAss => new THREE.TextureLoader().load(txtAss),
+
+  g.three.mkr.spokeMap = () => {
+    const spokeMap = {
+      long: [],
+      short: [],
     }
-  //   [
-  //     new THREE.MeshLambertMaterial({
-  //         map: new THREE.TextureLoader().load(makeObj.txtAss)
-  //     }),
-  //     new THREE.MeshLambertMaterial({
-  //         map: THREE.ImageUtils.loadTexture('/Content/Images/dice-2-hi.png')
-  //     }),
-  //     new THREE.MeshLambertMaterial({
-  //         map: THREE.ImageUtils.loadTexture('/Content/Images/dice-3-hi.png')
-  //     }),
-  //     new THREE.MeshLambertMaterial({
-  //         map: THREE.ImageUtils.loadTexture('/Content/Images/dice-4-hi.png')
-  //     }),
-  //     new THREE.MeshLambertMaterial({
-  //         map: THREE.ImageUtils.loadTexture('/Content/Images/dice-5-hi.png')
-  //     }),
-  //     new THREE.MeshLambertMaterial({
-  //         map: THREE.ImageUtils.loadTexture('/Content/Images/dice-6-hi.png')
-  //     })
-  //  ]
+    for (let side = 0; side < 6; side++) {
+      spokeMap.long.push({
+        map: g.three.mkr.textureLoader([2, 3].includes(side) ? assTireTread : assTireWallLong),
+      })
+      spokeMap.short.push({
+        map: g.three.mkr.textureLoader([2, 3].includes(side) ? assTireTread : assTireWallShort),
+      })
+    }
+    return spokeMap
   }
 
+  g.three.mkr.wheel = wheel => {
+    const msh = { ...g.three.msh }
+    const wheelies = {}
+    const spokeMap = g.three.mkr.spokeMap()
+    for (let spoke = 0; spoke < 6; spoke++) {
+      const mat = {
+        long: [],
+        short: [],
+      }
+      for (let sps = 0; sps < 6; sps++) {
+        mat.long.push(new THREE.MeshBasicMaterial({
+          ...msh,
+          ...spokeMap.long[sps]
+        }))
+        mat.short.push(new THREE.MeshBasicMaterial({
+          ...msh,
+          ...spokeMap.short[sps]
+        }))
+      }
+      const spokeLong = {
+        geo: 'box',
+        struct: [18, 142, 52],
+        rotation: [0, 0, spoke * 30],
+        mat: mat.long,
+      }
+      const spokeShort = {
+        geo: 'box',
+        struct: [18, 120, 52],
+        rotation: [0, 0, (spoke * 30) + 15],
+        mat: mat.short,
+      }
+      wheelies[`wheel${wheel}spokeLong${spoke}`] = spokeLong
+      wheelies[`wheel${wheel}spokeShort${spoke}`] = spokeShort
+    }
+    const hubCapMat = {
+      map: g.three.mkr.textureLoader(wheel.includes('F') ? assTireHubCapF : assTireHubCapA),
+    }
+    wheelies[`wheel${wheel}hubCap`] = {
+      geo: 'circle',
+      struct: [43, 32],
+      position: [0, 0, 26],
+      mat: new THREE.MeshBasicMaterial({
+        ...msh,
+        ...hubCapMat
+      }),
+    }
+
+    return {
+      struct: [142, 142, 52],
+      position: [0, wheel.includes('F') ? 289 : -286.5 ],
+      children: wheelies,
+    }
+  }
+
+  // it remains to be seen whether this approach will actually save any time or code... I think it will, at least somewhat
+  // just remember that ALL NAME/ID KEYS IN THE FOLLOWING OBJECT MUST BE UNIQUE, REGARDLESS OF NESTING LEVEL
   g.three.makeObjs = {
     deLorean: {
       position: [0, 0, -848],
@@ -378,24 +434,26 @@ const setThree = () => {
 
           },
         },
-        // width: 423px;
-        // height: 729px;
-        // top: 119px;
-        // transform: translateZ(15px);
         wheels: {
-          struct: [432, 729],
-          position: [0, 0, 15],
+          struct: [432, 729, 142],
+          position: [0, 0, -11],
           children: {
             wheelsL: {
+              struct: [142, 729, 52],
+              pivot: [71],
+              position: [ 223 ],
               children: {
-                wheelLF: g.three.mkr.wheel(),
-                wheelLA: g.three.mkr.wheel(),
+                wheelLF: g.three.mkr.wheel('LF'),
+                wheelLA: g.three.mkr.wheel('LA'),
               }
             },
             wheelsR: {
+              struct: [142, 729],
+              pivot: [-71],
+              position: [ -223 ],
               children: {
-                wheelRF: g.three.mkr.wheel(),
-                wheelRA: g.three.mkr.wheel(),
+                wheelRF: g.three.mkr.wheel('RF'),
+                wheelRA: g.three.mkr.wheel('RA'),
               },
             },
           },
@@ -449,18 +507,24 @@ const makeThreeObj = (obj, makeObj) => {
     let makeFail, makeMesh
     if (makeObj.geo !== 'group' && makeObj.struct && makeObj.struct.length && makeObj.struct.length >= 2) {
       g.three.obj[obj] = {}
-      makeMesh = {
-        alphaTest: 0.5,
-        side: THREE.DoubleSide,
-        transparent: true,
-      }
+      makeMesh = { ...g.three.msh }
       if (makeObj.msh) Object.keys(makeObj.msh).forEach(mshProp => makeMesh[mshProp] = makeObj.msh[mshProp])
       if (!makeObj.mat) makeObj.mat = THREE.MeshBasicMaterial
     }
     switch (makeObj.geo) {
       case 'cylinder':
         if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3]) {
-          g.three.obj[obj].geo = new THREE.CylinderGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3]);
+          g.three.obj[obj].geo = new THREE.CylinderGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3])
+        } else makeFail = { makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        break
+      case 'box':
+        if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2]) {
+          g.three.obj[obj].geo = new THREE.BoxGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2])
+        } else makeFail = { makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        break
+      case 'circle':
+        if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1]) {
+          g.three.obj[obj].geo = new THREE.CircleGeometry(makeObj.struct[0], makeObj.struct[1])
         } else makeFail = { makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'plane':
