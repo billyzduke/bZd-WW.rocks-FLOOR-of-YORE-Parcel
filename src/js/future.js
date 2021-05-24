@@ -16,6 +16,7 @@ import assTireWallLong from 'url:/src/img/future/tireWallLong.png'
 import assTireWallShort from 'url:/src/img/future/tireWallShort.png'
 import assTireHubCapF from 'url:/src/img/future/hubCapFront.png'
 import assTireHubCapA from 'url:/src/img/future/hubCapRear.png'
+import assRocketFlare from 'url:/src/img/future/skyrocket.png'
 import g from './glob'
 import { setFlux } from './flux'
 import { devLog, gsapTick, isFunction, randOnum, setAddOn, toggleFermata } from './utils'
@@ -171,9 +172,12 @@ const setModel = () => {
 
 const setThree = () => {
   g.three = {
+    clk: new THREE.Clock(),
     cvs: [g.main.cx, g.main.h],
     grp: {},
-    mkr: {},
+    mkr: {
+      flr: []
+    },
     msh: {
       alphaTest: 0.5,
       side: THREE.DoubleSide,
@@ -301,6 +305,36 @@ const setThree = () => {
         ...hubCapMat
       }),
     }
+    let flares = {}
+    for (let flare = 0; flare < 3; flare++) {
+      const thisFlare = `wheel${wheel}flare${flare + 1}`
+      const flareMat = {
+        opacity: 0.88,
+        map: g.three.mkr.textureLoader(assRocketFlare),
+      }
+      flares[thisFlare] = {
+        struct: [276, 376],
+        pivot: [0, -188],
+        rotation: [0, 120 * flare],
+      }
+      const thisFlr = g.three.mkr.flr.length
+      g.three.mkr.flr.push({
+        cdt: 0,
+        ctl: 0,
+        mat: {
+          ...msh,
+          ...flareMat
+        },
+      })
+      flares[thisFlare].mat = new THREE.MeshBasicMaterial(g.three.mkr.flr[thisFlr].mat)
+      g.three.mkr.flr[thisFlr].ani = g.three.mkr.setTextureAnimator(thisFlr, 5, 1, 5, 75) // texture, #horiz, #vert, #total, duration.
+    }
+    wheelies[`wheel${wheel}flares`] = {
+      struct: [276, 276, 376],
+      pivot: [0, -188],
+      rotation: [-90],
+      children: flares
+    }
 
     return {
       struct: [142, 142, 52],
@@ -309,7 +343,36 @@ const setThree = () => {
     }
   }
 
-  // it remains to be seen whether this approach will actually save any time or code... I think it will, at least somewhat
+  g.three.mkr.setTextureAnimator = (flr, hTiles, vTiles, totTiles, tileDisplayDuration) => {
+    // note: texture passed by reference, will be updated by the update function // we hope
+    // how many images does this spritesheet contain?
+    //  usually equals tilesHoriz * tilesVert, but not necessarily,
+    //  if there at blank tiles at the bottom of the spritesheet.
+    g.three.mkr.flr[flr].mat.map.wrapS = g.three.mkr.flr[flr].mat.map.wrapT = THREE.RepeatWrapping
+    g.three.mkr.flr[flr].mat.map.repeat.set(1 / hTiles, 1 / vTiles)
+
+    return milliSec => {
+      g.three.mkr.flr[flr].cdt += milliSec
+      while (g.three.mkr.flr[flr].cdt > tileDisplayDuration) {
+        g.three.mkr.flr[flr].cdt -= tileDisplayDuration
+        let nextTile = g.three.mkr.flr[flr].ctl
+        while (nextTile === g.three.mkr.flr[flr].ctl) nextTile = randOnum(0, totTiles - 1)
+        var currentColumn = g.three.mkr.flr[flr].ctl % hTiles
+        g.three.mkr.flr[flr].mat.map.offset.x = currentColumn / hTiles
+        var currentRow = Math.floor( g.three.mkr.flr[flr].ctl / hTiles )
+        g.three.mkr.flr[flr].mat.map.offset.y = currentRow / vTiles
+      }
+    }
+  }
+
+  g.three.mkr.update = () => {
+    const delta = g.three.clk.getDelta()
+    g.three.mkr.flr.forEach(flr => {
+      flr.ani(1000 * delta)
+    })
+  }
+
+  // it remains to be seen whether this approach will actually save any time or code... I think it will at least cut down some of three's repetition
   // just remember that ALL NAME/ID KEYS IN THE FOLLOWING OBJECT MUST BE UNIQUE, REGARDLESS OF NESTING LEVEL
   g.three.makeObjs = {
     deLorean: {
@@ -490,7 +553,8 @@ const setThree = () => {
       g.three.camera.updateProjectionMatrix()
     }
     requestAnimationFrame( animate )
-    g.three.renderer.render( g.three.scene, g.three.camera )
+    g.three.renderer.render(g.three.scene, g.three.camera)
+    g.three.mkr.update()
   }
 
   animate()
