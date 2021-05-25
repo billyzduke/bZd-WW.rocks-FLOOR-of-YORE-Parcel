@@ -28,6 +28,20 @@ import assHood from 'url:/src/img/future/hood.png'
 import assBodyFrontLower from 'url:/src/img/future/bodyFrontLower.png'
 import assBodyFrontUpper from 'url:/src/img/future/bodyFrontUpper.png'
 import assBodyFrontCorner from 'url:/src/img/future/bodyFrontCorner.png'
+import assGrille from 'url:/src/img/future/grille.png'
+import assBumperFrontTop from 'url:/src/img/future/lightBarFront.png'
+import assBodyEngineTop from 'url:/src/img/future/bodyEngineTop.png'
+import assBodyEngineBack from 'url:/src/img/future/bodyEngineBack.png'
+import assBodyAftLower from 'url:/src/img/future/bodyRearLower.png'
+import assBodyAftMiddle from 'url:/src/img/future/bodyRearMiddle.png'
+import assBodyAftUpper from 'url:/src/img/future/bodyRearUpper.png'
+import assBodyAftCorner from 'url:/src/img/future/bodyRearCorner.png'
+import assBodyEngineLeft from 'url:/src/img/future/bodyEngineUpperLeft.png'
+import assBodyEngineRight from 'url:/src/img/future/bodyEngineUpperRight.png'
+import assBodyBackPlate from 'url:/src/img/future/bodyBackPlate.png'
+import assBodyBackLedge from 'url:/src/img/future/bodyBackLedge.png'
+import assBodyBackBarFace from 'url:/src/img/future/backBarFace.png'
+
 import g from './glob'
 import { setFlux } from './flux'
 import { devLog, gsapTick, isFunction, randOnum, setAddOn, toggleFermata } from './utils'
@@ -385,6 +399,9 @@ const setThree = () => {
     g.three.ani.forEach(ani => {
       ani(1000 * delta)
     })
+    g.three.xyz.forEach(axis => {
+      g.el[axis].innerHTML = g.three.scene.children[0].rotation[axis]
+    })
     // // TILT TEST
     // g.three.xyz.forEach(axis => {
     //   g.three.scene.children[0].rotation[axis] = g.three.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) - 1)
@@ -658,6 +675,159 @@ const setThree = () => {
               position: [-216, 364, -103],
               rotation: { y: 90 },
             },
+            grille: {
+              txtAss: assGrille,
+              struct: [382, 36],
+              pivot: [0, -18],
+              position: [0, 481, -102.5],
+              rotation: {x: 59.5},
+            },
+            bumperFrontBottomUpper: {
+              color: new THREE.Color(0x18171d),
+              struct: [381, 24],
+              pivot: [0, -12],
+              position: [0, 480, -67.5],
+              rotation: { x: -16 },
+            },
+            bumperFrontBottomMiddle: {
+              color: new THREE.Color(0x101010),
+              struct: [381, 24],
+              pivot: [0, -12],
+              position: [0, 464, -42],
+              rotation: { x: 90 },
+            },
+            bumperFrontBottomLower: {
+              color: new THREE.Color(0x2f2f2f),
+              struct: [381, 24],
+              pivot: [0, -12],
+              position: [0, 483, -37],
+              rotation: { x: 34.5 },
+            },
+            bumperFrontTop: {
+              txtAss: assBumperFrontTop,
+              struct: [382, 36],
+              pivot: [0, -18],
+              position: [0, 480, -67.5],
+              rotation: {x: 90},
+            },
+            engineTop: {
+              txtAss: assBodyEngineTop,
+              struct: [316, 170],
+              pivot: [0, -85],
+              position: [0, -196, -220.5],
+              rotation: {x: -11}
+            },
+            engineBack: {
+              txtAss: assBodyEngineBack,
+              struct: [333, 99],
+              pivot: [0, -49.5],
+              position: [0, -361, -188],
+              rotation: {x: -19}
+            },
+            baLowerL: {
+              txtAss: assBodyAftLower,
+              struct: [77, 126],
+              pivot: [38.5, -63],
+              position: [216, -364, -26],
+              rotation: {y: 90, x: 13},
+            },
+            baLowerR: {
+              txtAss: assBodyAftLower,
+              struct: [77, 126],
+              pivot: [38.5, -63],
+              position: [-216, -364, -26],
+              rotation: { y: 90, x: -13 },
+            },
+            baMiddleL: {
+              txtAss: assBodyAftMiddle,
+              struct: [61, 126],
+              pivot: [30.5, -63],
+              position: [216, -364, -103],
+              rotation: { z: -12.325, y: 120 },
+            },
+            baMiddleR: {
+              txtAss: assBodyAftMiddle,
+              struct: [61, 126],
+              pivot: [30.5, -63],
+              position: [-216, -364, -103],
+              rotation: { z: 12.325, y: 60 },
+            },
+            baUpperL: {
+              txtAss: assBodyAftUpper,
+              struct: [49, 98],
+              pivot: [24.5, -49],
+              position: [187, -358, -155.5],
+              rotation: { z: -12.325, y: 129.5 },
+            },
+            baUpperR: {
+              txtAss: assBodyAftUpper,
+              struct: [49, 98],
+              pivot: [24.5, -49],
+              position: [-187, -358, -155.5],
+              rotation: { z: 12.325, y: 50.5 },
+            },
+            baCornerL: {
+              txtAss: assBodyAftCorner,
+              struct: [27, 17],
+              pivot: [-13.5, 8.5],
+              position: [216, -364, -103],
+              rotation: { y: 90 },
+            },
+            baCornerR: {
+              txtAss: assBodyAftCorner,
+              struct: [27, 17],
+              pivot: [-13.5, 8.5],
+              position: [-216, -364, -103],
+              rotation: { y: 90 },
+            },
+            engineLeft: {
+              txtAss: assBodyEngineLeft,
+              struct: [87, 157],
+              pivot: [42.75, -78.5],
+              position: [185.5, -206, -155],
+              rotation: { y: 132.5 },
+            },
+            engineRight: {
+              txtAss: assBodyEngineRight,
+              struct: [87, 157],
+              pivot: [42.75, -78.5],
+              position: [-185.5, -206.5, -155],
+              rotation: { y: 47.5 },
+            },
+            bBackPlate: {
+              txtAss: assBodyBackPlate,
+              struct: [376, 52.5],
+              pivot: [0, -25],
+              position: [0, -475, -109],
+              rotation: { x: 114 },
+            },
+            bBackLedge: {
+              txtAss: assBodyBackLedge,
+              struct: [381, 13],
+              pivot: [0, -6.5],
+              position: [0, -475, -109],
+              rotation: { x: -22 },
+            },
+            bumperAftUpper: {
+              color: new THREE.Color(0x2f2f2f),
+              struct: [376, 32],
+              pivot: [0, 16.5],
+              position: [0, -486.5, -72],
+              rotation: {x: -90},
+            },
+            bumperAftMiddle: {
+              color: new THREE.Color(0x101010),
+              struct: [376.5, 9],
+              pivot: [0, 4.5],
+              position: [0, -487, -72],
+            },
+            bumperAftLower: {
+              color: new THREE.Color(0x18171d),
+              struct: [381, 50],
+              pivot: [0, 25],
+              position: [0, -474, -41],
+              rotation: {x: -90},
+            },
 
           },
         },
@@ -772,22 +942,22 @@ const makeThreeObj = (obj, makeObj) => {
       case 'cylinder':
         if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3]) {
           g.three.obj[obj].geo = new THREE.CylinderGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3])
-        } else makeFail = { makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'box':
         if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2]) {
           g.three.obj[obj].geo = new THREE.BoxGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2])
-        } else makeFail = { makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'circle':
         if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1]) {
           g.three.obj[obj].geo = new THREE.CircleGeometry(makeObj.struct[0], makeObj.struct[1])
-        } else makeFail = { makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'plane':
         if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1]) {
           g.three.obj[obj].geo = new THREE.PlaneGeometry(makeObj.struct[0], makeObj.struct[1])
-        } else makeFail = { makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'group':
       default:

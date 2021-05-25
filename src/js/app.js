@@ -93,7 +93,10 @@ const loadApp = () => {
       'wombL',
       'wombR',
       'wormSignScreen',
+      'x',
+      'y',
       'yoreFloor',
+      'z',
     ]),
     ...htmEl([
       'html',
