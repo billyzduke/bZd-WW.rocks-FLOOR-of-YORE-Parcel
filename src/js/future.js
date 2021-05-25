@@ -272,7 +272,7 @@ const setThree = () => {
     return pipe
   }
 
-  g.three.mkr.textureLoader = txtAss => new THREE.TextureLoader().load( txtAss ),
+  g.three.mkr.textureLoader = txtAss => new THREE.TextureLoader().load( txtAss )
 
   g.three.mkr.spokeMap = () => {
     const spokeMap = {
@@ -351,10 +351,23 @@ const setThree = () => {
         map: g.three.mkr.textureLoader( assRocketFlare ),
       }
       msh.alphaTest = 0.01
+      let flarePos
+      switch ( flare ) {
+        case 0:
+          flarePos = [ 0, 0, -13 ]
+          break
+        case 1:
+          flarePos = [ -11, 0, -5 ]
+          break
+        case 2:
+          flarePos = [ 11, 0, -5 ]
+          break
+      }
       flares[thisFlare] = {
         struct: [ 276, 376 ],
         pivot: [ 0, -188 ],
         rotation: [ 0, 120 * flare ],
+        position: flarePos,
         mat: new THREE.MeshBasicMaterial( {
           ...msh,
           ...flareMat,
