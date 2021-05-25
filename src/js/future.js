@@ -213,7 +213,7 @@ const setThree = () => {
     xyz: [ 'x', 'y', 'z' ],
   }
   g.three.scene = new THREE.Scene()
-  g.three.camera = new THREE.PerspectiveCamera( 75, g.three.cvs[0] / g.three.cvs[1], 0.1, 2000 )
+  g.three.camera = new THREE.PerspectiveCamera( 75, g.three.cvs[0] / g.three.cvs[1], 0.1, 10000 )
 
   g.three.renderer = new THREE.WebGLRenderer( { alpha: true } )
   const setSize = () => g.three.renderer.setSize( g.three.cvs[0], g.three.cvs[1] )
@@ -384,12 +384,8 @@ const setThree = () => {
     }
     flares.flareFixer = {
       geo: 'cylinder',
-      struct: [
-        27.5,
-        0.01,
-        60,
-        6,
-      ],
+      // eslint-disable-next-line array-bracket-newline, array-element-newline
+      struct: [ 27.5, 0.01, 60, 6 ],
       pivot: [ 0, -52 ],
       mat: new THREE.MeshBasicMaterial( {
         ...msh,
@@ -903,36 +899,15 @@ const setThree = () => {
 
   console.log( { madeObjs: g.three } )
   Object.keys( g.three.makeObjs ).forEach( grp => g.three.scene.add( g.three.grp[grp] ) )
+  /* eslint-disable array-bracket-newline, array-element-newline */
   g.three.flaresInScene = [
-    [
-      0,
-      2,
-      0,
-      0,
-      13,
-    ],
-    [
-      0,
-      2,
-      0,
-      1,
-      13,
-    ],
-    [
-      0,
-      2,
-      1,
-      0,
-      13,
-    ],
-    [
-      0,
-      2,
-      1,
-      1,
-      13,
-    ],
+    [ 0, 2, 0, 0, 13 ],
+    [ 0, 2, 0, 1, 13 ],
+    [ 0, 2, 1, 0, 13 ],
+    [ 0, 2, 1, 1, 13 ],
   ]
+  /* eslint-enable array-bracket-newline, array-element-newline */
+
   g.three.flaresInScene.forEach( fls => {
     g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.forEach( ( _, flr ) => {
       if ( flr < g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.length - 1 ) {
@@ -949,9 +924,25 @@ const setThree = () => {
   g.three.controls.target.copy( g.three.grp.deLorean.position )
   g.three.controls.update()
 
-  g.three.lights = [ new THREE.AmbientLight( 0x404040 ), // soft white light
+  g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), // soft white light
     new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
   g.three.lights.forEach( light => g.three.scene.add( light ) )
+
+  // for ( let sp = 0; sp < 6; sp++ ) {
+  //   let axis = g.three.xyz[sp]
+  //   let dist = 750
+  //   if ( !axis ) {
+  //     axis = g.three.xyz[sp - 3]
+  //     dist = -750
+  //   }
+  //   console.log( axis, dist )
+  //   const geometry = new THREE.SphereGeometry( 250, 32, 32 )
+  //   const material = new THREE.MeshStandardMaterial( { color: 0xffffff } )
+  //   const sphere = new THREE.Mesh( geometry, material )
+  //   sphere.position.z = -1000
+  //   sphere.position[axis] += dist
+  //   g.three.scene.add( sphere )
+  // }
 
   const resize = () => {
     if ( g.three.renderer.domElement.width !== g.three.cvs[0] || g.three.renderer.domElement.height !== g.three.cvs[1] ) {
