@@ -23,6 +23,11 @@ import assBodyCenterMiddle from 'url:/src/img/future/bodyCenterMiddle.png'
 import assBodyCenterUpper from 'url:/src/img/future/bodyCenterUpper.png'
 import assSideWindow from 'url:/src/img/future/sideWindow.png'
 import assRoof from 'url:/src/img/future/roof.png'
+import assWindshield from 'url:/src/img/future/windshield.png'
+import assHood from 'url:/src/img/future/hood.png'
+import assBodyFrontLower from 'url:/src/img/future/bodyFrontLower.png'
+import assBodyFrontUpper from 'url:/src/img/future/bodyFrontUpper.png'
+import assBodyFrontCorner from 'url:/src/img/future/bodyFrontCorner.png'
 import g from './glob'
 import { setFlux } from './flux'
 import { devLog, gsapTick, isFunction, randOnum, setAddOn, toggleFermata } from './utils'
@@ -185,7 +190,7 @@ const setThree = () => {
     grp: {},
     mkr: {},
     msh: {
-      alphaTest: 0.5,
+      alphaTest: 0.36,
       side: THREE.DoubleSide,
       transparent: true,
     },
@@ -258,7 +263,7 @@ const setThree = () => {
       spokeMap.long.push({
         map: g.three.mkr.textureLoader([2, 3].includes(side) ? assTireTread : assTireWallLong),
       })
-      spokeMap.short.push({
+      spokeMap.short.push([0, 1].includes(side) ? { opacity: 0 } : {
         map: g.three.mkr.textureLoader([2, 3].includes(side) ? assTireTread : assTireWallShort),
       })
     }
@@ -275,14 +280,16 @@ const setThree = () => {
         short: [],
       }
       for (let sps = 0; sps < 6; sps++) {
-        mat.long.push(new THREE.MeshBasicMaterial({
+        const matLong = new THREE.MeshBasicMaterial({
           ...msh,
           ...spokeMap.long[sps]
-        }))
-        mat.short.push(new THREE.MeshBasicMaterial({
+        })
+        mat.long.push(matLong)
+        const matShort = new THREE.MeshBasicMaterial({
           ...msh,
           ...spokeMap.short[sps]
-        }))
+        })
+        mat.short.push(matShort)
       }
       const spokeLong = {
         geo: 'box',
@@ -302,14 +309,15 @@ const setThree = () => {
     const hubCapMat = {
       map: g.three.mkr.textureLoader(wheel.includes('F') ? assTireHubCapF : assTireHubCapA),
     }
+    const hubCapMsh = new THREE.MeshBasicMaterial({
+      ...msh,
+      ...hubCapMat
+    })
     wheelies[`wheel${wheel}hubCap`] = {
       geo: 'circle',
       struct: [43, 32],
       position: [0, 0, 26],
-      mat: new THREE.MeshBasicMaterial({
-        ...msh,
-        ...hubCapMat
-      }),
+      mat: hubCapMsh,
     }
     let flares = {}
     for (let flare = 0; flare < 3; flare++) {
@@ -318,7 +326,7 @@ const setThree = () => {
         opacity: 0.88,
         map: g.three.mkr.textureLoader(assRocketFlare),
       }
-      msh.alphaTest = 0.42
+      msh.alphaTest = 0.01
       flares[thisFlare] = {
         struct: [276, 376],
         pivot: [0, -188],
@@ -328,6 +336,7 @@ const setThree = () => {
           ...flareMat
         })
       }
+      flares[thisFlare].mat.depthWrite = false
       g.three.flr.push({
         cdt: 0,
         ctl: 0,
@@ -592,13 +601,64 @@ const setThree = () => {
               txtAss: assRoof,
               struct: [251.5, 195],
               position: [0, -98.5, -220.5],
-              // background-image: url(../img/future/roof.png);
-              // width: 242px;
-              // height: 195px;
-              // left: 90px;
-              // top: 484px;
-              // transform: translateZ(-220.5px);
-            }
+            },
+            windshield: {
+              txtAss: assWindshield,
+              struct: [375, 167],
+              pivot: [0, -82.5],
+              position: [0, 149.5, -154],
+              rotation: [23.5],
+            },
+            hood: {
+              txtAss: assHood,
+              struct: [387, 314],
+              pivot: [0, -157],
+              position: [0, 463, -133.5],
+              rotation: [4],
+            },
+            bfLowerL: {
+              txtAss: assBodyFrontLower,
+              struct: [81, 119],
+              pivot: [-40.5, 59.5],
+              position: [216, 363, -104],
+              rotation: { y: 90, x: -12.325 }, // sometimes you have to rotate multiple axes in a specific order. sigh.
+            },
+            bfLowerR: {
+              txtAss: assBodyFrontLower,
+              struct: [81, 119],
+              pivot: [-40.5, 59.5],
+              position: [-216, 363, -104],
+              rotation: { y: 90, x: 12.325 },
+            },
+            bfUpperL: {
+              txtAss: assBodyFrontUpper,
+              struct: [44, 121],
+              pivot: [22, 60.5],
+              position: [216, 363, -103],
+              rotation: { z: 12.325, y: 120 },
+            },
+            bfUpperR: {
+              txtAss: assBodyFrontUpper,
+              struct: [44, 121],
+              pivot: [22, 60.5],
+              position: [-216, 363, -103],
+              rotation: { z: -12.325, y: 60 },
+            },
+            bfCornerL: {
+              txtAss: assBodyFrontCorner,
+              struct: [24, 17],
+              pivot: [-12, -8.5],
+              position: [216, 364, -103],
+              rotation: { y: 90 },
+            },
+            bfCornerR: {
+              txtAss: assBodyFrontCorner,
+              struct: [24, 17],
+              pivot: [-12, -8.5],
+              position: [-216, 364, -103],
+              rotation: { y: 90 },
+            },
+
           },
         },
         wheels: {
@@ -706,6 +766,7 @@ const makeThreeObj = (obj, makeObj) => {
       makeMesh = { ...g.three.msh }
       if (makeObj.msh) Object.keys(makeObj.msh).forEach(mshProp => makeMesh[mshProp] = makeObj.msh[mshProp])
       if (!makeObj.mat) makeObj.mat = THREE.MeshBasicMaterial
+      // if (makeObj.msh && typeof makeObj.msh.depthWrite !== 'undefined') makeObj.mat.depthWrite = makeObj.msh.depthWrite
     }
     switch (makeObj.geo) {
       case 'cylinder':
@@ -748,11 +809,7 @@ const makeThreeObj = (obj, makeObj) => {
             if (typeof makeObj.position[i] !== 'undefined' && makeObj.position[i]) g.three.obj[obj].msh.position[axis] = makeObj.position[i]
           })
         }
-        if (makeObj.rotation) {
-          g.three.xyz.forEach((axis, i) => {
-            if (typeof makeObj.rotation[i] !== 'undefined' && makeObj.rotation[i]) g.three.obj[obj].msh[`rotate${axis.toUpperCase()}`](THREE.Math.degToRad(makeObj.rotation[i]))
-          })
-        }
+        if (makeObj.rotation) rotateAxes(obj, makeObj)
       }
     } else if (makeObj.children && g.three.grp[obj]) {
       Object.keys(makeObj.children).forEach(childObj => {
@@ -765,14 +822,21 @@ const makeThreeObj = (obj, makeObj) => {
         // }
         if (g.three.grp[childObj] || g.three.obj[childObj]) g.three.grp[obj].add(g.three.obj[childObj] ? g.three.obj[childObj].msh || g.three.obj[childObj] : g.three.grp[childObj])
       })
-      if (makeObj.rotation) {
-        g.three.xyz.forEach((axis, i) => {
-          if (typeof makeObj.rotation[i] !== 'undefined' && makeObj.rotation[i]) g.three.grp[obj][`rotate${axis.toUpperCase()}`](THREE.Math.degToRad(makeObj.rotation[i]))
-        })
-      }
+      if (makeObj.rotation) rotateAxes(obj, makeObj)
       if (makeObj.position) g.three.grp[obj].position.set(makeObj.position[0] || 0, makeObj.position[1] || 0, makeObj.position[2] || 0)
     }
   }
+}
+
+const rotateAxes = (obj, makeObj) => {
+  Object.keys(makeObj.rotation).forEach(axis => {
+    if (makeObj.rotation[axis]) {
+      const rotateAxis = `rotate${g.three.xyz.includes(axis) ? axis.toUpperCase() : g.three.xyz[axis].toUpperCase()}`
+      const rotateRad = THREE.Math.degToRad(makeObj.rotation[axis])
+      if (g.three.obj[obj]) g.three.obj[obj].msh[rotateAxis](rotateRad)
+      else if (g.three.grp[obj]) g.three.grp[obj][rotateAxis](rotateRad)
+    }
+  })
 }
 
 export { beginFuture, setFuture, setModel, setThree }
