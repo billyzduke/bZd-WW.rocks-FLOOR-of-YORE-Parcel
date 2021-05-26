@@ -184,8 +184,10 @@ const makeThreeObj = ( obj, makeObj ) => {
     }
     switch ( makeObj.geo ) {
       case 'cylinder':
-        if ( g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
-          g.three.obj[obj].geo = new THREE.CylinderGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3] )
+        if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3]) {
+          if (typeof makeObj.struct[4] === 'undefined') makeObj.struct[4] = 1 // heightSegments
+          if (typeof makeObj.struct[5] === 'undefined') makeObj.struct[5] = false // openEnded
+          g.three.obj[obj].geo = new THREE.CylinderGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4], makeObj.struct[5] )
         } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'box':

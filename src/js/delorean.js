@@ -43,6 +43,10 @@ import assRearVentLeftBackTop from 'url:/src/img/future/rearVentLeftBackTop.png'
 import assRearVentLeftBackBottom from 'url:/src/img/future/rearVentLeftBackBottom.png'
 import assRearVentRightBackTop from 'url:/src/img/future/rearVentRightBackTop.png'
 import assRearVentRightBackBottom from 'url:/src/img/future/rearVentRightBackBottom.png'
+import assFusionBaseGraySide from 'url:/src/img/future/fusionBaseSideCyl.png'
+import assFusionBaseGrayTop from 'url:/src/img/future/fusionBaseTop.png'
+import assFusionBaseBlackSide from 'url:/src/img/future/fusionBaseBlackSide.png'
+import assFusionBaseWhiteSide from 'url:/src/img/future/fusionBaseWhiteCyl.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -225,6 +229,176 @@ const makeWheel = wheel => {
     children: wheelies,
   }
 }
+
+const makeBackBar = () => {
+  const bb = {
+    c: 15,
+    h: 40,
+    w: 92,
+  }
+  const msh = { ...g.three.msh }
+  const barFaceMats = []
+  for ( let face = 0; face < 8; face++ ) {
+    const mshMap = {
+      map: g.three.mkr.textureLoader( assExtBackBarFace ),
+    }
+    barFaceMats[face] = new THREE.MeshBasicMaterial( {
+      ...msh,
+      ...mshMap,
+    } )
+  }
+  barFaceMats.forEach( ( _, f ) => {
+    if ( barFaceMats[f].map ) {
+      barFaceMats[f].map.wrapS = barFaceMats[f].map.wrapT = THREE.RepeatWrapping
+
+      switch ( f ) {
+        case 0:
+          barFaceMats[f].map.repeat.set( ( bb.w - ( bb.c * 2 ) ) / bb.w, bb.c / bb.h )
+          barFaceMats[f].map.offset.x = bb.c / bb.w
+          barFaceMats[f].map.offset.y = ( bb.h - bb.c ) / bb.h
+          break
+        case 1:
+          barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
+          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
+          break
+        case 2:
+          barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
+          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
+          break
+        case 3:
+          barFaceMats[f].map.repeat.set( 1, bb.c / bb.h )
+          barFaceMats[f].map.offset.y = ( bb.h - bb.c ) / bb.h
+          break
+        case 4:
+          barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
+          barFaceMats[f].map.rotation = THREE.Math.degToRad( 90 )
+          barFaceMats[f].map.offset.x = ( bb.w - bb.c ) / bb.w
+          break
+        case 5:
+          barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
+          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
+          break
+        case 6:
+          barFaceMats[f].map.rotation = THREE.Math.degToRad( 180 )
+          break
+      }
+    }
+  } )
+
+  return {
+    struct: [ 92, 15, 40 ],
+    position: [ 0, -284, -210 ],
+    children: {
+      backBarInner: {
+        struct: [ 62, 15, 25 ],
+        position: [ 0, 0, 7.5 ],
+        children: {
+          backBarInnerTop: {
+            struct: [ 62, 15 ],
+            position: [ 0, 0, -25 ],
+            mat: barFaceMats[0],
+          },
+          backBarInnerLeft: {
+            struct: [ 25, 15 ],
+            pivot: [ 12.5 ],
+            position: [ 31 ],
+            rotation: [ 0, 90 ],
+            mat: barFaceMats[1],
+          },
+          backBarInnerRight: {
+            struct: [ 25, 15 ],
+            pivot: [ 12.5 ],
+            position: [ -31 ],
+            rotation: [ 180, -90 ],
+            mat: barFaceMats[2],
+          },
+        },
+      },
+      backBarOuter: {
+        geo: 'box',
+        struct: [ 92, 15, 40 ],
+        children: {
+          backBarOuterTop: {
+            struct: [ 92, 15 ],
+            position: [ 0, 0, -32.5 ],
+            mat: barFaceMats[3],
+          },
+          backBarOuterLeft: {
+            struct: [ 40, 15 ],
+            pivot: [ -20 ],
+            position: [ 46, 0, 7.5 ],
+            rotation: [ 0, -90 ],
+            mat: barFaceMats[4],
+          },
+          backBarOuterRight: {
+            struct: [ 40, 15 ],
+            pivot: [ 20 ],
+            position: [ -46, 0, 7.5 ],
+            rotation: [ 0, 90 ],
+            mat: barFaceMats[5],
+          },
+          backBarOuterFront: {
+            struct: [ 92, 40 ],
+            pivot: [ 0, 20 ],
+            position: [ 0, 7.5, -32.5 ],
+            rotation: [ 90 ],
+            mat: barFaceMats[6],
+          },
+          backBarOuterBack: {
+            struct: [ 92, 40 ],
+            pivot: [ 0, 20 ],
+            position: [ 0, -7.5, 7.5 ],
+            rotation: [ -90 ],
+            mat: barFaceMats[7],
+          },
+        },
+      },
+    },
+  }
+}
+
+const makeRearVent = side => ( {
+  position: [ side === 'L' ? 96 : -94 ],
+  children: {
+    [`rearVentBottom${side}`]: {
+      color: new THREE.Color( 0x191e34 ),
+      struct: [ 74, 92 ],
+    },
+    [`rearVentLeftSide${side}`]: {
+      txtAss: assRearVentSide,
+      struct: [ 100, 116 ],
+      pivot: [ -50 ],
+      position: [ 37, -12 ],
+      rotation: { y: -90 },
+    },
+    [`rearVentRightSide${side}`]: {
+      txtAss: assRearVentSide,
+      struct: [ 100, 116 ],
+      pivot: [ -50 ],
+      position: [ -37, -12 ],
+      rotation: { y: -90 },
+    },
+    [`rearVentTop${side}`]: {
+      txtAss: assRearVentTop,
+      struct: [ 74, 116 ],
+      position: [ 0, -12, -100 ],
+    },
+    [`rearVentBackTop${side}`]: {
+      txtAss: side === 'L' ? assRearVentLeftBackTop : assRearVentRightBackTop,
+      struct: [ 74, 60 ],
+      pivot: [ 0, 30 ],
+      position: [ 0, -69, -40 ],
+      rotation: { x: -90 },
+    },
+    [`rearVentBackBottom${side}`]: {
+      txtAss: side === 'L' ? assRearVentLeftBackBottom : assRearVentRightBackBottom,
+      struct: [ 74, 48 ],
+      pivot: [ 0, 24 ],
+      position: [ 0, -45, 0 ],
+      rotation: { x: -120 },
+    },
+  },
+} )
 
 const setDeLorean = () => ( {
   struct: [ 432, 1000, 300 ],
@@ -649,6 +823,46 @@ const setDeLorean = () => ( {
       struct: [ 432, 1000, 300 ],
       children: {
         backBar: makeBackBar(),
+        mrFusion: {
+          position: [ 0, -358, -203 ],
+          children: {
+            base1LowerGrayDrum: {
+              txtAss: assFusionBaseGraySide,
+              geo: 'cylinder',
+              // eslint-disable-next-line array-bracket-newline, array-element-newline
+              struct: [ 43, 43, 32, 16, 1, true ],
+              pivot: [ 0, -16 ],
+              rotation: { x: -90 },
+            },
+            base1LowerGrayTop: {
+              txtAss: assFusionBaseGrayTop,
+              geo: 'circle',
+              struct: [ 43, 16 ],
+            },
+            base2MiddleBlackDrum: {
+              txtAss: assFusionBaseBlackSide,
+              geo: 'cylinder',
+              // eslint-disable-next-line array-bracket-newline, array-element-newline
+              struct: [ 23, 23, 20, 16, 1, true ],
+              pivot: [ 0, 10 ],
+              rotation: { x: -90 },
+            },
+            base2MiddleBlackTop: {
+              color: new THREE.Color( 0x3c3c3c ),
+              geo: 'circle',
+              struct: [ 23, 16 ],
+              pivot: [ 0, 0, -20 ],
+            },
+            base3UpperWhite: {
+              txtAss: assFusionBaseWhiteSide,
+              geo: 'cylinder',
+              // eslint-disable-next-line array-bracket-newline, array-element-newline
+              struct: [ 6, 23, 10, 6, 1, true ],
+              position: [ 0, 0, -24 ],
+              rotation: { x: -90 },
+            },
+          },
+        },
         rearVents: {
           position: [ 0, -457, -109 ],
           rotation: { x: 30 },
@@ -686,176 +900,6 @@ const setDeLorean = () => ( {
           },
         },
       },
-    },
-  },
-} )
-
-const makeBackBar = () => {
-  const bb = {
-    c: 15,
-    h: 40,
-    w: 92,
-  }
-  const msh = { ...g.three.msh }
-  const barFaceMats = []
-  for ( let face = 0; face < 8; face++ ) {
-    const mshMap = {
-      map: g.three.mkr.textureLoader( assExtBackBarFace ),
-    }
-    barFaceMats[face] = new THREE.MeshBasicMaterial( {
-      ...msh,
-      ...mshMap,
-    } )
-  }
-  barFaceMats.forEach( ( _, f ) => {
-    if ( barFaceMats[f].map ) {
-      barFaceMats[f].map.wrapS = barFaceMats[f].map.wrapT = THREE.RepeatWrapping
-
-      switch ( f ) {
-        case 0:
-          barFaceMats[f].map.repeat.set( ( bb.w - ( bb.c * 2 ) ) / bb.w, bb.c / bb.h )
-          barFaceMats[f].map.offset.x = bb.c / bb.w
-          barFaceMats[f].map.offset.y = ( bb.h - bb.c ) / bb.h
-          break
-        case 1:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
-          break
-        case 2:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
-          break
-        case 3:
-          barFaceMats[f].map.repeat.set( 1, bb.c / bb.h )
-          barFaceMats[f].map.offset.y = ( bb.h - bb.c ) / bb.h
-          break
-        case 4:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( 90 )
-          barFaceMats[f].map.offset.x = ( bb.w - bb.c ) / bb.w
-          break
-        case 5:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
-          break
-        case 6:
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( 180 )
-          break
-      }
-    }
-  } )
-
-  return {
-    struct: [ 92, 15, 40 ],
-    position: [ 0, -284, -210 ],
-    children: {
-      backBarInner: {
-        struct: [ 62, 15, 25 ],
-        position: [ 0, 0, 7.5 ],
-        children: {
-          backBarInnerTop: {
-            struct: [ 62, 15 ],
-            position: [ 0, 0, -25 ],
-            mat: barFaceMats[0],
-          },
-          backBarInnerLeft: {
-            struct: [ 25, 15 ],
-            pivot: [ 12.5 ],
-            position: [ 31 ],
-            rotation: [ 0, 90 ],
-            mat: barFaceMats[1],
-          },
-          backBarInnerRight: {
-            struct: [ 25, 15 ],
-            pivot: [ 12.5 ],
-            position: [ -31 ],
-            rotation: [ 180, -90 ],
-            mat: barFaceMats[2],
-          },
-        },
-      },
-      backBarOuter: {
-        geo: 'box',
-        struct: [ 92, 15, 40 ],
-        children: {
-          backBarOuterTop: {
-            struct: [ 92, 15 ],
-            position: [ 0, 0, -32.5 ],
-            mat: barFaceMats[3],
-          },
-          backBarOuterLeft: {
-            struct: [ 40, 15 ],
-            pivot: [ -20 ],
-            position: [ 46, 0, 7.5 ],
-            rotation: [ 0, -90 ],
-            mat: barFaceMats[4],
-          },
-          backBarOuterRight: {
-            struct: [ 40, 15 ],
-            pivot: [ 20 ],
-            position: [ -46, 0, 7.5 ],
-            rotation: [ 0, 90 ],
-            mat: barFaceMats[5],
-          },
-          backBarOuterFront: {
-            struct: [ 92, 40 ],
-            pivot: [ 0, 20 ],
-            position: [ 0, 7.5, -32.5 ],
-            rotation: [ 90 ],
-            mat: barFaceMats[6],
-          },
-          backBarOuterBack: {
-            struct: [ 92, 40 ],
-            pivot: [ 0, 20 ],
-            position: [ 0, -7.5, 7.5 ],
-            rotation: [ -90 ],
-            mat: barFaceMats[7],
-          },
-        },
-      },
-    },
-  }
-}
-
-const makeRearVent = side => ( {
-  position: [ side === 'L' ? 96 : -94 ],
-  children: {
-    [`rearVentBottom${side}`]: {
-      color: new THREE.Color( 0x191e34 ),
-      struct: [ 74, 92 ],
-    },
-    [`rearVentLeftSide${side}`]: {
-      txtAss: assRearVentSide,
-      struct: [ 100, 116 ],
-      pivot: [ -50 ],
-      position: [ 37, -12 ],
-      rotation: { y: -90 },
-    },
-    [`rearVentRightSide${side}`]: {
-      txtAss: assRearVentSide,
-      struct: [ 100, 116 ],
-      pivot: [ -50 ],
-      position: [ -37, -12 ],
-      rotation: { y: -90 },
-    },
-    [`rearVentTop${side}`]: {
-      txtAss: assRearVentTop,
-      struct: [ 74, 116 ],
-      position: [ 0, -12, -100 ],
-    },
-    [`rearVentBackTop${side}`]: {
-      txtAss: side === 'L' ? assRearVentLeftBackTop : assRearVentRightBackTop,
-      struct: [ 74, 60 ],
-      pivot: [ 0, 30 ],
-      position: [ 0, -69, -40 ],
-      rotation: { x: -90 },
-    },
-    [`rearVentBackBottom${side}`]: {
-      txtAss: side === 'L' ? assRearVentLeftBackBottom : assRearVentRightBackBottom,
-      struct: [ 74, 48 ],
-      pivot: [ 0, 24 ],
-      position: [ 0, -45, 0 ],
-      rotation: { x: -120 },
     },
   },
 } )
