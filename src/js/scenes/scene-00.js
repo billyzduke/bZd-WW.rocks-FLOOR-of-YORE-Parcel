@@ -10,33 +10,37 @@ import { setModel } from '../future'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
-g.tL.yore = new TL({ defaults: { overwrite: 'auto' } }) // general use global timeline
+g.tL.yore = new TL( { defaults: { overwrite: 'auto' } } ) // general use global timeline
 
-const setScene00 = (c, n) => {
+const setScene00 = ( c, n ) => {
   g.scene.setting = c
   // Only functions that return a boolean can be included in forCleanUp
-  g.scene.forCleanUp[c].yoreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
-  g.scene.forCleanUp[c].obscureNextScene = () => obscure(3)
+  g.scene.forCleanUp[c].yoreTitleClick = setAddOn( '#tpTitles', 'click', () => setScene( n ) )
+  g.scene.forCleanUp[c].obscureNextScene = () => obscure( 3 )
 
   // setBaubleLayer01()
   setBaubleLayers()
-  if (g.el.deLorean && g.el.model && g.el.future.classList.contains('model')) setModel()
+  if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) setModel()
 
-  g.tL.yore.to('#tpTitleScreen', {
+  g.tL.yore.to( '#tpTitleScreen', {
     duration: 2,
     onComplete: function () {
-      if (g.el.deLorean && g.el.model && g.el.future.classList.contains('model')) spinTime()
+      if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) spinTime()
     },
     opacity: 0,
-  })
-    .set('#tpTitles', {
+  } )
+    .set( '#tpTitles', {
       cursor: 'pointer',
-    }, '>')
+    }, '>' )
 
   return true
 }
 
 const spinTime = () => {
+  gsap.set( '#deLorean', {
+    rotateY: 180,
+    rotateX: -60,
+  } )
   // gsap.fromTo('#deLorean', {
   //   rotateX: 20,
   //   rotateY: 20,
@@ -64,13 +68,13 @@ const spinTime = () => {
   //   rotateY: 120,
   //   yoyo: true,
   // })
-  gsap.to('.lightBar > div', {
+  gsap.to( '.lightBar > div', {
     duration: 1.5,
     ease: 'power1.in',
     opacity: 0.12,
     repeat: -1,
     yoyo: true,
-  })
+  } )
   // gsap.to('#deLorean', {
   //   duration: 30,
   //   ease: 'none',
