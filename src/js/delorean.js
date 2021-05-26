@@ -37,6 +37,12 @@ import assBodyEngineRight from 'url:/src/img/future/bodyEngineUpperRight.png'
 import assBodyBackPlate from 'url:/src/img/future/bodyBackPlate.png'
 import assBodyBackLedge from 'url:/src/img/future/bodyBackLedge.png'
 import assExtBackBarFace from 'url:/src/img/future/backBarFace.png'
+import assRearVentTop from 'url:/src/img/future/rearVentTop.png'
+import assRearVentSide from 'url:/src/img/future/rearVentside.png'
+import assRearVentLeftBackTop from 'url:/src/img/future/rearVentLeftBackTop.png'
+import assRearVentLeftBackBottom from 'url:/src/img/future/rearVentLeftBackBottom.png'
+import assRearVentRightBackTop from 'url:/src/img/future/rearVentRightBackTop.png'
+import assRearVentRightBackBottom from 'url:/src/img/future/rearVentRightBackBottom.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -644,7 +650,8 @@ const setDeLorean = () => ( {
       children: {
         backBar: makeBackBar(),
         rearVents: {
-          position: [ 0, 857, -176 ],
+          position: [ 0, -457, -109 ],
+          rotation: { x: 30 },
           children: {
             rearVentL: makeRearVent( 'L' ),
             rearVentR: makeRearVent( 'R' ),
@@ -682,59 +689,6 @@ const setDeLorean = () => ( {
     },
   },
 } )
-
-const makeRearVent = side => {
-  // div.rearVent {
-  //   width: 74px;
-  //   left: 83px;
-  //   top: 857px;
-  //   transform: translateZ(-176px) rotateX(-30deg);
-  //   div.rearVentTop {
-  //     background-image: url(../img/future/rearVentTop.png);
-  //     width: 100%;
-  //     height: 116px;
-  //   }
-  //   div.rearVentBottom {
-  //     background: #191e34;
-  //     height: 92px;
-  //     width: 100%;
-  //     transform: translateZ(100px);
-  //   }
-  //   div.rearVentSide {
-  //     background-image: url(../img/future/rearVentSide.png);
-  //     width: 100px;
-  //     height: 116px;
-  //     transform: rotateY(-90deg);
-  //     &.rearVentSideLeft {
-  //       left: 100%;
-  //     }
-  //   }
-  //   div.rearVentBackTop {
-  //     background-image: url(../img/future/rearVentRightBackTop.png);
-  //     width: 100%;
-  //     height: 60px;
-  //     top: 114px;
-  //     transform: rotateX(90deg);
-  //   }
-  //   div.rearVentBackBottom {
-  //     background-image: url(../img/future/rearVentRightBackBottom.png);
-  //     width: 100%;
-  //     height: 48px;
-  //     top: 114px;
-  //     transform: translateZ(60px) rotateX(120deg);
-  //   }
-  //   &#rearVentLeft {
-  //     left: 267px;
-  //     div.rearVentBackTop {
-  //       background-image: url(../img/future/rearVentLeftBackTop.png);
-  //     }
-  //     div.rearVentBackBottom {
-  //       background-image: url(../img/future/rearVentLeftBackBottom.png);
-  //     }
-  //   }
-  // }
-
-}
 
 const makeBackBar = () => {
   const bb = {
@@ -862,5 +816,48 @@ const makeBackBar = () => {
     },
   }
 }
+
+const makeRearVent = side => ( {
+  position: [ side === 'L' ? 96 : -94 ],
+  children: {
+    [`rearVentBottom${side}`]: {
+      color: new THREE.Color( 0x191e34 ),
+      struct: [ 74, 92 ],
+    },
+    [`rearVentLeftSide${side}`]: {
+      txtAss: assRearVentSide,
+      struct: [ 100, 116 ],
+      pivot: [ -50 ],
+      position: [ 37, -12 ],
+      rotation: { y: -90 },
+    },
+    [`rearVentRightSide${side}`]: {
+      txtAss: assRearVentSide,
+      struct: [ 100, 116 ],
+      pivot: [ -50 ],
+      position: [ -37, -12 ],
+      rotation: { y: -90 },
+    },
+    [`rearVentTop${side}`]: {
+      txtAss: assRearVentTop,
+      struct: [ 74, 116 ],
+      position: [ 0, -12, -100 ],
+    },
+    [`rearVentBackTop${side}`]: {
+      txtAss: side === 'L' ? assRearVentLeftBackTop : assRearVentRightBackTop,
+      struct: [ 74, 60 ],
+      pivot: [ 0, 30 ],
+      position: [ 0, -69, -40 ],
+      rotation: { x: -90 },
+    },
+    [`rearVentBackBottom${side}`]: {
+      txtAss: side === 'L' ? assRearVentLeftBackBottom : assRearVentRightBackBottom,
+      struct: [ 74, 48 ],
+      pivot: [ 0, 24 ],
+      position: [ 0, -45, 0 ],
+      rotation: { x: -120 },
+    },
+  },
+} )
 
 export { setDeLorean }
