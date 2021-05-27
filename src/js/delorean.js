@@ -54,6 +54,7 @@ import assFusionFaceFrontCorner from 'url:/src/img/future/fusionAngleFront.png'
 import assFusionFaceBackCorner from 'url:/src/img/future/fusionAngleBack.png'
 import assFusionTop from 'url:/src/img/future/fusionTop.png'
 import assFusionCrossSection from 'url:/src/img/future/fusionCrossSection.png'
+import assFusionLockFace from 'url:/src/img/future/fusionLock.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -696,7 +697,7 @@ const makeRearVent = side => ( {
 } )
 
 const makeMrFusion = () => ( {
-  position: [ 0, -358, -203 ],
+  position: [ 0, -358, -201 ],
   children: {
     fusionBaseLevel1GrayDrum: {
       txtAss: assFusionBaseGraySide,
@@ -825,7 +826,32 @@ const makeMrFusion = () => ( {
       position: [ 0, 0, -23.5 ],
       rotation: { x: -90 },
     },
-
+    fusionLockBack: {
+      color: new THREE.Color( 0xa31c18 ),
+      struct: [ 10, 10 ],
+      pivot: [ 0, -5 ],
+      position: [ 0, -27, -24 ],
+      rotation: { x: -90 },
+    },
+    fusionLockTop: {
+      color: new THREE.Color( 0xac4139 ),
+      struct: [ 10, 10 ],
+      position: [ 0, -22, -24 ],
+    },
+    fusionLockFaceLeft: {
+      txtAss: assFusionLockFace,
+      struct: [ 10, 10 ],
+      pivot: [ 0, 5 ],
+      position: [ 5, -27, -19 ],
+      rotation: { y: -90 },
+    },
+    fusionLockFaceRight: {
+      txtAss: assFusionLockFace,
+      struct: [ 10, 10 ],
+      pivot: [ 0, 5 ],
+      position: [ -5, -27, -19 ],
+      rotation: { y: -90 },
+    },
 
     // div#fusionLock {
     //   width: 10px;
