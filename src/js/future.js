@@ -3,6 +3,7 @@ import { TextPlugin } from 'gsap/TextPlugin'
 
 import g from './glob'
 import { setFlux } from './flux'
+import { setThree } from './three'
 import {
   gsapTick, randOnum, setAddOn, toggleFermata,
 } from './utils'

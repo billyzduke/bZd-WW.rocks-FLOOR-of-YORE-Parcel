@@ -150,7 +150,6 @@ const setThree = () => {
 
   const animate = () => {
     g.three.stats.begin()
-
     if ( resize() ) {
       g.three.camera.aspect = g.three.cvs[0] / g.three.cvs[1]
       g.three.camera.updateProjectionMatrix()
@@ -178,16 +177,31 @@ const makeThreeObj = ( obj, makeObj ) => {
     if ( makeObj.geo !== 'group' && makeObj.struct && makeObj.struct.length && makeObj.struct.length >= 2 ) {
       if ( makeObj.geo !== 'group' ) g.three.obj[obj] = {}
       makeMesh = { ...g.three.msh }
-      if ( makeObj.msh ) Object.keys( makeObj.msh ).forEach( mshProp => makeMesh[mshProp] = makeObj.msh[mshProp] )
+      if ( makeObj.msh ) {
+        Object.keys( makeObj.msh ).forEach( mshProp => {
+          makeMesh[mshProp] = makeObj.msh[mshProp]
+        } )
+      }
       if ( !makeObj.mat ) makeObj.mat = THREE.MeshBasicMaterial
-      if (makeObj.msh && typeof makeObj.msh.depthWrite !== 'undefined') makeObj.mat.depthWrite = makeObj.msh.depthWrite
+      if ( makeObj.msh && typeof makeObj.msh.depthWrite !== 'undefined' ) makeObj.mat.depthWrite = makeObj.msh.depthWrite
     }
     switch ( makeObj.geo ) {
       case 'cylinder':
-        if (g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3]) {
-          if (typeof makeObj.struct[4] === 'undefined') makeObj.struct[4] = 1 // heightSegments
-          if (typeof makeObj.struct[5] === 'undefined') makeObj.struct[5] = false // openEnded
+        if ( g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
+          if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = 1 // heightSegments
+          if ( typeof makeObj.struct[5] === 'undefined' ) makeObj.struct[5] = false // openEnded
           g.three.obj[obj].geo = new THREE.CylinderGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4], makeObj.struct[5] )
+        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        break
+      case 'sphere':
+        if ( g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] ) {
+          g.three.obj[obj].geo = new THREE.SphereGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2] )
+        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+        break
+      case 'torus':
+        if ( g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
+          if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = Math.PI * 2 // arc
+          g.three.obj[obj].geo = new THREE.TorusGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4]  )
         } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'box':
@@ -220,12 +234,9 @@ const makeThreeObj = ( obj, makeObj ) => {
       if ( makeObj.pivot && g.three.obj[obj].geo ) g.three.obj[obj].geo.translate( makeObj.pivot[0] || 0, makeObj.pivot[1] || 0, makeObj.pivot[2] || 0 )
       if ( g.three.obj[obj].geo && g.three.obj[obj].mat ) g.three.obj[obj].msh = new THREE.Mesh( g.three.obj[obj].geo, g.three.obj[obj].mat )
       if ( g.three.obj[obj].msh ) {
-        if ( makeObj.position ) {
-          g.three.xyz.forEach( ( axis, i ) => {
-            if ( typeof makeObj.position[i] !== 'undefined' && makeObj.position[i] ) g.three.obj[obj].msh.position[axis] = makeObj.position[i]
-          } )
-        }
+        if ( makeObj.position ) translateAxes( obj, makeObj )
         if ( makeObj.rotation ) rotateAxes( obj, makeObj )
+        if ( makeObj.matrix ) setMatrix( obj, makeObj )
       }
     } else if ( makeObj.children && g.three.grp[obj] ) {
       Object.keys( makeObj.children ).forEach( childObj => {
@@ -238,19 +249,36 @@ const makeThreeObj = ( obj, makeObj ) => {
         // }
         if ( g.three.grp[childObj] || g.three.obj[childObj] ) g.three.grp[obj].add( g.three.obj[childObj] ? g.three.obj[childObj].msh || g.three.obj[childObj] : g.three.grp[childObj] )
       } )
+      if ( makeObj.position ) translateAxes( obj, makeObj )
       if ( makeObj.rotation ) rotateAxes( obj, makeObj )
-      if ( makeObj.position ) g.three.grp[obj].position.set( makeObj.position[0] || 0, makeObj.position[1] || 0, makeObj.position[2] || 0 )
+      if ( makeObj.matrix ) setMatrix( obj, makeObj )
     }
   }
 }
 
+const objOrGrp = obj => ( g.three.obj[obj] && g.three.obj[obj].msh ? g.three.obj[obj].msh : g.three.grp[obj] )
+
+const setMatrix = ( obj, makeObj ) => {
+  const mvMe = objOrGrp( obj )
+  mvMe.matrix.set( makeObj.matrix )
+  mvMe.matrixAutoUpdate = false
+}
+
+const translateAxes = ( obj, makeObj ) => {
+  const mvMe = objOrGrp( obj )
+  g.three.xyz.forEach( ( axis, i ) => {
+    if ( !mvMe ) devLog( obj, makeObj )
+    if ( typeof makeObj.position[i] !== 'undefined' && makeObj.position[i] ) mvMe.position[axis] = makeObj.position[i]
+  } )
+}
+
 const rotateAxes = ( obj, makeObj ) => {
+  const mvMe = objOrGrp( obj )
   Object.keys( makeObj.rotation ).forEach( axis => {
     if ( makeObj.rotation[axis] ) {
       const rotateAxis = `rotate${g.three.xyz.includes( axis ) ? axis.toUpperCase() : g.three.xyz[axis].toUpperCase()}`
       const rotateRad = THREE.Math.degToRad( makeObj.rotation[axis] )
-      if ( g.three.obj[obj] ) g.three.obj[obj].msh[rotateAxis]( rotateRad )
-      else if ( g.three.grp[obj] ) g.three.grp[obj][rotateAxis]( rotateRad )
+      mvMe[rotateAxis]( rotateRad )
     }
   } )
 }

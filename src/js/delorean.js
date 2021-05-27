@@ -55,6 +55,7 @@ import assFusionFaceBackCorner from 'url:/src/img/future/fusionAngleBack.png'
 import assFusionTop from 'url:/src/img/future/fusionTop.png'
 import assFusionCrossSection from 'url:/src/img/future/fusionCrossSection.png'
 import assFusionLockFace from 'url:/src/img/future/fusionLock.png'
+import assTireBiter from 'url:/src/img/future/tireInner.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -703,7 +704,7 @@ const makeMrFusion = () => ( {
       txtAss: assFusionBaseGraySide,
       geo: 'cylinder',
       // eslint-disable-next-line array-bracket-newline, array-element-newline
-      struct: [ 43, 43, 32, 16, 1, true ],
+      struct: [ 43, 43, 32, 12, 1, true ],
       pivot: [ 0, -16 ],
       rotation: { x: -90 },
     },
@@ -716,7 +717,7 @@ const makeMrFusion = () => ( {
       txtAss: assFusionBaseBlackSide,
       geo: 'cylinder',
       // eslint-disable-next-line array-bracket-newline, array-element-newline
-      struct: [ 23, 23, 20, 16, 1, true ],
+      struct: [ 23, 23, 20, 10, 1, true ],
       pivot: [ 0, 10 ],
       rotation: { x: -90 },
     },
@@ -852,36 +853,6 @@ const makeMrFusion = () => ( {
       position: [ -5, -27, -19 ],
       rotation: { y: -90 },
     },
-
-    // div#fusionLock {
-    //   width: 10px;
-    //   height: 10px;
-    //   left: 50%;
-    //   top: 56px;
-    //   transform: translateX(-50%) translateZ(-76px);
-    //   div#fusionLockBack {
-    //     background: #a31c18;
-    //     width: 10px;
-    //     height: 10px;
-    //     top: 100%;
-    //     transform: rotateX(90deg);
-    //   }
-    //   div#fusionLockTop {
-    //     background: #ac4139;
-    //     width: 100%;
-    //     height: 100%;
-    //   }
-    //   div.fusionLockFace {
-    //     background-image: url(../img/future/fusionLock.png);
-    //     width: 100%;
-    //     height: 100%;
-    //     transform: rotateY(-90deg);
-    //     &#fusionLockLeft {
-    //       left: 100%;
-    //     }
-    //   }
-    // }
-
   },
 } )
 
@@ -920,6 +891,8 @@ const makeSpokeMap = () => {
 }
 
 const makeWheel = wheel => {
+  const wheelIsFront = wheel.includes( 'F' )
+  const wheelIsLeft = wheel.includes( 'L' )
   const msh = { ...g.three.msh }
   const wheelies = {}
   const spokeMap = makeSpokeMap()
@@ -956,7 +929,7 @@ const makeWheel = wheel => {
     wheelies[`wheel${wheel}spokeShort${spoke}`] = spokeShort
   }
   const hubCapMat = {
-    map: g.three.mkr.textureLoader( wheel.includes( 'F' ) ? assTireHubCapF : assTireHubCapA ),
+    map: g.three.mkr.textureLoader( wheelIsFront ? assTireHubCapF : assTireHubCapA ),
   }
   const hubCapMsh = new THREE.MeshBasicMaterial( {
     ...msh,
@@ -966,7 +939,7 @@ const makeWheel = wheel => {
   hubCapMsh.map.repeat.set( 0.5, 1 )
   wheelies[`wheel${wheel}hubCap`] = {
     geo: 'circle',
-    struct: [ 43, 32 ],
+    struct: [ 43, 16 ],
     position: [ 0, 0, 26 ],
     mat: hubCapMsh,
   }
@@ -1024,6 +997,98 @@ const makeWheel = wheel => {
     pivot: [ 0, -188 ],
     rotation: [ -90 ],
     children: flares,
+  }
+
+  wheelies[`wheel${wheel}axleArmMount1`] = {
+    geo: 'torus',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 36, 12, 10, 10 ],
+    color: new THREE.Color( 0x222222 ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
+    rotation: [ 0, 90 ],
+  }
+  wheelies[`wheel${wheel}axleArmJoint1`] = {
+    geo: 'sphere',
+    struct: [ 16, 10, 10 ],
+    color: new THREE.Color( 0x333333 ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
+  }
+  wheelies[`wheel${wheel}axleArmPart1`] = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 10, 10, 42, 12, 1, true ],
+    color: new THREE.Color( 0x344344 ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    pivot: [ 0, -21 ],
+    position: [ wheelIsLeft ? -50 : 50, 0, -76 ],
+    rotation: { z: wheelIsLeft ? -90 : 90, x: -54 },
+  }
+  wheelies[`wheel${wheel}axleArmJoint2`] = {
+    geo: 'sphere',
+    struct: [ 16, 10, 10 ],
+    color: new THREE.Color( 0x454545 ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    position: [ wheelIsLeft ? -48 : 48, 0, -76 ],
+  }
+  wheelies[`wheel${wheel}axleArmPart2`] = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 10, 10, 42, 12, 1, true ],
+    color: new THREE.Color( 0x666666 ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    pivot: [ 0, -24 ],
+    position: [ 0, 0, -64 ],
+    rotation: { z: wheelIsLeft ? -90 : 90, x: 15 },
+  }
+  wheelies[`wheel${wheel}axleArmJoint3`] = {
+    geo: 'sphere',
+    struct: [ 16, 10, 10 ],
+    color: new THREE.Color( 0x777777 ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    position: [ 0, 0, -64 ],
+  }
+  wheelies[`wheel${wheel}axleArmPart3`] = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 10, 10, 42, 12, 1, true ],
+    color: new THREE.Color( 0x888888 ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    pivot: [ 0, -36 ],
+    rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
+  }
+  wheelies[`wheel${wheel}axleArmMount2`] = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 14, 14, 14, 12, 1, true ],
+    color: new THREE.Color( 0xcccccc ),
+    roughness: 0,
+    metalness: 1,
+    emissive: 14408667,
+    pivot: [ 0, -7 ],
+    position: [ 0, 0, -12 ],
+    rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
+  }
+  wheelies[`wheel${wheel}InsideBack`] = {
+    geo: 'circle',
+    txtAss: assTireBiter,
+    struct: [ 43, 16 ],
+    position: [ 0, 0, -16 ],
   }
 
   return {
