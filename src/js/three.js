@@ -201,7 +201,7 @@ const makeThreeObj = ( obj, makeObj ) => {
       case 'torus':
         if ( g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
           if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = Math.PI * 2 // arc
-          g.three.obj[obj].geo = new THREE.TorusGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4]  )
+          g.three.obj[obj].geo = new THREE.TorusGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4] )
         } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'box':

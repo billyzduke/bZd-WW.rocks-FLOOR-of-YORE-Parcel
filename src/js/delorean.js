@@ -56,6 +56,10 @@ import assFusionTop from 'url:/src/img/future/fusionTop.png'
 import assFusionCrossSection from 'url:/src/img/future/fusionCrossSection.png'
 import assFusionLockFace from 'url:/src/img/future/fusionLock.png'
 import assTireBiter from 'url:/src/img/future/tireInner.png'
+import assPipeMetal from 'url:/src/img/future/metalPipe.png'
+import assSphereMetal1 from 'url:/src/img/future/metalSphere.png'
+import assSphereMetal2 from 'url:/src/img/future/metalSphere2.png'
+import assSphereMetal3 from 'url:/src/img/future/metalSphere3.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -999,89 +1003,72 @@ const makeWheel = wheel => {
     children: flares,
   }
 
+  const pipeMat = {
+    roughness: 0.4,
+    metalness: 1,
+  }
+  const emissiveMapPipe = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0x999999 ) }
+  const emissiveMapSphere1 = { emissiveMap: new THREE.TextureLoader().load( assSphereMetal1 ), emissive: new THREE.Color( 0x666666 ) }
+  const emissiveMapSphere2 = { emissiveMap: new THREE.TextureLoader().load( assSphereMetal3 ), emissive: new THREE.Color( 0x111111 ) }
+  const emissiveMapSphere3 = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0xffffff ) }
   wheelies[`wheel${wheel}axleArmMount1`] = {
     geo: 'torus',
     // eslint-disable-next-line array-bracket-newline, array-element-newline
     struct: [ 36, 12, 10, 10 ],
-    color: new THREE.Color( 0x222222 ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
     position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
     rotation: [ 0, 90 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapSphere1,
+    } ),
   }
   wheelies[`wheel${wheel}axleArmJoint1`] = {
     geo: 'sphere',
-    struct: [ 16, 10, 10 ],
-    color: new THREE.Color( 0x333333 ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
+    struct: [ 12.5, 10, 10 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapSphere3,
+    } ),
     position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
   }
-  wheelies[`wheel${wheel}axleArmPart1`] = {
+  wheelies[`wheel${wheel}axleArmLength`] = {
     geo: 'cylinder',
     // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 10, 10, 42, 12, 1, true ],
-    color: new THREE.Color( 0x344344 ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
-    pivot: [ 0, -21 ],
-    position: [ wheelIsLeft ? -50 : 50, 0, -76 ],
-    rotation: { z: wheelIsLeft ? -90 : 90, x: -54 },
+    struct: [ 7, 7, 76, 12, 1, true ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapPipe,
+    } ),
+    pivot: [ 0, -24 ],
+    position: [ wheelIsLeft ? -12 : 12, 0, -27 ],
+    rotation: { z: wheelIsLeft ? -90 : 90, x: 14 },
   }
   wheelies[`wheel${wheel}axleArmJoint2`] = {
-    geo: 'sphere',
-    struct: [ 16, 10, 10 ],
-    color: new THREE.Color( 0x454545 ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
-    position: [ wheelIsLeft ? -48 : 48, 0, -76 ],
-  }
-  wheelies[`wheel${wheel}axleArmPart2`] = {
     geo: 'cylinder',
     // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 10, 10, 42, 12, 1, true ],
-    color: new THREE.Color( 0x666666 ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
-    pivot: [ 0, -24 ],
-    position: [ 0, 0, -64 ],
-    rotation: { z: wheelIsLeft ? -90 : 90, x: 15 },
-  }
-  wheelies[`wheel${wheel}axleArmJoint3`] = {
-    geo: 'sphere',
-    struct: [ 16, 10, 10 ],
-    color: new THREE.Color( 0x777777 ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
-    position: [ 0, 0, -64 ],
-  }
-  wheelies[`wheel${wheel}axleArmPart3`] = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 10, 10, 42, 12, 1, true ],
-    color: new THREE.Color( 0x888888 ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
-    pivot: [ 0, -36 ],
-    rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
+    struct: [ 15, 15, 15, 12 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapSphere3,
+    } ),
+    position: [ 0, 0, -22 ],
+    // rotation: { x: 90 },
   }
   wheelies[`wheel${wheel}axleArmMount2`] = {
     geo: 'cylinder',
     // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 14, 14, 14, 12, 1, true ],
-    color: new THREE.Color( 0xcccccc ),
-    roughness: 0,
-    metalness: 1,
-    emissive: 14408667,
+    struct: [ 18, 18, 15, 14 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapPipe,
+    } ),
     pivot: [ 0, -7 ],
-    position: [ 0, 0, -12 ],
+    position: [ 0, 0, -7 ],
     rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
   }
   wheelies[`wheel${wheel}InsideBack`] = {
