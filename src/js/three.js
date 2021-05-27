@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Stats from 'stats.js'
 
 import g from './glob'
-import { setDeLorean } from './delorean'
+import { makeDeLorean } from './delorean'
 import {
   devLog, isFunction, randOnum,
 } from './utils'
@@ -80,7 +80,7 @@ const setThree = () => {
   // it remains to be seen whether this approach will actually save any time or code... I think it will at least cut down some of three's repetition
   // just remember that ALL NAME/ID KEYS IN THE FOLLOWING OBJECT MUST BE UNIQUE, REGARDLESS OF NESTING LEVEL
   g.three.makeObjs = {
-    deLorean: setDeLorean(),
+    deLorean: makeDeLorean(),
   }
 
   Object.keys( g.three.makeObjs ).forEach( obj => makeThreeObj( obj, g.three.makeObjs[obj] ) )
@@ -180,7 +180,7 @@ const makeThreeObj = ( obj, makeObj ) => {
       makeMesh = { ...g.three.msh }
       if ( makeObj.msh ) Object.keys( makeObj.msh ).forEach( mshProp => makeMesh[mshProp] = makeObj.msh[mshProp] )
       if ( !makeObj.mat ) makeObj.mat = THREE.MeshBasicMaterial
-      // if (makeObj.msh && typeof makeObj.msh.depthWrite !== 'undefined') makeObj.mat.depthWrite = makeObj.msh.depthWrite
+      if (makeObj.msh && typeof makeObj.msh.depthWrite !== 'undefined') makeObj.mat.depthWrite = makeObj.msh.depthWrite
     }
     switch ( makeObj.geo ) {
       case 'cylinder':

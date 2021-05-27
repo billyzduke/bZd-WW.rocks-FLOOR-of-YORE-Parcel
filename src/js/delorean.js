@@ -47,6 +47,13 @@ import assFusionBaseGraySide from 'url:/src/img/future/fusionBaseSideCyl.png'
 import assFusionBaseGrayTop from 'url:/src/img/future/fusionBaseTop.png'
 import assFusionBaseBlackSide from 'url:/src/img/future/fusionBaseBlackSide.png'
 import assFusionBaseWhiteSide from 'url:/src/img/future/fusionBaseWhiteCyl.png'
+import assFusionFaceWide from 'url:/src/img/future/fusionFaceWide.png'
+import assFusionFaceFront from 'url:/src/img/future/fusionFaceFront.png'
+import assFusionFaceBack from 'url:/src/img/future/fusionFaceBack.png'
+import assFusionFaceFrontCorner from 'url:/src/img/future/fusionAngleFront.png'
+import assFusionFaceBackCorner from 'url:/src/img/future/fusionAngleBack.png'
+import assFusionTop from 'url:/src/img/future/fusionTop.png'
+import assFusionCrossSection from 'url:/src/img/future/fusionCrossSection.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -98,137 +105,425 @@ const makeExhaustPipe = side => {
   return pipe
 }
 
-const makeSpokeMap = () => {
-  const spokeMap = {
-    long: [],
-    short: [],
-  }
-  for ( let side = 0; side < 6; side++ ) {
-    spokeMap.long.push( {
-      map: g.three.mkr.textureLoader( [ 2, 3 ].includes( side ) ? assTireTread : assTireWallLong ),
-    } )
-    spokeMap.short.push( [ 0, 1 ].includes( side )
-      ? { opacity: 0 }
-      : {
-        map: g.three.mkr.textureLoader( [ 2, 3 ].includes( side ) ? assTireTread : assTireWallShort ),
-      } )
-  }
-  return spokeMap
-}
+const makeUnderCarriage = () => ( {
+  struct: [ 432, 1000, 127 ],
+  children: {
+    bottom: {
+      struct: [ 432, 1000, 26 ],
+      children: {
+        ucF: {
+          struct: [ 432, 119 ],
+          txtAss: assUnderCarriageF,
+          pivot: [ 0, 59.5 ],
+          position: [ 0, 364.5, -23 ],
+          rotation: [ -6.71 ],
+        },
+        ucC: {
+          struct: [ 432, 729 ],
+          txtAss: assUnderCarriageC,
+        },
+        ucA: {
+          struct: [ 432, 152 ],
+          position: [ 0, -364.5, -26 ],
+          rotation: [ 7.125 ],
+          children: {
+            ucPanelA: {
+              struct: [ 432, 152 ],
+              txtAss: assUnderCarriageA,
+              pivot: [ 0, -76 ],
+            },
+            exhaustPipes: {
+              struct: [ 432, 40, 19 ],
+              position: [ 0, -132, -9 ],
+              children: {
+                exPL: {
+                  struct: [ 19, 40, 19 ],
+                  children: makeExhaustPipe( 'L' ),
+                  position: [ 123 ],
+                },
+                exPR: {
+                  struct: [ 19, 40, 19 ],
+                  children: makeExhaustPipe( 'R' ),
+                  position: [ -118 ],
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    top: {
+      struct: [ 432, 1000, 127 ],
+      children: {
+        ucWheelWallFL: {
+          struct: [ 127, 150 ],
+          color: new THREE.Color( 'black' ),
+          pivot: [ 63.5 ],
+          position: [ 142, 289.5 ],
+          rotation: [ 0, 90 ],
+        },
+        ucWheelWallFR: {
+          struct: [ 127, 150 ],
+          color: new THREE.Color( 'black' ),
+          pivot: [ -63.5 ],
+          position: [ -142, 289.5 ],
+          rotation: [ 0, -90 ],
+        },
+        ucWheelWallAL: {
+          struct: [ 127, 157 ],
+          color: new THREE.Color( 'black' ),
+          pivot: [ 63.5 ],
+          position: [ 142, -286 ],
+          rotation: [ 0, 90 ],
+        },
+        ucWheelWallAR: {
+          struct: [ 127, 157 ],
+          color: new THREE.Color( 'black' ),
+          pivot: [ -63.5 ],
+          position: [ -142, -286 ],
+          rotation: [ 0, -90 ],
+        },
+        ucAxleWallFF: {
+          struct: [ 432, 127 ],
+          txtAss: assCrossAxleF,
+          pivot: [ 0, -63.5 ],
+          position: [ 0, 364.5 ],
+          rotation: [ 90 ],
+        },
+        ucAxleWallFA: {
+          struct: [ 432, 127 ],
+          txtAss: assCrossAxle,
+          pivot: [ 0, -63.5 ],
+          position: [ 0, 214.5 ],
+          rotation: [ 90 ],
+        },
+        ucAxleWallAF: {
+          struct: [ 432, 127 ],
+          txtAss: assCrossAxle,
+          pivot: [ 0, -63.5 ],
+          position: [ 0, -207.5 ],
+          rotation: [ 90 ],
+        },
+        ucAxleWallAA: {
+          struct: [ 432, 127 ],
+          txtAss: assCrossAxleA,
+          pivot: [ 0, -63.5 ],
+          position: [ 0, -364.5 ],
+          rotation: [ 90 ],
+        },
+        ucWheelWellF: {
+          color: new THREE.Color( 'black' ),
+          struct: [ 402, 150 ],
+          position: [ 0, 289.5, -127 ],
+        },
+        ucWheelWellA: {
+          color: new THREE.Color( 'black' ),
+          struct: [ 402, 157 ],
+          position: [ 0, -286, -127 ],
+        },
+      },
+    },
+  },
+} )
 
-const makeWheel = wheel => {
-  const msh = { ...g.three.msh }
-  const wheelies = {}
-  const spokeMap = makeSpokeMap()
-  for ( let spoke = 0; spoke < 6; spoke++ ) {
-    const mat = {
-      long: [],
-      short: [],
-    }
-    for ( let sps = 0; sps < 6; sps++ ) {
-      const matLong = new THREE.MeshBasicMaterial( {
-        ...msh,
-        ...spokeMap.long[sps],
-      } )
-      mat.long.push( matLong )
-      const matShort = new THREE.MeshBasicMaterial( {
-        ...msh,
-        ...spokeMap.short[sps],
-      } )
-      mat.short.push( matShort )
-    }
-    const spokeLong = {
-      geo: 'box',
-      struct: [ 18, 142, 52 ],
-      rotation: [ 0, 0, spoke * 30 ],
-      mat: mat.long,
-    }
-    const spokeShort = {
-      geo: 'box',
-      struct: [ 18, 120, 52 ],
-      rotation: [ 0, 0, ( spoke * 30 ) + 15 ],
-      mat: mat.short,
-    }
-    wheelies[`wheel${wheel}spokeLong${spoke}`] = spokeLong
-    wheelies[`wheel${wheel}spokeShort${spoke}`] = spokeShort
-  }
-  const hubCapMat = {
-    map: g.three.mkr.textureLoader( wheel.includes( 'F' ) ? assTireHubCapF : assTireHubCapA ),
-  }
-  const hubCapMsh = new THREE.MeshBasicMaterial( {
-    ...msh,
-    ...hubCapMat,
-  } )
-  hubCapMsh.map.wrapS = hubCapMsh.map.wrapT = THREE.RepeatWrapping
-  hubCapMsh.map.repeat.set( 0.5, 1 )
-  wheelies[`wheel${wheel}hubCap`] = {
-    geo: 'circle',
-    struct: [ 43, 32 ],
-    position: [ 0, 0, 26 ],
-    mat: hubCapMsh,
-  }
-  const flares = {}
-  for ( let flare = 0; flare < 3; flare++ ) {
-    const thisFlare = `wheel${wheel}flare${flare + 1}`
-    const flareMat = {
-      opacity: 0.88,
-      map: g.three.mkr.textureLoader( assRocketFlare ),
-    }
-    msh.alphaTest = 0.01
-    let flarePos
-    switch ( flare ) {
-      case 0:
-        flarePos = [ 0, 0, -13 ]
-        break
-      case 1:
-        flarePos = [ -11, 0, -5 ]
-        break
-      case 2:
-        flarePos = [ 11, 0, -5 ]
-        break
-    }
-    flares[thisFlare] = {
-      struct: [ 276, 376 ],
-      pivot: [ 0, -188 ],
-      rotation: [ 0, 120 * flare ],
-      position: flarePos,
-      mat: new THREE.MeshBasicMaterial( {
-        ...msh,
-        ...flareMat,
-      } ),
-    }
-    flares[thisFlare].mat.depthWrite = false
-    g.three.flr.push( {
-      cdt: 0,
-      ctl: 0,
-    } )
-  }
-  const flareFixMat = {
-    color: new THREE.Color( 'white' ),
-  }
-  flares.flareFixer = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 27.5, 0.01, 60, 6 ],
-    pivot: [ 0, -52 ],
-    mat: new THREE.MeshBasicMaterial( {
-      ...msh,
-      ...flareFixMat,
-    } ),
-  }
-  wheelies[`wheel${wheel}flares`] = {
-    struct: [ 276, 276, 376 ],
-    pivot: [ 0, -188 ],
-    rotation: [ -90 ],
-    children: flares,
-  }
+const makeBody = () => ( {
+  struct: [ 432, 1000, 300 ],
+  children: {
+    bcLowerL: {
+      txtAss: assBodyCenterLower,
+      struct: [ 103, 460 ],
+      pivot: [ 51.5 ],
+      position: [ 216, 9.5 ],
+      rotation: [ 0, 90 ],
+    },
+    bcLowerR: {
+      txtAss: assBodyCenterLower,
+      struct: [ 103, 460 ],
+      pivot: [ 51.5 ],
+      position: [ -216, 9.5 ],
+      rotation: [ 0, 90 ],
+    },
+    bcMiddleL: {
+      txtAss: assBodyCenterMiddle,
+      struct: [ 61, 729 ],
+      pivot: [ 30.5 ],
+      position: [ 216, 0, -103 ],
+      rotation: [ 0, 120 ],
+    },
+    bcMiddleR: {
+      txtAss: assBodyCenterMiddle,
+      struct: [ 61, 729 ],
+      pivot: [ 30.5 ],
+      position: [ -216, 0, -103 ],
+      rotation: [ 0, 60 ],
+    },
+    bcUpperL: {
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ 186, -27.5, -155 ],
+      children: {
+        bcUpperFrameL: {
+          txtAss: assBodyCenterUpper,
+          struct: [ 100, 359 ],
+          pivot: [ 50 ],
+          rotation: [ 0, 132.5 ],
+        },
+        sideViewMirrorL: {
 
-  return {
-    struct: [ 142, 142, 52 ],
-    position: [ 0, wheel.includes( 'F' ) ? 289 : -286.5 ],
-    children: wheelies,
-  }
-}
+        },
+      },
+    },
+    bcUpperR: {
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ -186, -27.5, -155 ],
+      children: {
+        bcUpperFrameR: {
+          txtAss: assBodyCenterUpper,
+          struct: [ 100, 359 ],
+          pivot: [ 50 ],
+          rotation: [ 0, 47.5 ],
+        },
+        sideViewMirrorR: {
+
+        },
+      },
+    },
+    sideWindowL: {
+      txtAss: assSideWindow,
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ 185.5, -27.5, -155 ],
+      rotation: [ 0, 132.5 ],
+    },
+    sideWindowR: {
+      txtAss: assSideWindow,
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ -185.5, -27.5, -155 ],
+      rotation: [ 0, 47.5 ],
+    },
+    roof: {
+      txtAss: assRoof,
+      struct: [ 251.5, 195 ],
+      position: [ 0, -98.5, -220.5 ],
+    },
+    windshield: {
+      txtAss: assWindshield,
+      struct: [ 375, 167 ],
+      pivot: [ 0, -82.5 ],
+      position: [ 0, 149.5, -154 ],
+      rotation: [ 23.5 ],
+    },
+    hood: {
+      txtAss: assHood,
+      struct: [ 387, 314 ],
+      pivot: [ 0, -157 ],
+      position: [ 0, 463, -133.5 ],
+      rotation: [ 4 ],
+    },
+    bfLowerL: {
+      txtAss: assBodyFrontLower,
+      struct: [ 81, 119 ],
+      pivot: [ -40.5, 59.5 ],
+      position: [ 216, 363, -104 ],
+      rotation: { y: 90, x: -12.325 }, // sometimes you have to rotate multiple axes in a specific order. sigh.
+    },
+    bfLowerR: {
+      txtAss: assBodyFrontLower,
+      struct: [ 81, 119 ],
+      pivot: [ -40.5, 59.5 ],
+      position: [ -216, 363, -104 ],
+      rotation: { y: 90, x: 12.325 },
+    },
+    bfUpperL: {
+      txtAss: assBodyFrontUpper,
+      struct: [ 44, 121 ],
+      pivot: [ 22, 60.5 ],
+      position: [ 216, 363, -103 ],
+      rotation: { z: 12.325, y: 120 },
+    },
+    bfUpperR: {
+      txtAss: assBodyFrontUpper,
+      struct: [ 44, 121 ],
+      pivot: [ 22, 60.5 ],
+      position: [ -216, 363, -103 ],
+      rotation: { z: -12.325, y: 60 },
+    },
+    bfCornerL: {
+      txtAss: assBodyFrontCorner,
+      struct: [ 24, 17 ],
+      pivot: [ -12, -8.5 ],
+      position: [ 216, 364, -103 ],
+      rotation: { y: 90 },
+    },
+    bfCornerR: {
+      txtAss: assBodyFrontCorner,
+      struct: [ 24, 17 ],
+      pivot: [ -12, -8.5 ],
+      position: [ -216, 364, -103 ],
+      rotation: { y: 90 },
+    },
+    grille: {
+      txtAss: assGrille,
+      struct: [ 382, 36 ],
+      pivot: [ 0, -18 ],
+      position: [ 0, 481, -102.5 ],
+      rotation: { x: 59.5 },
+    },
+    bumperFrontBottomUpper: {
+      color: new THREE.Color( 0x18171d ),
+      struct: [ 381, 24 ],
+      pivot: [ 0, -12 ],
+      position: [ 0, 480, -67.5 ],
+      rotation: { x: -16 },
+    },
+    bumperFrontBottomMiddle: {
+      color: new THREE.Color( 0x101010 ),
+      struct: [ 381, 24 ],
+      pivot: [ 0, -12 ],
+      position: [ 0, 464, -42 ],
+      rotation: { x: 90 },
+    },
+    bumperFrontBottomLower: {
+      color: new THREE.Color( 0x2f2f2f ),
+      struct: [ 381, 24 ],
+      pivot: [ 0, -12 ],
+      position: [ 0, 483, -37 ],
+      rotation: { x: 34.5 },
+    },
+    bumperFrontTop: {
+      txtAss: assBumperFrontTop,
+      struct: [ 382, 36 ],
+      pivot: [ 0, -18 ],
+      position: [ 0, 480, -67.5 ],
+      rotation: { x: 90 },
+    },
+    engineTop: {
+      txtAss: assBodyEngineTop,
+      struct: [ 316, 170 ],
+      pivot: [ 0, -85 ],
+      position: [ 0, -196, -220.5 ],
+      rotation: { x: -11 },
+    },
+    engineBack: {
+      txtAss: assBodyEngineBack,
+      struct: [ 333, 99 ],
+      pivot: [ 0, -49.5 ],
+      position: [ 0, -361, -188 ],
+      rotation: { x: -19 },
+    },
+    baLowerL: {
+      txtAss: assBodyAftLower,
+      struct: [ 77, 126 ],
+      pivot: [ 38.5, -63 ],
+      position: [ 216, -364, -26 ],
+      rotation: { y: 90, x: 13 },
+    },
+    baLowerR: {
+      txtAss: assBodyAftLower,
+      struct: [ 77, 126 ],
+      pivot: [ 38.5, -63 ],
+      position: [ -216, -364, -26 ],
+      rotation: { y: 90, x: -13 },
+    },
+    baMiddleL: {
+      txtAss: assBodyAftMiddle,
+      struct: [ 61, 126 ],
+      pivot: [ 30.5, -63 ],
+      position: [ 216, -364, -103 ],
+      rotation: { z: -12.325, y: 120 },
+    },
+    baMiddleR: {
+      txtAss: assBodyAftMiddle,
+      struct: [ 61, 126 ],
+      pivot: [ 30.5, -63 ],
+      position: [ -216, -364, -103 ],
+      rotation: { z: 12.325, y: 60 },
+    },
+    baUpperL: {
+      txtAss: assBodyAftUpper,
+      struct: [ 49, 98 ],
+      pivot: [ 24.5, -49 ],
+      position: [ 187, -358, -155.5 ],
+      rotation: { z: -12.325, y: 129.5 },
+    },
+    baUpperR: {
+      txtAss: assBodyAftUpper,
+      struct: [ 49, 98 ],
+      pivot: [ 24.5, -49 ],
+      position: [ -187, -358, -155.5 ],
+      rotation: { z: 12.325, y: 50.5 },
+    },
+    baCornerL: {
+      txtAss: assBodyAftCorner,
+      struct: [ 27, 17 ],
+      pivot: [ -13.5, 8.5 ],
+      position: [ 216, -364, -103 ],
+      rotation: { y: 90 },
+    },
+    baCornerR: {
+      txtAss: assBodyAftCorner,
+      struct: [ 27, 17 ],
+      pivot: [ -13.5, 8.5 ],
+      position: [ -216, -364, -103 ],
+      rotation: { y: 90 },
+    },
+    engineLeft: {
+      txtAss: assBodyEngineLeft,
+      struct: [ 87, 157 ],
+      pivot: [ 42.75, -78.5 ],
+      position: [ 185.5, -206, -155 ],
+      rotation: { y: 132.5 },
+    },
+    engineRight: {
+      txtAss: assBodyEngineRight,
+      struct: [ 87, 157 ],
+      pivot: [ 42.75, -78.5 ],
+      position: [ -185.5, -206.5, -155 ],
+      rotation: { y: 47.5 },
+    },
+    bBackPlate: {
+      txtAss: assBodyBackPlate,
+      struct: [ 376, 52.5 ],
+      pivot: [ 0, -25 ],
+      position: [ 0, -475, -109 ],
+      rotation: { x: 114 },
+    },
+    bBackLedge: {
+      txtAss: assBodyBackLedge,
+      struct: [ 381, 13 ],
+      pivot: [ 0, -6.5 ],
+      position: [ 0, -475, -109 ],
+      rotation: { x: -22 },
+    },
+    bumperAftUpper: {
+      color: new THREE.Color( 0x2f2f2f ),
+      struct: [ 376, 32 ],
+      pivot: [ 0, 16.5 ],
+      position: [ 0, -486.5, -72 ],
+      rotation: { x: -90 },
+    },
+    bumperAftMiddle: {
+      color: new THREE.Color( 0x101010 ),
+      struct: [ 376.5, 9 ],
+      pivot: [ 0, 4.5 ],
+      position: [ 0, -487, -72 ],
+    },
+    bumperAftLower: {
+      color: new THREE.Color( 0x18171d ),
+      struct: [ 381, 50 ],
+      pivot: [ 0, 25 ],
+      position: [ 0, -474, -41 ],
+      rotation: { x: -90 },
+    },
+  },
+} )
+
+const makeInterior = () => ( {
+  struct: [ 432, 1000, 300 ],
+  children: {},
+} )
 
 const makeBackBar = () => {
   const bb = {
@@ -400,508 +695,354 @@ const makeRearVent = side => ( {
   },
 } )
 
-const setDeLorean = () => ( {
-  struct: [ 432, 1000, 300 ],
-  position: [ 0, 0, -1000 ],
-  rotation: [ 135, 0, -90 ],
+const makeMrFusion = () => ( {
+  position: [ 0, -358, -203 ],
   children: {
-    underCarriage: {
-      struct: [ 432, 1000, 127 ],
-      children: {
-        bottom: {
-          struct: [ 432, 1000, 26 ],
-          children: {
-            ucF: {
-              struct: [ 432, 119 ],
-              txtAss: assUnderCarriageF,
-              pivot: [ 0, 59.5 ],
-              position: [ 0, 364.5, -23 ],
-              rotation: [ -6.71 ],
-            },
-            ucC: {
-              struct: [ 432, 729 ],
-              txtAss: assUnderCarriageC,
-            },
-            ucA: {
-              struct: [ 432, 152 ],
-              position: [ 0, -364.5, -26 ],
-              rotation: [ 7.125 ],
-              children: {
-                ucPanelA: {
-                  struct: [ 432, 152 ],
-                  txtAss: assUnderCarriageA,
-                  pivot: [ 0, -76 ],
-                },
-                exhaustPipes: {
-                  struct: [ 432, 40, 19 ],
-                  position: [ 0, -132, -9 ],
-                  children: {
-                    exPL: {
-                      struct: [ 19, 40, 19 ],
-                      children: makeExhaustPipe( 'L' ),
-                      position: [ 123 ],
-                    },
-                    exPR: {
-                      struct: [ 19, 40, 19 ],
-                      children: makeExhaustPipe( 'R' ),
-                      position: [ -118 ],
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        top: {
-          struct: [ 432, 1000, 127 ],
-          children: {
-            ucWheelWallFL: {
-              struct: [ 127, 150 ],
-              color: new THREE.Color( 'black' ),
-              pivot: [ 63.5 ],
-              position: [ 142, 289.5 ],
-              rotation: [ 0, 90 ],
-            },
-            ucWheelWallFR: {
-              struct: [ 127, 150 ],
-              color: new THREE.Color( 'black' ),
-              pivot: [ -63.5 ],
-              position: [ -142, 289.5 ],
-              rotation: [ 0, -90 ],
-            },
-            ucWheelWallAL: {
-              struct: [ 127, 157 ],
-              color: new THREE.Color( 'black' ),
-              pivot: [ 63.5 ],
-              position: [ 142, -286 ],
-              rotation: [ 0, 90 ],
-            },
-            ucWheelWallAR: {
-              struct: [ 127, 157 ],
-              color: new THREE.Color( 'black' ),
-              pivot: [ -63.5 ],
-              position: [ -142, -286 ],
-              rotation: [ 0, -90 ],
-            },
-            ucAxleWallFF: {
-              struct: [ 432, 127 ],
-              txtAss: assCrossAxleF,
-              pivot: [ 0, -63.5 ],
-              position: [ 0, 364.5 ],
-              rotation: [ 90 ],
-            },
-            ucAxleWallFA: {
-              struct: [ 432, 127 ],
-              txtAss: assCrossAxle,
-              pivot: [ 0, -63.5 ],
-              position: [ 0, 214.5 ],
-              rotation: [ 90 ],
-            },
-            ucAxleWallAF: {
-              struct: [ 432, 127 ],
-              txtAss: assCrossAxle,
-              pivot: [ 0, -63.5 ],
-              position: [ 0, -207.5 ],
-              rotation: [ 90 ],
-            },
-            ucAxleWallAA: {
-              struct: [ 432, 127 ],
-              txtAss: assCrossAxleA,
-              pivot: [ 0, -63.5 ],
-              position: [ 0, -364.5 ],
-              rotation: [ 90 ],
-            },
-            ucWheelWellF: {
-              color: new THREE.Color( 'black' ),
-              struct: [ 402, 150 ],
-              position: [ 0, 289.5, -127 ],
-            },
-            ucWheelWellA: {
-              color: new THREE.Color( 'black' ),
-              struct: [ 402, 157 ],
-              position: [ 0, -286, -127 ],
-            },
-          },
-        },
-      },
+    fusionBaseLevel1GrayDrum: {
+      txtAss: assFusionBaseGraySide,
+      geo: 'cylinder',
+      // eslint-disable-next-line array-bracket-newline, array-element-newline
+      struct: [ 43, 43, 32, 16, 1, true ],
+      pivot: [ 0, -16 ],
+      rotation: { x: -90 },
     },
-    body: {
-      struct: [ 432, 1000, 300 ],
-      children: {
-        bcLowerL: {
-          txtAss: assBodyCenterLower,
-          struct: [ 103, 460 ],
-          pivot: [ 51.5 ],
-          position: [ 216, 9.5 ],
-          rotation: [ 0, 90 ],
-        },
-        bcLowerR: {
-          txtAss: assBodyCenterLower,
-          struct: [ 103, 460 ],
-          pivot: [ 51.5 ],
-          position: [ -216, 9.5 ],
-          rotation: [ 0, 90 ],
-        },
-        bcMiddleL: {
-          txtAss: assBodyCenterMiddle,
-          struct: [ 61, 729 ],
-          pivot: [ 30.5 ],
-          position: [ 216, 0, -103 ],
-          rotation: [ 0, 120 ],
-        },
-        bcMiddleR: {
-          txtAss: assBodyCenterMiddle,
-          struct: [ 61, 729 ],
-          pivot: [ 30.5 ],
-          position: [ -216, 0, -103 ],
-          rotation: [ 0, 60 ],
-        },
-        bcUpperL: {
-          struct: [ 100, 359 ],
-          pivot: [ 50 ],
-          position: [ 186, -27.5, -155 ],
-          children: {
-            bcUpperFrameL: {
-              txtAss: assBodyCenterUpper,
-              struct: [ 100, 359 ],
-              pivot: [ 50 ],
-              rotation: [ 0, 132.5 ],
-            },
-            sideViewMirrorL: {
+    fusionBase1Level1GrayTop: {
+      txtAss: assFusionBaseGrayTop,
+      geo: 'circle',
+      struct: [ 43, 16 ],
+    },
+    fusionBaseLevel2BlackDrum: {
+      txtAss: assFusionBaseBlackSide,
+      geo: 'cylinder',
+      // eslint-disable-next-line array-bracket-newline, array-element-newline
+      struct: [ 23, 23, 20, 16, 1, true ],
+      pivot: [ 0, 10 ],
+      rotation: { x: -90 },
+    },
+    fusionBaseLevel2BlackTop: {
+      color: new THREE.Color( 0x3c3c3c ),
+      geo: 'circle',
+      struct: [ 23, 16 ],
+      pivot: [ 0, 0, -20 ],
+    },
+    fusionBaseLevel3White: {
+      txtAss: assFusionBaseWhiteSide,
+      geo: 'cylinder',
+      // eslint-disable-next-line array-bracket-newline, array-element-newline
+      struct: [ 2, 23, 11, 6, 1, true ],
+      position: [ 0, 0, -25 ],
+      rotation: { x: -90 },
+    },
+    fusionBodyLeft: {
+      txtAss: assFusionFaceWide,
+      struct: [ 14, 60 ],
+      pivot: [ 0, 30 ],
+      position: [ 8, 0, -83.5 ],
+      rotation: { x: 90, y: -90 },
+    },
+    fusionBodyRight: {
+      txtAss: assFusionFaceWide,
+      struct: [ 14, 60 ],
+      pivot: [ 0, 30 ],
+      position: [ -8, 0, -83.5 ],
+      rotation: { x: 90, y: -90 },
+    },
+    fusionBodyFront: {
+      txtAss: assFusionFaceFront,
+      struct: [ 8, 60 ],
+      pivot: [ 0, 30 ],
+      position: [ 0, 14, -83.5 ],
+      rotation: { x: 90 },
+    },
+    fusionBodyBack: {
+      txtAss: assFusionFaceBack,
+      struct: [ 8, 60 ],
+      pivot: [ 0, 30 ],
+      position: [ 0, -14, -83.5 ],
+      rotation: { x: 90 },
+    },
+    fusionBodyFrontLeft: {
+      txtAss: assFusionFaceFrontCorner,
+      struct: [ 8.5, 60 ],
+      pivot: [ -4.25, 30 ],
+      position: [ 8, 7, -83.5 ],
+      rotation: { x: 90, y: -60.25 },
+    },
+    fusionBodyFrontRight: {
+      txtAss: assFusionFaceFrontCorner,
+      struct: [ 8.5, 60 ],
+      pivot: [ -4.25, 30 ],
+      position: [ -8, 7, -83.5 ],
+      rotation: { x: 90, y: 240.25 },
+    },
+    fusionBodyBackLeft: {
+      txtAss: assFusionFaceBackCorner,
+      struct: [ 8.5, 60 ],
+      pivot: [ 4.25, 30 ],
+      position: [ 8, -7, -83.5 ],
+      rotation: { x: 90, y: -119.75 },
+    },
+    fusionBodyBackRight: {
+      txtAss: assFusionFaceBackCorner,
+      struct: [ 8.5, 60 ],
+      pivot: [ 4.25, 30 ],
+      position: [ -8, -7, -83.5 ],
+      rotation: { x: 90, y: -60.25 },
+    },
+    fusionBodyTop: {
+      txtAss: assFusionTop,
+      struct: [ 16, 28 ],
+      position: [ 0, 0, -83.5 ],
+      depthWrite: false,
+    },
+    fusionBodyInnerUpper: {
+      txtAss: assFusionCrossSection,
+      struct: [ 16, 28 ],
+      position: [ 0, 0, -43.5 ],
+      rotation: { x: 45 },
+    },
+    fusionBodyInnerLower: {
+      txtAss: assFusionCrossSection,
+      struct: [ 16, 28 ],
+      position: [ 0, 0, -27.5 ],
+    },
+    fusionBodyInnerLeft: {
+      txtAss: assFusionCrossSection,
+      struct: [ 16, 28 ],
+      position: [ 0, 0, -80 ],
+      rotation: { y: 25 },
+    },
+    fusionBodyInnerRight: {
+      txtAss: assFusionCrossSection,
+      struct: [ 16, 28 ],
+      position: [ 0, 0, -80 ],
+      rotation: { y: -25 },
+    },
+    fusionBodyInterior: {
+      color: new THREE.Color( 0xefefef ),
+      struct: [ 16, 24 ],
+      pivot: [ 0, 12 ],
+      position: [ 0, 0, -23.5 ],
+      rotation: { x: -90 },
+    },
 
-            },
-          },
-        },
-        bcUpperR: {
-          struct: [ 100, 359 ],
-          pivot: [ 50 ],
-          position: [ -186, -27.5, -155 ],
-          children: {
-            bcUpperFrameR: {
-              txtAss: assBodyCenterUpper,
-              struct: [ 100, 359 ],
-              pivot: [ 50 ],
-              rotation: [ 0, 47.5 ],
-            },
-            sideViewMirrorR: {
 
-            },
-          },
-        },
-        sideWindowL: {
-          txtAss: assSideWindow,
-          struct: [ 100, 359 ],
-          pivot: [ 50 ],
-          position: [ 185.5, -27.5, -155 ],
-          rotation: [ 0, 132.5 ],
-        },
-        sideWindowR: {
-          txtAss: assSideWindow,
-          struct: [ 100, 359 ],
-          pivot: [ 50 ],
-          position: [ -185.5, -27.5, -155 ],
-          rotation: [ 0, 47.5 ],
-        },
-        roof: {
-          txtAss: assRoof,
-          struct: [ 251.5, 195 ],
-          position: [ 0, -98.5, -220.5 ],
-        },
-        windshield: {
-          txtAss: assWindshield,
-          struct: [ 375, 167 ],
-          pivot: [ 0, -82.5 ],
-          position: [ 0, 149.5, -154 ],
-          rotation: [ 23.5 ],
-        },
-        hood: {
-          txtAss: assHood,
-          struct: [ 387, 314 ],
-          pivot: [ 0, -157 ],
-          position: [ 0, 463, -133.5 ],
-          rotation: [ 4 ],
-        },
-        bfLowerL: {
-          txtAss: assBodyFrontLower,
-          struct: [ 81, 119 ],
-          pivot: [ -40.5, 59.5 ],
-          position: [ 216, 363, -104 ],
-          rotation: { y: 90, x: -12.325 }, // sometimes you have to rotate multiple axes in a specific order. sigh.
-        },
-        bfLowerR: {
-          txtAss: assBodyFrontLower,
-          struct: [ 81, 119 ],
-          pivot: [ -40.5, 59.5 ],
-          position: [ -216, 363, -104 ],
-          rotation: { y: 90, x: 12.325 },
-        },
-        bfUpperL: {
-          txtAss: assBodyFrontUpper,
-          struct: [ 44, 121 ],
-          pivot: [ 22, 60.5 ],
-          position: [ 216, 363, -103 ],
-          rotation: { z: 12.325, y: 120 },
-        },
-        bfUpperR: {
-          txtAss: assBodyFrontUpper,
-          struct: [ 44, 121 ],
-          pivot: [ 22, 60.5 ],
-          position: [ -216, 363, -103 ],
-          rotation: { z: -12.325, y: 60 },
-        },
-        bfCornerL: {
-          txtAss: assBodyFrontCorner,
-          struct: [ 24, 17 ],
-          pivot: [ -12, -8.5 ],
-          position: [ 216, 364, -103 ],
-          rotation: { y: 90 },
-        },
-        bfCornerR: {
-          txtAss: assBodyFrontCorner,
-          struct: [ 24, 17 ],
-          pivot: [ -12, -8.5 ],
-          position: [ -216, 364, -103 ],
-          rotation: { y: 90 },
-        },
-        grille: {
-          txtAss: assGrille,
-          struct: [ 382, 36 ],
-          pivot: [ 0, -18 ],
-          position: [ 0, 481, -102.5 ],
-          rotation: { x: 59.5 },
-        },
-        bumperFrontBottomUpper: {
-          color: new THREE.Color( 0x18171d ),
-          struct: [ 381, 24 ],
-          pivot: [ 0, -12 ],
-          position: [ 0, 480, -67.5 ],
-          rotation: { x: -16 },
-        },
-        bumperFrontBottomMiddle: {
-          color: new THREE.Color( 0x101010 ),
-          struct: [ 381, 24 ],
-          pivot: [ 0, -12 ],
-          position: [ 0, 464, -42 ],
-          rotation: { x: 90 },
-        },
-        bumperFrontBottomLower: {
-          color: new THREE.Color( 0x2f2f2f ),
-          struct: [ 381, 24 ],
-          pivot: [ 0, -12 ],
-          position: [ 0, 483, -37 ],
-          rotation: { x: 34.5 },
-        },
-        bumperFrontTop: {
-          txtAss: assBumperFrontTop,
-          struct: [ 382, 36 ],
-          pivot: [ 0, -18 ],
-          position: [ 0, 480, -67.5 ],
-          rotation: { x: 90 },
-        },
-        engineTop: {
-          txtAss: assBodyEngineTop,
-          struct: [ 316, 170 ],
-          pivot: [ 0, -85 ],
-          position: [ 0, -196, -220.5 ],
-          rotation: { x: -11 },
-        },
-        engineBack: {
-          txtAss: assBodyEngineBack,
-          struct: [ 333, 99 ],
-          pivot: [ 0, -49.5 ],
-          position: [ 0, -361, -188 ],
-          rotation: { x: -19 },
-        },
-        baLowerL: {
-          txtAss: assBodyAftLower,
-          struct: [ 77, 126 ],
-          pivot: [ 38.5, -63 ],
-          position: [ 216, -364, -26 ],
-          rotation: { y: 90, x: 13 },
-        },
-        baLowerR: {
-          txtAss: assBodyAftLower,
-          struct: [ 77, 126 ],
-          pivot: [ 38.5, -63 ],
-          position: [ -216, -364, -26 ],
-          rotation: { y: 90, x: -13 },
-        },
-        baMiddleL: {
-          txtAss: assBodyAftMiddle,
-          struct: [ 61, 126 ],
-          pivot: [ 30.5, -63 ],
-          position: [ 216, -364, -103 ],
-          rotation: { z: -12.325, y: 120 },
-        },
-        baMiddleR: {
-          txtAss: assBodyAftMiddle,
-          struct: [ 61, 126 ],
-          pivot: [ 30.5, -63 ],
-          position: [ -216, -364, -103 ],
-          rotation: { z: 12.325, y: 60 },
-        },
-        baUpperL: {
-          txtAss: assBodyAftUpper,
-          struct: [ 49, 98 ],
-          pivot: [ 24.5, -49 ],
-          position: [ 187, -358, -155.5 ],
-          rotation: { z: -12.325, y: 129.5 },
-        },
-        baUpperR: {
-          txtAss: assBodyAftUpper,
-          struct: [ 49, 98 ],
-          pivot: [ 24.5, -49 ],
-          position: [ -187, -358, -155.5 ],
-          rotation: { z: 12.325, y: 50.5 },
-        },
-        baCornerL: {
-          txtAss: assBodyAftCorner,
-          struct: [ 27, 17 ],
-          pivot: [ -13.5, 8.5 ],
-          position: [ 216, -364, -103 ],
-          rotation: { y: 90 },
-        },
-        baCornerR: {
-          txtAss: assBodyAftCorner,
-          struct: [ 27, 17 ],
-          pivot: [ -13.5, 8.5 ],
-          position: [ -216, -364, -103 ],
-          rotation: { y: 90 },
-        },
-        engineLeft: {
-          txtAss: assBodyEngineLeft,
-          struct: [ 87, 157 ],
-          pivot: [ 42.75, -78.5 ],
-          position: [ 185.5, -206, -155 ],
-          rotation: { y: 132.5 },
-        },
-        engineRight: {
-          txtAss: assBodyEngineRight,
-          struct: [ 87, 157 ],
-          pivot: [ 42.75, -78.5 ],
-          position: [ -185.5, -206.5, -155 ],
-          rotation: { y: 47.5 },
-        },
-        bBackPlate: {
-          txtAss: assBodyBackPlate,
-          struct: [ 376, 52.5 ],
-          pivot: [ 0, -25 ],
-          position: [ 0, -475, -109 ],
-          rotation: { x: 114 },
-        },
-        bBackLedge: {
-          txtAss: assBodyBackLedge,
-          struct: [ 381, 13 ],
-          pivot: [ 0, -6.5 ],
-          position: [ 0, -475, -109 ],
-          rotation: { x: -22 },
-        },
-        bumperAftUpper: {
-          color: new THREE.Color( 0x2f2f2f ),
-          struct: [ 376, 32 ],
-          pivot: [ 0, 16.5 ],
-          position: [ 0, -486.5, -72 ],
-          rotation: { x: -90 },
-        },
-        bumperAftMiddle: {
-          color: new THREE.Color( 0x101010 ),
-          struct: [ 376.5, 9 ],
-          pivot: [ 0, 4.5 ],
-          position: [ 0, -487, -72 ],
-        },
-        bumperAftLower: {
-          color: new THREE.Color( 0x18171d ),
-          struct: [ 381, 50 ],
-          pivot: [ 0, 25 ],
-          position: [ 0, -474, -41 ],
-          rotation: { x: -90 },
-        },
+    // div#fusionLock {
+    //   width: 10px;
+    //   height: 10px;
+    //   left: 50%;
+    //   top: 56px;
+    //   transform: translateX(-50%) translateZ(-76px);
+    //   div#fusionLockBack {
+    //     background: #a31c18;
+    //     width: 10px;
+    //     height: 10px;
+    //     top: 100%;
+    //     transform: rotateX(90deg);
+    //   }
+    //   div#fusionLockTop {
+    //     background: #ac4139;
+    //     width: 100%;
+    //     height: 100%;
+    //   }
+    //   div.fusionLockFace {
+    //     background-image: url(../img/future/fusionLock.png);
+    //     width: 100%;
+    //     height: 100%;
+    //     transform: rotateY(-90deg);
+    //     &#fusionLockLeft {
+    //       left: 100%;
+    //     }
+    //   }
+    // }
 
-      },
-    },
-    exterior: {
-      struct: [ 432, 1000, 300 ],
+  },
+} )
+
+const makeExterior = () => ( {
+  struct: [ 432, 1000, 300 ],
+  children: {
+    backBar: makeBackBar(),
+    mrFusion: makeMrFusion(),
+    rearVents: {
+      position: [ 0, -457, -109 ],
+      rotation: { x: 30 },
       children: {
-        backBar: makeBackBar(),
-        mrFusion: {
-          position: [ 0, -358, -203 ],
-          children: {
-            base1LowerGrayDrum: {
-              txtAss: assFusionBaseGraySide,
-              geo: 'cylinder',
-              // eslint-disable-next-line array-bracket-newline, array-element-newline
-              struct: [ 43, 43, 32, 16, 1, true ],
-              pivot: [ 0, -16 ],
-              rotation: { x: -90 },
-            },
-            base1LowerGrayTop: {
-              txtAss: assFusionBaseGrayTop,
-              geo: 'circle',
-              struct: [ 43, 16 ],
-            },
-            base2MiddleBlackDrum: {
-              txtAss: assFusionBaseBlackSide,
-              geo: 'cylinder',
-              // eslint-disable-next-line array-bracket-newline, array-element-newline
-              struct: [ 23, 23, 20, 16, 1, true ],
-              pivot: [ 0, 10 ],
-              rotation: { x: -90 },
-            },
-            base2MiddleBlackTop: {
-              color: new THREE.Color( 0x3c3c3c ),
-              geo: 'circle',
-              struct: [ 23, 16 ],
-              pivot: [ 0, 0, -20 ],
-            },
-            base3UpperWhite: {
-              txtAss: assFusionBaseWhiteSide,
-              geo: 'cylinder',
-              // eslint-disable-next-line array-bracket-newline, array-element-newline
-              struct: [ 6, 23, 10, 6, 1, true ],
-              position: [ 0, 0, -24 ],
-              rotation: { x: -90 },
-            },
-          },
-        },
-        rearVents: {
-          position: [ 0, -457, -109 ],
-          rotation: { x: 30 },
-          children: {
-            rearVentL: makeRearVent( 'L' ),
-            rearVentR: makeRearVent( 'R' ),
-          },
-        },
-      },
-    },
-    interior: {
-      struct: [ 432, 1000, 300 ],
-      children: {},
-    },
-    wheels: {
-      struct: [ 432, 729, 142 ],
-      position: [ 0, 0, -11 ],
-      children: {
-        wheelsL: {
-          struct: [ 142, 729, 52 ],
-          pivot: [ 71 ],
-          position: [ 223 ],
-          children: {
-            wheelLF: makeWheel( 'LF' ),
-            wheelLA: makeWheel( 'LA' ),
-          },
-        },
-        wheelsR: {
-          struct: [ 142, 729 ],
-          pivot: [ -71 ],
-          position: [ -223 ],
-          children: {
-            wheelRF: makeWheel( 'RF' ),
-            wheelRA: makeWheel( 'RA' ),
-          },
-        },
+        rearVentL: makeRearVent( 'L' ),
+        rearVentR: makeRearVent( 'R' ),
       },
     },
   },
 } )
 
-export { setDeLorean }
+const makeSpokeMap = () => {
+  const spokeMap = {
+    long: [],
+    short: [],
+  }
+  for ( let side = 0; side < 6; side++ ) {
+    spokeMap.long.push( {
+      map: g.three.mkr.textureLoader( [ 2, 3 ].includes( side ) ? assTireTread : assTireWallLong ),
+    } )
+    spokeMap.short.push( [ 0, 1 ].includes( side )
+      ? { opacity: 0 }
+      : {
+        map: g.three.mkr.textureLoader( [ 2, 3 ].includes( side ) ? assTireTread : assTireWallShort ),
+      } )
+  }
+  return spokeMap
+}
+
+const makeWheel = wheel => {
+  const msh = { ...g.three.msh }
+  const wheelies = {}
+  const spokeMap = makeSpokeMap()
+  for ( let spoke = 0; spoke < 6; spoke++ ) {
+    const mat = {
+      long: [],
+      short: [],
+    }
+    for ( let sps = 0; sps < 6; sps++ ) {
+      const matLong = new THREE.MeshBasicMaterial( {
+        ...msh,
+        ...spokeMap.long[sps],
+      } )
+      mat.long.push( matLong )
+      const matShort = new THREE.MeshBasicMaterial( {
+        ...msh,
+        ...spokeMap.short[sps],
+      } )
+      mat.short.push( matShort )
+    }
+    const spokeLong = {
+      geo: 'box',
+      struct: [ 18, 142, 52 ],
+      rotation: [ 0, 0, spoke * 30 ],
+      mat: mat.long,
+    }
+    const spokeShort = {
+      geo: 'box',
+      struct: [ 18, 120, 52 ],
+      rotation: [ 0, 0, ( spoke * 30 ) + 15 ],
+      mat: mat.short,
+    }
+    wheelies[`wheel${wheel}spokeLong${spoke}`] = spokeLong
+    wheelies[`wheel${wheel}spokeShort${spoke}`] = spokeShort
+  }
+  const hubCapMat = {
+    map: g.three.mkr.textureLoader( wheel.includes( 'F' ) ? assTireHubCapF : assTireHubCapA ),
+  }
+  const hubCapMsh = new THREE.MeshBasicMaterial( {
+    ...msh,
+    ...hubCapMat,
+  } )
+  hubCapMsh.map.wrapS = hubCapMsh.map.wrapT = THREE.RepeatWrapping
+  hubCapMsh.map.repeat.set( 0.5, 1 )
+  wheelies[`wheel${wheel}hubCap`] = {
+    geo: 'circle',
+    struct: [ 43, 32 ],
+    position: [ 0, 0, 26 ],
+    mat: hubCapMsh,
+  }
+  const flares = {}
+  for ( let flare = 0; flare < 3; flare++ ) {
+    const thisFlare = `wheel${wheel}flare${flare + 1}`
+    const flareMat = {
+      opacity: 0.88,
+      map: g.three.mkr.textureLoader( assRocketFlare ),
+    }
+    msh.alphaTest = 0.01
+    let flarePos
+    switch ( flare ) {
+      case 0:
+        flarePos = [ 0, 0, -13 ]
+        break
+      case 1:
+        flarePos = [ -11, 0, -5 ]
+        break
+      case 2:
+        flarePos = [ 11, 0, -5 ]
+        break
+    }
+    flares[thisFlare] = {
+      struct: [ 276, 376 ],
+      pivot: [ 0, -188 ],
+      rotation: [ 0, 120 * flare ],
+      position: flarePos,
+      mat: new THREE.MeshBasicMaterial( {
+        ...msh,
+        ...flareMat,
+      } ),
+    }
+    flares[thisFlare].mat.depthWrite = false
+    g.three.flr.push( {
+      cdt: 0,
+      ctl: 0,
+    } )
+  }
+  const flareFixMat = {
+    color: new THREE.Color( 'white' ),
+  }
+  flares.flareFixer = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 27.5, 0.01, 60, 6 ],
+    pivot: [ 0, -52 ],
+    mat: new THREE.MeshBasicMaterial( {
+      ...msh,
+      ...flareFixMat,
+    } ),
+  }
+  wheelies[`wheel${wheel}flares`] = {
+    struct: [ 276, 276, 376 ],
+    pivot: [ 0, -188 ],
+    rotation: [ -90 ],
+    children: flares,
+  }
+
+  return {
+    struct: [ 142, 142, 52 ],
+    position: [ 0, wheel.includes( 'F' ) ? 289 : -286.5 ],
+    children: wheelies,
+  }
+}
+
+const makeWheels = () => ( {
+  struct: [ 432, 729, 142 ],
+  position: [ 0, 0, -11 ],
+  children: {
+    wheelsL: {
+      struct: [ 142, 729, 52 ],
+      pivot: [ 71 ],
+      position: [ 223 ],
+      children: {
+        wheelLF: makeWheel( 'LF' ),
+        wheelLA: makeWheel( 'LA' ),
+      },
+    },
+    wheelsR: {
+      struct: [ 142, 729 ],
+      pivot: [ -71 ],
+      position: [ -223 ],
+      children: {
+        wheelRF: makeWheel( 'RF' ),
+        wheelRA: makeWheel( 'RA' ),
+      },
+    },
+  },
+} )
+
+const makeDeLorean = () => ( {
+  struct: [ 432, 1000, 300 ],
+  position: [ 0, 0, -1000 ],
+  rotation: [ 135, 0, -90 ],
+  children: {
+    body: makeBody(),
+    exterior: makeExterior(),
+    interior: makeInterior(),
+    underCarriage: makeUnderCarriage(),
+    wheels: makeWheels(),
+  },
+} )
+
+export { makeDeLorean }
