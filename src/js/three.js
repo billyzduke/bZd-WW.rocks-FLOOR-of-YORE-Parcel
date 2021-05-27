@@ -90,10 +90,10 @@ const setThree = () => {
   console.log( g.three.scene )
   /* eslint-disable array-bracket-newline, array-element-newline */
   g.three.flaresInScene = [
-    [ 0, 4, 0, 0, 13 ],
-    [ 0, 4, 0, 1, 13 ],
-    [ 0, 4, 1, 0, 13 ],
-    [ 0, 4, 1, 1, 13 ],
+    [ 0, 4, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
+    [ 0, 4, 0, 1, 14 ],
+    [ 0, 4, 1, 0, 14 ],
+    [ 0, 4, 1, 1, 14 ],
   ]
   /* eslint-enable array-bracket-newline, array-element-newline */
 

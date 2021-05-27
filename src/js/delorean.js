@@ -111,6 +111,92 @@ const makeExhaustPipe = side => {
   return pipe
 }
 
+const makeWheelMech = wheel => {
+  const wheelIsLeft = wheel.includes( 'L' )
+  const msh = { ...g.three.msh }
+  const wheelies = {
+    struct: [ 142, 142, 52 ],
+    position: [ 0, wheel.includes( 'F' ) ? 289 : -286.5 ],
+    children: {
+      [`wheelMechAxleArm${wheel}`]: {
+        children: {},
+      },
+      [`wheelMechTireMount${wheel}`]: {
+        children: {},
+      },
+    },
+  }
+  const pipeMat = {
+    roughness: 0.4,
+    metalness: 1,
+  }
+  const emissiveMapPipe = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0x999999 ) }
+  const emissiveMapSphere1 = { emissiveMap: new THREE.TextureLoader().load( assSphereMetal1 ), emissive: new THREE.Color( 0x666666 ) }
+  const emissiveMapSphere3 = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0xffffff ) }
+  wheelies.children[`wheelMechAxleArmMount${wheel}`] = {
+    geo: 'torus',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 36, 12, 10, 10 ],
+    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
+    rotation: [ 0, 90 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapSphere1,
+    } ),
+  }
+  wheelies.children[`wheelMechAxleArm${wheel}`].children[`wheelMechAxleArmBearing${wheel}`] = {
+    geo: 'sphere',
+    struct: [ 12.5, 10, 10 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapSphere3,
+    } ),
+    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
+  }
+  wheelies.children[`wheelMechAxleArm${wheel}`].children[`wheelMechAxleRod${wheel}`] = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 7, 7, 76, 12, 1, true ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapPipe,
+    } ),
+    pivot: [ 0, -24 ],
+    position: [ wheelIsLeft ? -12 : 12, 0, -27 ],
+    rotation: { z: wheelIsLeft ? -90 : 90, x: 14 },
+  }
+  wheelies.children[`wheelMechTireMount${wheel}`].children[`wheelMechTireMountJoint${wheel}`] = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 15, 15, 15, 12 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapSphere3,
+    } ),
+    position: [ 0, 0, -22 ],
+    // rotation: { x: 90 },
+  }
+  wheelies.children[`wheelMechTireMount${wheel}`].children[`wheelMechTireMountPlate${wheel}`] = {
+    geo: 'cylinder',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 18, 18, 15, 14 ],
+    mat: new THREE.MeshStandardMaterial( {
+      ...msh,
+      ...pipeMat,
+      ...emissiveMapPipe,
+    } ),
+    pivot: [ 0, -7 ],
+    position: [ 0, 0, -7 ],
+    rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
+  }
+
+  return wheelies
+}
+
 const makeUnderCarriage = () => ( {
   struct: [ 432, 1000, 127 ],
   children: {
@@ -226,6 +312,30 @@ const makeUnderCarriage = () => ( {
           color: new THREE.Color( 'black' ),
           struct: [ 402, 157 ],
           position: [ 0, -286, -127 ],
+        },
+      },
+    },
+    wheelsMech: {
+      struct: [ 432, 729, 142 ],
+      position: [ 0, 0, -11 ],
+      children: {
+        wheelsMechL: {
+          struct: [ 142, 729, 52 ],
+          pivot: [ 71 ],
+          position: [ 223 ],
+          children: {
+            wheelLF: makeWheelMech( 'LF' ),
+            wheelLA: makeWheelMech( 'LA' ),
+          },
+        },
+        wheelsMechR: {
+          struct: [ 142, 729 ],
+          pivot: [ -71 ],
+          position: [ -223 ],
+          children: {
+            wheelRF: makeWheelMech( 'RF' ),
+            wheelRA: makeWheelMech( 'RA' ),
+          },
         },
       },
     },
@@ -896,7 +1006,6 @@ const makeSpokeMap = () => {
 
 const makeWheel = wheel => {
   const wheelIsFront = wheel.includes( 'F' )
-  const wheelIsLeft = wheel.includes( 'L' )
   const msh = { ...g.three.msh }
   const wheelies = {}
   const spokeMap = makeSpokeMap()
@@ -929,8 +1038,14 @@ const makeWheel = wheel => {
       rotation: [ 0, 0, ( spoke * 30 ) + 15 ],
       mat: mat.short,
     }
-    wheelies[`wheel${wheel}spokeLong${spoke}`] = spokeLong
-    wheelies[`wheel${wheel}spokeShort${spoke}`] = spokeShort
+    wheelies[`wheelSpokeLong${wheel}${spoke}`] = spokeLong
+    wheelies[`wheelSpokeShort${wheel}${spoke}`] = spokeShort
+  }
+  wheelies[`wheelHubInner${wheel}`] = {
+    geo: 'circle',
+    txtAss: assTireBiter,
+    struct: [ 43, 16 ],
+    position: [ 0, 0, -16 ],
   }
   const hubCapMat = {
     map: g.three.mkr.textureLoader( wheelIsFront ? assTireHubCapF : assTireHubCapA ),
@@ -941,7 +1056,7 @@ const makeWheel = wheel => {
   } )
   hubCapMsh.map.wrapS = hubCapMsh.map.wrapT = THREE.RepeatWrapping
   hubCapMsh.map.repeat.set( 0.5, 1 )
-  wheelies[`wheel${wheel}hubCap`] = {
+  wheelies[`wheelHubOuter${wheel}`] = {
     geo: 'circle',
     struct: [ 43, 16 ],
     position: [ 0, 0, 26 ],
@@ -996,86 +1111,11 @@ const makeWheel = wheel => {
       ...flareFixMat,
     } ),
   }
-  wheelies[`wheel${wheel}flares`] = {
+  wheelies[`wheelFlares${wheel}`] = {
     struct: [ 276, 276, 376 ],
     pivot: [ 0, -188 ],
     rotation: [ -90 ],
     children: flares,
-  }
-
-  const pipeMat = {
-    roughness: 0.4,
-    metalness: 1,
-  }
-  const emissiveMapPipe = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0x999999 ) }
-  const emissiveMapSphere1 = { emissiveMap: new THREE.TextureLoader().load( assSphereMetal1 ), emissive: new THREE.Color( 0x666666 ) }
-  const emissiveMapSphere2 = { emissiveMap: new THREE.TextureLoader().load( assSphereMetal3 ), emissive: new THREE.Color( 0x111111 ) }
-  const emissiveMapSphere3 = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0xffffff ) }
-  wheelies[`wheel${wheel}axleArmMount1`] = {
-    geo: 'torus',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 36, 12, 10, 10 ],
-    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
-    rotation: [ 0, 90 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapSphere1,
-    } ),
-  }
-  wheelies[`wheel${wheel}axleArmJoint1`] = {
-    geo: 'sphere',
-    struct: [ 12.5, 10, 10 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapSphere3,
-    } ),
-    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
-  }
-  wheelies[`wheel${wheel}axleArmLength`] = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 7, 7, 76, 12, 1, true ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapPipe,
-    } ),
-    pivot: [ 0, -24 ],
-    position: [ wheelIsLeft ? -12 : 12, 0, -27 ],
-    rotation: { z: wheelIsLeft ? -90 : 90, x: 14 },
-  }
-  wheelies[`wheel${wheel}axleArmJoint2`] = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 15, 15, 15, 12 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapSphere3,
-    } ),
-    position: [ 0, 0, -22 ],
-    // rotation: { x: 90 },
-  }
-  wheelies[`wheel${wheel}axleArmMount2`] = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 18, 18, 15, 14 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapPipe,
-    } ),
-    pivot: [ 0, -7 ],
-    position: [ 0, 0, -7 ],
-    rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
-  }
-  wheelies[`wheel${wheel}InsideBack`] = {
-    geo: 'circle',
-    txtAss: assTireBiter,
-    struct: [ 43, 16 ],
-    position: [ 0, 0, -16 ],
   }
 
   return {
