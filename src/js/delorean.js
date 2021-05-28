@@ -58,8 +58,6 @@ import assFusionLockFace from 'url:/src/img/future/fusionLock.png'
 import assTireBiter from 'url:/src/img/future/tireInner.png'
 import assPipeMetal from 'url:/src/img/future/metalPipe.png'
 import assSphereMetal1 from 'url:/src/img/future/metalSphere.png'
-import assSphereMetal2 from 'url:/src/img/future/metalSphere2.png'
-import assSphereMetal3 from 'url:/src/img/future/metalSphere3.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -970,6 +968,76 @@ const makeMrFusion = () => ( {
   },
 } )
 
+// const makeLightBoxSides = ( side, orient ) => {
+//   const msh = { ...g.three.msh }
+//   const col = { color: new THREE.Color( 0x000000 ) }
+//   const sides = {}
+//   if ( orient === 'H' ) {
+//     [ 'Top', 'Bottom' ].forEach( y => {
+//       const triGeom = new THREE.ShapeGeometry( new THREE.Shape( g.three.mkr.createVector2s( [ [], [ 91 ], [ 45.5, 45.5 ] ] ) ) )
+//       triGeom.translate( -45.5, 0, 0 )
+//       const triMat = new THREE.MeshStandardMaterial( { ...msh, ...col } )
+//       sides[`lightBox${y}Side${side}`] = {
+//         msh: new THREE.Mesh( triGeom, triMat ),
+//         position: [ y === 'Top' ? side === 'L' ? -1 : 1.5 : 0, y === 'Top' ? -12.75 : 0, y === 'Top' ? -23 : 0 ], // 481
+//         rotation: { x: y === 'Top' ? 160 : 194 },
+//       }
+//     } )
+//   } else if ( orient === 'V' ) {
+//     [ 'Left', 'Right' ].forEach( x => {
+//       const rectGeom = new THREE.PlaneGeometry( 64.347, 28 )
+//       const rectMat = new THREE.MeshStandardMaterial( { ...msh, ...col } )
+//       sides[`lightBox${x}Side${side}`] = {
+//         msh: new THREE.Mesh( rectGeom, rectMat ),
+//         position: [ 0, 500, -110 ],
+//         rotation: { x: 90, y: 45 },
+//       }
+//     } )
+//   }
+//   return sides
+// }
+
+const makeLightBox = side => {
+  const msh = { ...g.three.msh }
+  const col = { color: new THREE.Color( 0xcccccc ) }
+  const makePolyObj = {
+    position: [ 0, 14, 58.25 ],
+  }
+  /* eslint-disable array-element-newline */
+  const polyVert = [
+    0, 0, 0, // any amount of positive y creates the same shape. HOW
+    side === 'L' ? -0.75 : -0.75, 0.25, -1, // this makes zero fucking sense
+    side === 'L' ? 0.75 : 0.75, 0.25, -1,
+    -45.5, -11.5, -58.25,
+    45.5, -11.5, -58.25,
+  ]
+  const polyFace = [
+    0, 2, 1,
+    0, 1, 3,
+    0, 3, 4,
+    0, 4, 2,
+  ]
+  /* eslint-enable array-element-newline */
+  makePolyObj.geo = new THREE.PolyhedronGeometry( polyVert, polyFace, 75, 0 )
+  makePolyObj.mat = new THREE.MeshStandardMaterial( { ...msh, ...col } )
+  makePolyObj.msh = new THREE.Mesh( makePolyObj.geo, makePolyObj.mat )
+  makePolyObj.msh.castShadow = true; //default is false
+
+  return {
+    children: {
+      theBox: makePolyObj,
+    },
+  }
+}
+
+const makeHeadLight = side => ( {
+  position: [ side === 'L' ? 133 : -131, 479, -104.5 ],
+  rotation: { x: 59.5, z: 180 },
+  children: {
+    [`lightBox${side}`]: makeLightBox( side ),
+  },
+} )
+
 const makeExterior = () => ( {
   struct: [ 432, 1000, 300 ],
   children: {
@@ -981,6 +1049,45 @@ const makeExterior = () => ( {
       children: {
         rearVentL: makeRearVent( 'L' ),
         rearVentR: makeRearVent( 'R' ),
+      },
+    },
+    lightBars: {
+      children: {
+        lightBarAft: {
+          children: {
+            wormholeGenerator: {
+
+            },
+            lightBarGlowAft: {
+
+            },
+            lightBarAftTerminalL: {
+
+            },
+            lightBarAftTerminalR: {
+
+            },
+          },
+        },
+        lightBarFore: {
+          children: {
+            lightBarGlowAft: {
+
+            },
+            lightBarAftTerminalL: {
+
+            },
+            lightBarAftTerminalR: {
+
+            },
+          },
+        },
+      },
+    },
+    headLights: {
+      children: {
+        headLightL: makeHeadLight( 'L' ),
+        headLightR: makeHeadLight( 'R' ),
       },
     },
   },

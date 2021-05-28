@@ -44,6 +44,7 @@ module.exports = {
         maxBOF: 0,
         maxEOF: 1,
       } ],
+    'no-nested-ternary': 'off',
     'no-param-reassign': 'off',
     'no-plusplus': 'off',
     'no-trailing-spaces': [ 'error', {} ],
@@ -60,7 +61,7 @@ module.exports = {
         allowTemplateLiterals: true,
         avoidEscape: true,
       } ],
-    semi: ['error', 'never'],
-    'space-in-parens': ['error', 'always']
+    semi: [ 'error', 'never' ],
+    'space-in-parens': [ 'error', 'always' ],
   },
 }
