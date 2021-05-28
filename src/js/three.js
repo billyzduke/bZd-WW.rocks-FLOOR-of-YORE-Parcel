@@ -278,9 +278,7 @@ const setThree = () => {
     pointLight.position.y = 20.42
     pointLight.position.z = 21
     g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( pointLight )
-    // const sphereSize = 1
-    // const pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize )
-    // g.three.scene.add( pointLightHelper )
+    // g.three.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
 
     const spotLight = new THREE.SpotLight( 0xb3e7fb, 5, 0, THREE.Math.degToRad( 9 ), 0.25 )
     spotLight.castShadow = true // default false
@@ -288,8 +286,7 @@ const setThree = () => {
     spotLight.position.z = 22
     g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( spotLight )
     spotLight.target = pointLight
-    // const spotLightHelper = new THREE.SpotLightHelper( spotLight )
-    // g.three.scene.add( spotLightHelper )
+    // g.three.scene.add(  new THREE.SpotLightHelper( spotLight ) )
   } )
 
 
@@ -308,8 +305,8 @@ const setThree = () => {
       light.shadow.camera.right = 500
       light.shadow.camera.top = 500
       light.shadow.camera.bottom = -500
-      g.three.scene.add( new THREE.DirectionalLightHelper( light, 500 ) )
-      g.three.scene.add( new THREE.CameraHelper( light.shadow.camera ) )
+      // g.three.scene.add( new THREE.DirectionalLightHelper( light, 500 ) )
+      // g.three.scene.add( new THREE.CameraHelper( light.shadow.camera ) )
     }
     g.three.scene.add( light )
   } )
@@ -439,6 +436,10 @@ const makeThreeObj = ( obj, makeObj ) => {
       if ( typeof makeObj.color !== 'undefined' ) makeMesh.color = g.three.obj[obj].hex = makeObj.color
       // eslint-disable-next-line new-cap
       g.three.obj[obj].mat = isFunction( makeObj.mat ) ? new makeObj.mat( makeMesh ) : makeObj.mat
+      if ( g.three.obj[obj].mat instanceof THREE.MeshStandardMaterial && g.three.obj[obj].txt ) {
+        g.three.obj[obj].mat.emissive = new THREE.Color( 'white' )
+        g.three.obj[obj].mat.emissiveMap = g.three.obj[obj].txt
+      }
       if ( makeObj.pivot && g.three.obj[obj].geo ) g.three.obj[obj].geo.translate( makeObj.pivot[0] || 0, makeObj.pivot[1] || 0, makeObj.pivot[2] || 0 )
       if ( g.three.obj[obj].geo && g.three.obj[obj].mat ) g.three.obj[obj].msh = new THREE.Mesh( g.three.obj[obj].geo, g.three.obj[obj].mat )
       if ( g.three.obj[obj].msh ) {
