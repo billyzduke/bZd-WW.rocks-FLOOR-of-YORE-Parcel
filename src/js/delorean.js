@@ -1032,7 +1032,7 @@ const makeHeadLight = side => ( {
 
 const makeLightBars = where => {
   const children = {}
-  const bar = {
+  const barBar = {
     F: {
       T: {
         crv: [],
@@ -1051,8 +1051,8 @@ const makeLightBars = where => {
           [ -127, -2, 4 ],
           [ -190, -17, 69 ],
           [ -202, -44, 88 ],
-          [ -202, -59, 88 ],
-          [ -202, -180, 88 ],
+          [ -202, -59, 90 ],
+          [ -202, -180, 90 ],
           [ -202.5, -210, 99 ],
           [ -210, -228, 116 ],
           [ -214, -238, 130 ],
@@ -1067,39 +1067,39 @@ const makeLightBars = where => {
           [ 0, 0, 0 ],
           [ -112, 0, 0 ],
           [ -127, -2, 4 ],
-          [ -190, -17, 69 ],
-          [ -202, -44, 88 ],
-          [ -202, -59, 88 ],
-          [ -202, -180, 88 ],
-          [ -202.5, -210, 99 ],
-          [ -210, -228, 116 ],
-          [ -214, -238, 130 ],
-          [ -213.5, -246, 147 ],
-          [ -211, -256, 165 ],
-          [ -206, -260, 171 ],
+          [ -177, -13, 52 ],
+          [ -188, -23, 62 ],
+          [ -190, -59, 65 ],
+          [ -190.25, -145, 65 ],
+          [ -190.5, -169, 67.5 ],
+          [ -195, -206, 83.5 ],
+          [ -210, -230, 114 ],
+          [ -212, -238, 130 ],
+          [ -211, -246, 147 ],
+          [ -209, -256, 165 ],
         ],
         pos: [ 0, -194, -226 ],
       },
     },
   }
-  const bars = {
+  const barBars = {
     F: [
-      bar.F.T,
-      bar.F.T,
-      bar.F.B,
-      bar.F.B,
+      barBar.F.T,
+      barBar.F.T,
+      barBar.F.B,
+      barBar.F.B,
     ],
     A: [
-      bar.A.F,
-      bar.A.F,
-      bar.A.A,
-      bar.A.A,
+      barBar.A.F,
+      barBar.A.F,
+      barBar.A.A,
+      barBar.A.A,
     ],
   }
 
   switch ( where ) {
     case 'A':
-      bars[where].forEach( ( lb, lbp ) => {
+      barBars[where].forEach( ( lb, lbp ) => {
         const crvPts = g.three.mkr.createVector3s( lb.crv )
         const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
         const tubeMap = new THREE.TextureLoader().load( assPipeMetal2 )
@@ -1116,7 +1116,7 @@ const makeLightBars = where => {
           flipMe.x *= -1
           tubeMsh.scale.multiply( flipMe )
         }
-        const whereAt = Object.keys( bar[where] )
+        const whereAt = Object.keys( barBar[where] )
         children[`lightBarPipe${where}${whereAt[lbp < 2 ? 0 : 1]}${lbp % 2 ? 'R' : 'L'}`] = {
           msh: tubeMsh,
           position: lb.pos,
