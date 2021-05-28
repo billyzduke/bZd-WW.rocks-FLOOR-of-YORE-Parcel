@@ -296,10 +296,21 @@ const setThree = () => {
   g.three.controls.target.copy( g.three.grp.deLorean.position )
   g.three.controls.update()
 
-  g.three.lights = [ // new THREE.AmbientLight( 0x404040, 0.125 ), // soft white light
+  g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), // soft white light
     new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
   g.three.lights.forEach( light => {
-    if ( light instanceof THREE.DirectionalLight ) light.castShadow = true // default false
+    if ( light instanceof THREE.DirectionalLight ) {
+      // eslint-disable-next-line prefer-destructuring
+      light.target = g.three.scene.children[0]
+      light.castShadow = true // default false
+      light.shadow.camera.far = 2500 // default 500
+      light.shadow.camera.left = -500
+      light.shadow.camera.right = 500
+      light.shadow.camera.top = 500
+      light.shadow.camera.bottom = -500
+      g.three.scene.add( new THREE.DirectionalLightHelper( light, 500 ) )
+      g.three.scene.add( new THREE.CameraHelper( light.shadow.camera ) )
+    }
     g.three.scene.add( light )
   } )
 
