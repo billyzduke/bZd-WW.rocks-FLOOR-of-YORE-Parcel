@@ -326,21 +326,6 @@ const setThree = () => {
   //   return new THREE.Vector3( curvePoints[tBag][0], curvePoints[tBag][2], curvePoints[tBag][2] )
   // }
 
-  const curve = new THREE.CatmullRomCurve3( [
-    new THREE.Vector3( 0, 0, 0 ),
-    new THREE.Vector3( -112, 0, 0 ),
-    new THREE.Vector3( -125, 0, 0 ),
-    new THREE.Vector3( -200, -15, 91 ),
-  ] )
-
-  const tubeGeo = new THREE.TubeGeometry( curve, 120, 2.5, 32, false )
-  const tubeMat = new THREE.MeshBasicMaterial( { color: 0x00ff00, side: THREE.DoubleSide } )
-  const tubeMsh = new THREE.Mesh( tubeGeo, tubeMat )
-  tubeMsh.position.y = -168
-  tubeMsh.position.z = -238
-
-  g.three.scene.children[0].add( tubeMsh )
-
   // for ( let sp = 0; sp < 6; sp++ ) {
   //   let axis = g.three.xyz[sp]
   //   let dist = 750

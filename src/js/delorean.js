@@ -57,6 +57,7 @@ import assFusionCrossSection from 'url:/src/img/future/fusionCrossSection.png'
 import assFusionLockFace from 'url:/src/img/future/fusionLock.png'
 import assTireBiter from 'url:/src/img/future/tireInner.png'
 import assPipeMetal from 'url:/src/img/future/metalPipe.png'
+import assPipeMetal2 from 'url:/src/img/future/metalPipe2.png'
 import assSphereMetal1 from 'url:/src/img/future/metalSphere.png'
 import g from './glob'
 import { devLog } from './utils'
@@ -1029,6 +1030,48 @@ const makeHeadLight = side => ( {
   },
 } )
 
+const makeLightBars = where => {
+  const children = {}
+  for ( let lbp = 0; lbp < 2; lbp++ ) {
+    const crvPts = g.three.mkr.createVector3s( [
+      [ 0, 0, 0 ],
+      [ -112, 0, 0 ],
+      [ -127, -2, 4 ],
+      [ -190, -17, 69 ],
+      [ -202, -44, 88 ],
+      [ -202, -59, 88 ],
+      [ -202, -180, 88 ],
+      [ -202.5, -210, 99 ],
+      [ -210, -228, 116 ],
+      [ -214, -238, 130 ],
+      [ -213.5, -246, 147 ],
+      [ -211, -256, 165 ],
+      [ -206, -260, 171 ],
+    ] )
+    const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
+    const tubeMap = new THREE.TextureLoader().load( assPipeMetal2 )
+    const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 32, false )
+    const tubeMat = new THREE.MeshStandardMaterial( {
+      color: 0xcccccc,
+      side: THREE.DoubleSide,
+      emissiveMap: tubeMap,
+      emissive: new THREE.Color( 0xffffff ),
+    } )
+    const tubeMsh = new THREE.Mesh( tubeGeo, tubeMat )
+    tubeMsh.position.y = -168
+    tubeMsh.position.z = -227
+    if ( lbp ) {
+      const flipMe = new THREE.Vector3( 1, 1, 1 )
+      flipMe.x *= -1
+      tubeMsh.scale.multiply( flipMe )
+    }
+    children[`lightBarPipe${where}${lbp ? 'L' : 'R'}`] = {
+      msh: tubeMsh,
+    }
+  }
+  return { children }
+}
+
 const makeExterior = () => ( {
   struct: [ 432, 1000, 300 ],
   children: {
@@ -1049,6 +1092,7 @@ const makeExterior = () => ( {
             wormholeGenerator: {
 
             },
+            lightBarPipes: makeLightBars( 'A' ),
             lightBarGlowAft: {
 
             },
