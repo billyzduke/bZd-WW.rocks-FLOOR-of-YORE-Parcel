@@ -273,39 +273,35 @@ const setThree = () => {
     /* eslint-enable array-bracket-newline, array-element-newline */
   ]
   g.three.headLightsInScene.forEach( hls => {
-    // PointLight Attempt
     const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
     pointLight.castShadow = true // default false
     pointLight.position.y = 20.42
     pointLight.position.z = 21
     g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( pointLight )
+    // const sphereSize = 1
+    // const pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize )
+    // g.three.scene.add( pointLightHelper )
 
-    const sphereSize = 1
-    const pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize )
-    g.three.scene.add( pointLightHelper )
-
-    // SpotLight Attempt
     const spotLight = new THREE.SpotLight( 0xb3e7fb, 5, 0, THREE.Math.degToRad( 9 ), 0.25 )
     spotLight.castShadow = true // default false
     spotLight.position.y = 21
     spotLight.position.z = 22
     g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( spotLight )
-    // const spot = new THREE.Object3D()
-    // spot.position.y = 69.606
-    // spot.position.z = -100
     spotLight.target = pointLight
-    // g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( spot )
-    const spotLightHelper = new THREE.SpotLightHelper( spotLight )
-    g.three.scene.add( spotLightHelper )
+    // const spotLightHelper = new THREE.SpotLightHelper( spotLight )
+    // g.three.scene.add( spotLightHelper )
   } )
 
 
   g.three.controls.target.copy( g.three.grp.deLorean.position )
   g.three.controls.update()
 
-  g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), // soft white light
+  g.three.lights = [ // new THREE.AmbientLight( 0x404040, 0.125 ), // soft white light
     new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
-  g.three.lights.forEach( light => g.three.scene.add( light ) )
+  g.three.lights.forEach( light => {
+    if ( light instanceof THREE.DirectionalLight ) light.castShadow = true // default false
+    g.three.scene.add( light )
+  } )
 
   // for ( let sp = 0; sp < 6; sp++ ) {
   //   let axis = g.three.xyz[sp]
@@ -430,6 +426,7 @@ const makeThreeObj = ( obj, makeObj ) => {
       if ( makeObj.mkr ) g.three.obj[obj].mkr = makeObj.mkr
       if ( makeObj.txtAss ) makeMesh.map = g.three.obj[obj].txt = new THREE.TextureLoader().load( makeObj.txtAss )
       if ( typeof makeObj.color !== 'undefined' ) makeMesh.color = g.three.obj[obj].hex = makeObj.color
+      // eslint-disable-next-line new-cap
       g.three.obj[obj].mat = isFunction( makeObj.mat ) ? new makeObj.mat( makeMesh ) : makeObj.mat
       if ( makeObj.pivot && g.three.obj[obj].geo ) g.three.obj[obj].geo.translate( makeObj.pivot[0] || 0, makeObj.pivot[1] || 0, makeObj.pivot[2] || 0 )
       if ( g.three.obj[obj].geo && g.three.obj[obj].mat ) g.three.obj[obj].msh = new THREE.Mesh( g.three.obj[obj].geo, g.three.obj[obj].mat )

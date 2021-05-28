@@ -251,6 +251,8 @@ const makeUnderCarriage = () => ( {
           pivot: [ 63.5 ],
           position: [ 142, 289.5 ],
           rotation: [ 0, 90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucWheelWallFR: {
           struct: [ 127, 150 ],
@@ -258,6 +260,8 @@ const makeUnderCarriage = () => ( {
           pivot: [ -63.5 ],
           position: [ -142, 289.5 ],
           rotation: [ 0, -90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucWheelWallAL: {
           struct: [ 127, 157 ],
@@ -265,6 +269,8 @@ const makeUnderCarriage = () => ( {
           pivot: [ 63.5 ],
           position: [ 142, -286 ],
           rotation: [ 0, 90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucWheelWallAR: {
           struct: [ 127, 157 ],
@@ -272,6 +278,8 @@ const makeUnderCarriage = () => ( {
           pivot: [ -63.5 ],
           position: [ -142, -286 ],
           rotation: [ 0, -90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucAxleWallFF: {
           struct: [ 432, 127 ],
@@ -279,6 +287,8 @@ const makeUnderCarriage = () => ( {
           pivot: [ 0, -63.5 ],
           position: [ 0, 364.5 ],
           rotation: [ 90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucAxleWallFA: {
           struct: [ 432, 127 ],
@@ -286,6 +296,8 @@ const makeUnderCarriage = () => ( {
           pivot: [ 0, -63.5 ],
           position: [ 0, 214.5 ],
           rotation: [ 90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucAxleWallAF: {
           struct: [ 432, 127 ],
@@ -293,6 +305,8 @@ const makeUnderCarriage = () => ( {
           pivot: [ 0, -63.5 ],
           position: [ 0, -207.5 ],
           rotation: [ 90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucAxleWallAA: {
           struct: [ 432, 127 ],
@@ -300,16 +314,22 @@ const makeUnderCarriage = () => ( {
           pivot: [ 0, -63.5 ],
           position: [ 0, -364.5 ],
           rotation: [ 90 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucWheelWellF: {
           color: new THREE.Color( 'black' ),
           struct: [ 402, 150 ],
           position: [ 0, 289.5, -127 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
         ucWheelWellA: {
           color: new THREE.Color( 'black' ),
           struct: [ 402, 157 ],
           position: [ 0, -286, -127 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: { transparent: false },
         },
       },
     },
@@ -968,35 +988,6 @@ const makeMrFusion = () => ( {
   },
 } )
 
-// const makeLightBoxSides = ( side, orient ) => {
-//   const msh = { ...g.three.msh }
-//   const col = { color: new THREE.Color( 0x000000 ) }
-//   const sides = {}
-//   if ( orient === 'H' ) {
-//     [ 'Top', 'Bottom' ].forEach( y => {
-//       const triGeom = new THREE.ShapeGeometry( new THREE.Shape( g.three.mkr.createVector2s( [ [], [ 91 ], [ 45.5, 45.5 ] ] ) ) )
-//       triGeom.translate( -45.5, 0, 0 )
-//       const triMat = new THREE.MeshStandardMaterial( { ...msh, ...col } )
-//       sides[`lightBox${y}Side${side}`] = {
-//         msh: new THREE.Mesh( triGeom, triMat ),
-//         position: [ y === 'Top' ? side === 'L' ? -1 : 1.5 : 0, y === 'Top' ? -12.75 : 0, y === 'Top' ? -23 : 0 ], // 481
-//         rotation: { x: y === 'Top' ? 160 : 194 },
-//       }
-//     } )
-//   } else if ( orient === 'V' ) {
-//     [ 'Left', 'Right' ].forEach( x => {
-//       const rectGeom = new THREE.PlaneGeometry( 64.347, 28 )
-//       const rectMat = new THREE.MeshStandardMaterial( { ...msh, ...col } )
-//       sides[`lightBox${x}Side${side}`] = {
-//         msh: new THREE.Mesh( rectGeom, rectMat ),
-//         position: [ 0, 500, -110 ],
-//         rotation: { x: 90, y: 45 },
-//       }
-//     } )
-//   }
-//   return sides
-// }
-
 const makeLightBox = side => {
   const msh = { ...g.three.msh }
   const col = { color: new THREE.Color( 0xcccccc ) }
@@ -1021,7 +1012,7 @@ const makeLightBox = side => {
   makePolyObj.geo = new THREE.PolyhedronGeometry( polyVert, polyFace, 75, 0 )
   makePolyObj.mat = new THREE.MeshStandardMaterial( { ...msh, ...col } )
   makePolyObj.msh = new THREE.Mesh( makePolyObj.geo, makePolyObj.mat )
-  makePolyObj.msh.castShadow = true; //default is false
+  makePolyObj.msh.castShadow = true // default is false
 
   return {
     children: {
