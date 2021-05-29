@@ -1219,6 +1219,12 @@ const makeLightBarPanel = where => {
         msh: panelMsh,
         position: lb.pos,
       }
+      const glowMesh = new g.three.x.GeometricGlowMesh( panelMsh )
+      panelMsh.add( glowMesh.object3d )
+      // var insideUniforms = glowMesh.insideMesh.material.uniforms
+      // insideUniforms.glowColor.value.set('hotpink')
+      // var outsideUniforms = glowMesh.outsideMesh.material.uniforms
+      // outsideUniforms.glowColor.value.set('hotpink')
     }
   } )
 

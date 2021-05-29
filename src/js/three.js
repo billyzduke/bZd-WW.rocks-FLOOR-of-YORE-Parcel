@@ -27,33 +27,28 @@ const setThree = () => {
     xyz: [ 'x', 'y', 'z' ],
   }
 
-  //* from http://stemkoski.blogspot.fr/2013/07/shaders-in-threejs-glow-and-halo.html
-  g.three.x.dilateGeometry = function ( geometry, length ) {
-    // gather vertexNormals from geometry.faces
-    const vertexNormals = new Array( geometry.vertices.length )
-    geometry.faces.forEach( face => {
-      /* eslint-disable prefer-destructuring */
-      if ( face instanceof THREE.Face4 ) {
-        vertexNormals[face.a] = face.vertexNormals[0]
-        vertexNormals[face.b] = face.vertexNormals[1]
-        vertexNormals[face.c] = face.vertexNormals[2]
-        vertexNormals[face.d] = face.vertexNormals[3]
-      } else if ( face instanceof THREE.Face3 ) {
-        vertexNormals[face.a] = face.vertexNormals[0]
-        vertexNormals[face.b] = face.vertexNormals[1]
-        vertexNormals[face.c] = face.vertexNormals[2]
-      } else console.assert( false )
-      /* eslint-enable prefer-destructuring */
-    } )
-    // modify the vertices according to vertextNormal
-    geometry.vertices.forEach( ( vertex, idx ) => {
-      const vertexNormal = vertexNormals[idx]
-      vertex.x += vertexNormal.x * length
-      vertex.y += vertexNormal.y * length
-      vertex.z += vertexNormal.z * length
-    } )
+  g.three.x.dilateGeometry = function ( geometry, scale ) {
+    const positions = geometry.attributes.position
+    console.log( positions )
+    for ( let i = 0; i < positions.count; i += 3 ) {
+      const v = new THREE.Vector3( positions[i], positions[i + 1], positions[i + 2] ).multiplyScalar( scale )
+      positions[i] = v.x
+      positions[i + 1] = v.y
+      positions[i + 2] = v.z
+    }
+    geometry.attributes.position.needsUpdate = true
+
+    // // Geometry class is no more // have to handle it the BufferGeometry way
+    // const positionAttribute = geometry.getAttribute( 'position' )
+    // const vertices = []
+    // for ( let vertexIndex = 0; vertexIndex < positionAttribute.count; vertexIndex++ ) {
+    //   const localVertex = new THREE.Vector3()
+    //   localVertex.fromBufferAttribute( positionAttribute, vertexIndex )
+    //   vertices.push( localVertex )
+    // }
   }
 
+  //* from http://stemkoski.blogspot.fr/2013/07/shaders-in-threejs-glow-and-halo.html
   g.three.x.createAtmosphereMaterial = function () {
     const vertexShader = [
       'varying vec3 vVertexWorldPosition;',
@@ -115,7 +110,7 @@ const setThree = () => {
     return material
   }
 
-  g.three.x.GeometricGlowMesh = function ( mesh ) {
+  g.three.x.GeometricGlowMesh = mesh => {
     const object3d = new THREE.Object3D()
 
     let geometry = mesh.geometry.clone()
@@ -137,18 +132,12 @@ const setThree = () => {
     const outsideMesh = new THREE.Mesh( geometry, material )
     object3d.add( outsideMesh )
 
-    // expose a few variable
-    this.object3d = object3d
-    this.insideMesh = insideMesh
-    this.outsideMesh = outsideMesh
+    return {
+      object3d,
+      insideMesh,
+      outsideMesh,
+    }
   }
-
-  // var glowMesh = new THREEx.GeometricGlowMesh(mesh)
-  // mesh.add(glowMesh.object3d)
-  // var insideUniforms = glowMesh.insideMesh.material.uniforms
-  // insideUniforms.glowColor.value.set('hotpink')
-  // var outsideUniforms = glowMesh.outsideMesh.material.uniforms
-  // outsideUniforms.glowColor.value.set('hotpink')
 
   g.three.mkr.mirrorMesh = msh => {
     const flipMe = new THREE.Vector3( 1, 1, 1 )
