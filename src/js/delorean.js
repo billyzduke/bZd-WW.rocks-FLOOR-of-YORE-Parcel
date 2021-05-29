@@ -125,6 +125,9 @@ const setMakes = () => {
     },
   }
 
+  const glowCrv = new THREE.EllipseCurve( 11.5, 2.5, 10.5, 10.5 )
+  g.three.mkr.lb.glowProfile = new THREE.Shape( glowCrv.getPoints( 16 ) )
+
   g.three.mkr.lb.panelProfile = new THREE.Shape()
   g.three.mkr.lb.panelProfile.moveTo( 0, 1.75 )
   g.three.mkr.lb.panelProfile.lineTo( 0, 3.25 )
@@ -1200,10 +1203,10 @@ const makeLightBarPanel = where => {
       const panelMap = new THREE.TextureLoader().load( assPanelScreen )
       const panelGeo = new THREE.ExtrudeGeometry( g.three.mkr.lb.panelProfile, { extrudePath: panelCrv, steps: 64, depth: 400 } )
       const panelMat = new THREE.MeshStandardMaterial( {
-        color: 0xcccccc,
+        color: 0x999999,
         side: THREE.DoubleSide,
-        // emissiveMap: panelMap,
-        // emissive: new THREE.Color( 0xffffff ),
+        emissiveMap: panelMap,
+        emissive: new THREE.Color( 0x999999 ),
         alphaMap: panelMap,
         transparent: true,
       } )
@@ -1219,7 +1222,8 @@ const makeLightBarPanel = where => {
         msh: panelMsh,
         position: lb.pos,
       }
-      const glowMesh = new g.three.x.GeometricGlowMesh( panelMsh )
+      const glowGeom = new THREE.ExtrudeGeometry( g.three.mkr.lb.glowProfile, { extrudePath: panelCrv, steps: 64, depth: 400 } )
+      const glowMesh = new g.three.x.GeometricGlowMesh( glowGeom, panelMat.alphaMap, [ 2, 4, 0 ] )
       panelMsh.add( glowMesh.object3d )
       // var insideUniforms = glowMesh.insideMesh.material.uniforms
       // insideUniforms.glowColor.value.set('hotpink')

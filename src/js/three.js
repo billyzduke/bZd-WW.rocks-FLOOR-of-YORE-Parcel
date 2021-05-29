@@ -14,6 +14,7 @@ const setThree = () => {
     clk: new THREE.Clock(),
     cvs: [ g.main.cx, g.main.h ],
     flr: [],
+    glo: [],
     grp: {},
     mkr: {},
     msh: {
@@ -27,7 +28,7 @@ const setThree = () => {
     xyz: [ 'x', 'y', 'z' ],
   }
 
-  g.three.x.dilateGeometry = function ( geometry, scale ) {
+  g.three.x.dilateGeometry = ( geometry, scale ) => {
     const positions = geometry.attributes.position
     console.log( positions )
     for ( let i = 0; i < positions.count; i += 3 ) {
@@ -49,7 +50,7 @@ const setThree = () => {
   }
 
   //* from http://stemkoski.blogspot.fr/2013/07/shaders-in-threejs-glow-and-halo.html
-  g.three.x.createAtmosphereMaterial = function () {
+  g.three.x.createAtmosphereMaterial = alphaMap => {
     const vertexShader = [
       'varying vec3 vVertexWorldPosition;',
       'varying vec3 vVertexNormal;',
@@ -105,37 +106,41 @@ const setThree = () => {
       fragmentShader: fragmentShader,
       // blending : THREE.AdditiveBlending,
       transparent: true,
-      depthWrite: false,
+      // depthWrite: false,
+      alphaMap,
     } )
     return material
   }
 
-  g.three.x.GeometricGlowMesh = mesh => {
+  g.three.x.GeometricGlowMesh = ( geoInner, alphaMap, [ offsetX, offsetY, offsetZ ] = [] ) => {
     const object3d = new THREE.Object3D()
 
-    let geometry = mesh.geometry.clone()
-    g.three.x.dilateGeometry( geometry, 0.01 )
-    let material = g.three.x.createAtmosphereMaterial()
-    material.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
-    material.uniforms.coeficient.value = 1.1
-    material.uniforms.power.value = 1.4
-    const insideMesh = new THREE.Mesh( geometry, material )
-    object3d.add( insideMesh )
+    geoInner.scale( 1.01, 1.01, 1.01 )
+    geoInner.translate( 0, 2, 0 )
+    const matInner = g.three.x.createAtmosphereMaterial( alphaMap )
+    matInner.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
+    matInner.uniforms.coeficient.value = 1.3
+    matInner.uniforms.power.value = 1.3
+    // g.three.glo.push( { wax: false, mat: matInner } )
+    const innerMesh = new THREE.Mesh( geoInner, matInner )
+    object3d.add( innerMesh )
 
-    geometry = mesh.geometry.clone()
-    g.three.x.dilateGeometry( geometry, 0.1 )
-    material = g.three.x.createAtmosphereMaterial()
-    material.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
-    material.uniforms.coeficient.value = 0.1
-    material.uniforms.power.value = 1.2
-    material.side = THREE.BackSide
-    const outsideMesh = new THREE.Mesh( geometry, material )
-    object3d.add( outsideMesh )
+    const geoOuter = geoInner.clone()
+    geoOuter.scale( 1.025, 1.025, 1.025 )
+    geoOuter.translate( offsetX, offsetY, offsetZ )
+    const matOuter = g.three.x.createAtmosphereMaterial( alphaMap )
+    matOuter.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
+    matOuter.uniforms.coeficient.value = 0.26
+    matOuter.uniforms.power.value = 0.9
+    matOuter.side = THREE.BackSide
+    g.three.glo.push( { wax: false, mat: matOuter } )
+    const outerMesh = new THREE.Mesh( geoOuter, [ new THREE.MeshBasicMaterial( { opacity: 0, transparent: true } ), matOuter ] )
+    object3d.add( outerMesh )
 
     return {
       object3d,
-      insideMesh,
-      outsideMesh,
+      innerMesh,
+      outerMesh,
     }
   }
 
@@ -228,7 +233,25 @@ const setThree = () => {
       ani( 1000 * delta )
     } )
     g.three.xyz.forEach( axis => {
-      g.el[axis].innerHTML = g.three.scene.children[0].rotation[axis]
+      g.el[axis].innerHTML = g.three.camera.rotation[axis]
+    } )
+    g.three.glo.forEach( ( glo, i ) => {
+      if ( glo.wax ) glo.mat.uniforms.power.value += 0.5
+      else glo.mat.uniforms.power.value -= 0.5
+      if ( glo.mat.uniforms.power.value < 0.4 || glo.mat.uniforms.power.value > 5 ) {
+        g.three.glo[i].wax = !glo.wax
+      }
+      // let flipWax = false
+      // if ( glo.wax ) glo.mat.opacity += 0.1
+      // else glo.mat.opacity -= 0.1
+      // if ( glo.mat.opacity <= 0 ) {
+      //   glo.mat.opacity = 0
+      //   flipWax = true
+      // } else if ( glo.mat.opacity >= 1 ) {
+      //   glo.mat.opacity = 1
+      //   flipWax = true
+      // }
+      // if ( flipWax ) g.three.glo[i].wax = !glo.wax
     } )
     // // TILT TEST
     // g.three.xyz.forEach(axis => {
