@@ -5,7 +5,7 @@ import Stats from 'stats.js'
 import g from './glob'
 import { makeDeLorean } from './delorean'
 import {
-  devLog, isFunction, randOnum,
+  devLog, ifFunctionThenCall, isFunction, randOnum,
 } from './utils'
 
 const setThree = () => {
@@ -150,6 +150,23 @@ const setThree = () => {
   // var outsideUniforms = glowMesh.outsideMesh.material.uniforms
   // outsideUniforms.glowColor.value.set('hotpink')
 
+  g.three.mkr.mirrorMesh = msh => {
+    const flipMe = new THREE.Vector3( 1, 1, 1 )
+    flipMe.x *= -1
+    msh.scale.multiply( flipMe )
+  }
+
+  g.three.mkr.scaleMesh = ( msh, scale, axis ) => {
+    const scaleMe = new THREE.Vector3( 1, 1, 1 )
+    if ( axis ) scaleMe[axis] *= scale
+    else {
+      g.three.xy.forEach( ax => {
+        scaleMe[ax] *= scale
+      } )
+    }
+    msh.scale.multiply( scaleMe )
+  }
+
   g.three.mkr.createVector2s = v2s => {
     if ( !v2s || !v2s.length ) return false
     const makeV2 = []
@@ -160,7 +177,6 @@ const setThree = () => {
       } )
       madeV2s.push( new THREE.Vector2( makeV2[0], makeV2[1] ) )
     } )
-    devLog( madeV2s )
     return madeV2s
   }
 
@@ -174,7 +190,6 @@ const setThree = () => {
       } )
       madeV3s.push( new THREE.Vector3( makeV3[0], makeV3[1], makeV3[2] ) )
     } )
-    devLog( madeV3s )
     return madeV3s
   }
 
@@ -238,57 +253,14 @@ const setThree = () => {
   g.three.makeObjs = {
     deLorean: makeDeLorean(),
   }
-
+  console.log( { makeObjs: g.three.makeObjs } )
   Object.keys( g.three.makeObjs ).forEach( obj => makeThreeObj( obj, g.three.makeObjs[obj] ) )
 
   console.log( { madeObjs: g.three } )
   Object.keys( g.three.makeObjs ).forEach( grp => g.three.scene.add( g.three.grp[grp] ) )
   console.log( g.three.scene )
-  g.three.flaresInScene = [
-  /* eslint-disable array-bracket-newline, array-element-newline */
-    [ 0, 4, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
-    [ 0, 4, 0, 1, 14 ],
-    [ 0, 4, 1, 0, 14 ],
-    [ 0, 4, 1, 1, 14 ],
-  /* eslint-enable array-bracket-newline, array-element-newline */
-  ]
 
-  g.three.flaresInScene.forEach( fls => {
-    g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.forEach( ( _, flr ) => {
-      if ( flr < g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.length - 1 ) {
-        const drillDown = [ ...fls, flr ]
-        g.three.ani.push( g.three.mkr.setTextureAnimator( g.three.ani.length, drillDown, 5, 1, 5, 76 ) ) // texture, #horiz, #vert, #total, duration
-      }
-    } )
-  } )
-  g.three.mkr.tlt = {}
-  g.three.xyz.forEach( axis => {
-    g.three.mkr.tlt[axis] = 0
-  } )
-
-  g.three.headLightsInScene = [
-  /* eslint-disable array-bracket-newline, array-element-newline */
-    [ 0, 1, 4, 0, 0 ],
-    [ 0, 1, 4, 1, 0 ],
-    /* eslint-enable array-bracket-newline, array-element-newline */
-  ]
-  g.three.headLightsInScene.forEach( hls => {
-    const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
-    pointLight.castShadow = true // default false
-    pointLight.position.y = 20.42
-    pointLight.position.z = 21
-    g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( pointLight )
-    // g.three.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
-
-    const spotLight = new THREE.SpotLight( 0xb3e7fb, 5, 0, THREE.Math.degToRad( 9 ), 0.25 )
-    spotLight.castShadow = true // default false
-    spotLight.position.y = 21
-    spotLight.position.z = 22
-    g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( spotLight )
-    spotLight.target = pointLight
-    // g.three.scene.add(  new THREE.SpotLightHelper( spotLight ) )
-  } )
-
+  ifFunctionThenCall( g.three.mkr.setMades )
 
   g.three.controls.target.copy( g.three.grp.deLorean.position )
   g.three.controls.update()
@@ -497,7 +469,6 @@ const rotateAxes = ( obj, makeObj ) => {
   const mvMe = objOrGrp( obj )
   Object.keys( makeObj.rotation ).forEach( axis => {
     if ( makeObj.rotation[axis] ) {
-      if ( !g.three.xyz[axis] ) console.log( axis, obj, makeObj )
       const rotateAxis = `rotate${g.three.xyz.includes( axis ) ? axis.toUpperCase() : g.three.xyz[axis].toUpperCase()}`
       const rotateRad = THREE.Math.degToRad( makeObj.rotation[axis] )
       mvMe[rotateAxis]( rotateRad )

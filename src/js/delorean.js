@@ -59,8 +59,168 @@ import assTireBiter from 'url:/src/img/future/tireInner.png'
 import assPipeMetal from 'url:/src/img/future/metalPipe.png'
 import assPipeMetal2 from 'url:/src/img/future/metalPipe2.png'
 import assSphereMetal1 from 'url:/src/img/future/metalSphere.png'
+import assPanelScreen from 'url:/src/img/future/panelScreen.png'
 import g from './glob'
 import { devLog } from './utils'
+
+const setMakes = () => {
+  g.three.mkr.lb = {
+    crvF: [
+      [ 0, 0, 0 ],
+      [ -180, 0, 0 ],
+      [ -195.5, 0, 0 ],
+      [ -199, -12, 0 ],
+      [ -211, -64, 0 ],
+    ],
+  }
+
+  g.three.mkr.lb.rail = {
+    F: {
+      T: {
+        crv: g.three.mkr.lb.crvF,
+        pos: [ 0, 486, -101 ],
+      },
+      B: {
+        crv: g.three.mkr.lb.crvF,
+        pos: [ 0, 486, -73 ],
+      },
+    },
+    A: {
+      F: {
+        crv: [
+          [ 0, 0, 0 ],
+          [ -112, 0, 0 ],
+          [ -127, -2, 4 ],
+          [ -190, -17, 69 ],
+          [ -202, -44, 88 ],
+          [ -202, -59, 90 ],
+          [ -202, -180, 90 ],
+          [ -202.5, -210, 99 ],
+          [ -210, -228, 116 ],
+          [ -214, -238, 130 ],
+          [ -213.5, -246, 147 ],
+          [ -211, -256, 165 ],
+          [ -206, -260, 171 ],
+        ],
+        pos: [ 0, -166, -226 ],
+      },
+      A: {
+        crv: [
+          [ 0, 0, 0 ],
+          [ -112, 0, 0 ],
+          [ -127, -2, 4 ],
+          [ -177, -13, 52 ],
+          [ -188, -23, 62 ],
+          [ -190, -59, 65 ],
+          [ -190.25, -145, 65 ],
+          [ -190.5, -169, 67.5 ],
+          [ -195, -206, 83.5 ],
+          [ -210, -230, 114 ],
+          [ -212, -238, 130 ],
+          [ -211, -246, 147 ],
+          [ -209, -256, 165 ],
+        ],
+        pos: [ 0, -194, -226 ],
+      },
+    },
+  }
+
+  g.three.mkr.lb.panelProfile = new THREE.Shape()
+  g.three.mkr.lb.panelProfile.moveTo( 0, 1.75 )
+  g.three.mkr.lb.panelProfile.lineTo( 0, 3.25 )
+  g.three.mkr.lb.panelProfile.quadraticCurveTo( 0, 5, 0.875, 5 )
+  g.three.mkr.lb.panelProfile.quadraticCurveTo( 1.75, 5, 1.75, 3.25 )
+  g.three.mkr.lb.panelProfile.lineTo( 1.75, 1.75 )
+  g.three.mkr.lb.panelProfile.lineTo( 21.25, 1.75 )
+  g.three.mkr.lb.panelProfile.lineTo( 21.25, 3.25 )
+  g.three.mkr.lb.panelProfile.quadraticCurveTo( 21.25, 5, 22.125, 5 )
+  g.three.mkr.lb.panelProfile.quadraticCurveTo( 23, 5, 23, 3.25 )
+  g.three.mkr.lb.panelProfile.lineTo( 23, 1.75 )
+  g.three.mkr.lb.panelProfile.quadraticCurveTo( 23, 0, 21.25, 0 )
+  g.three.mkr.lb.panelProfile.lineTo( 1.75, 0 )
+  g.three.mkr.lb.panelProfile.quadraticCurveTo( 0, 0, 0, 1.75 )
+
+  g.three.mkr.lb.panel = {
+    F: {
+      crv: g.three.mkr.lb.crvF,
+      pos: [ 0, 488.5, -76 ],
+      scl: { x: 1.01 },
+    },
+    A: {
+      crv: [],
+      pos: [ 0, 0, 0 ],
+      scl: {},
+    },
+  }
+
+  g.three.mkr.lb.panels = {
+    F: [ g.three.mkr.lb.panel.F, g.three.mkr.lb.panel.F ],
+    A: [ g.three.mkr.lb.panel.A, g.three.mkr.lb.panel.A ],
+  }
+
+  g.three.mkr.lb.rails = {
+    F: [
+      g.three.mkr.lb.rail.F.T,
+      g.three.mkr.lb.rail.F.T,
+      g.three.mkr.lb.rail.F.B,
+      g.three.mkr.lb.rail.F.B,
+    ],
+    A: [
+      g.three.mkr.lb.rail.A.F,
+      g.three.mkr.lb.rail.A.F,
+      g.three.mkr.lb.rail.A.A,
+      g.three.mkr.lb.rail.A.A,
+    ],
+  }
+
+  g.three.mkr.flaresInScene = [
+    /* eslint-disable array-bracket-newline, array-element-newline */
+    [ 0, 4, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
+    [ 0, 4, 0, 1, 14 ],
+    [ 0, 4, 1, 0, 14 ],
+    [ 0, 4, 1, 1, 14 ],
+    /* eslint-enable array-bracket-newline, array-element-newline */
+  ]
+
+  g.three.mkr.headLightsInScene = [
+    /* eslint-disable array-bracket-newline, array-element-newline */
+    [ 0, 1, 4, 0, 0 ],
+    [ 0, 1, 4, 1, 0 ],
+    /* eslint-enable array-bracket-newline, array-element-newline */
+  ]
+
+  g.three.mkr.setMades = () => {
+    g.three.mkr.flaresInScene.forEach( fls => {
+      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.forEach( ( _, flr ) => {
+        if ( flr < g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.length - 1 ) {
+          const drillDown = [ ...fls, flr ]
+          g.three.ani.push( g.three.mkr.setTextureAnimator( g.three.ani.length, drillDown, 5, 1, 5, 76 ) ) // texture, #horiz, #vert, #total, duration
+        }
+      } )
+    } )
+    g.three.mkr.tlt = {}
+    g.three.xyz.forEach( axis => {
+      g.three.mkr.tlt[axis] = 0
+    } )
+
+    g.three.mkr.headLightsInScene.forEach( hls => {
+      const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
+      pointLight.castShadow = true // default false
+      pointLight.position.y = 20.42
+      pointLight.position.z = 21
+      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( pointLight )
+      // g.three.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
+
+      const spotLight = new THREE.SpotLight( 0xb3e7fb, 5, 0, THREE.Math.degToRad( 9 ), 0.25 )
+      spotLight.castShadow = true // default false
+      spotLight.position.y = 21
+      spotLight.position.z = 22
+      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( spotLight )
+      spotLight.target = pointLight
+      // g.three.scene.add(  new THREE.SpotLightHelper( spotLight ) )
+    } )
+  }
+}
 
 const makeExhaustPipeFace = face => {
   const rotation = [ 0, 0, 0 ]
@@ -1030,102 +1190,75 @@ const makeHeadLight = side => ( {
   },
 } )
 
-const makeLightBars = where => {
+const makeLightBarPanel = where => {
   const children = {}
-  const barBar = {
-    F: {
-      T: {
-        crv: [],
-        pos: [],
-      },
-      B: {
-        crv: [],
-        pos: [],
-      },
-    },
-    A: {
-      F: {
-        crv: [
-          [ 0, 0, 0 ],
-          [ -112, 0, 0 ],
-          [ -127, -2, 4 ],
-          [ -190, -17, 69 ],
-          [ -202, -44, 88 ],
-          [ -202, -59, 90 ],
-          [ -202, -180, 90 ],
-          [ -202.5, -210, 99 ],
-          [ -210, -228, 116 ],
-          [ -214, -238, 130 ],
-          [ -213.5, -246, 147 ],
-          [ -211, -256, 165 ],
-          [ -206, -260, 171 ],
-        ],
-        pos: [ 0, -166, -226 ],
-      },
-      A: {
-        crv: [
-          [ 0, 0, 0 ],
-          [ -112, 0, 0 ],
-          [ -127, -2, 4 ],
-          [ -177, -13, 52 ],
-          [ -188, -23, 62 ],
-          [ -190, -59, 65 ],
-          [ -190.25, -145, 65 ],
-          [ -190.5, -169, 67.5 ],
-          [ -195, -206, 83.5 ],
-          [ -210, -230, 114 ],
-          [ -212, -238, 130 ],
-          [ -211, -246, 147 ],
-          [ -209, -256, 165 ],
-        ],
-        pos: [ 0, -194, -226 ],
-      },
-    },
-  }
-  const barBars = {
-    F: [
-      barBar.F.T,
-      barBar.F.T,
-      barBar.F.B,
-      barBar.F.B,
-    ],
-    A: [
-      barBar.A.F,
-      barBar.A.F,
-      barBar.A.A,
-      barBar.A.A,
-    ],
-  }
 
-  switch ( where ) {
-    case 'A':
-      barBars[where].forEach( ( lb, lbp ) => {
-        const crvPts = g.three.mkr.createVector3s( lb.crv )
-        const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
-        const tubeMap = new THREE.TextureLoader().load( assPipeMetal2 )
-        const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 32, false )
-        const tubeMat = new THREE.MeshStandardMaterial( {
-          color: 0xcccccc,
-          side: THREE.DoubleSide,
-          emissiveMap: tubeMap,
-          emissive: new THREE.Color( 0xffffff ),
-        } )
-        const tubeMsh = new THREE.Mesh( tubeGeo, tubeMat )
-        if ( lbp % 2 ) {
-          const flipMe = new THREE.Vector3( 1, 1, 1 )
-          flipMe.x *= -1
-          tubeMsh.scale.multiply( flipMe )
-        }
-        const whereAt = Object.keys( barBar[where] )
-        children[`lightBarPipe${where}${whereAt[lbp < 2 ? 0 : 1]}${lbp % 2 ? 'R' : 'L'}`] = {
-          msh: tubeMsh,
-          position: lb.pos,
-        }
+  g.three.mkr.lb.panels[where].forEach( ( lb, lbp ) => {
+    if ( lb.crv.length && lb.crv.length > 1 ) {
+      const crvPts = g.three.mkr.createVector3s( lb.crv )
+      const panelCrv = new THREE.CatmullRomCurve3( crvPts )
+      const panelMap = new THREE.TextureLoader().load( assPanelScreen )
+      const panelGeo = new THREE.ExtrudeGeometry( g.three.mkr.lb.panelProfile, { extrudePath: panelCrv, steps: 64, depth: 400 } )
+      const panelMat = new THREE.MeshStandardMaterial( {
+        color: 0xcccccc,
+        side: THREE.DoubleSide,
+        // emissiveMap: panelMap,
+        // emissive: new THREE.Color( 0xffffff ),
+        alphaMap: panelMap,
+        transparent: true,
       } )
-      break
-  }
-  return { children }
+      panelMat.alphaMap.wrapS = panelMat.alphaMap.wrapT = THREE.RepeatWrapping
+      panelMat.alphaMap.repeat.set( 0.2, 0.2 )
+      const panelMsh = new THREE.Mesh( panelGeo, [ new THREE.MeshBasicMaterial( { opacity: 0, transparent: true } ), panelMat ] )
+      console.log( panelMsh )
+      if ( lbp % 2 ) g.three.mkr.mirrorMesh( panelMsh )
+      Object.keys( g.three.mkr.lb.panel[where].scl ).forEach( axis => {
+        g.three.mkr.scaleMesh( panelMsh, g.three.mkr.lb.panel[where].scl[axis], axis )
+      } )
+      children[`lightBarPanel${where}${lbp % 2 ? 'R' : 'L'}`] = {
+        msh: panelMsh,
+        position: lb.pos,
+      }
+    }
+  } )
+
+  return children
 }
+
+const makeLightBarRails = where => {
+  const children = {}
+
+  g.three.mkr.lb.rails[where].forEach( ( lb, lbr ) => {
+    if ( lb.crv.length && lb.crv.length > 1 ) {
+      const crvPts = g.three.mkr.createVector3s( lb.crv )
+      const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
+      const tubeMap = new THREE.TextureLoader().load( assPipeMetal2 )
+      const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 32, false )
+      const tubeMat = new THREE.MeshStandardMaterial( {
+        color: 0xcccccc,
+        side: THREE.DoubleSide,
+        emissiveMap: tubeMap,
+        emissive: new THREE.Color( 0xffffff ),
+      } )
+      const tubeMsh = new THREE.Mesh( tubeGeo, tubeMat )
+      if ( lbr % 2 ) g.three.mkr.mirrorMesh( tubeMsh )
+      const whereAt = Object.keys( g.three.mkr.lb.rail[where] )
+      children[`lightBarPipe${where}${whereAt[lbr < 2 ? 0 : 1]}${lbr % 2 ? 'R' : 'L'}`] = {
+        msh: tubeMsh,
+        position: lb.pos,
+      }
+    }
+  } )
+
+  return children
+}
+
+const makeLightBar = where => ( {
+  children: {
+    ...makeLightBarRails( where ),
+    ...makeLightBarPanel( where ),
+  },
+} )
 
 const makeExterior = () => ( {
   struct: [ 432, 1000, 300 ],
@@ -1142,36 +1275,34 @@ const makeExterior = () => ( {
     },
     lightBars: {
       children: {
-        lightBarAft: {
-          children: {
-            wormholeGenerator: {
+        lightBarFore: makeLightBar( 'F' ),
+        lightBarAft: makeLightBar( 'A' ),
+        // wormholeGenerator: {
 
-            },
-            lightBarPipes: makeLightBars( 'A' ),
-            lightBarGlowAft: {
+        // },
+        // lightBarGlowAft: {
 
-            },
-            lightBarAftTerminalL: {
+        // },
+        // lightBarAftTerminalL: {
 
-            },
-            lightBarAftTerminalR: {
+        // },
+        // lightBarAftTerminalR: {
 
-            },
-          },
-        },
-        lightBarFore: {
-          children: {
-            lightBarGlowAft: {
+        // },
+        //   },
+        // },
+        //   children: {
+        //     lightBarGlowAft: {
 
-            },
-            lightBarAftTerminalL: {
+        //     },
+        //     lightBarAftTerminalL: {
 
-            },
-            lightBarAftTerminalR: {
+        //     },
+        //     lightBarAftTerminalR: {
 
-            },
-          },
-        },
+        //     },
+        //   },
+        // },
       },
     },
     headLights: {
@@ -1347,17 +1478,20 @@ const makeWheels = () => ( {
   },
 } )
 
-const makeDeLorean = () => ( {
-  struct: [ 432, 1000, 300 ],
-  position: [ 0, 0, -1000 ],
-  rotation: [ 135, 0, -90 ],
-  children: {
-    body: makeBody(),
-    exterior: makeExterior(),
-    interior: makeInterior(),
-    underCarriage: makeUnderCarriage(),
-    wheels: makeWheels(),
-  },
-} )
+const makeDeLorean = () => {
+  setMakes()
+  return {
+    struct: [ 432, 1000, 300 ],
+    position: [ 0, 0, -1000 ],
+    rotation: [ 135, 0, -90 ],
+    children: {
+      body: makeBody(),
+      exterior: makeExterior(),
+      interior: makeInterior(),
+      underCarriage: makeUnderCarriage(),
+      wheels: makeWheels(),
+    },
+  }
+}
 
 export { makeDeLorean }
