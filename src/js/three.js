@@ -116,7 +116,7 @@ const setThree = () => {
     return material
   }
 
-  g.three.x.GeometricGlowMesh = ( geoInner, alphaMap, [ offsetX, offsetY, offsetZ ] = [] ) => {
+  g.three.x.GeometricGlowMesh = ( geoInner, alphaMap, [ offsetX, offsetY, offsetZ ] = [ 0, 0, 0 ] ) => {
     const object3d = new THREE.Object3D()
 
     geoInner.scale( 1.01, 1.01, 1.01 )
@@ -125,7 +125,7 @@ const setThree = () => {
     matInner.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
     matInner.uniforms.coeficient.value = 1.3
     matInner.uniforms.power.value = 1.3
-    const innerMesh = new THREE.Mesh( geoInner, matInner )
+    const innerMesh = new THREE.Mesh( geoInner, [ new THREE.MeshBasicMaterial( { opacity: 0, transparent: true } ), matInner ] )
     g.three.ani.glo.push( { wax: false, msh: innerMesh } )
     object3d.add( innerMesh )
 
@@ -242,23 +242,23 @@ const setThree = () => {
     } )
 
     g.three.ani.glo.forEach( ( glo, i ) => {
-      // if ( glo.wax ) glo.mat.uniforms.power.value += 0.5
-      // else glo.mat.uniforms.power.value -= 0.5
-      // if ( glo.mat.uniforms.power.value < 0.4 || glo.mat.uniforms.power.value > 5 ) {
-      //   g.three.glo[i].wax = !glo.wax
-      // }
-      let flipWax = false
-      // console.log( { gloMsh: glo.msh } )
-      if ( glo.wax ) glo.msh.material.opacity += 0.1
-      else glo.msh.material.opacity -= 0.1
-      if ( glo.msh.material.opacity <= 0 ) {
-        glo.msh.material.opacity = 0
-        flipWax = true
-      } else if ( glo.msh.material.opacity >= 1 ) {
-        glo.msh.material.opacity = 1
-        flipWax = true
+      if ( glo.wax ) glo.msh.material[1].uniforms.power.value += 0.5
+      else glo.msh.material[1].uniforms.power.value -= 0.5
+      if ( glo.msh.material[1].uniforms.power.value < 0.4 || glo.msh.material[1].uniforms.power.value > 5 ) {
+        g.three.ani.glo[i].wax = !glo.wax
       }
-      if ( flipWax ) g.three.ani.glo[i].wax = !glo.wax
+      // let flipWax = false
+      // // console.log( { gloMsh: glo.msh } )
+      // if ( glo.wax ) glo.msh.material.opacity += 0.1
+      // else glo.msh.material.opacity -= 0.1
+      // if ( glo.msh.material.opacity <= 0 ) {
+      //   glo.msh.material.opacity = 0
+      //   flipWax = true
+      // } else if ( glo.msh.material.opacity >= 1 ) {
+      //   glo.msh.material.opacity = 1
+      //   flipWax = true
+      // }
+      // if ( flipWax ) g.three.ani.glo[i].wax = !glo.wax
     } )
 
     if ( g.three.flm ) {
@@ -286,11 +286,10 @@ const setThree = () => {
               if ( whereWheel.armPosX < -g.three.mkr.wheels.armTarget.x )g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x += 1.8571
               if ( whereWheel.armRadY > 0 ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotateY( -0.00698131 )
             } else {
-              console.log( { leftArmPosX: whereWheel.armPosX, leftArmTargetX: 188 } )
               // LEFT SIDE
               if ( whereWheel.rotRadY < g.three.mkr.wheels.rotTarget ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].rotateY( g.three.mkr.wheels.rotIncRad )
               if ( whereWheel.rotPosX > g.three.mkr.wheels.posTarget.x ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.x -= 2
-              if ( whereWheel.armPosX > 188 )g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x -= 1.8571
+              if ( whereWheel.armPosX > g.three.mkr.wheels.armTarget.x )g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x -= 1.8571
               if ( whereWheel.armRadY < 0 ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotateY( 0.00698131 )
             }
             if ( whereWheel.rotPosZ > g.three.mkr.wheels.posTarget.z ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.z -= 1.6

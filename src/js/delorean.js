@@ -338,7 +338,7 @@ const makeWheelMech = ( wheel, mobile ) => {
           // eslint-disable-next-line array-bracket-newline, array-element-newline
           struct: [ 7, 7, 76, 12, 1 ],
           pivot: [ 0, 24 ],
-          position: [ 0, wheelIsLeft ? -14 : 14, -1 ],
+          position: [ 0, 14, -1 ],
           mat: new THREE.MeshStandardMaterial( {
             ...msh,
             ...g.three.mkr.pipe.mat,
