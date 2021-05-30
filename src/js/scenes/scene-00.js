@@ -6,7 +6,7 @@ import { setScene } from '../scene'
 // import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
 import { setBaubleLayers } from '../baubles'
-import { setModel } from '../future'
+import { setModel, toggleFlightMode, toggleWheelsDrop } from '../future'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
@@ -20,7 +20,11 @@ const setScene00 = ( c, n ) => {
 
   // setBaubleLayer01()
   setBaubleLayers()
-  if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) setModel()
+  if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) {
+    setModel()
+    setAddOn( '#toggleFlightMode', 'click', toggleFlightMode )
+    setAddOn( '#toggleWheelsDrop', 'click', toggleWheelsDrop )
+  }
 
   g.tL.yore.to( '#tpTitleScreen', {
     duration: 2,
@@ -37,10 +41,13 @@ const setScene00 = ( c, n ) => {
 }
 
 const spinTime = () => {
+  g.el.rotateX0.value = 34
+  g.el.rotateY0.value = -142
+  g.el.rotateZ0.value = -139
   gsap.set( '#deLorean', {
-    rotateX: -35,
-    rotateY: -226,
-    translateZ: 284,
+    rotateX: g.el.rotateX0.value,
+    rotateY: g.el.rotateY0.value,
+    rotateZ: g.el.rotateZ0.value,
   } )
   // gsap.fromTo('#deLorean', {
   //   rotateX: 20,

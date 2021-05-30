@@ -156,6 +156,14 @@ const setModel = () => {
   setAddOn( '#translateZ1', 'change', e => { moveModel( 'translate', 'Z', 1, e.target.value ) } )
 }
 
+const toggleFlightMode = () => {
+  if ( g.three ) g.three.flm = !g.three.flm
+}
+
+const toggleWheelsDrop = () => {
+  if ( g.three ) g.three.lve = !g.three.lve
+}
+
 export {
-  beginFuture, setFuture, setModel,
+  beginFuture, setFuture, setModel, toggleFlightMode, toggleWheelsDrop,
 }

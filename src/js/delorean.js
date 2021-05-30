@@ -56,14 +56,22 @@ import assFusionTop from 'url:/src/img/future/fusionTop.png'
 import assFusionCrossSection from 'url:/src/img/future/fusionCrossSection.png'
 import assFusionLockFace from 'url:/src/img/future/fusionLock.png'
 import assTireBiter from 'url:/src/img/future/tireInner.png'
-import assPipeMetal from 'url:/src/img/future/metalPipe.png'
-import assPipeMetal2 from 'url:/src/img/future/metalPipe2.png'
-import assSphereMetal1 from 'url:/src/img/future/metalSphere.png'
+import assPipeMetal01 from 'url:/src/img/future/metalPipe.png'
+import assPipeMetal02 from 'url:/src/img/future/metalSphere.png'
+import assPipeMetal03 from 'url:/src/img/future/metalPipe2.png'
 import assPanelScreen from 'url:/src/img/future/panelScreen.png'
 import g from './glob'
 import { devLog } from './utils'
 
 const setMakes = () => {
+  g.three.mkr.pipe = {
+    map: [ { emissiveMap: new THREE.TextureLoader().load( assPipeMetal01 ), emissive: new THREE.Color( 0x999999 ) }, { emissiveMap: new THREE.TextureLoader().load( assPipeMetal02 ), emissive: new THREE.Color( 0x666666 ) }, { emissiveMap: new THREE.TextureLoader().load( assPipeMetal01 ), emissive: new THREE.Color( 0xffffff ) } ],
+    mat: {
+      roughness: 0.4,
+      metalness: 1,
+    },
+  }
+
   g.three.mkr.lb = {
     crvF: [
       [ 0, 0, 0 ],
@@ -125,7 +133,7 @@ const setMakes = () => {
     },
   }
 
-  const glowCrv = new THREE.EllipseCurve( 11.5, 2.5, 10.5, 10.5 )
+  const glowCrv = new THREE.EllipseCurve( 11.5, 2.5, 10.5, 6 )
   g.three.mkr.lb.glowProfile = new THREE.Shape( glowCrv.getPoints( 16 ) )
 
   g.three.mkr.lb.panelProfile = new THREE.Shape()
@@ -143,16 +151,31 @@ const setMakes = () => {
   g.three.mkr.lb.panelProfile.lineTo( 1.75, 0 )
   g.three.mkr.lb.panelProfile.quadraticCurveTo( 0, 0, 0, 1.75 )
 
+  const panelCrvA = []
+  g.three.mkr.lb.rail.A.F.crv.forEach( ( v3c, v ) => {
+    const panelV3c = []
+    v3c.forEach( ( axis, a ) => {
+      panelV3c.push( ( axis + g.three.mkr.lb.rail.A.F.crv[v][a] ) / 2 )
+    } )
+    panelCrvA.push( panelV3c )
+  } )
+  const panelPosA = []
+  g.three.mkr.lb.rail.A.F.pos.forEach( ( axis, a ) => {
+    panelPosA.push( ( axis + g.three.mkr.lb.rail.A.F.pos[a] ) / 2 )
+  } )
+  panelPosA[1] -= 5
+  panelPosA[2] -= 5.5
+
   g.three.mkr.lb.panel = {
     F: {
       crv: g.three.mkr.lb.crvF,
-      pos: [ 0, 488.5, -76 ],
-      scl: { x: 1.01 },
+      pos: [ -1, 485, -76 ],
+      scl: { x: 1.005 },
     },
     A: {
-      crv: [],
-      pos: [ 0, 0, 0 ],
-      scl: {},
+      crv: panelCrvA,
+      pos: panelPosA,
+      scl: { x: 1.01 },
     },
   }
 
@@ -176,28 +199,45 @@ const setMakes = () => {
     ],
   }
 
-  g.three.mkr.flaresInScene = [
-    /* eslint-disable array-bracket-newline, array-element-newline */
-    [ 0, 4, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
-    [ 0, 4, 0, 1, 14 ],
-    [ 0, 4, 1, 0, 14 ],
-    [ 0, 4, 1, 1, 14 ],
-    /* eslint-enable array-bracket-newline, array-element-newline */
-  ]
+  g.three.mkr.wheels = {
+    armTarget: {
+      x: 158,
+      z: -16,
+    },
+    posTarget: {
+      x: 188,
+      z: -30,
+    },
+    rotIncRad: THREE.Math.degToRad( 5 ),
+    rotTarget: Math.PI / 2,
+  }
 
-  g.three.mkr.headLightsInScene = [
+  g.three.mkr.inScene = {
     /* eslint-disable array-bracket-newline, array-element-newline */
-    [ 0, 1, 4, 0, 0 ],
-    [ 0, 1, 4, 1, 0 ],
+    wheelRockets: [
+      [ 0, 1, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
+      [ 0, 1, 0, 1, 14 ],
+      [ 0, 1, 1, 0, 14 ],
+      [ 0, 1, 1, 1, 14 ],
+    ],
+    headLights: [
+      [ 0, 0, 1, 4, 0, 0 ],
+      [ 0, 0, 1, 4, 1, 0 ],
+    ],
     /* eslint-enable array-bracket-newline, array-element-newline */
-  ]
+  }
 
   g.three.mkr.setMades = () => {
-    g.three.mkr.flaresInScene.forEach( fls => {
+    g.three.mkr.inScene.wheelRockets.forEach( fls => {
+      // NOT A HELPFUL HELPER, at least not in this case
+      // const wheelHelper = new THREE.BoxHelper()
+      // g.three.scene.add( wheelHelper )
+      // wheelHelper.setFromObject( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]] )
+
       g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.forEach( ( _, flr ) => {
         if ( flr < g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.length - 1 ) {
           const drillDown = [ ...fls, flr ]
-          g.three.ani.push( g.three.mkr.setTextureAnimator( g.three.ani.length, drillDown, 5, 1, 5, 76 ) ) // texture, #horiz, #vert, #total, duration
+          g.three.ani.flr.push( g.three.mkr.setTextureAnimator( g.three.ani.flr.length, drillDown, 5, 1, 5, 76 ) ) // texture, #horiz, #vert, #total, duration
         }
       } )
     } )
@@ -206,7 +246,7 @@ const setMakes = () => {
       g.three.mkr.tlt[axis] = 0
     } )
 
-    g.three.mkr.headLightsInScene.forEach( hls => {
+    g.three.mkr.inScene.headLights.forEach( hls => {
       const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
       pointLight.castShadow = true // default false
       pointLight.position.y = 20.42
@@ -273,87 +313,54 @@ const makeExhaustPipe = side => {
   return pipe
 }
 
-const makeWheelMech = wheel => {
+const makeWheelMech = ( wheel, mobile ) => {
+  const wheelIsFront = wheel.includes( 'F' )
   const wheelIsLeft = wheel.includes( 'L' )
   const msh = { ...g.three.msh }
-  const wheelies = {
-    struct: [ 142, 142, 52 ],
-    position: [ 0, wheel.includes( 'F' ) ? 289 : -286.5 ],
-    children: {
-      [`wheelMechAxleArm${wheel}`]: {
-        children: {},
+  let wheelies
+  if ( mobile ) {
+    // MOBILE MECH
+    wheelies = {
+      position: [ wheelIsLeft ? -81 : 81, wheelIsFront ? 289 : -286.5, -24 ],
+      rotation: { z: wheelIsLeft ? -90 : 90 },
+      children: {
+        [`wheelMechAxleArmBearing${wheel}`]: {
+          geo: 'sphere',
+          struct: [ 12.5, 10, 10 ],
+          mat: new THREE.MeshStandardMaterial( {
+            ...msh,
+            ...g.three.mkr.pipe.mat,
+            ...g.three.mkr.pipe.map[2],
+          } ),
+        },
+        [`wheelMechAxleRod${wheel}`]: {
+          geo: 'cylinder',
+          // eslint-disable-next-line array-bracket-newline, array-element-newline
+          struct: [ 7, 7, 76, 12, 1 ],
+          pivot: [ 0, 24 ],
+          position: [ 0, wheelIsLeft ? -14 : 14, -1 ],
+          mat: new THREE.MeshStandardMaterial( {
+            ...msh,
+            ...g.three.mkr.pipe.mat,
+            ...g.three.mkr.pipe.map[0],
+          } ),
+        },
       },
-      [`wheelMechTireMount${wheel}`]: {
-        children: {},
-      },
-    },
-  }
-  const pipeMat = {
-    roughness: 0.4,
-    metalness: 1,
-  }
-  const emissiveMapPipe = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0x999999 ) }
-  const emissiveMapSphere1 = { emissiveMap: new THREE.TextureLoader().load( assSphereMetal1 ), emissive: new THREE.Color( 0x666666 ) }
-  const emissiveMapSphere3 = { emissiveMap: new THREE.TextureLoader().load( assPipeMetal ), emissive: new THREE.Color( 0xffffff ) }
-  wheelies.children[`wheelMechAxleArmMount${wheel}`] = {
-    geo: 'torus',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 36, 12, 10, 10 ],
-    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
-    rotation: [ 0, 90 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapSphere1,
-    } ),
-  }
-  wheelies.children[`wheelMechAxleArm${wheel}`].children[`wheelMechAxleArmBearing${wheel}`] = {
-    geo: 'sphere',
-    struct: [ 12.5, 10, 10 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapSphere3,
-    } ),
-    position: [ wheelIsLeft ? -76 : 76, 0, -42 ],
-  }
-  wheelies.children[`wheelMechAxleArm${wheel}`].children[`wheelMechAxleRod${wheel}`] = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 7, 7, 76, 12, 1, true ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapPipe,
-    } ),
-    pivot: [ 0, -24 ],
-    position: [ wheelIsLeft ? -12 : 12, 0, -27 ],
-    rotation: { z: wheelIsLeft ? -90 : 90, x: 14 },
-  }
-  wheelies.children[`wheelMechTireMount${wheel}`].children[`wheelMechTireMountJoint${wheel}`] = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 15, 15, 15, 12 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapSphere3,
-    } ),
-    position: [ 0, 0, -22 ],
-    // rotation: { x: 90 },
-  }
-  wheelies.children[`wheelMechTireMount${wheel}`].children[`wheelMechTireMountPlate${wheel}`] = {
-    geo: 'cylinder',
-    // eslint-disable-next-line array-bracket-newline, array-element-newline
-    struct: [ 18, 18, 15, 14 ],
-    mat: new THREE.MeshStandardMaterial( {
-      ...msh,
-      ...pipeMat,
-      ...emissiveMapPipe,
-    } ),
-    pivot: [ 0, -7 ],
-    position: [ 0, 0, -7 ],
-    rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
+    }
+  } else {
+    // STILL MECH
+    wheelies = {
+      geo: 'torus',
+      // eslint-disable-next-line array-bracket-newline, array-element-newline
+      struct: [ 36, 12, 10, 10 ],
+      position: [ wheelIsLeft ? -81 : 81, wheelIsFront ? 289 : -286.5, -42 ],
+      rotation: [ 0, 90 ],
+      mat: new THREE.MeshStandardMaterial( {
+        ...msh,
+        ...g.three.mkr.pipe.mat,
+        ...g.three.mkr.pipe.map[1],
+      } ),
+    }
   }
 
   return wheelies
@@ -363,7 +370,7 @@ const makeUnderCarriage = () => ( {
   struct: [ 432, 1000, 127 ],
   children: {
     bottom: {
-      struct: [ 432, 1000, 26 ],
+      // struct: [ 432, 1000, 26 ],
       children: {
         ucF: {
           struct: [ 432, 119 ],
@@ -498,25 +505,45 @@ const makeUnderCarriage = () => ( {
       },
     },
     wheelsMech: {
-      struct: [ 432, 729, 142 ],
+      // struct: [ 432, 729, 142 ],
       position: [ 0, 0, -11 ],
       children: {
-        wheelsMechL: {
-          struct: [ 142, 729, 52 ],
-          pivot: [ 71 ],
-          position: [ 223 ],
+        mobileMech: {
           children: {
-            wheelLF: makeWheelMech( 'LF' ),
-            wheelLA: makeWheelMech( 'LA' ),
+            mobileMechL: {
+              position: [ 223 ],
+              rotation: { y: -14 },
+              children: {
+                mobileMechLF: makeWheelMech( 'LF', true ),
+                mobileMechLA: makeWheelMech( 'LA', true ),
+              },
+            },
+            mobileMechR: {
+              position: [ -223 ],
+              rotation: { y: 14 },
+              children: {
+                mobileMechRF: makeWheelMech( 'RF', true ),
+                mobileMechRA: makeWheelMech( 'RA', true ),
+              },
+            },
           },
         },
-        wheelsMechR: {
-          struct: [ 142, 729 ],
-          pivot: [ -71 ],
-          position: [ -223 ],
+        stillMech: {
           children: {
-            wheelRF: makeWheelMech( 'RF' ),
-            wheelRA: makeWheelMech( 'RA' ),
+            stillMechL: {
+              position: [ 223 ],
+              children: {
+                stillMechLF: makeWheelMech( 'LF' ),
+                stillMechLA: makeWheelMech( 'LA' ),
+              },
+            },
+            stillMechR: {
+              position: [ -223 ],
+              children: {
+                stillMechRF: makeWheelMech( 'RF' ),
+                stillMechRA: makeWheelMech( 'RA' ),
+              },
+            },
           },
         },
       },
@@ -879,8 +906,8 @@ const makeBackBar = () => {
   } )
 
   return {
-    struct: [ 92, 15, 40 ],
-    position: [ 0, -284, -210 ],
+    // struct: [ 92, 15, 40 ],
+    position: [ 0, -284, -206 ],
     children: {
       backBarInner: {
         struct: [ 62, 15, 25 ],
@@ -1213,7 +1240,6 @@ const makeLightBarPanel = where => {
       panelMat.alphaMap.wrapS = panelMat.alphaMap.wrapT = THREE.RepeatWrapping
       panelMat.alphaMap.repeat.set( 0.2, 0.2 )
       const panelMsh = new THREE.Mesh( panelGeo, [ new THREE.MeshBasicMaterial( { opacity: 0, transparent: true } ), panelMat ] )
-      console.log( panelMsh )
       if ( lbp % 2 ) g.three.mkr.mirrorMesh( panelMsh )
       Object.keys( g.three.mkr.lb.panel[where].scl ).forEach( axis => {
         g.three.mkr.scaleMesh( panelMsh, g.three.mkr.lb.panel[where].scl[axis], axis )
@@ -1242,7 +1268,7 @@ const makeLightBarRails = where => {
     if ( lb.crv.length && lb.crv.length > 1 ) {
       const crvPts = g.three.mkr.createVector3s( lb.crv )
       const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
-      const tubeMap = new THREE.TextureLoader().load( assPipeMetal2 )
+      const tubeMap = new THREE.TextureLoader().load( assPipeMetal03 )
       const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 32, false )
       const tubeMat = new THREE.MeshStandardMaterial( {
         color: 0xcccccc,
@@ -1344,6 +1370,7 @@ const makeSpokeMap = () => {
 
 const makeWheel = wheel => {
   const wheelIsFront = wheel.includes( 'F' )
+  const wheelIsLeft = wheel.includes( 'L' )
   const msh = { ...g.three.msh }
   const wheelies = {}
   const spokeMap = makeSpokeMap()
@@ -1456,8 +1483,39 @@ const makeWheel = wheel => {
     children: flares,
   }
 
+  wheelies[`wheelMechTireMount${wheel}`] = {
+    children: {
+      [`wheelMechTireMountJoint${wheel}`]: {
+        geo: 'cylinder',
+        // eslint-disable-next-line array-bracket-newline, array-element-newline
+        struct: [ 15, 15, 15, 12 ],
+        mat: new THREE.MeshStandardMaterial( {
+          ...msh,
+          ...g.three.mkr.pipe.mat,
+          ...g.three.mkr.pipe.map[2],
+        } ),
+        position: [ 0, 0, -22 ],
+        // rotation: { x: 90 },
+      },
+      [`wheelMechTireMountPlate${wheel}`]: {
+        geo: 'cylinder',
+        // eslint-disable-next-line array-bracket-newline, array-element-newline
+        struct: [ 18, 18, 15, 14 ],
+        mat: new THREE.MeshStandardMaterial( {
+          ...msh,
+          ...g.three.mkr.pipe.mat,
+          ...g.three.mkr.pipe.map[0],
+        } ),
+        pivot: [ 0, -7 ],
+        position: [ 0, 0, -7 ],
+        rotation: { z: wheelIsLeft ? -90 : 90, x: 90 },
+      },
+    },
+  }
+
   return {
     struct: [ 142, 142, 52 ],
+    pivot: [ 71, 71, 26 ],
     position: [ 0, wheel.includes( 'F' ) ? 289 : -286.5 ],
     children: wheelies,
   }
@@ -1468,8 +1526,8 @@ const makeWheels = () => ( {
   position: [ 0, 0, -11 ],
   children: {
     wheelsL: {
-      struct: [ 142, 729, 52 ],
-      pivot: [ 71 ],
+      // struct: [ 142, 729, 52 ],
+      // pivot: [ -71 ],
       position: [ 223 ],
       children: {
         wheelLF: makeWheel( 'LF' ),
@@ -1477,8 +1535,8 @@ const makeWheels = () => ( {
       },
     },
     wheelsR: {
-      struct: [ 142, 729 ],
-      pivot: [ -71 ],
+      // struct: [ 142, 729, 52 ],
+      // pivot: [ -71 ],
       position: [ -223 ],
       children: {
         wheelRF: makeWheel( 'RF' ),
@@ -1491,14 +1549,18 @@ const makeWheels = () => ( {
 const makeDeLorean = () => {
   setMakes()
   return {
-    struct: [ 432, 1000, 300 ],
+    // struct: [ 432, 1000, 300 ],
     position: [ 0, 0, -1000 ],
     rotation: [ 135, 0, -90 ],
     children: {
-      body: makeBody(),
-      exterior: makeExterior(),
-      interior: makeInterior(),
-      underCarriage: makeUnderCarriage(),
+      flyAway: {
+        children: {
+          body: makeBody(),
+          exterior: makeExterior(),
+          interior: makeInterior(),
+          underCarriage: makeUnderCarriage(),
+        },
+      },
       wheels: makeWheels(),
     },
   }

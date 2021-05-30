@@ -10,12 +10,17 @@ import {
 
 const setThree = () => {
   g.three = {
-    ani: [],
+    ani: {
+      flr: [],
+      wls: [],
+      glo: [],
+    },
     clk: new THREE.Clock(),
-    cvs: [ g.main.cx, g.main.h ],
+    cvs: [ g.main.w * 0.6, g.main.h ],
+    flm: true,
     flr: [],
-    glo: [],
     grp: {},
+    lve: false,
     mkr: {},
     msh: {
       alphaTest: 0.36,
@@ -30,7 +35,6 @@ const setThree = () => {
 
   g.three.x.dilateGeometry = ( geometry, scale ) => {
     const positions = geometry.attributes.position
-    console.log( positions )
     for ( let i = 0; i < positions.count; i += 3 ) {
       const v = new THREE.Vector3( positions[i], positions[i + 1], positions[i + 2] ).multiplyScalar( scale )
       positions[i] = v.x
@@ -107,7 +111,7 @@ const setThree = () => {
       // blending : THREE.AdditiveBlending,
       transparent: true,
       // depthWrite: false,
-      alphaMap,
+      // alphaMap,
     } )
     return material
   }
@@ -121,8 +125,8 @@ const setThree = () => {
     matInner.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
     matInner.uniforms.coeficient.value = 1.3
     matInner.uniforms.power.value = 1.3
-    // g.three.glo.push( { wax: false, mat: matInner } )
     const innerMesh = new THREE.Mesh( geoInner, matInner )
+    g.three.ani.glo.push( { wax: false, msh: innerMesh } )
     object3d.add( innerMesh )
 
     const geoOuter = geoInner.clone()
@@ -133,8 +137,8 @@ const setThree = () => {
     matOuter.uniforms.coeficient.value = 0.26
     matOuter.uniforms.power.value = 0.9
     matOuter.side = THREE.BackSide
-    g.three.glo.push( { wax: false, mat: matOuter } )
     const outerMesh = new THREE.Mesh( geoOuter, [ new THREE.MeshBasicMaterial( { opacity: 0, transparent: true } ), matOuter ] )
+    g.three.ani.glo.push( { wax: false, msh: outerMesh } )
     object3d.add( outerMesh )
 
     return {
@@ -229,30 +233,77 @@ const setThree = () => {
   g.three.mkr.update = () => {
     const delta = g.three.clk.getDelta()
     // ROCKET FLARE TEXTURES SWAP
-    g.three.ani.forEach( ani => {
+    g.three.ani.flr.forEach( ani => {
       ani( 1000 * delta )
     } )
+
     g.three.xyz.forEach( axis => {
-      g.el[axis].innerHTML = g.three.camera.rotation[axis]
+      g.el[`threeCam${axis.toUpperCase()}`].innerHTML = g.three.camera.rotation[axis].toFixed( 3 )
     } )
-    g.three.glo.forEach( ( glo, i ) => {
-      if ( glo.wax ) glo.mat.uniforms.power.value += 0.5
-      else glo.mat.uniforms.power.value -= 0.5
-      if ( glo.mat.uniforms.power.value < 0.4 || glo.mat.uniforms.power.value > 5 ) {
-        g.three.glo[i].wax = !glo.wax
-      }
-      // let flipWax = false
-      // if ( glo.wax ) glo.mat.opacity += 0.1
-      // else glo.mat.opacity -= 0.1
-      // if ( glo.mat.opacity <= 0 ) {
-      //   glo.mat.opacity = 0
-      //   flipWax = true
-      // } else if ( glo.mat.opacity >= 1 ) {
-      //   glo.mat.opacity = 1
-      //   flipWax = true
+
+    g.three.ani.glo.forEach( ( glo, i ) => {
+      // if ( glo.wax ) glo.mat.uniforms.power.value += 0.5
+      // else glo.mat.uniforms.power.value -= 0.5
+      // if ( glo.mat.uniforms.power.value < 0.4 || glo.mat.uniforms.power.value > 5 ) {
+      //   g.three.glo[i].wax = !glo.wax
       // }
-      // if ( flipWax ) g.three.glo[i].wax = !glo.wax
+      let flipWax = false
+      // console.log( { gloMsh: glo.msh } )
+      if ( glo.wax ) glo.msh.material.opacity += 0.1
+      else glo.msh.material.opacity -= 0.1
+      if ( glo.msh.material.opacity <= 0 ) {
+        glo.msh.material.opacity = 0
+        flipWax = true
+      } else if ( glo.msh.material.opacity >= 1 ) {
+        glo.msh.material.opacity = 1
+        flipWax = true
+      }
+      if ( flipWax ) g.three.ani.glo[i].wax = !glo.wax
     } )
+
+    if ( g.three.flm ) {
+      // suckme
+    } else {
+      g.three.mkr.inScene.wheelRockets.forEach( fls => {
+        if ( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].scale.x > 0.2 ) {
+          g.three.mkr.scaleMesh( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]], 0.75 )
+        } else {
+          g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].scale.set( 0 )
+          g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[13].material.map.offset.x = 0.5
+          if ( fls[3] ) {
+            const whereWheel = {
+              armRadY: g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotation.y,
+              armPosX: g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x,
+              armPosZ: g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.z,
+              rotRadY: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].rotation.y,
+              rotPosX: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.x,
+              rotPosZ: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.z,
+            }
+            if ( fls[2] ) {
+              // RIGHT SIDE
+              if ( whereWheel.rotRadY > -g.three.mkr.wheels.rotTarget ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].rotateY( -g.three.mkr.wheels.rotIncRad )
+              if ( whereWheel.rotPosX < -g.three.mkr.wheels.posTarget.x ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.x += 2
+              if ( whereWheel.armPosX < -g.three.mkr.wheels.armTarget.x )g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x += 1.8571
+              if ( whereWheel.armRadY > 0 ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotateY( -0.00698131 )
+            } else {
+              console.log( { leftArmPosX: whereWheel.armPosX, leftArmTargetX: 188 } )
+              // LEFT SIDE
+              if ( whereWheel.rotRadY < g.three.mkr.wheels.rotTarget ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].rotateY( g.three.mkr.wheels.rotIncRad )
+              if ( whereWheel.rotPosX > g.three.mkr.wheels.posTarget.x ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.x -= 2
+              if ( whereWheel.armPosX > 188 )g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x -= 1.8571
+              if ( whereWheel.armRadY < 0 ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotateY( 0.00698131 )
+            }
+            if ( whereWheel.rotPosZ > g.three.mkr.wheels.posTarget.z ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.z -= 1.6
+            if ( whereWheel.armPosZ > g.three.mkr.wheels.armTarget.z )g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.z -= 0.9144
+          }
+        }
+      } )
+    }
+
+    if ( g.three.lve ) {
+      g.three.scene.children[0].children[0].position.z -= 1
+    }
+
     // // TILT TEST
     // g.three.xyz.forEach(axis => {
     //   g.three.scene.children[0].rotation[axis] = g.three.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.three.scene.children[0].rotation[axis]) - 1)
@@ -424,9 +475,13 @@ const makeThreeObj = ( obj, makeObj ) => {
         break
       case 'group':
       default:
+        // if (makeObj.pivot && makeObj.struct && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2]) {
+        //   console.log({ groupBox: makeObj })
+        //   g.three.grp[obj] = new THREE.Mesh(new THREE.BoxGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2]), new THREE.MeshBasicMaterial({ opacity: 0, transparent: true }))
+        //   setPivot(g.three.grp[obj], makeObj)
+        // } else {
         g.three.grp[obj] = new THREE.Group()
-        // devLog(makeObj)
-        // g.three.grp[obj] = new THREE.Mesh(new THREE.BoxGeometry(makeObj.struct[0] || 1000, makeObj.struct[1] || 1000, makeObj.struct[2] || 1000), new makeObj.mat(makeMesh))
+        // }
     }
     if ( makeFail ) devLog( makeFail )
     else if ( g.three.obj[obj] && g.three.obj[obj].geo && makeMesh && makeObj.mat ) {
@@ -439,7 +494,7 @@ const makeThreeObj = ( obj, makeObj ) => {
         g.three.obj[obj].mat.emissive = new THREE.Color( 'white' )
         g.three.obj[obj].mat.emissiveMap = g.three.obj[obj].txt
       }
-      if ( makeObj.pivot && g.three.obj[obj].geo ) g.three.obj[obj].geo.translate( makeObj.pivot[0] || 0, makeObj.pivot[1] || 0, makeObj.pivot[2] || 0 )
+      if ( makeObj.pivot ) setPivot( g.three.obj[obj], makeObj )
       if ( g.three.obj[obj].geo && g.three.obj[obj].mat ) g.three.obj[obj].msh = new THREE.Mesh( g.three.obj[obj].geo, g.three.obj[obj].mat )
       if ( g.three.obj[obj].msh ) {
         g.three.obj[obj].msh.castShadow = true // default is false
@@ -468,6 +523,10 @@ const setMatrix = ( obj, makeObj ) => {
   const mvMe = objOrGrp( obj )
   mvMe.matrix.set( makeObj.matrix )
   mvMe.matrixAutoUpdate = false
+}
+
+const setPivot = ( msh, makeObj ) => {
+  if ( msh.geo ) msh.geo.translate( makeObj.pivot[0] || 0, makeObj.pivot[1] || 0, makeObj.pivot[2] || 0 )
 }
 
 const translateAxes = ( obj, makeObj ) => {
