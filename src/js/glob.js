@@ -5,6 +5,7 @@ const g = {
     d: 12, // global bauble diameter
   },
   bL: [], // bauble layers
+  fermata: false, // Is "time" frozen or not
   lion: {
     eyes: {},
     forCleanUp: {},

@@ -33,7 +33,7 @@ const wormHoleHexes = [
   'ffffff',
 ]
 
-const wormHoleFlashTick = () => {
+const wormHoleFlashTick1 = () => {
   const o = randOnum( 1, 100 )
   const c = randOnum( 0, 11 )
   g.qss.wormHoler( {
@@ -42,85 +42,107 @@ const wormHoleFlashTick = () => {
   } )
 }
 
+const wormHoleFlashTick2 = () => {
+  const c = randOnum( 0, 11 )
+  g.qss.wormHoler( {
+    opacity: 1,
+    backgroundColor: wormHoleHexes[c],
+  } )
+}
+
+const startDeLorean = () => {
+  if ( !g.three.on ) {
+    g.el.deLorean.style.opacity = 1
+    g.three.ani.go()
+    g.three.on = true
+  }
+}
+
 const beginFuture = () => {
-  const blindingFlashUnTick = gsapTick( wormHoleFlashTick )
+  const blindingFlashUnTick1 = gsapTick( wormHoleFlashTick1 )
 
   setTimeout( () => {
-    g.el.deLorean.style.opacity = 1
+    blindingFlashUnTick1()
+    const blindingFlashUnTick2 = gsapTick( wormHoleFlashTick2 )
+    g.el.flux.style.opacity = 0
+    toggleFermata( { exceptTLs: [ 'bttf' ] } )
+    startDeLorean()
+
     setTimeout( () => {
-      toggleFermata( true, { exceptTLs: [ 'bttf' ] } )
-      blindingFlashUnTick()
+      blindingFlashUnTick2()
+      g.qss.wormHoler( {
+        opacity: 0,
+      } )
       flyOver()
     }, 700 )
-  }, 2300 )
+  },
+  2300 )
 }
 
 const flyOver = () => {
-  gsap.to( '.lightBar > div', {
-    duration: 1.5,
-    ease: 'power1.in',
-    opacity: 0.12,
-    repeat: -1,
-    yoyo: true,
-  } )
+  // gsap.to( '.lightBar > div', {
+  //   duration: 1.5,
+  //   ease: 'power1.in',
+  //   opacity: 0.12,
+  //   repeat: -1,
+  //   yoyo: true,
+  // } )
 
-  g.tL.bttf.set( '#flux', {
-    opacity: 0,
-  } )
-    .to( '#deLorean', {
-      duration: 9,
-      ease: 'power2.in',
-      translateZ: -500,
-    } )
-    .to( '#deLorean', {
-      duration: 7.5,
-      ease: 'power2.in',
-      rotateY: '-=90',
-    }, '<5' )
-    .to( '#deLorean', {
-      duration: 3.5,
-      ease: 'power2.in',
-      rotateZ: '+=30',
-      repeat: 1,
-      yoyo: true,
-    }, '<2' )
-    .to( '#deLorean', {
-      duration: 5,
-      ease: 'power2.in',
-      translateX: '-=50',
-      translateY: '-=200',
-    }, '<' )
-    .to( '#deLorean', {
-      duration: 3.5,
-      ease: 'power2.in',
-      rotateX: '-=15',
-      repeat: 1,
-      yoyo: true,
-    }, '>' )
-    .to( '#deLorean', {
-      duration: 4,
-      ease: 'power2.out',
-      translateX: '+=150',
-      translateY: '-=100',
-      translateZ: -400,
-    }, '<' )
-  // CONVERT FROM FLYING TO DRIVING MODE
-  // TURN OFF WHEEL ROCKETS
-    .to( '#deLorean #wheels .wheel .rocket', {
-      duration: 1.25,
-      scaleY: 0,
-    }, '>' )
-  // SET WHEELS IN WELLS
-    .to( '#wheelsLeft', {
-      duration: 4,
-      rotateY: 90,
-      translateZ: '-=42',
-    }, '>' )
-    .to( '#wheelsRight', {
-      duration: 4,
-      rotateY: -90,
-      translateZ: '-=42',
-    }, '<' )
+
+  //   .to( '#deLoreanCSS', {
+  //     duration: 9,
+  //     ease: 'power2.in',
+  //     translateZ: -500,
+  //   } )
+  //   .to( '#deLoreanCSS', {
+  //     duration: 7.5,
+  //     ease: 'power2.in',
+  //     rotateY: '-=90',
+  //   }, '<5' )
+  //   .to( '#deLoreanCSS', {
+  //     duration: 3.5,
+  //     ease: 'power2.in',
+  //     rotateZ: '+=30',
+  //     repeat: 1,
+  //     yoyo: true,
+  //   }, '<2' )
+  //   .to( '#deLoreanCSS', {
+  //     duration: 5,
+  //     ease: 'power2.in',
+  //     translateX: '-=50',
+  //     translateY: '-=200',
+  //   }, '<' )
+  //   .to( '#deLoreanCSS', {
+  //     duration: 3.5,
+  //     ease: 'power2.in',
+  //     rotateX: '-=15',
+  //     repeat: 1,
+  //     yoyo: true,
+  //   }, '>' )
+  //   .to( '#deLoreanCSS', {
+  //     duration: 4,
+  //     ease: 'power2.out',
+  //     translateX: '+=150',
+  //     translateY: '-=100',
+  //     translateZ: -400,
+  //   }, '<' )
+  // // CONVERT FROM FLYING TO DRIVING MODE
+  // // TURN OFF WHEEL ROCKETS
+  //   .to( '#deLoreanCSS #wheels .wheel .rocket', {
+  //     duration: 1.25,
+  //     scaleY: 0,
+  //   }, '>' )
+  // // SET WHEELS IN WELLS
+  //   .to( '#wheelsLeft', {
+  //     duration: 4,
+  //     rotateY: 90,
+  //     translateZ: '-=42',
+  //   }, '>' )
+  //   .to( '#wheelsRight', {
+  //     duration: 4,
+  //     rotateY: -90,
+  //     translateZ: '-=42',
+  //   }, '<' )
 }
 
 const movable = [ '#deLorean', '#sideViewMirrorRight div:nth-child(2)' ]
@@ -160,10 +182,14 @@ const toggleFlightMode = () => {
   if ( g.three ) g.three.flm = !g.three.flm
 }
 
+const toggleFlyAlongPath = () => {
+  if ( g.three ) g.three.mov = !g.three.mov
+}
+
 const toggleWheelsDrop = () => {
   if ( g.three ) g.three.lve = !g.three.lve
 }
 
 export {
-  beginFuture, setFuture, setModel, toggleFlightMode, toggleWheelsDrop,
+  beginFuture, setFuture, setModel, startDeLorean, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
 }

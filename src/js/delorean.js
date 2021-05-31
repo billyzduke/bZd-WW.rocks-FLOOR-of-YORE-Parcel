@@ -72,6 +72,13 @@ const setMakes = () => {
     },
   }
 
+  g.three.mkr.mPaths = [ [
+    [ 0, 0, 0 ],
+    [ 0, 0, -400 ],
+    [ -50, -200, -500 ],
+    [ -200, -400, -900 ],
+  ] ]
+
   g.three.mkr.lb = {
     crvF: [
       [ 0, 0, 0 ],
@@ -228,6 +235,10 @@ const setMakes = () => {
   }
 
   g.three.mkr.setMades = () => {
+    g.three.mkr.mPaths.forEach( mPath => {
+      g.three.mkr.makeMotionPath( mPath )
+    } )
+
     g.three.mkr.inScene.wheelRockets.forEach( fls => {
       // NOT A HELPFUL HELPER, at least not in this case
       // const wheelHelper = new THREE.BoxHelper()
@@ -262,6 +273,8 @@ const setMakes = () => {
       spotLight.target = pointLight
       // g.three.scene.add(  new THREE.SpotLightHelper( spotLight ) )
     } )
+
+    g.three.scene.add( new THREE.AxesHelper( 500 ) )
   }
 }
 
@@ -907,7 +920,7 @@ const makeBackBar = () => {
 
   return {
     // struct: [ 92, 15, 40 ],
-    position: [ 0, -284, -206 ],
+    position: [ 0, -284, -202 ],
     children: {
       backBarInner: {
         struct: [ 62, 15, 25 ],
@@ -1550,8 +1563,8 @@ const makeDeLorean = () => {
   setMakes()
   return {
     // struct: [ 432, 1000, 300 ],
-    position: [ 0, 0, -1000 ],
-    rotation: [ 135, 0, -90 ],
+    // position: [ 0, 0, 150 ],
+    rotation: { x: 90 },
     children: {
       flyAway: {
         children: {

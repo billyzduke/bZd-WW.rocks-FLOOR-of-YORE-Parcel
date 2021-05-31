@@ -6,7 +6,6 @@ import { setScene } from '../scene'
 // import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
 import { setBaubleLayers } from '../baubles'
-import { setModel, toggleFlightMode, toggleWheelsDrop } from '../future'
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
@@ -20,11 +19,6 @@ const setScene00 = ( c, n ) => {
 
   // setBaubleLayer01()
   setBaubleLayers()
-  if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) {
-    setModel()
-    setAddOn( '#toggleFlightMode', 'click', toggleFlightMode )
-    setAddOn( '#toggleWheelsDrop', 'click', toggleWheelsDrop )
-  }
 
   g.tL.yore.to( '#tpTitleScreen', {
     duration: 2,

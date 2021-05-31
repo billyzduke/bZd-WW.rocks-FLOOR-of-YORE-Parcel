@@ -94,7 +94,6 @@ const loadApp = () => {
       'theOwlIsNotWhatItSeems',
       'theRam',
       'thirdEyeClosed',
-      'three',
       'threeCamX',
       'threeCamY',
       'threeCamZ',
@@ -162,7 +161,7 @@ const loadApp = () => {
     g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
   }
 
-  if ( g.el.three ) setThree()
+  if ( g.el.deLorean ) setThree()
 
   return true
 }
