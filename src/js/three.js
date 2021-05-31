@@ -36,9 +36,11 @@ const setThree = () => {
         axis: new THREE.Vector3(),
         end: [],
         line: [],
+        mp: 0,
         path: [],
+        rotZ: [ 90, -270 ],
         strt: [],
-        up: new THREE.Vector3( 0, -1, 0 ),
+        up: [ new THREE.Vector3( 0, -1, 0 ), new THREE.Vector3( 0, 1, 0 ) ],
       },
       mkr: {},
       mov: false,
@@ -232,38 +234,49 @@ const setThree = () => {
       // g.three.scene.add( helper )
     }
 
-    g.three.mkr.moveAlongPath = ( obj, mp ) => {
-      const mPath = g.three.m.path[mp]
+    g.three.mkr.moveAlongPath = obj => {
+      const mPath = g.three.m.path[g.three.m.mp]
       if ( !obj.m ) {
         obj.m = 0
       }
       if ( obj.m < 1 ) {
+        const inc = 0.005
         // add up to position for movement
-        obj.m += 0.01
+        obj.m += inc
         // get the point at position
         let newPoint
         try {
           newPoint = mPath.getPoint( obj.m )
         } catch ( err ) {
-          suckme
+          // suckme
         }
         if ( newPoint ) {
           obj.position.copy( newPoint )
 
           const tangent = mPath.getTangent( obj.m )
-          g.three.m.axis.crossVectors( g.three.m.up, tangent ).normalize()
+          g.three.m.axis.crossVectors( g.three.m.up[g.three.m.mp], tangent ).normalize().clamp( new THREE.Vector3( 0.8, -0.5, -0.5 ), new THREE.Vector3( 1.2, 0.5, 0.5 ) )
 
-          const radians = Math.acos( g.three.m.up.dot( tangent ) )
+          let radians = Math.acos( g.three.m.up[g.three.m.mp].dot( tangent ) )
+
+          if ( radians > 1.7 ) radians = 1.7
+          if ( radians < 1.4 ) radians = 1.4
 
           obj.quaternion.setFromAxisAngle( g.three.m.axis, radians )
+          obj.rotateZ( THREE.Math.degToRad( g.three.m.rotZ[g.three.m.mp] * obj.m ) )
+          console.log( obj.m, obj.rotation.y, radians, g.three.m.axis.x, g.three.m.axis.y, g.three.m.axis.z )
 
           // RANDOM AXIS ANGLE for added jitteriness
-          obj[`rotate${g.three.xyz[randOnum( 0, 2 )].toUpperCase()}`]( THREE.Math.degToRad( randOnum() ? 0.25 : -0.25 ) )
+          obj[`rotate${g.three.xyz[randOnum() ? 0 : 2].toUpperCase()}`]( THREE.Math.degToRad( randOnum() ? 0.15 : -0.15 ) )
         }
       } else {
-        g.three.mov = false
-        obj.position.copy( g.three.m.strt[mp] )
+        // g.three.mov = false
+        // obj.position.copy( g.three.m.strt[mp] )
+        // obj.setRotationFromAxisAngle( g.three.m.up, 0 )
+        // obj.rotateZ( THREE.Math.degToRad( 180 ) )
+        // obj.rotateX( THREE.Math.degToRad( 90 ) )
+        // obj.rotateY( THREE.Math.degToRad( 180 ) )
         obj.m = 0
+        g.three.m.mp++
       }
     }
 
@@ -278,15 +291,13 @@ const setThree = () => {
     g.el.deLorean.appendChild( g.three.renderer.domElement )
 
     g.three.camControls = new OrbitControls( g.three.camera, g.three.renderer.domElement )
-    if ( g.three.camControls ) {
-      g.three.xyz.forEach( axis => {
-        g.three.camera.position[axis] = 1000
-      } )
-    } else {
-      // g.three.camera.position.z = -150
-      // // g.three.camera.rotateY( 180 )
-      // g.three.camera.rotateX( THREE.Math.degToRad( -90 ) )
-    }
+    // if ( g.three.camControls ) {
+    //   g.three.xyz.forEach( axis => {
+    //     g.three.camera.position[axis] = 1000
+    //   } )
+    // } else {
+    g.three.camera.position.y = 176
+    // }
 
     g.three.mkr.textureLoader = txtAss => new THREE.TextureLoader().load( txtAss )
 
@@ -410,10 +421,10 @@ const setThree = () => {
 
     ifFunctionThenCall( g.three.mkr.setMades )
 
-    if ( g.three.camControls ) {
-      g.three.camControls.target.copy( g.three.grp.deLorean.position )
-      g.three.camControls.update()
-    }
+    // if ( g.three.camControls ) {
+    //   g.three.camControls.target.copy( g.three.grp.deLorean.position )
+    //   g.three.camControls.update()
+    // }
 
     g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), // soft white light
       new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
