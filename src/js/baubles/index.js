@@ -8,42 +8,42 @@ import { setBaubleLayer02 } from './layer-02'
 import { setBaubleLayer03 } from './layer-03'
 import { setBaubleLayer04 } from './layer-04'
 
-const setBaublesInLayer = (bLyr, bCnt, bOpts = {}, qMvSttrs = true) => {
+const setBaublesInLayer = ( bLyr, bCnt, bOpts = {}, qMvSttrs = true ) => {
   // bOpts = {
   //   d: { // id of property to adjust
   //     b: [ 'keys of baubles to adjust this property value on' ],
   //     v: 'property value to apply to above keys',
   //   }
   // }
-  const padLyr = padStr(bLyr)
+  const padLyr = padStr( bLyr )
   const bL = {
     b: [],
     bD: [],
     bN: [],
-    bW: g.document.getElementById(`bW${padLyr}`),
+    bW: g.document.getElementById( `bW${padLyr}` ),
     x: {},
   }
-  if (bL.bW) {
-    bL.bW.classList.add('paused')
+  if ( bL.bW ) {
+    bL.bW.classList.add( 'paused' )
     const bLyrClass = `bL${padLyr}`
-    for (let b = 0; b < bCnt; b++) {
+    for ( let b = 0; b < bCnt; b++ ) {
       bL.bD[b] = g.b.d
-      bL.bN[b] = g.document.createElement('div')
-      bL.bN[b].classList.add('bN')
-      bL.b[b] = g.document.createElement('div')
-      bL.b[b].id = `${bLyrClass}_b${padStr(b)}`
-      bL.b[b].classList.add('b', bLyrClass)
+      bL.bN[b] = g.document.createElement( 'div' )
+      bL.bN[b].classList.add( 'bN' )
+      bL.b[b] = g.document.createElement( 'div' )
+      bL.b[b].id = `${bLyrClass}_b${padStr( b )}`
+      bL.b[b].classList.add( 'b', bLyrClass )
       // optional diameter
-      if (bOpts.d && bOpts.d.b && bOpts.d.b.length && bOpts.d.b.includes(b)) {
+      if ( bOpts.d && bOpts.d.b && bOpts.d.b.length && bOpts.d.b.includes( b ) ) {
         bL.bD[b] = bOpts.d.v
         bL.b[b].style.height = `${bL.bD[b]}px`
         bL.b[b].style.width = bL.b[b].style.height
       }
-      bL.b[b].appendChild(bL.bN[b])
-      bL.bW.appendChild(bL.b[b])
-      if (qMvSttrs) {
-        if (typeof bL.bQuickMoveSetters === 'undefined') bL.bQuickMoveSetters = []
-        bL.bQuickMoveSetters[b] = gsap.quickSetter(bL.b[b], 'css')
+      bL.b[b].appendChild( bL.bN[b] )
+      bL.bW.appendChild( bL.b[b] )
+      if ( qMvSttrs ) {
+        if ( typeof bL.bQuickMoveSetters === 'undefined' ) bL.bQuickMoveSetters = []
+        bL.bQuickMoveSetters[b] = gsap.quickSetter( bL.b[b], 'css' )
       }
     }
   }
@@ -57,19 +57,19 @@ const setBaubleLayers = () => {
   setBaubleLayer03()
   setBaubleLayer04()
   // setTimeout(() => {
-  console.log(g.bL)
-  g.bL.forEach((_, i) => {
-    devLog(`baubleLayer${padStr(i)} animations active`)
-    g.bL[i].bW.classList.remove('paused')
-  })
+  console.log( g.bL )
+  g.bL.forEach( ( _, i ) => {
+    devLog( `baubleLayer${padStr( i )} animations active` )
+    g.bL[i].bW.classList.remove( 'paused' )
+  } )
   // }, 2000)
 }
 
-const toggleBaubleLayer = bLyr => {
-  if (g.bL[bLyr].bW.classList.contains('paused')) {
-    g.bL[bLyr].bW.classList.remove('paused')
+const toggleBaubleLayer = ( bLyr, forcePause ) => {
+  if ( g.bL[bLyr].bW.classList.contains( 'paused' ) && !forcePause ) {
+    g.bL[bLyr].bW.classList.remove( 'paused' )
   } else {
-    g.bL[bLyr].bW.classList.add('paused')
+    g.bL[bLyr].bW.classList.add( 'paused' )
   }
 }
 

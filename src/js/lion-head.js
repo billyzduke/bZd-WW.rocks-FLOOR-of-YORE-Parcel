@@ -6,53 +6,53 @@ import g from './glob'
 // eslint-disable-next-line object-curly-newline
 import { devLog, padStr, randOnum, randOcolor, setAddOn, shuffleArray } from './utils'
 
-gsap.registerPlugin(MorphSVGPlugin, MotionPathPlugin)
+gsap.registerPlugin( MorphSVGPlugin, MotionPathPlugin )
 
-const toggleLionEyes = () => {
-  g.lion.eyes.active = !g.lion.eyes.active
+const toggleLionEyes = forcePause => {
+  g.lion.eyes.active = forcePause ? false : !g.lion.eyes.active
 }
 
-const toggleLionHead = () => {
-  if (g.el.thirdEyeClosed.classList.contains('open')) {
-    gsap.set('#thirdEyeClosed', {
+const toggleLionHead = forcePause => {
+  if ( g.el.thirdEyeClosed.classList.contains( 'open' ) || forcePause ) {
+    gsap.set( '#thirdEyeClosed', {
       attr: {
         class: '',
       },
-    })
-    devLog('lionHead animations paused')
+    } )
+    devLog( 'lionHead animations paused' )
   } else {
-    gsap.set('#thirdEyeClosed', {
+    gsap.set( '#thirdEyeClosed', {
       attr: {
         class: 'open',
       },
-    })
-    devLog('lionHead animations active')
+    } )
+    devLog( 'lionHead animations active' )
   }
 }
 
-const toggleLionHalos = () => {
-  if (g.el.theLion.classList.contains('anim')) {
-    g.el.theLion.classList.remove('anim')
-    devLog('lionHalo animations paused')
+const toggleLionHalos = forcePause => {
+  if ( g.el.theLion.classList.contains( 'anim' ) || forcePause ) {
+    g.el.theLion.classList.remove( 'anim' )
+    devLog( 'lionHalo animations paused' )
   } else {
-    g.el.theLion.classList.add('anim')
-    devLog('lionHalo animations active')
+    g.el.theLion.classList.add( 'anim' )
+    devLog( 'lionHalo animations active' )
   }
 }
 
-const toggleLionJarp = () => {
-  if (g.el.lionHead.classList.contains('jarp')) {
-    g.el.lionHead.classList.remove('jarp')
-    devLog('lionJarp animations paused')
+const toggleLionJarp = forcePause => {
+  if ( g.el.lionHead.classList.contains( 'jarp' ) || forcePause ) {
+    g.el.lionHead.classList.remove( 'jarp' )
+    devLog( 'lionJarp animations paused' )
   } else {
-    g.el.lionHead.classList.add('jarp')
-    devLog('lionJarp animations active')
+    g.el.lionHead.classList.add( 'jarp' )
+    devLog( 'lionJarp animations active' )
   }
 }
 
 const setLionHead = () => {
   setExcs()
-  setAddOn('#thirdEyeWrapper', 'click', ex, false)
+  setAddOn( '#thirdEyeWrapper', 'click', ex, false )
   toggleLionHead()
 }
 
@@ -93,49 +93,49 @@ const setExcs = () => {
     ],
   }
 
-  for (let x = 0; x < g.exc.max; x++) {
-    const pathsRay = Array.from({ length: g.exc.path.length }, (_, i) => padStr(i))
-    const shuffled = shuffleArray(pathsRay)
+  for ( let x = 0; x < g.exc.max; x++ ) {
+    const pathsRay = Array.from( { length: g.exc.path.length }, ( _, i ) => padStr( i ) )
+    const shuffled = shuffleArray( pathsRay )
     const fillColor = randOcolor()
 
-    const excEl = g.document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    excEl.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink')
-    excEl.setAttribute('viewBox', '0 0 320.4 324.8')
-    excEl.setAttribute('id', `ex${padStr(x)}`)
-    excEl.classList.add('exc')
+    const excEl = g.document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+    excEl.setAttributeNS( 'http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink' )
+    excEl.setAttribute( 'viewBox', '0 0 320.4 324.8' )
+    excEl.setAttribute( 'id', `ex${padStr( x )}` )
+    excEl.classList.add( 'exc' )
 
-    g.exc.path.forEach((d, i) => {
-      const pathEl = g.document.createElementNS('http://www.w3.org/2000/svg', 'path')
-      pathEl.setAttribute('d', d)
-      pathEl.setAttribute('fill', fillColor)
-      pathEl.setAttribute('stroke', '#000')
-      pathEl.setAttribute('stroke-miterlimit', '10')
-      pathEl.setAttribute('stroke-linecap', 'square')
-      pathEl.setAttribute('stroke-opacity', '1')
-      pathEl.setAttribute('stroke-width', '11')
-      pathEl.classList.add(`xPath${shuffled[i]}`)
-      if (Number(shuffled[i]) !== 0) pathEl.classList.add('xPath')
-      excEl.appendChild(pathEl)
-    })
+    g.exc.path.forEach( ( d, i ) => {
+      const pathEl = g.document.createElementNS( 'http://www.w3.org/2000/svg', 'path' )
+      pathEl.setAttribute( 'd', d )
+      pathEl.setAttribute( 'fill', fillColor )
+      pathEl.setAttribute( 'stroke', '#000' )
+      pathEl.setAttribute( 'stroke-miterlimit', '10' )
+      pathEl.setAttribute( 'stroke-linecap', 'square' )
+      pathEl.setAttribute( 'stroke-opacity', '1' )
+      pathEl.setAttribute( 'stroke-width', '11' )
+      pathEl.classList.add( `xPath${shuffled[i]}` )
+      if ( Number( shuffled[i] ) !== 0 ) pathEl.classList.add( 'xPath' )
+      excEl.appendChild( pathEl )
+    } )
 
-    g.el.excWrapper.appendChild(excEl)
+    g.el.excWrapper.appendChild( excEl )
   }
 
-  gsap.set('.exc', {
+  gsap.set( '.exc', {
     scaleX: 3,
     scaleY: 0,
     rotateX: -108,
     translateY: 604.5,
     translateZ: -164,
     translateX: 148,
-  })
+  } )
 }
 
 const ex = () => {
-  if (g.scene.current >= 11 && g.el.theLion.classList.contains('anim')) {
-    const excTL01 = new TL({ defaults: { overwrite: 'auto' } })
-    const padEx = padStr(g.exc.which)
-    excTL01.fromTo(`#ex${padEx}`, {
+  if ( g.scene.current >= 11 && g.el.theLion.classList.contains( 'anim' ) ) {
+    const excTL01 = new TL( { defaults: { overwrite: 'auto' } } )
+    const padEx = padStr( g.exc.which )
+    excTL01.fromTo( `#ex${padEx}`, {
       opacity: 1,
       rotateX: -108,
       scaleX: 3,
@@ -149,27 +149,27 @@ const ex = () => {
       scaleX: 1,
       scaleY: 1,
       overwrite: true,
-    })
-      .to(`#ex${padEx}`, {
+    } )
+      .to( `#ex${padEx}`, {
         duration: 0.75,
         ease: 'power1.out',
         scale: 1.5,
         translateZ: -86,
         translateX: '+=4',
         onComplete: () => {
-          claim(padEx)
+          claim( padEx )
         },
-      }, '>')
+      }, '>' )
     g.exc.which++
-    if (g.exc.which >= g.exc.max) g.exc.which = 0
+    if ( g.exc.which >= g.exc.max ) g.exc.which = 0
   }
 }
 
 const claim = whEx => {
-  if (g.scene.current >= 11 && g.el.theLion.classList.contains('anim')) {
-    const excTL02 = new TL({ defaults: { overwrite: 'auto' } })
-    const randSpeed = randOnum(12, 16) / 4
-    excTL02.to(`#ex${whEx}`, {
+  if ( g.scene.current >= 11 && g.el.theLion.classList.contains( 'anim' ) ) {
+    const excTL02 = new TL( { defaults: { overwrite: 'auto' } } )
+    const randSpeed = randOnum( 12, 16 ) / 4
+    excTL02.to( `#ex${whEx}`, {
       duration: randSpeed * 2,
       ease: 'none',
       fill: randOcolor(),
@@ -182,41 +182,41 @@ const claim = whEx => {
       },
       repeat: -1,
     // overwrite: true,
-    }, 0)
-      .to(`#ex${whEx}`, {
+    }, 0 )
+      .to( `#ex${whEx}`, {
         duration: randSpeed,
         ease: 'power1.in',
         opacity: -0.5,
         repeat: -1,
         scale: 0,
         yoyo: true,
-      }, 0)
-    g.exc.path.forEach((_, i) => {
-      if (i + 1 < g.exc.path.length) {
-        excTL02.to(`#ex${whEx} .xPath00`, {
+      }, 0 )
+    g.exc.path.forEach( ( _, i ) => {
+      if ( i + 1 < g.exc.path.length ) {
+        excTL02.to( `#ex${whEx} .xPath00`, {
           duration: 1,
           fill: randOcolor(),
-          morphSVG: `#ex${whEx} .xPath${padStr(i + 1)}`,
-        }, i === 0 ? 0 : '<2.5')
+          morphSVG: `#ex${whEx} .xPath${padStr( i + 1 )}`,
+        }, i === 0 ? 0 : '<2.5' )
       }
-    })
-    excTL02.to(`#ex${whEx}`, {
+    } )
+    excTL02.to( `#ex${whEx}`, {
       duration: 2.5,
       fill: randOcolor(),
       opacity: 0,
-    }, '>')
+    }, '>' )
     g.exc.dir = g.exc.dir ? 0 : 1
   }
 }
 
 const moveLionEyes = () => {
   const thirdEyeDeets = g.el.phasingRainbow.getBoundingClientRect()
-  let translateY = -((thirdEyeDeets.y + 50 - g.m.y) / 42)
-  if (translateY < 0) translateY *= 1.5
-  g.lion.eyes.followMouseQuickSetter({
-    translateX: gsap.utils.clamp(-16, 12.44, -(thirdEyeDeets.x + (thirdEyeDeets.width / 2) - g.m.x) / 54),
-    translateY: gsap.utils.clamp(-7, 9.55, translateY),
-  })
+  let translateY = -( ( thirdEyeDeets.y + 50 - g.m.y ) / 42 )
+  if ( translateY < 0 ) translateY *= 1.5
+  g.lion.eyes.followMouseQuickSetter( {
+    translateX: gsap.utils.clamp( -16, 12.44, -( thirdEyeDeets.x + ( thirdEyeDeets.width / 2 ) - g.m.x ) / 54 ),
+    translateY: gsap.utils.clamp( -7, 9.55, translateY ),
+  } )
 }
 
 export {

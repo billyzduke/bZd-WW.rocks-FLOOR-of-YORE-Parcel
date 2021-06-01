@@ -14,7 +14,7 @@ import { setShaiHulud } from './shai-hulud'
 import { setThree } from './three'
 import { setScene, setSceneSkipper } from './scene'
 import { resetCtrRingPos1 } from './baubles/layer-01'
-import { isSet } from './utils'
+import { isSet, toggleFermata } from './utils'
 
 // import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
@@ -36,6 +36,7 @@ const loadApp = () => {
       'dirtOnTheGround',
       'dirtVidWrapper',
       'discoWall',
+      'draggable',
       'drWorm',
       'excWrapper',
       'flux',
@@ -161,7 +162,11 @@ const loadApp = () => {
     g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
   }
 
-  if ( g.el.deLorean ) setThree()
+  if ( g.el.deLorean ) {
+    if ( !g.three ) setThree()
+    else g.three.mkr.reSize()
+    toggleFermata( { exceptTLs: [ 'dL' ] }, true )
+  }
 
   return true
 }

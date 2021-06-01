@@ -1,6 +1,9 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Stats from 'stats.js'
+import { gsap, TimelineMax as TL } from 'gsap'
+import { Draggable } from 'gsap/Draggable'
+import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
 import g from './glob'
 import {
@@ -10,6 +13,8 @@ import { makeDeLorean } from './delorean'
 import {
   devLog, ifFunctionThenCall, isFunction, randOnum, setAddOn,
 } from './utils'
+
+gsap.registerPlugin( Draggable, InertiaPlugin )
 
 const setThree = () => {
   if ( !g.three ) {
@@ -27,19 +32,19 @@ const setThree = () => {
         glo: [],
       },
       clk: new THREE.Clock(),
-      cvs: [ g.main.w, g.main.h ],
+      drg: false,
       flm: true,
       flr: [],
       grp: {},
       lve: false,
       m: {
         axis: new THREE.Vector3(),
-        end: [],
+        // end: [],
         line: [],
         mp: 0,
         path: [],
-        rotZ: [ 90, -270 ],
-        strt: [],
+        rotZ: [ 0, 90, -360 ],
+        // strt: [],
         up: [ new THREE.Vector3( 0, -1, 0 ), new THREE.Vector3( 0, 1, 0 ) ],
       },
       mkr: {},
@@ -56,28 +61,8 @@ const setThree = () => {
       xyz: [ 'x', 'y', 'z' ],
     }
 
-    g.three.x.dilateGeometry = ( geometry, scale ) => {
-      const positions = geometry.attributes.position
-      for ( let i = 0; i < positions.count; i += 3 ) {
-        const v = new THREE.Vector3( positions[i], positions[i + 1], positions[i + 2] ).multiplyScalar( scale )
-        positions[i] = v.x
-        positions[i + 1] = v.y
-        positions[i + 2] = v.z
-      }
-      geometry.attributes.position.needsUpdate = true
-
-      // // Geometry class is no more // have to handle it the BufferGeometry way
-      // const positionAttribute = geometry.getAttribute( 'position' )
-      // const vertices = []
-      // for ( let vertexIndex = 0; vertexIndex < positionAttribute.count; vertexIndex++ ) {
-      //   const localVertex = new THREE.Vector3()
-      //   localVertex.fromBufferAttribute( positionAttribute, vertexIndex )
-      //   vertices.push( localVertex )
-      // }
-    }
-
     //* from http://stemkoski.blogspot.fr/2013/07/shaders-in-threejs-glow-and-halo.html
-    g.three.x.createAtmosphereMaterial = alphaMap => {
+    g.three.x.createAtmosphericMaterial = alphaMap => {
       const vertexShader = [
         'varying vec3 vVertexWorldPosition;',
         'varying vec3 vVertexNormal;',
@@ -144,7 +129,7 @@ const setThree = () => {
 
       geoInner.scale( 1.01, 1.01, 1.01 )
       geoInner.translate( 0, 2, 0 )
-      const matInner = g.three.x.createAtmosphereMaterial( alphaMap )
+      const matInner = g.three.x.createAtmosphericMaterial( alphaMap )
       matInner.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
       matInner.uniforms.coeficient.value = 1.3
       matInner.uniforms.power.value = 1.3
@@ -155,7 +140,7 @@ const setThree = () => {
       const geoOuter = geoInner.clone()
       geoOuter.scale( 1.025, 1.025, 1.025 )
       geoOuter.translate( offsetX, offsetY, offsetZ )
-      const matOuter = g.three.x.createAtmosphereMaterial( alphaMap )
+      const matOuter = g.three.x.createAtmosphericMaterial( alphaMap )
       matOuter.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
       matOuter.uniforms.coeficient.value = 0.26
       matOuter.uniforms.power.value = 0.9
@@ -216,19 +201,20 @@ const setThree = () => {
 
     g.three.mkr.makeMotionPath = crv => {
       const crvPts = g.three.mkr.createVector3s( crv )
-      g.three.m.strt.push( crvPts[0] )
-      g.three.m.end.push( crvPts[crvPts.length - 1] )
+      // g.three.m.strt.push( crvPts[0] )
+      // g.three.m.end.push( crvPts[crvPts.length - 1] )
       const mPathCrv = new THREE.CatmullRomCurve3( crvPts )
       g.three.m.path.push( mPathCrv )
       // NOT SURE IF THE REST HERE IS EVEN NECESSARY UNLESS YOU WANT TO SEE THE LINE
-      const mPathPts = mPathCrv.getSpacedPoints( 100 )
-      const lineGeo = new THREE.BufferGeometry().setFromPoints( mPathPts )
-      const lineMat = new THREE.LineBasicMaterial( {
-        color: 0xffffff,
-      } )
-      const motionPath = new THREE.Line( lineGeo, lineMat )
-      g.three.m.line.push( motionPath )
-      g.three.scene.add( motionPath )
+      // const mPathPts = mPathCrv.getSpacedPoints( 100 )
+      // const lineGeo = new THREE.BufferGeometry().setFromPoints( mPathPts )
+      // const lineMat = new THREE.LineBasicMaterial( {
+      //   color: 0xffffff,
+      // } )
+      // const motionPath = new THREE.Line( lineGeo, lineMat )
+      // g.three.m.line.push( motionPath )
+      // g.three.scene.add(motionPath)
+
       // motionPath.geometry.computeVertexNormals()
       // const helper = new VertexNormalsHelper( motionPath, 2, 0x00ff00, 1 )
       // g.three.scene.add( helper )
@@ -239,11 +225,8 @@ const setThree = () => {
       if ( !obj.m ) {
         obj.m = 0
       }
-      if ( obj.m < 1 ) {
-        const inc = 0.005
-        // add up to position for movement
-        obj.m += inc
-        // get the point at position
+      if ( obj.m < 1 && mPath ) {
+        obj.m += g.three.mkr.mIncs[g.three.m.mp]
         let newPoint
         try {
           newPoint = mPath.getPoint( obj.m )
@@ -262,35 +245,202 @@ const setThree = () => {
           if ( radians < 1.4 ) radians = 1.4
 
           obj.quaternion.setFromAxisAngle( g.three.m.axis, radians )
-          obj.rotateZ( THREE.Math.degToRad( g.three.m.rotZ[g.three.m.mp] * obj.m ) )
-          console.log( obj.m, obj.rotation.y, radians, g.three.m.axis.x, g.three.m.axis.y, g.three.m.axis.z )
+          const rotZ = g.three.m.rotZ[g.three.m.mp - 1] ? g.three.m.rotZ[g.three.m.mp] - g.three.m.rotZ[g.three.m.mp - 1] : g.three.m.rotZ[g.three.m.mp]
+          obj.rotateZ( THREE.Math.degToRad( rotZ * obj.m ) )
+          // console.log( obj.m, obj.rotation.y, radians, g.three.m.axis.x, g.three.m.axis.y, g.three.m.axis.z )
 
           // RANDOM AXIS ANGLE for added jitteriness
           obj[`rotate${g.three.xyz[randOnum() ? 0 : 2].toUpperCase()}`]( THREE.Math.degToRad( randOnum() ? 0.15 : -0.15 ) )
         }
       } else {
-        // g.three.mov = false
-        // obj.position.copy( g.three.m.strt[mp] )
-        // obj.setRotationFromAxisAngle( g.three.m.up, 0 )
-        // obj.rotateZ( THREE.Math.degToRad( 180 ) )
-        // obj.rotateX( THREE.Math.degToRad( 90 ) )
-        // obj.rotateY( THREE.Math.degToRad( 180 ) )
-        obj.m = 0
         g.three.m.mp++
+        console.log( obj.m )
+        if ( g.three.m.path[g.three.m.mp] ) obj.m = 0
+        else if ( obj.m >= 1 && obj.m < 2 ) {
+          g.three.mkr.gsapTest( obj )
+          obj.m++
+          // g.three.m.mp = 0
+          // g.three.mov = false
+          // g.three.xyz.forEach( axis => {
+          //   obj.position[axis] = 0
+          // } )
+          // obj.setRotationFromAxisAngle( g.three.m.up[0], 0 )
+          // obj.rotateZ( THREE.Math.degToRad( 180 ) )
+          // obj.rotateX( THREE.Math.degToRad( 90 ) )
+          // obj.rotateY( THREE.Math.degToRad( 180 ) )
+        }
       }
     }
 
+    g.three.mkr.visibleHeightAtZDepth = depth => {
+      // compensate for cameras not positioned at z=0
+      const cameraOffset = g.three.camera.position.z
+      if ( depth < cameraOffset ) depth -= cameraOffset
+      else depth += cameraOffset
+
+      // vertical fov in radians
+      const vFOV = ( g.three.camera.fov * Math.PI ) / 180
+
+      // Math.abs to ensure the result is always positive
+      return 2 * Math.tan( vFOV / 2 ) * Math.abs( depth )
+    }
+
+    g.three.mkr.visibleSizeAtZDepth = depth => {
+      const h = g.three.mkr.visibleHeightAtZDepth( depth )
+      return {
+        h,
+        w: h * g.three.camera.aspect,
+      }
+    }
+
+    g.three.mkr.matchMove = ( tgt, obj ) => {
+      const dragBox = tgt.getBoundingClientRect()
+      const container = g.el.future.getBoundingClientRect()
+      const viewPort = g.three.mkr.visibleSizeAtZDepth( obj.position.z )
+      obj.position.x = viewPort.w * ( ( dragBox.x + ( dragBox.width / 2 ) - ( container.width / 2 ) ) / container.width )
+      obj.position.y = -viewPort.h * ( ( dragBox.y + ( dragBox.height / 2 ) - ( container.height / 2 ) ) / container.height )
+      tgt.innerHTML = `<p>container: {x: ${container.x}, y: ${container.y}, w: ${container.width}, h: ${container.height}}</p><p>dragBox: {cx: ${dragBox.x + ( dragBox.width / 2 )}, cy: ${dragBox.y + ( dragBox.height / 2 )}}</p><p>viewPort: {w: ${viewPort.w}, h: ${viewPort.h}}</p><p>dL center: {x: ${obj.position.x}, y: ${obj.position.y}}`
+    }
+
+    g.three.mkr.allowDragging = () => {
+      Draggable.create( g.el.draggable, {
+        bounds: g.el.deLorean,
+        inertia: true,
+        onDragStart: function () {
+          g.three.drg = true
+        },
+        onRelease: function () {
+          let rotateZ = THREE.Math.degToRad( 90 )
+          if ( g.three.scene.children[0].position.x < 5 || g.three.scene.children[0].position.y > 5 ) {
+            const viewPort = g.three.mkr.visibleSizeAtZDepth( g.three.scene.children[0].position.z )
+            rotateZ = ( Math.abs( g.three.scene.children[0].position.x ) / viewPort.w ) * 180
+            rotateZ = g.three.scene.children[0].position.x > 0 ? 90 - ( 180 - rotateZ ) : 90 + rotateZ
+          }
+          console.log( rotateZ )
+          gsap.to( g.three.scene.children[0].rotation, {
+            duration: 2.5,
+            z: THREE.Math.degToRad( rotateZ ),
+            overwrite: 'auto',
+          } )
+        },
+      } )
+    }
+
+    g.three.mkr.moveWithGsap = obj => {
+      g.three.mov = false
+      g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
+      g.tL.dL.to( obj.position, {
+        duration: 9,
+        ease: 'power2.in',
+        z: '-=1200',
+      } )
+        .to( obj.rotation, {
+          duration: 7.5,
+          ease: 'power2.in',
+          z: THREE.Math.degToRad( 90 ),
+        }, '<5' )
+        .to( g.three.obj.windShieldGlass.msh.material, {
+          duration: 5,
+          opacity: 1,
+        }, '<' )
+        .to( obj.rotation, {
+          duration: 3.5,
+          ease: 'power2.in',
+          y: `+=${THREE.Math.degToRad( 30 )}`,
+          repeat: 1,
+          yoyo: true,
+        }, '<2' )
+        .to( obj.position, {
+          duration: 5,
+          ease: 'power2.in',
+          x: '+=350',
+          y: '+=200',
+        }, '<' )
+        .to( obj.rotation, {
+          duration: 3.5,
+          ease: 'power2.in',
+          x: THREE.Math.degToRad( 85 ),
+          y: -THREE.Math.degToRad( 15 ),
+          z: `+=${THREE.Math.degToRad( 20 )}`,
+          repeat: 1,
+          yoyo: true,
+        }, '>' )
+        .to( obj.position, {
+          duration: 4,
+          ease: 'power2.out',
+          onComplete: function () {
+            g.three.mkr.allowDragging()
+            g.tL.dL.to( obj.rotation, {
+              duration: 5.5,
+              ease: 'power1.inOut',
+              x: THREE.Math.degToRad( 105 ),
+              repeat: -1,
+              yoyo: true,
+            }, '>' )
+              .to( obj.rotation, {
+                duration: 4.5,
+                ease: 'power1.inOut',
+                y: THREE.Math.degToRad( 5 ),
+                repeat: -1,
+                yoyo: true,
+              }, '<' )
+              .to( obj.rotation, {
+                duration: 7.5,
+                ease: 'power1.inOut',
+                z: `-=${THREE.Math.degToRad( 20 )}`,
+                repeat: -1,
+                yoyo: true,
+              }, '<' )
+          },
+          x: 0,
+          y: 0,
+          z: -1500,
+        }, '<' )
+    }
+
+    g.three.mkr.gsapTest = obj => {
+      const dlTL = new TL( { onComplete: function () { g.three.mkr.gsapTest( obj ) } } )
+
+      dlTL.to( obj.position, {
+        duration: 2,
+        ease: 'elastic',
+        x: Math.floor( randOnum( 0, 3000 ) - 1500 ),
+      }, 0 )
+
+      dlTL.to( obj.position, {
+        duration: 2,
+        ease: 'elastic',
+        y: Math.floor( randOnum( 0, 2000 ) - 1000 ),
+      }, 0 )
+
+      dlTL.to( obj.position, {
+        duration: 2,
+        ease: 'elastic',
+        z: Math.floor( -randOnum( 500, 1500 ) ),
+      }, 0 )
+    }
+
     g.three.scene = new THREE.Scene()
-    g.three.camera = new THREE.PerspectiveCamera( 75, g.three.cvs[0] / g.three.cvs[1], 0.1, 10000 )
+    g.three.aspectRatio = g.main.w / g.main.h
+    g.three.camera = new THREE.PerspectiveCamera( 75, g.three.aspectRatio, 0.1, 10000 )
 
     g.three.renderer = new THREE.WebGLRenderer( { alpha: true } )
     g.three.renderer.shadowMap.enabled = true
     g.three.renderer.shadowMap.type = THREE.PCFSoftShadowMap // default THREE.PCFShadowMap
-    const setSize = () => g.three.renderer.setSize( g.three.cvs[0], g.three.cvs[1] )
-    setSize()
+    // g.three.renderer.outputEncoding = THREE.sRGBEncoding
+    g.three.renderer.setPixelRatio( g.window.devicePixelRatio )
+
+    g.three.mkr.size = () => {
+      g.three.cvs = {
+        w: g.main.w,
+        h: g.main.h,
+      }
+      g.three.renderer.setSize( g.three.cvs.w, g.three.cvs.h )
+    }
+    g.three.mkr.size()
     g.el.deLorean.appendChild( g.three.renderer.domElement )
 
-    g.three.camControls = new OrbitControls( g.three.camera, g.three.renderer.domElement )
+    // g.three.camControls = new OrbitControls( g.three.camera, g.three.renderer.domElement )
     // if ( g.three.camControls ) {
     //   g.three.xyz.forEach( axis => {
     //     g.three.camera.position[axis] = 1000
@@ -397,7 +547,10 @@ const setThree = () => {
 
         if ( g.three.lve ) g.three.scene.children[0].children[0].position.z -= 1
 
-        if ( g.three.mov ) g.three.mkr.moveAlongPath( g.three.grp.deLorean, 0 )
+        if ( g.three.mov ) g.three.mkr.moveWithGsap( g.three.grp.deLorean, 0 )
+        // if ( g.three.mov ) g.three.mkr.moveAlongPath( g.three.grp.deLorean, 0 )
+
+        if ( g.three.drg ) g.three.mkr.matchMove( g.el.draggable, g.three.grp.deLorean )
 
         // // TILT TEST
         // g.three.xyz.forEach(axis => {
@@ -426,8 +579,7 @@ const setThree = () => {
     //   g.three.camControls.update()
     // }
 
-    g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), // soft white light
-      new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
+    g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
     g.three.lights.forEach( light => {
       if ( light instanceof THREE.DirectionalLight ) {
       // eslint-disable-next-line prefer-destructuring
@@ -475,12 +627,11 @@ const setThree = () => {
     //   g.three.scene.add( sphere )
     // }
 
-    const resize = () => {
-      if ( g.three.renderer.domElement.width !== g.three.cvs[0] || g.three.renderer.domElement.height !== g.three.cvs[1] ) {
-        setSize()
-        return true
-      }
-      return false
+    g.three.mkr.reSize = () => {
+      g.three.mkr.size()
+      g.three.aspectRatio = g.three.renderer.domElement.width / g.three.renderer.domElement.height
+      g.three.camera.aspect = g.three.aspectRatio
+      g.three.camera.updateProjectionMatrix()
     }
 
     g.three.stats = new Stats()
@@ -493,10 +644,6 @@ const setThree = () => {
 
     g.three.ani.go = () => {
       g.three.stats.begin()
-      if ( resize() ) {
-        g.three.camera.aspect = g.three.cvs[0] / g.three.cvs[1]
-        g.three.camera.updateProjectionMatrix()
-      }
       // eslint-disable-next-line no-undef
       requestAnimationFrame( g.three.ani.go )
       g.three.renderer.render( g.three.scene, g.three.camera )
@@ -586,7 +733,7 @@ const makeThreeObj = ( obj, makeObj ) => {
     if ( makeFail ) devLog( makeFail )
     else if ( g.three.obj[obj] && g.three.obj[obj].geo && makeMesh && makeObj.mat ) {
       if ( makeObj.mkr ) g.three.obj[obj].mkr = makeObj.mkr
-      if ( makeObj.txtAss ) makeMesh.map = g.three.obj[obj].txt = new THREE.TextureLoader().load( makeObj.txtAss )
+      if ( makeObj.txtAss ) makeMesh.map = g.three.obj[obj].txt = g.three.mkr.textureLoader( makeObj.txtAss )
       if ( typeof makeObj.color !== 'undefined' ) makeMesh.color = g.three.obj[obj].hex = makeObj.color
       // eslint-disable-next-line new-cap
       g.three.obj[obj].mat = isFunction( makeObj.mat ) ? new makeObj.mat( makeMesh ) : makeObj.mat

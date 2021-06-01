@@ -345,9 +345,9 @@ const svgPathsMorphOriginsHelper = ( target1, target2, vars = {} ) => {
   return tl
 }
 
-const toggleFermata = ( { exceptTLs = [], exceptTickers = [], exceptEtc = [] } = {} ) => {
+const toggleFermata = ( { exceptTLs = [], exceptTickers = [], exceptEtc = [] } = {}, forcePause = false ) => {
   // more conditionals would be strictly necessary here if this function was ever called prior to scene 13, but it's not, so...
-  if ( !g.fermata ) {
+  if ( !g.fermata || forcePause ) {
     Object.keys( g.tL ).forEach( tL => {
       const timeLine = { [tL]: g.tL[tL] }
       timeLine.shouldBePaused = !exceptTLs.includes( tL )
@@ -368,7 +368,8 @@ const toggleFermata = ( { exceptTLs = [], exceptTickers = [], exceptEtc = [] } =
         if ( tckr.wasUnTicked ) g.tickers[ticker] = tckr.wasUnTicked[0]
       }
       devLog( tckr )
-    } )
+    })
+    g.fermata = true
   } else {
     Object.keys( g.tL ).forEach( tL => {
       const timeLine = { [tL]: g.tL[tL] }
@@ -388,14 +389,14 @@ const toggleFermata = ( { exceptTLs = [], exceptTickers = [], exceptEtc = [] } =
         tckr.wasReTicked = g.tickers[ticker] = gsapTick( g.tickers[ticker] )
       }
       devLog( tckr )
-    } )
+    })
+    g.fermata = false
   }
-  if ( !exceptEtc.includes( 'lion' ) ) toggleLion()
-  if ( !exceptEtc.includes( 'floor' ) ) toggleFloor()
+  if ( !exceptEtc.includes( 'lion' ) ) toggleLion(forcePause)
+  if ( !exceptEtc.includes( 'floor' ) ) toggleFloor(forcePause)
   g.bL.forEach( ( _, i ) => {
-    if ( !exceptEtc.includes( `bL${padStr( i )}` ) ) toggleBaubleLayer( i )
+    if ( !exceptEtc.includes( `bL${padStr( i )}` ) ) toggleBaubleLayer( i, forcePause )
   } )
-  g.fermata = !g.fermata
 }
 
 const upperCaseFirstLetter = str => str.charAt( 0 ).toUpperCase() + str.slice( 1 )

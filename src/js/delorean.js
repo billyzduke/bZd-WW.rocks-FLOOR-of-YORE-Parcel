@@ -19,7 +19,8 @@ import assBodyCenterMiddle from 'url:/src/img/future/bodyCenterMiddle.png'
 import assBodyCenterUpper from 'url:/src/img/future/bodyCenterUpper.png'
 import assSideWindow from 'url:/src/img/future/sideWindow.png'
 import assRoof from 'url:/src/img/future/roof.png'
-import assWindshield from 'url:/src/img/future/windshield.png'
+import assWindShieldFrame from 'url:/src/img/future/windShieldFrame.png'
+import assWindShieldGlass from 'url:/src/img/future/windShieldGlass.png'
 import assHood from 'url:/src/img/future/hood.png'
 import assBodyFrontLower from 'url:/src/img/future/bodyFrontLower.png'
 import assBodyFrontUpper from 'url:/src/img/future/bodyFrontUpper.png'
@@ -65,27 +66,33 @@ import { devLog } from './utils'
 
 const setMakes = () => {
   g.three.mkr.pipe = {
-    map: [ { emissiveMap: new THREE.TextureLoader().load( assPipeMetal01 ), emissive: new THREE.Color( 0x999999 ) }, { emissiveMap: new THREE.TextureLoader().load( assPipeMetal02 ), emissive: new THREE.Color( 0x666666 ) }, { emissiveMap: new THREE.TextureLoader().load( assPipeMetal01 ), emissive: new THREE.Color( 0xffffff ) } ],
+    map: [ { emissiveMap: g.three.mkr.textureLoader( assPipeMetal01 ), emissive: new THREE.Color( 0x999999 ) }, { emissiveMap: g.three.mkr.textureLoader( assPipeMetal02 ), emissive: new THREE.Color( 0x666666 ) }, { emissiveMap: g.three.mkr.textureLoader( assPipeMetal01 ), emissive: new THREE.Color( 0xffffff ) } ],
     mat: {
       roughness: 0.4,
       metalness: 1,
     },
   }
 
-  g.three.mkr.mPaths = [ [
-    [ 0, 0, 0 ],
-    [ 0, 0, -150 ],
-    [ 0, 150, -900 ],
-    [ 50, 100, -1500 ],
-    [ 750, 100, -1500 ],
-  ],
-  [
-    [ 750, 100, -1500 ],
-    [ -1350, 50, -1350 ],
-    [ 0, 0, -800 ],
-    [ 1000, -50, -1100 ],
-    [ 0, 0, -1000 ],
-  ] ]
+  g.three.mkr.mPaths = [ [ [ 0, 0, 0 ], [ 0, 0, -550 ] ],
+    [
+      [ 0, 0, -550 ],
+      [ 0, 150, -900 ],
+      [ 50, 100, -1500 ],
+      [ 750, 100, -1500 ],
+    ],
+    [
+      [ 750, 100, -1500 ],
+      [ -250, 75, -1425 ],
+      [ -1350, 50, -1350 ],
+      [ -500, 25, -1000 ],
+      [ 0, 0, -800 ],
+      [ 750, -50, -900 ],
+      [ 1000, -75, -1100 ],
+      [ 1000, -100, -1300 ],
+      [ 0, 0, -1000 ],
+    ] ]
+
+  g.three.mkr.mIncs = [ 0.025, 0.005, 0.0075 ]
 
   g.three.mkr.lb = {
     crvF: [
@@ -654,12 +661,31 @@ const makeBody = () => ( {
       struct: [ 251.5, 195 ],
       position: [ 0, -98.5, -220.5 ],
     },
-    windshield: {
-      txtAss: assWindshield,
-      struct: [ 375, 167 ],
-      pivot: [ 0, -82.5 ],
-      position: [ 0, 149.5, -154 ],
-      rotation: [ 23.5 ],
+    windShield: {
+      children: {
+        windShieldFrame: {
+          txtAss: assWindShieldFrame,
+          struct: [ 375, 167 ],
+          pivot: [ 0, -82.5 ],
+          position: [ 0, 149.5, -154 ],
+          rotation: [ 23.5 ],
+        },
+        windShieldGlass: {
+          txtAss: assWindShieldGlass,
+          struct: [ 375, 167 ],
+          pivot: [ 0, -82.5 ],
+          position: [ 0, 149.25, -154 ],
+          rotation: [ 23.5 ],
+          mat: THREE.MeshStandardMaterial,
+          msh: {
+            color: 0x001133,
+            metalness: 1,
+            roughness: 0,
+            premultipliedAlpha: true,
+            opacity: 0,
+          },
+        },
+      },
     },
     hood: {
       txtAss: assHood,
@@ -1248,7 +1274,7 @@ const makeLightBarPanel = where => {
     if ( lb.crv.length && lb.crv.length > 1 ) {
       const crvPts = g.three.mkr.createVector3s( lb.crv )
       const panelCrv = new THREE.CatmullRomCurve3( crvPts )
-      const panelMap = new THREE.TextureLoader().load( assPanelScreen )
+      const panelMap = g.three.mkr.textureLoader( assPanelScreen )
       const panelGeo = new THREE.ExtrudeGeometry( g.three.mkr.lb.panelProfile, { extrudePath: panelCrv, steps: 64, depth: 400 } )
       const panelMat = new THREE.MeshStandardMaterial( {
         color: 0x999999,
@@ -1289,7 +1315,7 @@ const makeLightBarRails = where => {
     if ( lb.crv.length && lb.crv.length > 1 ) {
       const crvPts = g.three.mkr.createVector3s( lb.crv )
       const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
-      const tubeMap = new THREE.TextureLoader().load( assPipeMetal03 )
+      const tubeMap = g.three.mkr.textureLoader( assPipeMetal03 )
       const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 32, false )
       const tubeMat = new THREE.MeshStandardMaterial( {
         color: 0xcccccc,
