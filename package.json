@@ -57,7 +57,7 @@
     "gsap": "npm:@gsap/shockingly",
     "howler": "^2.2.1",
     "stats.js": "^0.17.0",
-    "three": "^0.128.0"
+    "three": "^0.129.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
