@@ -12,7 +12,7 @@ const toggleLion = forcePause => {
   toggleGemGuy( forcePause )
   toggleLionEyes( forcePause )
   toggleLionHalos( forcePause )
-  toggleLionHands()
+  toggleLionHands( forcePause )
 }
 
 const setLion = () => {

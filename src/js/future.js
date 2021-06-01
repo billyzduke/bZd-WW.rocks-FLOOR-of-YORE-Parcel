@@ -3,7 +3,6 @@ import { TextPlugin } from 'gsap/TextPlugin'
 
 import g from './glob'
 import { setFlux } from './flux'
-import { setThree } from './three'
 import {
   gsapTick, randOnum, setAddOn, toggleFermata,
 } from './utils'
@@ -15,7 +14,6 @@ const setFuture = () => {
   g.qss.wormHoler = gsap.quickSetter( '#blindingFlash', 'css' )
   setFlux()
   gsap.set( '#future', { opacity: 1 } )
-  setThree()
 }
 
 const wormHoleHexes = [
@@ -53,6 +51,7 @@ const wormHoleFlashTick2 = () => {
 const startDeLorean = () => {
   if ( !g.three.on ) {
     g.el.deLorean.style.opacity = 1
+    g.el.deLorean.style.left = 0
     g.three.ani.go()
     g.three.on = true
   }
@@ -60,12 +59,12 @@ const startDeLorean = () => {
 
 const beginFuture = () => {
   const blindingFlashUnTick1 = gsapTick( wormHoleFlashTick1 )
-
   setTimeout( () => {
     blindingFlashUnTick1()
     const blindingFlashUnTick2 = gsapTick( wormHoleFlashTick2 )
     g.el.flux.style.opacity = 0
-    toggleFermata( { exceptTLs: [ 'bttf' ] } )
+    toggleFermata( { exceptTLs: [ 'dL' ] } )
+    g.three.scene.running = true
     startDeLorean()
 
     setTimeout( () => {
@@ -73,7 +72,8 @@ const beginFuture = () => {
       g.qss.wormHoler( {
         opacity: 0,
       } )
-      flyOver()
+      // flyOver()
+      g.three.cleanUp = setAddOn( '#deLorean', 'click', toggleFlyAlongPath )
     }, 700 )
   },
   2300 )

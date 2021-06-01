@@ -7,7 +7,7 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
 import g from './glob'
 import {
-  setModel, startDeLorean, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
+  setModel, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
 } from './future'
 import { makeDeLorean } from './delorean'
 import {
@@ -313,8 +313,7 @@ const setThree = () => {
           let rotateZ = THREE.Math.degToRad( 90 )
           if ( g.three.scene.children[0].position.x < 5 || g.three.scene.children[0].position.y > 5 ) {
             const viewPort = g.three.mkr.visibleSizeAtZDepth( g.three.scene.children[0].position.z )
-            rotateZ = ( Math.abs( g.three.scene.children[0].position.x ) / viewPort.w ) * 180
-            rotateZ = g.three.scene.children[0].position.x > 0 ? 90 - ( 180 - rotateZ ) : 90 + rotateZ
+            rotateZ = ( ( Math.abs( g.three.scene.children[0].position.x ) / viewPort.w ) * 180 ) + 90
           }
           console.log( rotateZ )
           gsap.to( g.three.scene.children[0].rotation, {
@@ -328,6 +327,7 @@ const setThree = () => {
 
     g.three.mkr.moveWithGsap = obj => {
       g.three.mov = false
+      ifFunctionThenCall( g.three.cleanUp )
       g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
       g.tL.dL.to( obj.position, {
         duration: 9,
@@ -394,7 +394,6 @@ const setThree = () => {
           },
           x: 0,
           y: 0,
-          z: -1500,
         }, '<' )
     }
 
@@ -476,7 +475,7 @@ const setThree = () => {
 
     g.three.mkr.update = () => {
       // eslint-disable-next-line eqeqeq
-      if ( g.el.deLorean.style.opacity == 1 ) {
+      if ( g.three.scene.running && g.el.deLorean.style.opacity == 1 ) {
         const delta = g.three.clk.getDelta()
         // ROCKET FLARE TEXTURES SWAP
         g.three.ani.flr.forEach( ani => {
@@ -634,25 +633,22 @@ const setThree = () => {
       g.three.camera.updateProjectionMatrix()
     }
 
-    g.three.stats = new Stats()
-    g.three.stats.showPanel( 0 ) // 0: fps, 1: ms, 2: mb, 3+: custom
-    g.three.stats.showPanel( 1 ) // 0: fps, 1: ms, 2: mb, 3+: custom
-    g.three.stats.showPanel( 2 ) // 0: fps, 1: ms, 2: mb, 3+: custom
-    g.three.stats.dom.id = 'threeStats'
-    g.three.stats.dom.classList.add( 'threeDev' )
-    g.el.deLorean.appendChild( g.three.stats.dom )
+    // g.three.stats = new Stats()
+    // g.three.stats.showPanel( 0 ) // 0: fps, 1: ms, 2: mb, 3+: custom
+    // g.three.stats.showPanel( 1 ) // 0: fps, 1: ms, 2: mb, 3+: custom
+    // g.three.stats.showPanel( 2 ) // 0: fps, 1: ms, 2: mb, 3+: custom
+    // g.three.stats.dom.id = 'threeStats'
+    // g.three.stats.dom.classList.add( 'threeDev' )
+    // g.el.deLorean.appendChild( g.three.stats.dom )
 
     g.three.ani.go = () => {
-      g.three.stats.begin()
+      // g.three.stats.begin()
       // eslint-disable-next-line no-undef
       requestAnimationFrame( g.three.ani.go )
       g.three.renderer.render( g.three.scene, g.three.camera )
       g.three.mkr.update()
-
-      g.three.stats.end()
+      // g.three.stats.end()
     }
-
-    startDeLorean()
   }
 }
 

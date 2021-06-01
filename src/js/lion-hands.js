@@ -10,23 +10,21 @@ import {
 import { activateSubScene, setScene, subSceneProgress } from './scene'
 import { animateBaubleLayer03or04 } from './baubles/layer-04'
 
-const toggleLionHands = () => {
-  if ( g.scene.current > 11 ) {
-    if ( g.el.handEyeWrapper.classList.contains( 'blink' ) ) {
-      gsap.set( '.handEyeWrapper', {
-        attr: {
-          class: 'handEyeWrapper open',
-        },
-      } )
-      devLog( 'lionHands animations paused' )
-    } else {
-      gsap.set( '.handEyeWrapper', {
-        attr: {
-          class: 'handEyeWrapper blink',
-        },
-      } )
-      devLog( 'lionHands animations active' )
-    }
+const toggleLionHands = forcePause => {
+  if ( g.el.handEyeWrapper.classList.contains( 'blink' ) || forcePause ) {
+    gsap.set( '.handEyeWrapper', {
+      attr: {
+        class: `handEyeWrapper${g.scene.current < 11 ? '' : ' open'}`,
+      },
+    } )
+    devLog( 'lionHands animations paused' )
+  } else {
+    gsap.set( '.handEyeWrapper', {
+      attr: {
+        class: 'handEyeWrapper blink',
+      },
+    } )
+    devLog( 'lionHands animations active' )
   }
 }
 

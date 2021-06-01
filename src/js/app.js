@@ -162,11 +162,12 @@ const loadApp = () => {
     g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
   }
 
-  if ( g.el.deLorean ) {
-    if ( !g.three ) setThree()
-    else g.three.mkr.reSize()
-    toggleFermata( { exceptTLs: [ 'dL' ] }, true )
-  }
+  if ( g.el.deLorean && g.three ) g.three.mkr.reSize()
+  // if ( !g.three ) {
+  //   setThree()
+  //   g.three.scene.running = false
+  // } else g.three.mkr.reSize()
+  // // toggleFermata( { exceptTLs: [ 'dL' ] }, true )
 
   return true
 }
