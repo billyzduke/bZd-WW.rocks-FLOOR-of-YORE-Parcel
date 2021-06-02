@@ -14,7 +14,8 @@ import { setShaiHulud } from './shai-hulud'
 import { setThree } from './three'
 import { setScene, setSceneSkipper } from './scene'
 import { resetCtrRingPos1 } from './baubles/layer-01'
-import { isSet, toggleFermata } from './utils'
+import { isSet, setAddOn, toggleFermata } from './utils'
+import { startDeLorean, toggleFlyAlongPath } from './future'
 
 // import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
@@ -163,11 +164,16 @@ const loadApp = () => {
   }
 
   if ( g.el.deLorean && g.three ) g.three.mkr.reSize()
-  // if ( !g.three ) {
-  //   setThree()
-  //   g.three.scene.running = false
-  // } else g.three.mkr.reSize()
-  // // toggleFermata( { exceptTLs: [ 'dL' ] }, true )
+  if ( g.el.future.classList.contains( 'model' ) ) {
+    toggleFermata( { exceptTLs: [ 'dL' ] }, true )
+    setThree()
+    startDeLorean()
+    g.three.scene.running = true
+    setAddOn( '#toggleFlyAlongPath', 'click', () => {
+      toggleFlyAlongPath()
+      g.three.mkr.moveWithGsap( g.three.grp.deLorean, 0 )
+    } )
+  }
 
   return true
 }

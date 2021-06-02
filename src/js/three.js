@@ -5,6 +5,8 @@ import { gsap, TimelineMax as TL } from 'gsap'
 import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
+import assSmoke from 'url:/src/img/smoke/smoke_3.png'
+import assSmokeAlpha from 'url:/src/img/smoke/smoke_3_alpha.png'
 import g from './glob'
 import {
   setModel, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
@@ -309,19 +311,6 @@ const setThree = () => {
         onDragStart: function () {
           g.three.drg = true
         },
-        onRelease: function () {
-          let rotateZ = THREE.Math.degToRad( 90 )
-          if ( g.three.scene.children[0].position.x < 5 || g.three.scene.children[0].position.y > 5 ) {
-            const viewPort = g.three.mkr.visibleSizeAtZDepth( g.three.scene.children[0].position.z )
-            rotateZ = ( ( Math.abs( g.three.scene.children[0].position.x ) / viewPort.w ) * 180 ) + 90
-          }
-          console.log( rotateZ )
-          gsap.to( g.three.scene.children[0].rotation, {
-            duration: 2.5,
-            z: THREE.Math.degToRad( rotateZ ),
-            overwrite: 'auto',
-          } )
-        },
       } )
     }
 
@@ -335,18 +324,22 @@ const setThree = () => {
         z: '-=1200',
       } )
         .to( obj.rotation, {
-          duration: 7.5,
+          duration: 11.5,
           ease: 'power2.in',
-          z: THREE.Math.degToRad( 90 ),
-        }, '<5' )
+          y: THREE.Math.degToRad( -180 ),
+        }, '<4.5' )
         .to( g.three.obj.windShieldGlass.msh.material, {
           duration: 5,
           opacity: 1,
         }, '<' )
+        // .to( g.three.obj.spotLightConeMats, {
+        //   duration: 5,
+        //   opacity: 0.23,
+        // }, '<' )
         .to( obj.rotation, {
           duration: 3.5,
           ease: 'power2.in',
-          y: `+=${THREE.Math.degToRad( 30 )}`,
+          x: THREE.Math.degToRad( 30 ),
           repeat: 1,
           yoyo: true,
         }, '<2' )
@@ -356,12 +349,12 @@ const setThree = () => {
           x: '+=350',
           y: '+=200',
         }, '<' )
-        .to( obj.rotation, {
+        .to( obj.children[0].rotation, {
           duration: 3.5,
           ease: 'power2.in',
-          x: THREE.Math.degToRad( 85 ),
+          x: THREE.Math.degToRad( 75 ),
           y: -THREE.Math.degToRad( 15 ),
-          z: `+=${THREE.Math.degToRad( 20 )}`,
+          z: THREE.Math.degToRad( 20 ),
           repeat: 1,
           yoyo: true,
         }, '>' )
@@ -370,24 +363,24 @@ const setThree = () => {
           ease: 'power2.out',
           onComplete: function () {
             g.three.mkr.allowDragging()
-            g.tL.dL.to( obj.rotation, {
+            g.tL.dL.to( obj.children[0].rotation, {
               duration: 5.5,
               ease: 'power1.inOut',
-              x: THREE.Math.degToRad( 105 ),
+              x: `+=${THREE.Math.degToRad( 30 )}`,
               repeat: -1,
               yoyo: true,
             }, '>' )
-              .to( obj.rotation, {
+              .to( obj.children[0].rotation, {
                 duration: 4.5,
                 ease: 'power1.inOut',
-                y: THREE.Math.degToRad( 5 ),
+                y: `+=${THREE.Math.degToRad( 30 )}`,
                 repeat: -1,
                 yoyo: true,
               }, '<' )
-              .to( obj.rotation, {
+              .to( obj.children[0].rotation, {
                 duration: 7.5,
                 ease: 'power1.inOut',
-                z: `-=${THREE.Math.degToRad( 20 )}`,
+                z: `-=${THREE.Math.degToRad( 40 )}`,
                 repeat: -1,
                 yoyo: true,
               }, '<' )
@@ -395,28 +388,6 @@ const setThree = () => {
           x: 0,
           y: 0,
         }, '<' )
-    }
-
-    g.three.mkr.gsapTest = obj => {
-      const dlTL = new TL( { onComplete: function () { g.three.mkr.gsapTest( obj ) } } )
-
-      dlTL.to( obj.position, {
-        duration: 2,
-        ease: 'elastic',
-        x: Math.floor( randOnum( 0, 3000 ) - 1500 ),
-      }, 0 )
-
-      dlTL.to( obj.position, {
-        duration: 2,
-        ease: 'elastic',
-        y: Math.floor( randOnum( 0, 2000 ) - 1000 ),
-      }, 0 )
-
-      dlTL.to( obj.position, {
-        duration: 2,
-        ease: 'elastic',
-        z: Math.floor( -randOnum( 500, 1500 ) ),
-      }, 0 )
     }
 
     g.three.scene = new THREE.Scene()
@@ -455,8 +426,8 @@ const setThree = () => {
       // how many images does this spritesheet contain?
       //  usually equals tilesHoriz * tilesVert, but not necessarily,
       //  if there at blank tiles at the bottom of the spritesheet.
-      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.wrapS = g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.wrapT = THREE.RepeatWrapping
-      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.repeat.set( 1 / hTiles, 1 / vTiles )
+      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children[fls[6]].material.map.wrapS = g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children[fls[6]].material.map.wrapT = THREE.RepeatWrapping
+      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children[fls[6]].material.map.repeat.set( 1 / hTiles, 1 / vTiles )
 
       return milliSec => {
         g.three.flr[flr].cdt += milliSec
@@ -466,9 +437,9 @@ const setThree = () => {
           while ( nextTile === g.three.flr[flr].ctl ) nextTile = randOnum( 0, totTiles - 1 )
           g.three.flr[flr].ctl = nextTile
           const currentColumn = g.three.flr[flr].ctl % hTiles
-          g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.offset.x = currentColumn / hTiles
+          g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children[fls[6]].material.map.offset.x = currentColumn / hTiles
           const currentRow = Math.floor( g.three.flr[flr].ctl / hTiles )
-          g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].material.map.offset.y = currentRow / vTiles
+          g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children[fls[6]].material.map.offset.y = currentRow / vTiles
         }
       }
     }
@@ -477,6 +448,9 @@ const setThree = () => {
       // eslint-disable-next-line eqeqeq
       if ( g.three.scene.running && g.el.deLorean.style.opacity == 1 ) {
         const delta = g.three.clk.getDelta()
+
+        g.three.mkr.evolveSmoke( delta )
+
         // ROCKET FLARE TEXTURES SWAP
         g.three.ani.flr.forEach( ani => {
           ani( 1000 * delta )
@@ -507,49 +481,65 @@ const setThree = () => {
         } )
 
         if ( g.three.flm ) {
-          // suckme
+          // suckMe
         } else {
           g.three.mkr.inScene.wheelRockets.forEach( fls => {
-            if ( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].scale.x > 0.2 ) {
-              g.three.mkr.scaleMesh( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]], 0.75 )
+            if ( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].scale.x > 0.2 ) {
+              g.three.mkr.scaleMesh( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]], 0.75 )
             } else {
-              g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].scale.set( 0 )
-              g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[13].material.map.offset.x = 0.5
+              g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].scale.set( 0 )
+              g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[13].material.map.offset.x = 0.5
               if ( fls[3] ) {
                 const whereWheel = {
-                  armRadY: g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotation.y,
-                  armPosX: g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x,
-                  armPosZ: g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.z,
-                  rotRadY: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].rotation.y,
-                  rotPosX: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.x,
-                  rotPosZ: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.z,
+                  armRadY: g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].rotation.y,
+                  armPosX: g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].position.x,
+                  armPosZ: g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].position.z,
+                  rotRadY: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].rotation.y,
+                  rotPosX: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].position.x,
+                  rotPosZ: g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].position.z,
                 }
                 if ( fls[2] ) {
                   // RIGHT SIDE
-                  if ( whereWheel.rotRadY > -g.three.mkr.wheels.rotTarget ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].rotateY( -g.three.mkr.wheels.rotIncRad )
-                  if ( whereWheel.rotPosX < -g.three.mkr.wheels.posTarget.x ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.x += 2
-                  if ( whereWheel.armPosX < -g.three.mkr.wheels.armTarget.x ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x += 1.8571
-                  if ( whereWheel.armRadY > 0 ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotateY( -0.00698131 )
+                  if ( whereWheel.rotRadY > -g.three.mkr.wheels.rotTarget ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].rotateY( -g.three.mkr.wheels.rotIncRad )
+                  if ( whereWheel.rotPosX < -g.three.mkr.wheels.posTarget.x ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].position.x += 2
+                  if ( whereWheel.armPosX < -g.three.mkr.wheels.armTarget.x ) g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].position.x += 1.8571
+                  if ( whereWheel.armRadY > 0 ) g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].rotateY( -0.00698131 )
                 } else {
                   // LEFT SIDE
-                  if ( whereWheel.rotRadY < g.three.mkr.wheels.rotTarget ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].rotateY( g.three.mkr.wheels.rotIncRad )
-                  if ( whereWheel.rotPosX > g.three.mkr.wheels.posTarget.x ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.x -= 2
-                  if ( whereWheel.armPosX > g.three.mkr.wheels.armTarget.x ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.x -= 1.8571
-                  if ( whereWheel.armRadY < 0 ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].rotateY( 0.00698131 )
+                  if ( whereWheel.rotRadY < g.three.mkr.wheels.rotTarget ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].rotateY( g.three.mkr.wheels.rotIncRad )
+                  if ( whereWheel.rotPosX > g.three.mkr.wheels.posTarget.x ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].position.x -= 2
+                  if ( whereWheel.armPosX > g.three.mkr.wheels.armTarget.x ) g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].children[fls[2]].children[fls[3]].position.x -= 1.8571
+                  if ( whereWheel.armRadY < 0 ) g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].children[fls[2]].children[fls[3]].rotateY( 0.00698131 )
                 }
-                if ( whereWheel.rotPosZ > g.three.mkr.wheels.posTarget.z ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].position.z -= 1.6
-                if ( whereWheel.armPosZ > g.three.mkr.wheels.armTarget.z ) g.three.scene.children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.z -= 0.9144
+                if ( whereWheel.rotPosZ > g.three.mkr.wheels.posTarget.z ) g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].position.z -= 1.6
+                if ( whereWheel.armPosZ > g.three.mkr.wheels.armTarget.z ) g.three.scene.children[0].children[0].children[0].children[3].children[2].children[0].children[fls[2]].position.z -= 0.9144
               }
             }
           } )
         }
 
-        if ( g.three.lve ) g.three.scene.children[0].children[0].position.z -= 1
+        if ( g.three.lve ) g.three.scene.children[0].children[0].children[0].position.z -= 1
 
         if ( g.three.mov ) g.three.mkr.moveWithGsap( g.three.grp.deLorean, 0 )
         // if ( g.three.mov ) g.three.mkr.moveAlongPath( g.three.grp.deLorean, 0 )
 
-        if ( g.three.drg ) g.three.mkr.matchMove( g.el.draggable, g.three.grp.deLorean )
+        if ( g.three.drg ) {
+          g.three.mkr.matchMove( g.el.draggable, g.three.grp.deLorean )
+
+          // let rotateY = THREE.Math.degToRad( -180 )
+          // if ( g.three.scene.children[0].position.x < 5 || g.three.scene.children[0].position.y > 5 ) {
+          //   const viewPort = g.three.mkr.visibleSizeAtZDepth( g.three.scene.children[0].position.z )
+          //   const rotateMoreOrLessY = ( ( ( g.three.scene.children[0].position.x + ( viewPort.w / 2 ) ) / viewPort.w ) * 45 )
+          //   rotateY = g.three.scene.children[0].position.x < 0 ? rotateY - rotateMoreOrLessY : rotateY + ( 45 - rotateMoreOrLessY )
+          //   if ( rotateY > -3.141592653589794 && rotateY < -3.141592653589792 ) rotateY = -174.5 // who knows why the fuck this needs to happen
+          // }
+          // console.log( { viewPort, x: g.three.scene.children[0].position.x, rotateY } )
+          // gsap.to( g.three.scene.children[0].rotation, {
+          //   duration: 2.5,
+          //   y: THREE.Math.degToRad( rotateY ),
+          //   overwrite: 'auto',
+          // } )
+        }
 
         // // TILT TEST
         // g.three.xyz.forEach(axis => {
@@ -569,6 +559,47 @@ const setThree = () => {
 
     console.log( { madeObjs: g.three } )
     Object.keys( g.three.makeObjs ).forEach( grp => g.three.scene.add( g.three.grp[grp] ) )
+
+    const smokeTexture = g.three.mkr.textureLoader( assSmoke )
+    const smokeAlphaTexture = g.three.mkr.textureLoader( assSmokeAlpha )
+    const smokeMaterial = new THREE.MeshLambertMaterial( {
+      color: 0x00dddd, map: smokeTexture, transparent: true, alphaMap: smokeAlphaTexture,
+    } )
+    const smokeDepth = 3500
+    // /* eslint-disable array-element-newline */
+    // const smokeGeoVerts = [
+    //   0, 1515, 0,
+    //   1750, -1515, 0,
+    //   -1750, -1515, 0,
+    // ]
+    // const smokeGeoFace = [ 2, 1, 0 ]
+    // /* eslint-enable array-element-newline */
+    // const smokeGeo = new THREE.PolyhedronGeometry( smokeGeoVerts, smokeGeoFace, smokeDepth, 0 )
+    const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
+    g.three.grp.smoke = new THREE.Group()
+    g.three.scene.add( g.three.grp.smoke )
+    const viewPort = g.three.mkr.visibleSizeAtZDepth( smokeDepth )
+
+    for ( let p = 0; p < 99; p++ ) {
+      const smokeMat = smokeMaterial.clone()
+      // smokeMat.map.wrapS = smokeMat.map.wrapT = smokeMat.alphaMap.wrapS = smokeMat.alphaMap.wrapT = THREE.RepeatWrapping
+      // smokeMat.map.repeat.set( 2, 4 )
+      // smokeMat.alphaMap.repeat.set( 2, 4 )
+      smokeMat.opacity = randOnum( 23, 100 ) / 100
+      const particle = new THREE.Mesh( smokeGeo, smokeMat )
+      particle.position.set( randOnum( 0, viewPort.w ) - ( viewPort.w / 2 ), randOnum( 0, viewPort.h ) - ( viewPort.h / 2 ), Math.random() * 1000 - smokeDepth )
+      particle.rotation.z = Math.random() * 360
+      g.three.grp.smoke.children.push( particle )
+    }
+
+    g.three.mkr.evolveSmoke = delta => {
+      let sp = g.three.grp.smoke.children.length
+      while ( sp-- ) {
+        if ( sp % 2 ) g.three.grp.smoke.children[sp].rotation.z += ( delta * 0.2 )
+        else g.three.grp.smoke.children[sp].rotation.z -= ( delta * 0.2 )
+      }
+    }
+
     console.log( g.three.scene )
 
     ifFunctionThenCall( g.three.mkr.setMades )

@@ -61,6 +61,7 @@ import assPipeMetal01 from 'url:/src/img/future/metalPipe.png'
 import assPipeMetal02 from 'url:/src/img/future/metalSphere.png'
 import assPipeMetal03 from 'url:/src/img/future/metalPipe2.png'
 import assPanelScreen from 'url:/src/img/future/panelScreen.png'
+import assHeadLightCone from 'url:/src/img/future/headLightCone.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -237,14 +238,14 @@ const setMakes = () => {
   g.three.mkr.inScene = {
     /* eslint-disable array-bracket-newline, array-element-newline */
     wheelRockets: [
-      [ 0, 1, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
-      [ 0, 1, 0, 1, 14 ],
-      [ 0, 1, 1, 0, 14 ],
-      [ 0, 1, 1, 1, 14 ],
+      [ 0, 0, 1, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
+      [ 0, 0, 1, 0, 1, 14 ],
+      [ 0, 0, 1, 1, 0, 14 ],
+      [ 0, 0, 1, 1, 1, 14 ],
     ],
     headLights: [
-      [ 0, 0, 1, 4, 0, 0 ],
-      [ 0, 0, 1, 4, 1, 0 ],
+      [ 0, 0, 0, 1, 4, 0, 0 ],
+      [ 0, 0, 0, 1, 4, 1, 0 ],
     ],
     /* eslint-enable array-bracket-newline, array-element-newline */
   }
@@ -258,10 +259,9 @@ const setMakes = () => {
       // NOT A HELPFUL HELPER, at least not in this case
       // const wheelHelper = new THREE.BoxHelper()
       // g.three.scene.add( wheelHelper )
-      // wheelHelper.setFromObject( g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]] )
 
-      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.forEach( ( _, flr ) => {
-        if ( flr < g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children.length - 1 ) {
+      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children.forEach( ( _, flr ) => {
+        if ( flr < g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children.length - 1 ) {
           const drillDown = [ ...fls, flr ]
           g.three.ani.flr.push( g.three.mkr.setTextureAnimator( g.three.ani.flr.length, drillDown, 5, 1, 5, 76 ) ) // texture, #horiz, #vert, #total, duration
         }
@@ -273,20 +273,45 @@ const setMakes = () => {
     } )
 
     g.three.mkr.inScene.headLights.forEach( hls => {
-      const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
+      const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 200 )
       pointLight.castShadow = true // default false
       pointLight.position.y = 20.42
-      pointLight.position.z = 21
-      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( pointLight )
+      pointLight.position.z = 23
+      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].children[hls[5]].add( pointLight )
       // g.three.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
 
-      const spotLight = new THREE.SpotLight( 0xb3e7fb, 5, 0, THREE.Math.degToRad( 9 ), 0.25 )
+      const spotLight = new THREE.SpotLight( 0xb3e7fb, 1.5, 0, THREE.Math.degToRad( 16 ), 0.25 )
       spotLight.castShadow = true // default false
       spotLight.position.y = 21
-      spotLight.position.z = 22
-      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].add( spotLight )
-      spotLight.target = pointLight
-      // g.three.scene.add(  new THREE.SpotLightHelper( spotLight ) )
+      spotLight.position.z = 12
+      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].children[hls[5]].add( spotLight )
+      // spotLight.rotateX( THREE.Math.degToRad( 13 ) )
+      // g.three.scene.add( new THREE.SpotLightHelper( spotLight ) )
+
+      const spotLightConeLength = 2500
+      const spotLightCone = new THREE.Mesh(
+        new THREE.CylinderGeometry( 700, 10, spotLightConeLength, 20, 1, 1, true ),
+        new THREE.MeshBasicMaterial( {
+          // color: new THREE.Color( 0xffff99 ),
+          transparent: true,
+          opacity: 0.23,
+          map: g.three.mkr.textureLoader( assHeadLightCone ),
+          depthWrite: false,
+        } ),
+      )
+      spotLightCone.geometry.translate( 0, spotLightConeLength / 2, 0 )
+      spotLightCone.position.y = 21
+      spotLightCone.position.z = 19
+      if ( !g.three.obj.spotLightConeMats ) g.three.obj.spotLightConeMats = []
+      g.three.obj.spotLightConeMats.push( spotLightCone.material )
+      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].children[hls[5]].add( spotLightCone )
+      spotLightCone.rotateX( THREE.Math.degToRad( -120.5 ) )
+      spotLightCone.rotateZ( THREE.Math.degToRad( hls[5] ? -8 : 8 ) )
+
+      const spotLightTarget = new THREE.Mesh( new THREE.TetrahedronGeometry(), new THREE.MeshBasicMaterial( { opacity: 0, depthWrite: false } ) )
+      spotLightTarget.position.y = spotLightConeLength / 4
+      spotLightCone.add( spotLightTarget )
+      spotLight.target = spotLightTarget
     } )
 
     g.three.scene.add( new THREE.AxesHelper( 500 ) )
@@ -1598,17 +1623,21 @@ const makeDeLorean = () => {
   return {
     // struct: [ 432, 1000, 300 ],
     // position: [ 0, 0, 150 ],
-    rotation: { x: 90 },
     children: {
-      flyAway: {
+      carGyro: {
+        rotation: { x: 90 },
         children: {
-          body: makeBody(),
-          exterior: makeExterior(),
-          interior: makeInterior(),
-          underCarriage: makeUnderCarriage(),
+          flyAway: {
+            children: {
+              body: makeBody(),
+              exterior: makeExterior(),
+              interior: makeInterior(),
+              underCarriage: makeUnderCarriage(),
+            },
+          },
+          wheels: makeWheels(),
         },
       },
-      wheels: makeWheels(),
     },
   }
 }
