@@ -236,18 +236,13 @@ const setMakes = () => {
   }
 
   g.three.mkr.inScene = {
-    /* eslint-disable array-bracket-newline, array-element-newline */
-    wheelRockets: [
-      [ 0, 0, 1, 0, 0, 14 ], // this is hacky, but I was having issues with being able to access these objects by reference
-      [ 0, 0, 1, 0, 1, 14 ],
-      [ 0, 0, 1, 1, 0, 14 ],
-      [ 0, 0, 1, 1, 1, 14 ],
-    ],
-    headLights: [
-      [ 0, 0, 0, 1, 4, 0, 0 ],
-      [ 0, 0, 0, 1, 4, 1, 0 ],
-    ],
-    /* eslint-enable array-bracket-newline, array-element-newline */
+    deLorean: [ 'deLorean' ],
+    flyAway: [ 'flyAway' ],
+    headLights: [ 'lightBoxL', 'lightBoxR' ],
+    hubCaps: [],
+    wheelMechs: [ 'mobileMechL', 'mobileMechR' ],
+    wheelRockets: [],
+    wheelSides: [ 'wheelsL', 'wheelsR' ],
   }
 
   g.three.mkr.setMades = () => {
@@ -255,36 +250,33 @@ const setMakes = () => {
       g.three.mkr.makeMotionPath( mPath )
     } )
 
-    g.three.mkr.inScene.wheelRockets.forEach( fls => {
-      // NOT A HELPFUL HELPER, at least not in this case
-      // const wheelHelper = new THREE.BoxHelper()
-      // g.three.scene.add( wheelHelper )
-
-      g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children.forEach( ( _, flr ) => {
-        if ( flr < g.three.scene.children[fls[0]].children[fls[1]].children[fls[2]].children[fls[3]].children[fls[4]].children[fls[5]].children.length - 1 ) {
-          const drillDown = [ ...fls, flr ]
-          g.three.ani.flr.push( g.three.mkr.setTextureAnimator( g.three.ani.flr.length, drillDown, 5, 1, 5, 76 ) ) // texture, #horiz, #vert, #total, duration
-        }
+    g.three.mkr.inScene.wheelRockets.forEach( ( flareSet, i ) => {
+      const flareGrp = g.three.scene.getObjectByName( flareSet, true )
+      flareGrp.children.forEach( ( flare, flr ) => {
+        if ( flr < flareGrp.children.length - 1 ) g.three.ani.flr.push( g.three.mkr.setTextureAnimator( flare, flr, 5, 1, 5, 76 ) ) // texture, #horiz, #vert, #total, duration
       } )
+      g.three.mkr.inScene.wheelRockets[i] = flareGrp
     } )
     g.three.mkr.tlt = {}
     g.three.xyz.forEach( axis => {
       g.three.mkr.tlt[axis] = 0
     } )
 
-    g.three.mkr.inScene.headLights.forEach( hls => {
-      const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 200 )
+    g.three.mkr.inScene.headLights.forEach( ( headLight, i ) => {
+      const lightBox = g.three.scene.getObjectByName( headLight, true )
+
+      const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
       pointLight.castShadow = true // default false
       pointLight.position.y = 20.42
       pointLight.position.z = 23
-      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].children[hls[5]].add( pointLight )
+      lightBox.add( pointLight )
       // g.three.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
 
       const spotLight = new THREE.SpotLight( 0xb3e7fb, 1.5, 0, THREE.Math.degToRad( 16 ), 0.25 )
       spotLight.castShadow = true // default false
       spotLight.position.y = 21
       spotLight.position.z = 12
-      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].children[hls[5]].add( spotLight )
+      lightBox.add( spotLight )
       // spotLight.rotateX( THREE.Math.degToRad( 13 ) )
       // g.three.scene.add( new THREE.SpotLightHelper( spotLight ) )
 
@@ -304,17 +296,30 @@ const setMakes = () => {
       spotLightCone.position.z = 19
       if ( !g.three.obj.spotLightConeMats ) g.three.obj.spotLightConeMats = []
       g.three.obj.spotLightConeMats.push( spotLightCone.material )
-      g.three.scene.children[hls[0]].children[hls[1]].children[hls[2]].children[hls[3]].children[hls[4]].children[hls[5]].add( spotLightCone )
+      lightBox.add( spotLightCone )
       spotLightCone.rotateX( THREE.Math.degToRad( -120.5 ) )
-      spotLightCone.rotateZ( THREE.Math.degToRad( hls[5] ? -8 : 8 ) )
+      spotLightCone.rotateZ( THREE.Math.degToRad( i % 2 ? -8 : 8 ) )
 
       const spotLightTarget = new THREE.Mesh( new THREE.TetrahedronGeometry(), new THREE.MeshBasicMaterial( { opacity: 0, depthWrite: false } ) )
       spotLightTarget.position.y = spotLightConeLength / 4
       spotLightCone.add( spotLightTarget )
       spotLight.target = spotLightTarget
+
+      g.three.mkr.inScene.headLights[i] = lightBox
     } )
 
-    g.three.scene.add( new THREE.AxesHelper( 500 ) )
+    console.log( g.three.mkr.inScene )
+    Object.keys( g.three.mkr.inScene ).forEach( itemType => {
+      if ( Array.isArray( g.three.mkr.inScene[itemType] ) ) {
+        g.three.mkr.inScene[itemType].forEach( ( item, i ) => {
+          if ( typeof item === 'string' ) {
+            const itemInScene = g.three.scene.getObjectByName( item, true )
+            if ( g.three.mkr.inScene[itemType].length === 1 ) g.three.mkr.inScene[itemType] = itemInScene
+            else g.three.mkr.inScene[itemType][i] = itemInScene
+          }
+        } )
+      }
+    } )
   }
 }
 
@@ -1499,6 +1504,7 @@ const makeWheel = wheel => {
     position: [ 0, 0, 26 ],
     mat: hubCapMsh,
   }
+  g.three.mkr.inScene.hubCaps.push( `wheelHubOuter${wheel}` )
   const flares = {}
   for ( let flare = 0; flare < 3; flare++ ) {
     const thisFlare = `wheel${wheel}flare${flare + 1}`
@@ -1554,6 +1560,7 @@ const makeWheel = wheel => {
     rotation: [ -90 ],
     children: flares,
   }
+  g.three.mkr.inScene.wheelRockets.push( `wheelFlares${wheel}` )
 
   wheelies[`wheelMechTireMount${wheel}`] = {
     children: {
