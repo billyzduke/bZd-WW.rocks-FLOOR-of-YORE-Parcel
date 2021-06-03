@@ -166,7 +166,7 @@ const loadApp = () => {
   if ( g.el.deLorean && g.three ) g.three.mkr.reSize()
   if ( g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
-    setThree( false, true )
+    setThree( true, true, false )
     startDeLorean()
     g.three.scene.running = true
     setAddOn( '#toggleFlyAlongPath', 'click', () => {

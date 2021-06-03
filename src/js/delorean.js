@@ -74,27 +74,6 @@ const setMakes = () => {
     },
   }
 
-  g.three.mkr.mPaths = [ [ [ 0, 0, 0 ], [ 0, 0, -550 ] ],
-    [
-      [ 0, 0, -550 ],
-      [ 0, 150, -900 ],
-      [ 50, 100, -1500 ],
-      [ 750, 100, -1500 ],
-    ],
-    [
-      [ 750, 100, -1500 ],
-      [ -250, 75, -1425 ],
-      [ -1350, 50, -1350 ],
-      [ -500, 25, -1000 ],
-      [ 0, 0, -800 ],
-      [ 750, -50, -900 ],
-      [ 1000, -75, -1100 ],
-      [ 1000, -100, -1300 ],
-      [ 0, 0, -1000 ],
-    ] ]
-
-  g.three.mkr.mIncs = [ 0.025, 0.005, 0.0075 ]
-
   g.three.mkr.lb = {
     crvF: [
       [ 0, 0, 0 ],
@@ -236,6 +215,7 @@ const setMakes = () => {
   }
 
   g.three.mkr.inScene = {
+    carGyro: [ 'carGyro' ],
     deLorean: [ 'deLorean' ],
     flyAway: [ 'flyAway' ],
     headLights: [ 'lightBoxL', 'lightBoxR' ],
@@ -246,10 +226,6 @@ const setMakes = () => {
   }
 
   g.three.mkr.setMades = () => {
-    g.three.mkr.mPaths.forEach( mPath => {
-      g.three.mkr.makeMotionPath( mPath )
-    } )
-
     g.three.mkr.inScene.wheelRockets.forEach( ( flareSet, i ) => {
       const flareGrp = g.three.scene.getObjectByName( flareSet, true )
       flareGrp.children.forEach( ( flare, flr ) => {
@@ -277,7 +253,6 @@ const setMakes = () => {
       spotLight.position.y = 21
       spotLight.position.z = 12
       lightBox.add( spotLight )
-      // spotLight.rotateX( THREE.Math.degToRad( 13 ) )
       // g.three.scene.add( new THREE.SpotLightHelper( spotLight ) )
 
       const spotLightConeLength = 2500
@@ -612,20 +587,20 @@ const makeUnderCarriage = () => ( {
 const makeBody = () => ( {
   struct: [ 432, 1000, 300 ],
   children: {
-    bcLowerL: {
-      txtAss: assBodyCenterLower,
-      struct: [ 103, 460 ],
-      pivot: [ 51.5 ],
-      position: [ 216, 9.5 ],
-      rotation: [ 0, 90 ],
-    },
-    bcLowerR: {
-      txtAss: assBodyCenterLower,
-      struct: [ 103, 460 ],
-      pivot: [ 51.5 ],
-      position: [ -216, 9.5 ],
-      rotation: [ 0, 90 ],
-    },
+    // bcLowerL: {
+    //   txtAss: assBodyCenterLower,
+    //   struct: [ 103, 460 ],
+    //   pivot: [ 51.5 ],
+    //   position: [ 216, 9.5 ],
+    //   rotation: [ 0, 90 ],
+    // },
+    // bcLowerR: {
+    //   txtAss: assBodyCenterLower,
+    //   struct: [ 103, 460 ],
+    //   pivot: [ 51.5 ],
+    //   position: [ -216, 9.5 ],
+    //   rotation: [ 0, 90 ],
+    // },
     bcMiddleL: {
       txtAss: assBodyCenterMiddle,
       struct: [ 61, 729 ],
@@ -640,57 +615,57 @@ const makeBody = () => ( {
       position: [ -216, 0, -103 ],
       rotation: [ 0, 60 ],
     },
-    bcUpperL: {
-      struct: [ 100, 359 ],
-      pivot: [ 50 ],
-      position: [ 186, -27.5, -155 ],
-      children: {
-        bcUpperFrameL: {
-          txtAss: assBodyCenterUpper,
-          struct: [ 100, 359 ],
-          pivot: [ 50 ],
-          rotation: [ 0, 132.5 ],
-        },
-        sideViewMirrorL: {
+    // bcUpperL: {
+    //   struct: [ 100, 359 ],
+    //   pivot: [ 50 ],
+    //   position: [ 186, -27.5, -155 ],
+    //   children: {
+    //     bcUpperFrameL: {
+    //       txtAss: assBodyCenterUpper,
+    //       struct: [ 100, 359 ],
+    //       pivot: [ 50 ],
+    //       rotation: [ 0, 132.5 ],
+    //     },
+    //     sideViewMirrorL: {
 
-        },
-      },
-    },
-    bcUpperR: {
-      struct: [ 100, 359 ],
-      pivot: [ 50 ],
-      position: [ -186, -27.5, -155 ],
-      children: {
-        bcUpperFrameR: {
-          txtAss: assBodyCenterUpper,
-          struct: [ 100, 359 ],
-          pivot: [ 50 ],
-          rotation: [ 0, 47.5 ],
-        },
-        sideViewMirrorR: {
+    //     },
+    //   },
+    // },
+    // bcUpperR: {
+    //   struct: [ 100, 359 ],
+    //   pivot: [ 50 ],
+    //   position: [ -186, -27.5, -155 ],
+    //   children: {
+    //     bcUpperFrameR: {
+    //       txtAss: assBodyCenterUpper,
+    //       struct: [ 100, 359 ],
+    //       pivot: [ 50 ],
+    //       rotation: [ 0, 47.5 ],
+    //     },
+    //     sideViewMirrorR: {
 
-        },
-      },
-    },
-    sideWindowL: {
-      txtAss: assSideWindow,
-      struct: [ 100, 359 ],
-      pivot: [ 50 ],
-      position: [ 185.5, -27.5, -155 ],
-      rotation: [ 0, 132.5 ],
-    },
-    sideWindowR: {
-      txtAss: assSideWindow,
-      struct: [ 100, 359 ],
-      pivot: [ 50 ],
-      position: [ -185.5, -27.5, -155 ],
-      rotation: [ 0, 47.5 ],
-    },
-    roof: {
-      txtAss: assRoof,
-      struct: [ 251.5, 195 ],
-      position: [ 0, -98.5, -220.5 ],
-    },
+    //     },
+    //   },
+    // },
+    // sideWindowL: {
+    //   txtAss: assSideWindow,
+    //   struct: [ 100, 359 ],
+    //   pivot: [ 50 ],
+    //   position: [ 185.5, -27.5, -155 ],
+    //   rotation: [ 0, 132.5 ],
+    // },
+    // sideWindowR: {
+    //   txtAss: assSideWindow,
+    //   struct: [ 100, 359 ],
+    //   pivot: [ 50 ],
+    //   position: [ -185.5, -27.5, -155 ],
+    //   rotation: [ 0, 47.5 ],
+    // },
+    // roof: {
+    //   txtAss: assRoof,
+    //   struct: [ 251.5, 195 ],
+    //   position: [ 0, -98.5, -220.5 ],
+    // },
     windShield: {
       children: {
         windShieldFrame: {
@@ -922,9 +897,53 @@ const makeBody = () => ( {
   },
 } )
 
+const makeSeat = side => {
+  g.three.mkr.seat = {
+    crv: [
+      [ 0, 0, 0 ],
+      [ 24, -3, 0 ],
+      [ 30, -40, 0 ],
+      [ 46, -42, 0 ],
+      [ 54, -46, 0 ],
+      [ 56, -90, 0 ],
+      [ 56, -170, 0 ],
+      [ 56, -180, 0 ],
+      [ -56, -180, 0 ],
+      [ -56, -170, 0 ],
+      [ -56, -90, 0 ],
+      [ -54, -46, 0 ],
+      [ -46, -42, 0 ],
+      [ -30, -40, 0 ],
+      [ -24, -3, 0 ],
+      [ 0, 0, 0 ],
+    ],
+  }
+  const crvPts = g.three.mkr.createVector3s( g.three.mkr.seat.crv )
+  const seatCrv = new THREE.CatmullRomCurve3( crvPts )
+  const seatShape = new THREE.Shape( seatCrv.getPoints( 64 ) )
+  const seatMap = g.three.mkr.textureLoader( assPanelScreen )
+  const seatGeo = new THREE.ExtrudeGeometry( seatShape, { depth: 4, bevelThickness: 14 } )
+  const seatMat = new THREE.MeshStandardMaterial( {
+    color: 0x999999,
+    emissiveMap: seatMap,
+    emissive: new THREE.Color( 0x999999 ),
+  } )
+  const seatMsh = new THREE.Mesh( seatGeo, seatMat )
+  const seat = {
+    msh: seatMsh,
+    pivot: [ -94, 0, 0 ],
+    position: [ side === 'L' ? 100 : -100, -150, -182 ],
+    rotation: { x: -115 },
+  }
+  return seat
+}
+
 const makeInterior = () => ( {
   struct: [ 432, 1000, 300 ],
-  children: {},
+  children: {
+    driversSeat: makeSeat( 'L' ),
+    passengerSeat: makeSeat( 'R' ),
+  },
 } )
 
 const makeBackBar = () => {

@@ -18,7 +18,7 @@ import {
 
 gsap.registerPlugin( Draggable, InertiaPlugin )
 
-const setThree = ( controls = false, stats = false ) => {
+const setThree = ( controls = false, stats = false, smoke = true ) => {
   if ( !g.three ) {
     if ( g.el.future.classList.contains( 'model' ) ) {
       if ( g.el.model ) setModel()
@@ -201,79 +201,6 @@ const setThree = ( controls = false, stats = false ) => {
       return madeV3s
     }
 
-    g.three.mkr.makeMotionPath = crv => {
-      const crvPts = g.three.mkr.createVector3s( crv )
-      // g.three.m.strt.push( crvPts[0] )
-      // g.three.m.end.push( crvPts[crvPts.length - 1] )
-      const mPathCrv = new THREE.CatmullRomCurve3( crvPts )
-      g.three.m.path.push( mPathCrv )
-      // NOT SURE IF THE REST HERE IS EVEN NECESSARY UNLESS YOU WANT TO SEE THE LINE
-      // const mPathPts = mPathCrv.getSpacedPoints( 100 )
-      // const lineGeo = new THREE.BufferGeometry().setFromPoints( mPathPts )
-      // const lineMat = new THREE.LineBasicMaterial( {
-      //   color: 0xffffff,
-      // } )
-      // const motionPath = new THREE.Line( lineGeo, lineMat )
-      // g.three.m.line.push( motionPath )
-      // g.three.scene.add(motionPath)
-
-      // motionPath.geometry.computeVertexNormals()
-      // const helper = new VertexNormalsHelper( motionPath, 2, 0x00ff00, 1 )
-      // g.three.scene.add( helper )
-    }
-
-    g.three.mkr.moveAlongPath = obj => {
-      const mPath = g.three.m.path[g.three.m.mp]
-      if ( !obj.m ) {
-        obj.m = 0
-      }
-      if ( obj.m < 1 && mPath ) {
-        obj.m += g.three.mkr.mIncs[g.three.m.mp]
-        let newPoint
-        try {
-          newPoint = mPath.getPoint( obj.m )
-        } catch ( err ) {
-          // suckme
-        }
-        if ( newPoint ) {
-          obj.position.copy( newPoint )
-
-          const tangent = mPath.getTangent( obj.m )
-          g.three.m.axis.crossVectors( g.three.m.up[g.three.m.mp], tangent ).normalize().clamp( new THREE.Vector3( 0.8, -0.5, -0.5 ), new THREE.Vector3( 1.2, 0.5, 0.5 ) )
-
-          let radians = Math.acos( g.three.m.up[g.three.m.mp].dot( tangent ) )
-
-          if ( radians > 1.7 ) radians = 1.7
-          if ( radians < 1.4 ) radians = 1.4
-
-          obj.quaternion.setFromAxisAngle( g.three.m.axis, radians )
-          const rotZ = g.three.m.rotZ[g.three.m.mp - 1] ? g.three.m.rotZ[g.three.m.mp] - g.three.m.rotZ[g.three.m.mp - 1] : g.three.m.rotZ[g.three.m.mp]
-          obj.rotateZ( THREE.Math.degToRad( rotZ * obj.m ) )
-          // console.log( obj.m, obj.rotation.y, radians, g.three.m.axis.x, g.three.m.axis.y, g.three.m.axis.z )
-
-          // RANDOM AXIS ANGLE for added jitteriness
-          obj[`rotate${g.three.xyz[randOnum() ? 0 : 2].toUpperCase()}`]( THREE.Math.degToRad( randOnum() ? 0.15 : -0.15 ) )
-        }
-      } else {
-        g.three.m.mp++
-        console.log( obj.m )
-        if ( g.three.m.path[g.three.m.mp] ) obj.m = 0
-        else if ( obj.m >= 1 && obj.m < 2 ) {
-          g.three.mkr.gsapTest( obj )
-          obj.m++
-          // g.three.m.mp = 0
-          // g.three.mov = false
-          // g.three.xyz.forEach( axis => {
-          //   obj.position[axis] = 0
-          // } )
-          // obj.setRotationFromAxisAngle( g.three.m.up[0], 0 )
-          // obj.rotateZ( THREE.Math.degToRad( 180 ) )
-          // obj.rotateX( THREE.Math.degToRad( 90 ) )
-          // obj.rotateY( THREE.Math.degToRad( 180 ) )
-        }
-      }
-    }
-
     g.three.mkr.visibleHeightAtZDepth = depth => {
       // compensate for cameras not positioned at z=0
       const cameraOffset = g.three.camera.position.z
@@ -314,16 +241,16 @@ const setThree = ( controls = false, stats = false ) => {
       } )
     }
 
-    g.three.mkr.moveWithGsap = obj => {
+    g.three.mkr.backItUp = () => {
       g.three.mov = false
       ifFunctionThenCall( g.three.cleanUp )
       g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
-      g.tL.dL.to( obj.position, {
+      g.tL.dL.to( g.three.inScene.deLorean.position, {
         duration: 9,
         ease: 'power2.in',
         z: '-=1200',
       } )
-        .to( obj.rotation, {
+        .to( g.three.inScene.deLorean.rotation, {
           duration: 11.5,
           ease: 'power2.in',
           y: THREE.Math.degToRad( -180 ),
@@ -336,20 +263,20 @@ const setThree = ( controls = false, stats = false ) => {
         //   duration: 5,
         //   opacity: 0.23,
         // }, '<' )
-        .to( obj.rotation, {
+        .to( g.three.inScene.deLorean.rotation, {
           duration: 3.5,
           ease: 'power2.in',
           x: THREE.Math.degToRad( 30 ),
           repeat: 1,
           yoyo: true,
         }, '<2' )
-        .to( obj.position, {
+        .to( g.three.inScene.deLorean.position, {
           duration: 5,
           ease: 'power2.in',
           x: '+=350',
           y: '+=200',
         }, '<' )
-        .to( obj.children[0].rotation, {
+        .to( g.three.inScene.carGyro.rotation, {
           duration: 3.5,
           ease: 'power2.in',
           x: THREE.Math.degToRad( 75 ),
@@ -358,26 +285,26 @@ const setThree = ( controls = false, stats = false ) => {
           repeat: 1,
           yoyo: true,
         }, '>' )
-        .to( obj.position, {
+        .to( g.three.inScene.deLorean.position, {
           duration: 4,
           ease: 'power2.out',
           onComplete: function () {
             g.three.mkr.allowDragging()
-            g.tL.dL.to( obj.children[0].rotation, {
+            g.tL.dL.to( g.three.inScene.carGyro.rotation, {
               duration: 5.5,
               ease: 'power1.inOut',
               x: `+=${THREE.Math.degToRad( 30 )}`,
               repeat: -1,
               yoyo: true,
             }, '>' )
-              .to( obj.children[0].rotation, {
+              .to( g.three.inScene.carGyro.rotation, {
                 duration: 4.5,
                 ease: 'power1.inOut',
                 y: `+=${THREE.Math.degToRad( 30 )}`,
                 repeat: -1,
                 yoyo: true,
               }, '<' )
-              .to( obj.children[0].rotation, {
+              .to( g.three.inScene.carGyro.rotation, {
                 duration: 7.5,
                 ease: 'power1.inOut',
                 z: `-=${THREE.Math.degToRad( 40 )}`,
@@ -450,7 +377,7 @@ const setThree = ( controls = false, stats = false ) => {
       if ( g.three.scene.running && g.el.deLorean.style.opacity == 1 ) {
         const delta = g.three.clk.getDelta()
 
-        g.three.mkr.evolveSmoke( delta )
+        if ( smoke ) g.three.mkr.evolveSmoke( delta )
 
         // ROCKET FLARE TEXTURES SWAP
         g.three.ani.flr.forEach( ani => {
@@ -467,18 +394,6 @@ const setThree = ( controls = false, stats = false ) => {
           if ( glo.msh.material[1].uniforms.power.value < 0.4 || glo.msh.material[1].uniforms.power.value > 5 ) {
             g.three.ani.glo[i].wax = !glo.wax
           }
-          // let flipWax = false
-          // // console.log( { gloMsh: glo.msh } )
-          // if ( glo.wax ) glo.msh.material.opacity += 0.1
-          // else glo.msh.material.opacity -= 0.1
-          // if ( glo.msh.material.opacity <= 0 ) {
-          //   glo.msh.material.opacity = 0
-          //   flipWax = true
-          // } else if ( glo.msh.material.opacity >= 1 ) {
-          //   glo.msh.material.opacity = 1
-          //   flipWax = true
-          // }
-          // if ( flipWax ) g.three.ani.glo[i].wax = !glo.wax
         } )
 
         if ( g.three.flm ) {
@@ -522,7 +437,7 @@ const setThree = ( controls = false, stats = false ) => {
 
         if ( g.three.lve ) g.three.mkr.inScene.flyAway.position.z -= 1
 
-        if ( g.three.mov ) g.three.mkr.moveWithGsap( g.three.grp.deLorean, 0 )
+        if ( g.three.mov ) g.three.mkr.backItUp()
         // if ( g.three.mov ) g.three.mkr.moveAlongPath( g.three.grp.deLorean, 0 )
 
         if ( g.three.drg ) g.three.mkr.matchMove( g.el.draggable, g.three.grp.deLorean )
@@ -546,46 +461,37 @@ const setThree = ( controls = false, stats = false ) => {
     console.log( { madeObjs: g.three } )
     Object.keys( g.three.makeObjs ).forEach( grp => g.three.scene.add( g.three.grp[grp] ) )
 
-    const smokeTexture = g.three.mkr.textureLoader( assSmoke )
-    const smokeAlphaTexture = g.three.mkr.textureLoader( assSmokeAlpha )
-    const smokeMaterial = new THREE.MeshLambertMaterial( {
-      color: 0x00dddd, map: smokeTexture, transparent: true, alphaMap: smokeAlphaTexture,
-    } )
-    const smokeDepth = 3500
-    // /* eslint-disable array-element-newline */
-    // const smokeGeoVerts = [
-    //   0, 1515, 0,
-    //   1750, -1515, 0,
-    //   -1750, -1515, 0,
-    // ]
-    // const smokeGeoFace = [ 2, 1, 0 ]
-    // /* eslint-enable array-element-newline */
-    // const smokeGeo = new THREE.PolyhedronGeometry( smokeGeoVerts, smokeGeoFace, smokeDepth, 0 )
-    const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
     g.three.grp.smoke = new THREE.Group()
     g.three.grp.smoke.name = 'smoke'
     g.three.scene.add( g.three.grp.smoke )
     g.three.mkr.inScene.smoke = g.three.grp.smoke
-    const viewPort = g.three.mkr.visibleSizeAtZDepth( smokeDepth )
+    if ( smoke ) {
+      const smokeTexture = g.three.mkr.textureLoader( assSmoke )
+      const smokeAlphaTexture = g.three.mkr.textureLoader( assSmokeAlpha )
+      const smokeMaterial = new THREE.MeshLambertMaterial( {
+        color: 0x00dddd, map: smokeTexture, transparent: true, alphaMap: smokeAlphaTexture,
+      } )
+      const smokeDepth = 3500
+      const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
+      const viewPort = g.three.mkr.visibleSizeAtZDepth( smokeDepth )
 
-    for ( let p = 0; p < 99; p++ ) {
-      const smokeMat = smokeMaterial.clone()
-      // smokeMat.map.wrapS = smokeMat.map.wrapT = smokeMat.alphaMap.wrapS = smokeMat.alphaMap.wrapT = THREE.RepeatWrapping
-      // smokeMat.map.repeat.set( 2, 4 )
-      // smokeMat.alphaMap.repeat.set( 2, 4 )
-      smokeMat.opacity = randOnum( 23, 100 ) / 100
-      const particle = new THREE.Mesh( smokeGeo, smokeMat )
-      particle.name = `smokeCloud_${padStr( p )}`
-      particle.position.set( randOnum( 0, viewPort.w ) - ( viewPort.w / 2 ), randOnum( 0, viewPort.h ) - ( viewPort.h / 2 ), Math.random() * 1000 - smokeDepth )
-      particle.rotation.z = Math.random() * 360
-      g.three.grp.smoke.children.push( particle )
-    }
+      for ( let p = 0; p < 99; p++ ) {
+        const smokeMat = smokeMaterial.clone()
+        smokeMat.opacity = randOnum( 23, 100 ) / 100
+        const particle = new THREE.Mesh( smokeGeo, smokeMat )
+        particle.name = `smokeCloud_${padStr( p )}`
+        particle.position.set( randOnum( 0, viewPort.w ) - ( viewPort.w / 2 ), randOnum( 0, viewPort.h ) - ( viewPort.h / 2 ), Math.random() * 1000 - smokeDepth )
+        particle.rotation.z = Math.random() * 360
+        g.three.grp.smoke.children.push( particle )
+      }
 
-    g.three.mkr.evolveSmoke = delta => {
-      let sp = g.three.grp.smoke.children.length
-      while ( sp-- ) {
-        if ( sp % 2 ) g.three.grp.smoke.children[sp].rotation.z += ( delta * 0.2 )
-        else g.three.grp.smoke.children[sp].rotation.z -= ( delta * 0.2 )
+      g.three.mkr.evolveSmoke = delta => {
+        const rotateSmoke = delta * 0.2
+        let sp = g.three.grp.smoke.children.length
+        while ( sp-- ) {
+          if ( sp % 2 ) g.three.grp.smoke.children[sp].rotation.z += rotateSmoke
+          else g.three.grp.smoke.children[sp].rotation.z -= rotateSmoke
+        }
       }
     }
 
@@ -593,15 +499,17 @@ const setThree = ( controls = false, stats = false ) => {
 
     ifFunctionThenCall( g.three.mkr.setMades )
 
-    // if ( g.three.camControls ) {
-    //   g.three.camControls.target.copy( g.three.grp.deLorean.position )
-    //   g.three.camControls.update()
-    // }
+    if ( g.three.camControls ) {
+      g.three.xyz.forEach( axis => {
+        g.three.camera.position[axis] = 1000
+      } )
+      g.three.camControls.target.copy( g.three.grp.deLorean.position )
+      g.three.camControls.update()
+    }
 
     g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
     g.three.lights.forEach( light => {
       if ( light instanceof THREE.DirectionalLight ) {
-      // eslint-disable-next-line prefer-destructuring
         light.target = g.three.mkr.inScene.smoke
         light.castShadow = true // default false
         light.shadow.camera.far = 5000 // default 500
@@ -615,37 +523,6 @@ const setThree = ( controls = false, stats = false ) => {
       g.three.scene.add( light )
     } )
 
-    // const curve = new THREE.Curve()
-    // const curvePoints = [
-    //   [ -250, 0, 0 ],
-    //   [ -300, 0, 0 ],
-    //   [ -400, 100, 0 ],
-    //   [ -500, 200, -100 ],
-    //   [ -500, 300, -200 ],
-    //   [ 800, 400, 100 ],
-    // ]
-    // curve.getPoint = t => {
-    //   const tBag = t * 200
-    //   if ( !curvePoints[tBag] ) curvePoints[tBag] = [ randOnum( 0, 500 ), randOnum( 0, 500 ), randOnum( 0, 500 ) ]
-    //   return new THREE.Vector3( curvePoints[tBag][0], curvePoints[tBag][2], curvePoints[tBag][2] )
-    // }
-
-    // for ( let sp = 0; sp < 6; sp++ ) {
-    //   let axis = g.three.xyz[sp]
-    //   let dist = 750
-    //   if ( !axis ) {
-    //     axis = g.three.xyz[sp - 3]
-    //     dist = -750
-    //   }
-    //   console.log( axis, dist )
-    //   const geometry = new THREE.SphereGeometry( 250, 32, 32 )
-    //   const material = new THREE.MeshStandardMaterial( { color: 0xffffff } )
-    //   const sphere = new THREE.Mesh( geometry, material )
-    //   sphere.position.z = -1000
-    //   sphere.position[axis] += dist
-    //   g.three.scene.add( sphere )
-    // }
-
     g.three.mkr.reSize = () => {
       g.three.mkr.size()
       g.three.aspectRatio = g.three.renderer.domElement.width / g.three.renderer.domElement.height
@@ -656,8 +533,8 @@ const setThree = ( controls = false, stats = false ) => {
     if ( stats ) {
       g.three.stats = new Stats()
       g.three.stats.showPanel( 0 ) // 0: fps, 1: ms, 2: mb, 3+: custom
-      g.three.stats.showPanel( 1 ) // 0: fps, 1: ms, 2: mb, 3+: custom
-      g.three.stats.showPanel( 2 ) // 0: fps, 1: ms, 2: mb, 3+: custom
+      g.three.stats.showPanel( 1 )
+      g.three.stats.showPanel( 2 )
       g.three.stats.dom.id = 'threeStats'
       g.three.stats.dom.classList.add( 'threeDev' )
       g.el.deLorean.appendChild( g.three.stats.dom )
