@@ -397,7 +397,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
         } )
 
         if ( g.three.flm ) {
-          // suckMe
+          // we don't ever need to reverse the wheels retraction. so suck me
         } else {
           g.three.mkr.inScene.wheelRockets.forEach( ( flareSet, i ) => {
             if ( flareSet.scale.x > 0.2 ) {
@@ -455,10 +455,9 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
     g.three.makeObjs = {
       deLorean: makeDeLorean(),
     }
-    console.log( { makeObjs: g.three.makeObjs } )
     Object.keys( g.three.makeObjs ).forEach( obj => makeThreeObj( obj, g.three.makeObjs[obj] ) )
 
-    console.log( { madeObjs: g.three } )
+    console.log( { three: g.three } )
     Object.keys( g.three.makeObjs ).forEach( grp => g.three.scene.add( g.three.grp[grp] ) )
 
     g.three.grp.smoke = new THREE.Group()
@@ -565,7 +564,9 @@ const makeThreeObj = ( obj, makeObj ) => {
       makeObj.geo = 'group'
       Object.keys( makeObj.children ).forEach( childObj => makeThreeObj( childObj, makeObj.children[childObj] ) )
     } else if ( makeObj.msh instanceof THREE.Mesh ) {
+      if ( g.three.obj[obj] ) devLog( `FUCKER! obj "${obj}" already exists!` )
       g.three.obj[obj] = { msh: makeObj.msh }
+      g.three.obj[obj].msh.name = obj
       setThreeObj( obj, makeObj )
       return
     } else if ( !makeObj.geo ) {
@@ -573,7 +574,10 @@ const makeThreeObj = ( obj, makeObj ) => {
     }
     let makeFail, makeMesh
     if ( makeObj.geo !== 'group' && makeObj.struct && makeObj.struct.length && makeObj.struct.length >= 2 ) {
-      if ( makeObj.geo !== 'group' ) g.three.obj[obj] = {}
+      if ( makeObj.geo !== 'group' ) {
+        if ( g.three.obj[obj] ) devLog( `FUCKER! obj "${obj}" already exists!` )
+        g.three.obj[obj] = {}
+      }
       makeMesh = { ...g.three.msh }
       if ( makeObj.msh ) {
         Object.keys( makeObj.msh ).forEach( mshProp => {
@@ -624,6 +628,7 @@ const makeThreeObj = ( obj, makeObj ) => {
         //   g.three.grp[obj] = new THREE.Mesh(new THREE.BoxGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2]), new THREE.MeshBasicMaterial({ opacity: 0, transparent: true }))
         //   setPivot(g.three.grp[obj], makeObj)
         // } else {
+        if ( g.three.grp[obj] ) devLog( `FUCKER! grp "${obj}" already exists!` )
         g.three.grp[obj] = new THREE.Group()
         g.three.grp[obj].name = obj
         // }

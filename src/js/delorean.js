@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
 
 import assUnderCarriageF from 'url:/src/img/future/underCarriageF.png'
 import assUnderCarriageC from 'url:/src/img/future/underCarriageC.png'
@@ -63,6 +64,8 @@ import assPipeMetal03 from 'url:/src/img/future/metalPipe2.png'
 import assPanelScreen from 'url:/src/img/future/panelScreen.png'
 import assHeadLightCone from 'url:/src/img/future/headLightCone.png'
 import assSeatTest from 'url:/src/img/future/seatTest.png'
+import assSeatCtrProfile from 'url:/src/img/future/seatCtr.svg'
+import assSeatCtrTexture from 'url:/src/img/future/seatCtr.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -221,6 +224,7 @@ const setMakes = () => {
     flyAway: [ 'flyAway' ],
     headLights: [ 'lightBoxL', 'lightBoxR' ],
     hubCaps: [],
+    interior: [ 'interior' ],
     wheelMechs: [ 'mobileMechL', 'mobileMechR' ],
     wheelRockets: [],
     wheelSides: [ 'wheelsL', 'wheelsR' ],
@@ -899,62 +903,99 @@ const makeBody = () => ( {
 } )
 
 const makeSeat = side => {
-  g.three.mkr.seat = {
-    crv: [
-      [ 0, 0, 0 ],
-      [ 24, -3, 0 ],
-      [ 30, -40, 0 ],
-      [ 46, -42, 4 ],
-      [ 54, -46, 6 ],
-      [ 56, -90, 8 ],
-      [ 56, -170, 8 ],
-      [ 56, -180, 8 ],
-      [ -56, -180, 8 ],
-      [ -56, -170, 8 ],
-      [ -56, -90, 8 ],
-      [ -54, -46, 6 ],
-      [ -46, -42, 4 ],
-      [ -30, -40, 0 ],
-      [ -24, -3, 0 ],
-      [ 0, 0, 0 ],
-    ],
+  if ( side === 'R' ) {
+    g.three.mkr.seat = {
+      ctr: [
+        [ 0, 0, 0 ],
+        [ 24, -3, 0 ],
+        [ 30, -40, 0 ],
+        [ 46, -42, 4 ],
+        [ 54, -46, 6 ],
+        [ 56, -90, 8 ],
+        [ 56, -170, 8 ],
+        [ 56, -180, 8 ],
+        [ -56, -180, 8 ],
+        [ -56, -170, 8 ],
+        [ -56, -90, 8 ],
+        [ -54, -46, 6 ],
+        [ -46, -42, 4 ],
+        [ -30, -40, 0 ],
+        [ -24, -3, 0 ],
+        [ 0, 0, 0 ],
+      ],
+    }
+    const crvPts = g.three.mkr.createVector3s( g.three.mkr.seat.ctr )
+    const seatCrv = new THREE.CatmullRomCurve3( crvPts )
+    const seatShape = new THREE.Shape( seatCrv.getPoints( 64 ) )
+    const seatMap = g.three.mkr.textureLoader( assSeatTest )
+    const seatGeo = new THREE.ExtrudeGeometry( seatShape, { depth: 4, bevelThickness: 14 } )
+    const seatFaceMat = new THREE.MeshLambertMaterial( {
+      color: new THREE.Color( 0x9a9ea1 ),
+      // metalness: 0,
+      // roughness: 0.4,
+    } )
+    const seatSideMat = new THREE.MeshLambertMaterial( {
+      map: seatMap,
+      // metalness: 0,
+      // roughness: 0.4,
+      dithering: true,
+      color: new THREE.Color( 0x7a8187 ),
+      // emissiveMap: seatMap,
+      // emissive: new THREE.Color( 0x9a9ea1 ),
+    } )
+    const seatMsh = new THREE.Mesh( seatGeo, [ seatFaceMat, seatSideMat ] )
+    return {
+      msh: seatMsh,
+      pivot: [ -94, 0, 0 ],
+      position: [ side === 'L' ? 100 : -100, -150, -182 ],
+      rotation: { x: -115 },
+    }
+  // eslint-disable-next-line no-else-return
+  } else {
+    const loader = new SVGLoader()
+    // sadly, geometries based on loaded SVG paths can't be handled by makeThreeObj, as the loading of the SVGs is slightly deferred
+    // still quicker than trying to calculate the points of a curve in 3d space manually
+    loader.load(
+      assSeatCtrProfile,
+      async data => {
+        const { paths: [ path ] } = data
+        const seatCtrShape = SVGLoader.createShapes( path )
+        const seatMap = g.three.mkr.textureLoader( assSeatCtrTexture )
+        const seatGeo = new THREE.ExtrudeGeometry( seatCtrShape, { depth: 46, bevelThickness: 7 } )
+        seatGeo.translate( -94, 0, 0 )
+        const seatFaceMat = new THREE.MeshLambertMaterial( {
+          color: new THREE.Color( 0x9a9ea1 ),
+          // metalness: 0,
+          // roughness: 0.4,
+        } )
+        const seatSideMat = new THREE.MeshLambertMaterial( {
+          // metalness: 0,
+          // roughness: 0.4,
+          // dithering: true,
+          emissiveMap: seatMap,
+          emissive: new THREE.Color( 0x7a8187 ),
+        } )
+        const seatMsh = new THREE.Mesh( seatGeo, [ seatFaceMat, seatSideMat ] )
+        seatMsh.position.set( -600, -150, -182 )
+        seatMsh.rotateX( -115 )
+        seatMsh.name = 'driversSeat'
+        g.three.mkr.inScene.interior.add( seatMsh )
+        g.three.mkr.inScene.seats = [ seatMsh ]
+      },
+    )
   }
-  const crvPts = g.three.mkr.createVector3s( g.three.mkr.seat.crv )
-  const seatCrv = new THREE.CatmullRomCurve3( crvPts )
-  const seatShape = new THREE.Shape( seatCrv.getPoints( 64 ) )
-  const seatMap = g.three.mkr.textureLoader( assSeatTest )
-  const seatGeo = new THREE.ExtrudeGeometry( seatShape, { depth: 4, bevelThickness: 14 } )
-  const seatFaceMat = new THREE.MeshLambertMaterial( {
-    color: 0x9a9ea1,
-    // metalness: 0,
-    // roughness: 0.4,
-  } )
-  const seatSideMat = new THREE.MeshLambertMaterial( {
-    map: seatMap,
-    // metalness: 0,
-    // roughness: 0.4,
-    dithering: true,
-    color: 0x7a8187,
-    // emissiveMap: seatMap,
-    // emissive: new THREE.Color( 0x9a9ea1 ),
-  } )
-  const seatMsh = new THREE.Mesh( seatGeo, [ seatFaceMat, seatSideMat ] )
-  const seat = {
-    msh: seatMsh,
-    pivot: [ -94, 0, 0 ],
-    position: [ side === 'L' ? 100 : -100, -150, -182 ],
-    rotation: { x: -115 },
-  }
-  return seat
 }
 
-const makeInterior = () => ( {
-  struct: [ 432, 1000, 300 ],
-  children: {
-    driversSeat: makeSeat( 'L' ),
-    passengerSeat: makeSeat( 'R' ),
-  },
-} )
+const makeInterior = () => {
+  makeSeat( 'L' )
+  return {
+    struct: [ 432, 1000, 300 ],
+    children: {
+      driversSeat: makeSeat( 'L' ),
+      passengerSeat: makeSeat( 'R' ),
+    },
+  }
+}
 
 const makeBackBar = () => {
   const bb = {
@@ -1313,7 +1354,7 @@ const makeLightBox = side => {
 
   return {
     children: {
-      theBox: makePolyObj,
+      [`theBox${side}`]: makePolyObj,
     },
   }
 }
@@ -1355,7 +1396,7 @@ const makeLightBarPanel = where => {
         position: lb.pos,
       }
       const glowGeom = new THREE.ExtrudeGeometry( g.three.mkr.lb.glowProfile, { extrudePath: panelCrv, steps: 64, depth: 400 } )
-      const glowMesh = new g.three.x.GeometricGlowMesh( glowGeom, panelMat.alphaMap, [ 2, 4, 0 ] )
+      const glowMesh = g.three.x.GeometricGlowMesh( glowGeom, panelMat.alphaMap, [ 2, 4, 0 ] )
       panelMsh.add( glowMesh.object3d )
       // var insideUniforms = glowMesh.insideMesh.material.uniforms
       // insideUniforms.glowColor.value.set('hotpink')
@@ -1573,7 +1614,7 @@ const makeWheel = wheel => {
   const flareFixMat = {
     color: new THREE.Color( 'white' ),
   }
-  flares.flareFixer = {
+  flares[`flareFixer${wheel}`] = {
     geo: 'cylinder',
     // eslint-disable-next-line array-bracket-newline, array-element-newline
     struct: [ 27.5, 0.01, 60, 6 ],
