@@ -385,7 +385,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
         } )
 
         g.three.xyz.forEach( axis => {
-          g.el[`threeCam${axis.toUpperCase()}`].innerHTML = g.three.camera.rotation[axis].toFixed( 3 )
+          g.el[`threeCam${axis.toUpperCase()}`].innerHTML = THREE.Math.radToDeg( g.three.camera.rotation[axis] ).toFixed( 3 )
         } )
 
         g.three.ani.glo.forEach( ( glo, i ) => {

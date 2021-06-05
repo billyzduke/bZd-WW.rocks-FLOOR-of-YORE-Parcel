@@ -63,9 +63,7 @@ import assPipeMetal02 from 'url:/src/img/future/metalSphere.png'
 import assPipeMetal03 from 'url:/src/img/future/metalPipe2.png'
 import assPanelScreen from 'url:/src/img/future/panelScreen.png'
 import assHeadLightCone from 'url:/src/img/future/headLightCone.png'
-import assSeatTest from 'url:/src/img/future/seatTest.png'
-import assSeatCtrProfile from 'url:/src/img/future/seatCtr.svg'
-import assSeatCtrTexture from 'url:/src/img/future/seatCtr.png'
+import assSeatShapePaths from 'url:/src/img/future/seatShapes.svg'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -902,97 +900,78 @@ const makeBody = () => ( {
   },
 } )
 
-const makeSeat = side => {
-  if ( side === 'R' ) {
-    g.three.mkr.seat = {
-      ctr: [
-        [ 0, 0, 0 ],
-        [ 24, -3, 0 ],
-        [ 30, -40, 0 ],
-        [ 46, -42, 4 ],
-        [ 54, -46, 6 ],
-        [ 56, -90, 8 ],
-        [ 56, -170, 8 ],
-        [ 56, -180, 8 ],
-        [ -56, -180, 8 ],
-        [ -56, -170, 8 ],
-        [ -56, -90, 8 ],
-        [ -54, -46, 6 ],
-        [ -46, -42, 4 ],
-        [ -30, -40, 0 ],
-        [ -24, -3, 0 ],
-        [ 0, 0, 0 ],
-      ],
-    }
-    const crvPts = g.three.mkr.createVector3s( g.three.mkr.seat.ctr )
-    const seatCrv = new THREE.CatmullRomCurve3( crvPts )
-    const seatShape = new THREE.Shape( seatCrv.getPoints( 64 ) )
-    const seatMap = g.three.mkr.textureLoader( assSeatTest )
-    const seatGeo = new THREE.ExtrudeGeometry( seatShape, { depth: 4, bevelThickness: 14 } )
-    const seatFaceMat = new THREE.MeshLambertMaterial( {
-      color: new THREE.Color( 0x9a9ea1 ),
-      // metalness: 0,
-      // roughness: 0.4,
-    } )
-    const seatSideMat = new THREE.MeshLambertMaterial( {
-      map: seatMap,
-      // metalness: 0,
-      // roughness: 0.4,
-      dithering: true,
-      color: new THREE.Color( 0x7a8187 ),
-      // emissiveMap: seatMap,
-      // emissive: new THREE.Color( 0x9a9ea1 ),
-    } )
-    const seatMsh = new THREE.Mesh( seatGeo, [ seatFaceMat, seatSideMat ] )
-    return {
-      msh: seatMsh,
-      pivot: [ -94, 0, 0 ],
-      position: [ side === 'L' ? 100 : -100, -150, -182 ],
-      rotation: { x: -115 },
-    }
-  // eslint-disable-next-line no-else-return
-  } else {
-    const loader = new SVGLoader()
-    // sadly, geometries based on loaded SVG paths can't be handled by makeThreeObj, as the loading of the SVGs is slightly deferred
-    // still quicker than trying to calculate the points of a curve in 3d space manually
-    loader.load(
-      assSeatCtrProfile,
-      async data => {
-        const { paths: [ path ] } = data
-        const seatCtrShape = SVGLoader.createShapes( path )
-        const seatMap = g.three.mkr.textureLoader( assSeatCtrTexture )
-        const seatGeo = new THREE.ExtrudeGeometry( seatCtrShape, { depth: 46, bevelThickness: 7 } )
-        seatGeo.translate( -94, 0, 0 )
-        const seatFaceMat = new THREE.MeshLambertMaterial( {
-          color: new THREE.Color( 0x9a9ea1 ),
-          // metalness: 0,
-          // roughness: 0.4,
+const makeSeats = () => {
+  const loader = new SVGLoader()
+  // sadly, geometries based on loaded SVG paths can't be handled by makeThreeObj, as the loading of the SVGs is slightly deferred
+  // still quicker to work around that than continuing to calculate the points of the base curves in 3d space manually
+  loader.load(
+    assSeatShapePaths,
+    pathsData => {
+      const { paths } = pathsData
+      const seatCtrShape = SVGLoader.createShapes( paths[0] )
+      const seatCtrGeo = new THREE.ExtrudeGeometry( seatCtrShape[0], { depth: 46, bevelThickness: 14, bevelOffset: -7 } )
+      seatCtrGeo.translate( 0, 0, -23 )
+      // unsure why these shapes will not display textures
+      const seatMat = new THREE.MeshLambertMaterial( {
+        // metalness: 0,
+        // roughness: 0.4,
+        // dithering: true,
+        side: THREE.DoubleSide,
+        color: new THREE.Color( 0x88837d ),
+        emissive: new THREE.Color( 0x88837d ),
+      } )
+      const seatCtrMsh = new THREE.Mesh( seatCtrGeo, seatMat )
+      g.three.mkr.inScene.seats = [ seatCtrMsh, seatCtrMsh.clone() ]
+      const seatBackFlankShape = SVGLoader.createShapes( paths[1] )
+      const seatBackFlankGeo = new THREE.LatheGeometry( seatBackFlankShape[0].getPoints() )
+      const seatBackFlankMsh = new THREE.Mesh( seatBackFlankGeo, seatMat )
+      const seatBaseFlankShape = SVGLoader.createShapes( paths[2] )
+      const seatBaseFlankGeo = new THREE.LatheGeometry( seatBaseFlankShape[0].getPoints() )
+      const seatBaseFlankMsh = new THREE.Mesh( seatBaseFlankGeo, seatMat )
+      const seatBaseFrontShape = SVGLoader.createShapes( paths[3] )
+      const seatBaseFrontGeo = new THREE.LatheGeometry( seatBaseFrontShape[0].getPoints() )
+      const seatBaseFrontMsh = new THREE.Mesh( seatBaseFrontGeo, seatMat )
+      const seatBaseFronts = [ seatBaseFrontMsh, seatBaseFrontMsh.clone() ]
+      g.three.mkr.inScene.seats.forEach( ( _, side ) => {
+        g.three.mkr.inScene.seats[side].position.set( side ? -100 : 100, -170, -182 )
+        g.three.mkr.inScene.seats[side].rotateY( THREE.Math.degToRad( 90 ) )
+        g.three.mkr.inScene.seats[side].rotateZ( THREE.Math.degToRad( 90 ) )
+        g.three.mkr.inScene.seats[side].name = side ? 'passengerSeat' : 'driversSeat'
+        g.three.mkr.inScene.interior.add( g.three.mkr.inScene.seats[side] )
+        const seatBackFlanks = [ seatBackFlankMsh.clone(), seatBackFlankMsh.clone() ]
+        seatBackFlanks.forEach( ( bkf, s ) => {
+          bkf.position.x = 8
+          bkf.position.y = 3
+          bkf.position.z = s ? 46 : -46
+          bkf.rotateZ( THREE.Math.degToRad( -23 ) )
+          g.three.mkr.inScene.seats[side].add( bkf )
         } )
-        const seatSideMat = new THREE.MeshLambertMaterial( {
-          // metalness: 0,
-          // roughness: 0.4,
-          // dithering: true,
-          emissiveMap: seatMap,
-          emissive: new THREE.Color( 0x7a8187 ),
+        const seatBaseFlanks = [ seatBaseFlankMsh.clone(), seatBaseFlankMsh.clone() ]
+        seatBaseFlanks.forEach( ( bbf, s ) => {
+          bbf.position.x = 22
+          bbf.position.y = 142
+          bbf.position.z = s ? 46 : -46
+          bbf.rotateZ( THREE.Math.degToRad( -90 ) )
+          g.three.mkr.inScene.seats[side].add( bbf )
         } )
-        const seatMsh = new THREE.Mesh( seatGeo, [ seatFaceMat, seatSideMat ] )
-        seatMsh.position.set( -600, -150, -182 )
-        seatMsh.rotateX( -115 )
-        seatMsh.name = 'driversSeat'
-        g.three.mkr.inScene.interior.add( seatMsh )
-        g.three.mkr.inScene.seats = [ seatMsh ]
-      },
-    )
-  }
+        const seatBaseFront = seatBaseFronts.shift()
+        seatBaseFront.position.x = 178
+        seatBaseFront.position.y = 142
+        seatBaseFront.position.z = -103
+        seatBaseFront.rotateX( THREE.Math.degToRad( 90 ) )
+        g.three.mkr.inScene.seats[side].add( seatBaseFront )
+      } )
+    },
+  )
 }
 
 const makeInterior = () => {
-  makeSeat( 'L' )
+  makeSeats()
   return {
     struct: [ 432, 1000, 300 ],
     children: {
-      driversSeat: makeSeat( 'L' ),
-      passengerSeat: makeSeat( 'R' ),
+      // driversSeat: makeSeat( 'L' ),
+      // passengerSeat: makeSeat( 'R' ),
     },
   }
 }
