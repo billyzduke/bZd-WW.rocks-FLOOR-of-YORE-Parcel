@@ -62,6 +62,7 @@ import assPipeMetal02 from 'url:/src/img/future/metalSphere.png'
 import assPipeMetal03 from 'url:/src/img/future/metalPipe2.png'
 import assPanelScreen from 'url:/src/img/future/panelScreen.png'
 import assHeadLightCone from 'url:/src/img/future/headLightCone.png'
+import assSeatTest from 'url:/src/img/future/seatTest.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -903,16 +904,16 @@ const makeSeat = side => {
       [ 0, 0, 0 ],
       [ 24, -3, 0 ],
       [ 30, -40, 0 ],
-      [ 46, -42, 0 ],
-      [ 54, -46, 0 ],
-      [ 56, -90, 0 ],
-      [ 56, -170, 0 ],
-      [ 56, -180, 0 ],
-      [ -56, -180, 0 ],
-      [ -56, -170, 0 ],
-      [ -56, -90, 0 ],
-      [ -54, -46, 0 ],
-      [ -46, -42, 0 ],
+      [ 46, -42, 4 ],
+      [ 54, -46, 6 ],
+      [ 56, -90, 8 ],
+      [ 56, -170, 8 ],
+      [ 56, -180, 8 ],
+      [ -56, -180, 8 ],
+      [ -56, -170, 8 ],
+      [ -56, -90, 8 ],
+      [ -54, -46, 6 ],
+      [ -46, -42, 4 ],
       [ -30, -40, 0 ],
       [ -24, -3, 0 ],
       [ 0, 0, 0 ],
@@ -921,14 +922,23 @@ const makeSeat = side => {
   const crvPts = g.three.mkr.createVector3s( g.three.mkr.seat.crv )
   const seatCrv = new THREE.CatmullRomCurve3( crvPts )
   const seatShape = new THREE.Shape( seatCrv.getPoints( 64 ) )
-  const seatMap = g.three.mkr.textureLoader( assPanelScreen )
+  const seatMap = g.three.mkr.textureLoader( assSeatTest )
   const seatGeo = new THREE.ExtrudeGeometry( seatShape, { depth: 4, bevelThickness: 14 } )
-  const seatMat = new THREE.MeshStandardMaterial( {
-    color: 0x999999,
-    emissiveMap: seatMap,
-    emissive: new THREE.Color( 0x999999 ),
+  const seatFaceMat = new THREE.MeshLambertMaterial( {
+    color: 0x9a9ea1,
+    // metalness: 0,
+    // roughness: 0.4,
   } )
-  const seatMsh = new THREE.Mesh( seatGeo, seatMat )
+  const seatSideMat = new THREE.MeshLambertMaterial( {
+    map: seatMap,
+    // metalness: 0,
+    // roughness: 0.4,
+    dithering: true,
+    color: 0x7a8187,
+    // emissiveMap: seatMap,
+    // emissive: new THREE.Color( 0x9a9ea1 ),
+  } )
+  const seatMsh = new THREE.Mesh( seatGeo, [ seatFaceMat, seatSideMat ] )
   const seat = {
     msh: seatMsh,
     pivot: [ -94, 0, 0 ],
