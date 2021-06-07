@@ -17,6 +17,15 @@ div#future {
     opacity: 0;
   }
 
+  div#glitch01 {
+    background-image: url(../img/future/glitch01.png);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 31.5924%;
+    opacity: 0;
+  }
+
   div#flux {
     width: 373px;
     height: 540px;
@@ -208,6 +217,7 @@ div#future {
     left: 100%;
     z-index: 651;
     opacity: 0;
+    pointer-events: auto;
     > canvas {
       background: transparent;
       width: 100%;

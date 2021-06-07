@@ -48,12 +48,24 @@ const wormHoleFlashTick2 = () => {
   } )
 }
 
+const prepDeLorean = () => {
+  if ( !g.three.mkr.prepped ) {
+    gsap.set( '#glitch01', { opacity: 1 } )
+    g.three.on = true
+    g.three.mkr.startRendering()
+  }
+}
+
 const startDeLorean = () => {
   if ( !g.three.on ) {
     g.el.deLorean.style.opacity = 1
     g.el.deLorean.style.left = 0
-    g.three.ani.go()
     g.three.on = true
+    // g.three.mkr.io = undefined
+    g.three.cleanUp = setAddOn( '#deLorean', 'click', toggleFlyAlongPath )
+    g.three.mkr.startRendering()
+  } else {
+    console.log( { alreadyOn: g.three.on } )
   }
 }
 
@@ -64,7 +76,6 @@ const beginFuture = () => {
     const blindingFlashUnTick2 = gsapTick( wormHoleFlashTick2 )
     g.el.flux.style.opacity = 0
     toggleFermata( { exceptTLs: [ 'dL' ] } )
-    g.three.scene.running = true
     startDeLorean()
 
     setTimeout( () => {
@@ -72,77 +83,9 @@ const beginFuture = () => {
       g.qss.wormHoler( {
         opacity: 0,
       } )
-      // flyOver()
-      g.three.cleanUp = setAddOn( '#deLorean', 'click', toggleFlyAlongPath )
     }, 700 )
   },
   2300 )
-}
-
-const flyOver = () => {
-  // gsap.to( '.lightBar > div', {
-  //   duration: 1.5,
-  //   ease: 'power1.in',
-  //   opacity: 0.12,
-  //   repeat: -1,
-  //   yoyo: true,
-  // } )
-
-
-  //   .to( '#deLoreanCSS', {
-  //     duration: 9,
-  //     ease: 'power2.in',
-  //     translateZ: -500,
-  //   } )
-  //   .to( '#deLoreanCSS', {
-  //     duration: 7.5,
-  //     ease: 'power2.in',
-  //     rotateY: '-=90',
-  //   }, '<5' )
-  //   .to( '#deLoreanCSS', {
-  //     duration: 3.5,
-  //     ease: 'power2.in',
-  //     rotateZ: '+=30',
-  //     repeat: 1,
-  //     yoyo: true,
-  //   }, '<2' )
-  //   .to( '#deLoreanCSS', {
-  //     duration: 5,
-  //     ease: 'power2.in',
-  //     translateX: '-=50',
-  //     translateY: '-=200',
-  //   }, '<' )
-  //   .to( '#deLoreanCSS', {
-  //     duration: 3.5,
-  //     ease: 'power2.in',
-  //     rotateX: '-=15',
-  //     repeat: 1,
-  //     yoyo: true,
-  //   }, '>' )
-  //   .to( '#deLoreanCSS', {
-  //     duration: 4,
-  //     ease: 'power2.out',
-  //     translateX: '+=150',
-  //     translateY: '-=100',
-  //     translateZ: -400,
-  //   }, '<' )
-  // // CONVERT FROM FLYING TO DRIVING MODE
-  // // TURN OFF WHEEL ROCKETS
-  //   .to( '#deLoreanCSS #wheels .wheel .rocket', {
-  //     duration: 1.25,
-  //     scaleY: 0,
-  //   }, '>' )
-  // // SET WHEELS IN WELLS
-  //   .to( '#wheelsLeft', {
-  //     duration: 4,
-  //     rotateY: 90,
-  //     translateZ: '-=42',
-  //   }, '>' )
-  //   .to( '#wheelsRight', {
-  //     duration: 4,
-  //     rotateY: -90,
-  //     translateZ: '-=42',
-  //   }, '<' )
 }
 
 const movable = [ '#deLorean', '#sideViewMirrorRight div:nth-child(2)' ]
@@ -183,7 +126,9 @@ const toggleFlightMode = () => {
 }
 
 const toggleFlyAlongPath = () => {
-  if ( g.three ) g.three.mov = !g.three.mov
+  if ( g.three.on ) {
+    g.three.mov = true
+  }
 }
 
 const toggleWheelsDrop = () => {
@@ -191,5 +136,5 @@ const toggleWheelsDrop = () => {
 }
 
 export {
-  beginFuture, setFuture, setModel, startDeLorean, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
+  beginFuture, prepDeLorean, setFuture, setModel, startDeLorean, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
 }

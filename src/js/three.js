@@ -374,7 +374,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
 
     g.three.mkr.update = () => {
       // eslint-disable-next-line eqeqeq
-      if ( g.three.scene.running && g.el.deLorean.style.opacity == 1 ) {
+      if ( g.three.on && g.el.deLorean.style.opacity == 1 ) {
         const delta = g.three.clk.getDelta()
 
         if ( smoke ) g.three.mkr.evolveSmoke( delta )
@@ -468,7 +468,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
       const smokeTexture = g.three.mkr.textureLoader( assSmoke )
       const smokeAlphaTexture = g.three.mkr.textureLoader( assSmokeAlpha )
       const smokeMaterial = new THREE.MeshLambertMaterial( {
-        alphaMap: smokeAlphaTexture, emissive: 0x00dddd, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
+        alphaMap: smokeAlphaTexture, emissive: 0x00dddd, emissiveIntensity: 0.2, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
       } )
       const smokeDepth = 3500
       const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
@@ -495,8 +495,6 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
     }
 
     console.log( g.three.scene )
-
-    ifFunctionThenCall( g.three.mkr.setMades )
 
     if ( g.three.camControls ) {
       g.three.xyz.forEach( axis => {
@@ -541,14 +539,38 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
 
     g.three.ani.go = () => {
       if ( stats ) g.three.stats.begin()
-      // eslint-disable-next-line no-undef
-      requestAnimationFrame( g.three.ani.go )
+      g.three.raf = g.window.requestAnimationFrame( g.three.ani.go )
       g.three.renderer.render( g.three.scene, g.three.camera )
       g.three.mkr.update()
       if ( stats ) g.three.stats.end()
     }
 
+    g.three.mkr.startRendering = () => {
+      if ( g.three.on ) {
+        g.three.ani.go()
+        devLog( `three: deLorean is rendering` )
+      }
+    }
+
+    g.three.mkr.stopRendering = () => {
+      g.window.cancelAnimationFrame( g.three.raf )
+      g.three.raf = undefined
+      devLog( `three: deLorean rendering has been halted` )
+    }
+
+    // // eslint-disable-next-line no-undef
+    // g.three.mkr.io = new IntersectionObserver( entries => {
+    //   entries.forEach( entry => {
+    //     if ( g.three.on ) g.three.mkr.startRendering()
+    //     else g.three.mkr.stopRendering()
+    //   } )
+    // } )
+
+    // g.three.mkr.io.observe( g.el.deLorean )
+
     if ( controls ) g.three.scene.add( new THREE.AxesHelper( 500 ) )
+
+    ifFunctionThenCall( g.three.mkr.setMades )
   }
 }
 

@@ -74,7 +74,7 @@ import assIntDoorLower from 'url:/src/img/future/interiorDoorLower.png'
 import assIntDoorMiddle from 'url:/src/img/future/interiorDoorMiddle.png'
 import assIntDoorUpper from 'url:/src/img/future/interiorDoorUpper.png'
 import g from './glob'
-import { devLog } from './utils'
+import { devLog, isFunction } from './utils'
 
 const setMakes = () => {
   g.three.mkr.pipe = {
@@ -307,6 +307,13 @@ const setMakes = () => {
         } )
       }
     } )
+
+    g.el.glitch01.style.opacity = 0
+    g.three.on = false
+    if (isFunction(g.three.mkr.stopRendering)) {
+      g.three.mkr.stopRendering()
+      g.three.mkr.prepped = true
+    }
   }
 }
 
@@ -1061,21 +1068,21 @@ const makeInterior = () => {
             txtAss: assIntRearPanel1,
             struct: [ 430, 218.5 ],
             pivot: [ 0, 109.25 ],
-            position: [ 0, -207 ],
+            position: [ 0, -205.5 ],
             rotation: { x: -90 },
           },
           rearPanel2: {
             txtAss: assIntRearPanel2,
             struct: [ 82, 218.5 ],
             pivot: [ 41, 109.25 ],
-            position: [ -115, -188 ],
+            position: [ -115, -186.5 ],
             rotation: { x: -90, y: 15 },
           },
           rearPanel3: {
             txtAss: assIntRearPanel3,
             struct: [ 100, 218.5 ],
             pivot: [ 50, 109.25 ],
-            position: [ -215, -188 ],
+            position: [ -215, -186.5 ],
             rotation: { x: -90 },
           },
         },

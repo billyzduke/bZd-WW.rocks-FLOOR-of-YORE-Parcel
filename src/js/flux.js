@@ -17,7 +17,7 @@ import {
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
 import { setScene } from './scene'
-import { setThree } from './three'
+import { prepDeLorean } from './future'
 
 const setFlux = () => {
   g.flux = {
@@ -317,7 +317,7 @@ const randomizeTargetReached = d => {
 const activateFluxDisplay = e => {
   if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
     if ( !gsap.ticker._listeners.includes( incrementFluxDisplay ) ) gsap.ticker.add( incrementFluxDisplay )
-    setThree()
+    prepDeLorean()
   } else {
     gsap.ticker.remove( incrementFluxDisplay )
     gsap.ticker.add( decrementFluxDisplay )

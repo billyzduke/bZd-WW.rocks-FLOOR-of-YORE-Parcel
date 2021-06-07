@@ -55,6 +55,7 @@ const loadApp = () => {
       'future',
       'gemGuy',
       'ggrove',
+      'glitch01',
       'heartChakra',
       'help',
       'helpList',
@@ -168,7 +169,6 @@ const loadApp = () => {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
     setThree( true, true, false )
     startDeLorean()
-    g.three.scene.running = true
     setAddOn( '#toggleFlyAlongPath', 'click', () => {
       toggleFlyAlongPath()
       g.three.mkr.moveWithGsap( g.three.grp.deLorean, 0 )
@@ -180,7 +180,10 @@ const loadApp = () => {
 
 const initApp = () => {
   const loaded = loadApp()
-  if ( loaded ) makisusan()
+  if ( loaded ) {
+    makisusan()
+    setThree()
+  }
 }
 
 const getM = () => {
