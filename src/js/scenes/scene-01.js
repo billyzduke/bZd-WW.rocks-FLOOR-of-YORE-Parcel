@@ -7,24 +7,24 @@ import { toggleLionJarp } from '../lion-head'
 
 const scene01 = 'EXPLORE'
 
-const setScene01 = (c, n) => {
+const setScene01 = ( c, n ) => {
   g.scene.setting = c
-  g.scene.forCleanUp[c].exploreTitleClick = setAddOn('#tpTitles', 'click', () => setScene(n))
-  g.scene.forCleanUp[c].obscureNextScene = () => obscure(2.42)
+  g.scene.forCleanUp[c].exploreTitleClick = setAddOn( '#tpTitles', 'click', () => setScene( n ) )
+  g.scene.forCleanUp[c].obscureNextScene = () => obscure( 2.42 )
 
   toggleLionJarp()
   setCtrRing()
 
-  g.tL.yore.to('#tpTitleYore', {
+  g.tL.yore.to( '#tpTitleYore', {
     duration: 3,
     opacity: 0,
-  })
-    .to('#tpTitleExplore', {
+  } )
+    .to( '#tpTitleExplore', {
       duration: 3,
       opacity: 1,
-    }, '<')
+    }, '<' )
 
-  if (g.scene.skip.ff) g.tL.yore.call(setScene, [ n ], '>')
+  if ( g.scene.skip.ff ) g.tL.yore.call( setScene, [ n ], '>' )
 
   return true
 }

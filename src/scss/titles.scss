@@ -1,3 +1,6 @@
+div#tpTitles {
+  cursor: wait;
+}
 div.tpTitles {
   height: 100%;
   left: 0;
@@ -5,11 +8,14 @@ div.tpTitles {
   top: 0;
   width: 100%;
   z-index: 600;
+  &#tpTitleScreen {
+    background-color: black;
+    pointer-events: none;
+  }
 }
-div#tpTitles {
-  cursor: wait;
-}
-div.tpTitle {
+
+.tpTitle {
+  display: block;
   background-repeat: no-repeat;
   background-size: contain;
   height: 202px;
@@ -18,16 +24,19 @@ div.tpTitle {
   top: 50%;
   transform: translate(-50%, -50%);
   width: 1392px;
+  &#tpTitleYore {
+    background-image: url(../img/tpTitles/DAYS_OF_YORE.png);
+    opacity: 0;
+  }
+  &#tpTitleYoreAnim {
+    opacity: 0.64;
+    transform: scale(0.989) translate(-50.7%, -51%);
+  }
+  &#tpTitleExplore {
+    background-image: url(../img/tpTitles/EXPLORE.png);
+    background-position: right center;
+    opacity: 0;
+  }
 }
-div#tpTitleScreen {
-  background-color: black;
-  pointer-events: none;
-}
-div#tpTitleYore {
-  background-image: url(../img/tpTitles/DAYS_OF_YORE.png);
-}
-div#tpTitleExplore {
-  background-image: url(../img/tpTitles/EXPLORE.png);
-  background-position: right center;
-  opacity: 0;
-}
+
+

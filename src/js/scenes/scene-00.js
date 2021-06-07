@@ -1,4 +1,5 @@
 import { gsap, TimelineMax as TL } from 'gsap'
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 
 import g from '../glob'
 import { setAddOn } from '../utils'
@@ -6,6 +7,8 @@ import { setScene } from '../scene'
 // import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
 import { setBaubleLayers } from '../baubles'
+
+gsap.registerPlugin( DrawSVGPlugin )
 
 const scene00 = 'Fade In / DAYS OF YORE'
 
@@ -20,17 +23,36 @@ const setScene00 = ( c, n ) => {
   // setBaubleLayer01()
   setBaubleLayers()
 
-  g.tL.yore.to( '#tpTitleScreen', {
-    duration: 2,
-    onComplete: function () {
-      if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) spinTime()
-    },
-    opacity: 0,
+  g.tL.yore.set( '#tpTitleYoreAnim path', {
+    drawSVG: 0,
   } )
-    .set( '#tpTitles', {
-      cursor: 'pointer',
+    .to( '#tpTitleScreen', {
+      duration: 2,
+      onComplete: function () {
+        if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) spinTime()
+      },
+      opacity: 0,
+    } )
+    .to( '#tpTitleYoreAnim path', {
+      drawSVG: '100%',
+      duration: 2.42,
+      onComplete: function () {
+        g.tL.yore.to( '#tpTitleYore', {
+          duration: 2,
+          opacity: 1,
+        }, '>' )
+          .to( '#tpTitleYoreAnim', {
+            duration: 2,
+            onComplete: function () {
+              gsap.set( '#tpTitles', {
+                cursor: 'pointer',
+              } )
+            },
+            opacity: 0,
+          }, '<1' )
+      },
+      stagger: 0.42,
     }, '>' )
-
   return true
 }
 

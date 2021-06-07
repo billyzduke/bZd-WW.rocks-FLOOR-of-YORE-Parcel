@@ -571,6 +571,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
     if ( controls ) g.three.scene.add( new THREE.AxesHelper( 500 ) )
 
     ifFunctionThenCall( g.three.mkr.setMades )
+
   }
 }
 
