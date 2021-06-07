@@ -63,7 +63,16 @@ import assPipeMetal02 from 'url:/src/img/future/metalSphere.png'
 import assPipeMetal03 from 'url:/src/img/future/metalPipe2.png'
 import assPanelScreen from 'url:/src/img/future/panelScreen.png'
 import assHeadLightCone from 'url:/src/img/future/headLightCone.png'
+import assSeatCtrTexture from 'url:/src/img/future/seatCtr.png'
+import assSeatCtrEmMap from 'url:/src/img/future/seatCtrEmMap.png'
 import assSeatShapePaths from 'url:/src/img/future/seatShapes.svg'
+import assIntRoof from 'url:/src/img/future/interiorRoof.png'
+import assIntRearPanel1 from 'url:/src/img/future/interiorRearPanel1.png'
+import assIntRearPanel2 from 'url:/src/img/future/interiorRearPanel2.png'
+import assIntRearPanel3 from 'url:/src/img/future/interiorRearPanel3.png'
+import assIntDoorLower from 'url:/src/img/future/interiorDoorLower.png'
+import assIntDoorMiddle from 'url:/src/img/future/interiorDoorMiddle.png'
+import assIntDoorUpper from 'url:/src/img/future/interiorDoorUpper.png'
 import g from './glob'
 import { devLog } from './utils'
 
@@ -590,20 +599,20 @@ const makeUnderCarriage = () => ( {
 const makeBody = () => ( {
   struct: [ 432, 1000, 300 ],
   children: {
-    // bcLowerL: {
-    //   txtAss: assBodyCenterLower,
-    //   struct: [ 103, 460 ],
-    //   pivot: [ 51.5 ],
-    //   position: [ 216, 9.5 ],
-    //   rotation: [ 0, 90 ],
-    // },
-    // bcLowerR: {
-    //   txtAss: assBodyCenterLower,
-    //   struct: [ 103, 460 ],
-    //   pivot: [ 51.5 ],
-    //   position: [ -216, 9.5 ],
-    //   rotation: [ 0, 90 ],
-    // },
+    bcLowerL: {
+      txtAss: assBodyCenterLower,
+      struct: [ 103, 460 ],
+      pivot: [ 51.5 ],
+      position: [ 216, 9.5 ],
+      rotation: [ 0, 90 ],
+    },
+    bcLowerR: {
+      txtAss: assBodyCenterLower,
+      struct: [ 103, 460 ],
+      pivot: [ 51.5 ],
+      position: [ -216, 9.5 ],
+      rotation: [ 0, 90 ],
+    },
     bcMiddleL: {
       txtAss: assBodyCenterMiddle,
       struct: [ 61, 729 ],
@@ -618,57 +627,60 @@ const makeBody = () => ( {
       position: [ -216, 0, -103 ],
       rotation: [ 0, 60 ],
     },
-    // bcUpperL: {
-    //   struct: [ 100, 359 ],
-    //   pivot: [ 50 ],
-    //   position: [ 186, -27.5, -155 ],
-    //   children: {
-    //     bcUpperFrameL: {
-    //       txtAss: assBodyCenterUpper,
-    //       struct: [ 100, 359 ],
-    //       pivot: [ 50 ],
-    //       rotation: [ 0, 132.5 ],
-    //     },
-    //     sideViewMirrorL: {
+    bcUpperL: {
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ 186, -27.5, -155 ],
+      children: {
+        bcUpperFrameL: {
+          txtAss: assBodyCenterUpper,
+          struct: [ 100, 359 ],
+          pivot: [ 50 ],
+          rotation: [ 0, 132.5 ],
+        },
+        sideViewMirrorL: {
 
-    //     },
-    //   },
-    // },
-    // bcUpperR: {
-    //   struct: [ 100, 359 ],
-    //   pivot: [ 50 ],
-    //   position: [ -186, -27.5, -155 ],
-    //   children: {
-    //     bcUpperFrameR: {
-    //       txtAss: assBodyCenterUpper,
-    //       struct: [ 100, 359 ],
-    //       pivot: [ 50 ],
-    //       rotation: [ 0, 47.5 ],
-    //     },
-    //     sideViewMirrorR: {
+        },
+      },
+    },
+    bcUpperR: {
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ -186, -27.5, -155 ],
+      children: {
+        bcUpperFrameR: {
+          txtAss: assBodyCenterUpper,
+          struct: [ 100, 359 ],
+          pivot: [ 50 ],
+          rotation: [ 0, 47.5 ],
+        },
+        sideViewMirrorR: {
 
-    //     },
-    //   },
-    // },
-    // sideWindowL: {
-    //   txtAss: assSideWindow,
-    //   struct: [ 100, 359 ],
-    //   pivot: [ 50 ],
-    //   position: [ 185.5, -27.5, -155 ],
-    //   rotation: [ 0, 132.5 ],
-    // },
-    // sideWindowR: {
-    //   txtAss: assSideWindow,
-    //   struct: [ 100, 359 ],
-    //   pivot: [ 50 ],
-    //   position: [ -185.5, -27.5, -155 ],
-    //   rotation: [ 0, 47.5 ],
-    // },
-    // roof: {
-    //   txtAss: assRoof,
-    //   struct: [ 251.5, 195 ],
-    //   position: [ 0, -98.5, -220.5 ],
-    // },
+        },
+      },
+    },
+    sideWindowL: {
+      txtAss: assSideWindow,
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ 185.5, -27.5, -155 ],
+      rotation: [ 0, 132.5 ],
+      msh: { opacity: 0 }, // <- DELETE ME
+    },
+    sideWindowR: {
+      txtAss: assSideWindow,
+      struct: [ 100, 359 ],
+      pivot: [ 50 ],
+      position: [ -185.5, -27.5, -155 ],
+      rotation: [ 0, 47.5 ],
+      msh: { opacity: 0 }, // <- DELETE ME
+    },
+    roof: {
+      txtAss: assRoof,
+      struct: [ 251.5, 195 ],
+      position: [ 0, -98.5, -220.5 ],
+      // msh: { opacity: 0.36 }, // <- DELETE ME
+    },
     windShield: {
       children: {
         windShieldFrame: {
@@ -677,6 +689,7 @@ const makeBody = () => ( {
           pivot: [ 0, -82.5 ],
           position: [ 0, 149.5, -154 ],
           rotation: [ 23.5 ],
+          msh: { opacity: 0.36 }, // <- DELETE ME
         },
         windShieldGlass: {
           txtAss: assWindShieldGlass,
@@ -911,7 +924,6 @@ const makeSeats = () => {
       const seatCtrShape = SVGLoader.createShapes( paths[0] )
       const seatCtrGeo = new THREE.ExtrudeGeometry( seatCtrShape[0], { depth: 46, bevelThickness: 14, bevelOffset: -7 } )
       seatCtrGeo.translate( 0, 0, -23 )
-      // unsure why these shapes will not display textures
       const seatMat = new THREE.MeshLambertMaterial( {
         // metalness: 0,
         // roughness: 0.4,
@@ -919,8 +931,18 @@ const makeSeats = () => {
         side: THREE.DoubleSide,
         color: new THREE.Color( 0x88837d ),
         emissive: new THREE.Color( 0x88837d ),
+        emissiveIntensity: 0.125,
       } )
-      const seatCtrMsh = new THREE.Mesh( seatCtrGeo, seatMat )
+      const seatCtrMat = seatMat.clone()
+      seatCtrMat.map = g.three.mkr.textureLoader( assSeatCtrTexture )
+      seatCtrMat.emissiveMap = g.three.mkr.textureLoader( assSeatCtrEmMap )
+      seatCtrMat.map.wrapS = seatCtrMat.map.wrapT = seatCtrMat.emissiveMap.wrapS = seatCtrMat.emissiveMap.wrapT = THREE.RepeatWrapping
+      seatCtrMat.map.repeat.set( 0.005, 0.0175 )
+      seatCtrMat.emissiveMap.repeat.set( 0.005, 0.0175 )
+      seatCtrMat.emissiveIntensity = 0.38
+      seatCtrMat.map.offset.y = seatCtrMat.emissiveMap.offset.y = 0.125
+      seatCtrMat.map.rotation = seatCtrMat.emissiveMap.rotation = THREE.Math.degToRad( 180 )
+      const seatCtrMsh = new THREE.Mesh( seatCtrGeo, [ seatMat, seatCtrMat ] )
       g.three.mkr.inScene.seats = [ seatCtrMsh, seatCtrMsh.clone() ]
       const seatBackFlankShape = SVGLoader.createShapes( paths[1] )
       const seatBackFlankGeo = new THREE.LatheGeometry( seatBackFlankShape[0].getPoints() )
@@ -933,7 +955,7 @@ const makeSeats = () => {
       const seatBaseFrontMsh = new THREE.Mesh( seatBaseFrontGeo, seatMat )
       const seatBaseFronts = [ seatBaseFrontMsh, seatBaseFrontMsh.clone() ]
       g.three.mkr.inScene.seats.forEach( ( _, side ) => {
-        g.three.mkr.inScene.seats[side].position.set( side ? -100 : 100, -170, -182 )
+        g.three.mkr.inScene.seats[side].position.set( side ? -100 : 100, -176, -188 )
         g.three.mkr.inScene.seats[side].rotateY( THREE.Math.degToRad( 90 ) )
         g.three.mkr.inScene.seats[side].rotateZ( THREE.Math.degToRad( 90 ) )
         g.three.mkr.inScene.seats[side].name = side ? 'passengerSeat' : 'driversSeat'
@@ -965,13 +987,99 @@ const makeSeats = () => {
   )
 }
 
+const makeCompass = () => ( {
+  geo: 'sphere',
+  // eslint-disable-next-line array-bracket-newline, array-element-newline
+  struct: [ 5, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2 ],
+  rotation: { x: -90 },
+} )
+
+const makeDashboard = () => ( {
+  struct: [ 373, 101, 69 ],
+  position: [ 0, 148, -147 ],
+  children: {
+    compass: makeCompass(),
+  },
+} )
+
 const makeInterior = () => {
   makeSeats()
   return {
     struct: [ 432, 1000, 300 ],
     children: {
-      // driversSeat: makeSeat( 'L' ),
-      // passengerSeat: makeSeat( 'R' ),
+      dashBoard: makeDashboard(),
+      interiorDoorLowerL: {
+        txtAss: assIntDoorLower,
+        struct: [ 103, 422 ],
+        pivot: [ 51.5 ],
+        position: [ 214, 3.5 ],
+        rotation: [ 0, 90 ],
+      },
+      interiorDoorLowerR: {
+        txtAss: assIntDoorLower,
+        struct: [ 103, 422 ],
+        pivot: [ 51.5 ],
+        position: [ -214, 3.5 ],
+        rotation: [ 0, 90 ],
+      },
+      interiorDoorMiddleL: {
+        txtAss: assIntDoorMiddle,
+        struct: [ 61, 422 ],
+        pivot: [ 30.5 ],
+        position: [ 214, 3.5, -103 ],
+        rotation: [ 0, 120.5 ],
+      },
+      interiorDoorMiddleR: {
+        txtAss: assIntDoorMiddle,
+        struct: [ 61, 422 ],
+        pivot: [ 30.5 ],
+        position: [ -214, 3.5, -103 ],
+        rotation: [ 0, 60 ],
+      },
+      interiorDoorUpperL: {
+        txtAss: assIntDoorUpper,
+        struct: [ 100, 359 ],
+        pivot: [ 50 ],
+        position: [ 184, -27.5, -155 ],
+        rotation: [ 0, 132.5 ],
+      },
+      interiorDoorUpperR: {
+        txtAss: assIntDoorUpper,
+        struct: [ 100, 359 ],
+        pivot: [ 50 ],
+        position: [ -184, -27.5, -155 ],
+        rotation: [ 0, 47.5 ],
+      },
+      interiorRoof: {
+        txtAss: assIntRoof,
+        struct: [ 251.5, 195 ],
+        position: [ 0, -98.5, -218.5 ],
+      },
+      rearPanels: {
+        children: {
+          rearPanel1: {
+            txtAss: assIntRearPanel1,
+            struct: [ 430, 218.5 ],
+            pivot: [ 0, 109.25 ],
+            position: [ 0, -207 ],
+            rotation: { x: -90 },
+          },
+          rearPanel2: {
+            txtAss: assIntRearPanel2,
+            struct: [ 82, 218.5 ],
+            pivot: [ 41, 109.25 ],
+            position: [ -115, -188 ],
+            rotation: { x: -90, y: 15 },
+          },
+          rearPanel3: {
+            txtAss: assIntRearPanel3,
+            struct: [ 100, 218.5 ],
+            pivot: [ 50, 109.25 ],
+            position: [ -215, -188 ],
+            rotation: { x: -90 },
+          },
+        },
+      },
     },
   }
 }

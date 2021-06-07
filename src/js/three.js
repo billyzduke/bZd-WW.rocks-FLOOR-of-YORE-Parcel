@@ -468,7 +468,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
       const smokeTexture = g.three.mkr.textureLoader( assSmoke )
       const smokeAlphaTexture = g.three.mkr.textureLoader( assSmokeAlpha )
       const smokeMaterial = new THREE.MeshLambertMaterial( {
-        color: 0x00dddd, map: smokeTexture, transparent: true, alphaMap: smokeAlphaTexture,
+        alphaMap: smokeAlphaTexture, emissive: 0x00dddd, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
       } )
       const smokeDepth = 3500
       const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
@@ -500,9 +500,9 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
 
     if ( g.three.camControls ) {
       g.three.xyz.forEach( axis => {
-        g.three.camera.position[axis] = 1000
+        g.three.camera.position[axis] = 500
       } )
-      g.three.camControls.target.copy( g.three.grp.deLorean.position )
+      g.three.camControls.target = new THREE.Vector3( 0, 150, 0 )
       g.three.camControls.update()
     }
 
@@ -597,7 +597,11 @@ const makeThreeObj = ( obj, makeObj ) => {
         break
       case 'sphere':
         if ( g.three.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] ) {
-          g.three.obj[obj].geo = new THREE.SphereGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2] )
+          if ( typeof makeObj.struct[3] === 'undefined' ) makeObj.struct[3] = 0 // phiStart
+          if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = Math.PI * 2 // phiLength
+          if ( typeof makeObj.struct[5] === 'undefined' ) makeObj.struct[5] = 0 // phiStart
+          if ( typeof makeObj.struct[6] === 'undefined' ) makeObj.struct[6] = Math.PI // phiLength
+          g.three.obj[obj].geo = new THREE.SphereGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4], makeObj.struct[5], makeObj.struct[6] )
         } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
         break
       case 'torus':
