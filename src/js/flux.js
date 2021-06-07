@@ -316,8 +316,13 @@ const randomizeTargetReached = d => {
 
 const activateFluxDisplay = e => {
   if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
-    if ( !gsap.ticker._listeners.includes( incrementFluxDisplay ) ) gsap.ticker.add( incrementFluxDisplay )
-    prepDeLorean()
+    if ( !g.three.mkr.prepped ) prepDeLorean()
+    else {
+      gsap.set( '#glitch01', { opacity: 0 } )
+      g.three.on = false
+      g.three.mkr.stopRendering()
+      if ( !gsap.ticker._listeners.includes( incrementFluxDisplay ) ) gsap.ticker.add( incrementFluxDisplay )
+    }
   } else {
     gsap.ticker.remove( incrementFluxDisplay )
     gsap.ticker.add( decrementFluxDisplay )

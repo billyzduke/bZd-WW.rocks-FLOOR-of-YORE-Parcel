@@ -55,7 +55,6 @@ const loadApp = () => {
       'future',
       'gemGuy',
       'ggrove',
-      'glitch01',
       'heartChakra',
       'help',
       'helpList',

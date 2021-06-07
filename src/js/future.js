@@ -50,16 +50,20 @@ const wormHoleFlashTick2 = () => {
 
 const prepDeLorean = () => {
   if ( !g.three.mkr.prepped ) {
+    g.three.mkr.prepped = true
     gsap.set( '#glitch01', { opacity: 1 } )
     g.three.on = true
-    g.three.mkr.startRendering()
+    g.el.deLorean.style.left = 0
+    setTimeout( () => {
+      g.three.mkr.startRendering()
+    }, 100 )
   }
 }
 
 const startDeLorean = () => {
   if ( !g.three.on ) {
     g.el.deLorean.style.opacity = 1
-    g.el.deLorean.style.left = 0
+    g.el.deLorean.style.pointerEvents = 'auto'
     g.three.on = true
     // g.three.mkr.io = undefined
     g.three.cleanUp = setAddOn( '#deLorean', 'click', toggleFlyAlongPath )

@@ -307,13 +307,6 @@ const setMakes = () => {
         } )
       }
     } )
-
-    g.el.glitch01.style.opacity = 0
-    g.three.on = false
-    if (isFunction(g.three.mkr.stopRendering)) {
-      g.three.mkr.stopRendering()
-      g.three.mkr.prepped = true
-    }
   }
 }
 
