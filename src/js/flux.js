@@ -511,8 +511,8 @@ const incrementFluxDisplay = () => {
       top: '50%',
       left: '50%',
     } )
-    g.flux.forCleanUp.display.forEach( flfc => {
-      ifFunctionThenCall( flfc )
+    g.flux.forCleanUp.display.forEach( fluxCleanUpFunc => {
+      ifFunctionThenCall( fluxCleanUpFunc )
     } )
     dimFluxMeter()
     lightFluxMeter( 'FLUX' )

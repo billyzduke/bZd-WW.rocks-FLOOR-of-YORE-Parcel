@@ -4,7 +4,7 @@ import { TextPlugin } from 'gsap/TextPlugin'
 import g from './glob'
 import { setFlux } from './flux'
 import {
-  ifFunctionThenCall, gsapTick, randOnum, setAddOn, setClearActors, toggleFermata,
+  ifFunctionThenCall, gsapTick, randOnum, setAddOn, setClearActors, toggleFermata, devLog,
 } from './utils'
 
 gsap.registerPlugin( TextPlugin )
@@ -39,48 +39,68 @@ const setWarps = () => {
 
 const startWarps = () => {
   g.tL.warp = new TL( { defaults: { overwrite: 'auto' } } )
-  g.tL.warp.to( '.trippyGrid.red', {
+  g.tL.warp.fromTo( '.trippyGrid.red', {
+    rotate: 0,
+  }, {
     duration: 4,
     rotate: 360,
     repeat: -1,
   } )
-    .to( '.trippyGrid.red', {
+    .fromTo( '.trippyGrid.red', {
+      scale: 1,
+      skewX: 0,
+    }, {
       duration: 2,
       scale: 3,
       skewX: '50%',
       repeat: -1,
       yoyo: true,
     }, '<' )
-    .to( '.trippyGrid.blue', {
+    .fromTo( '.trippyGrid.blue', {
+      rotate: 0,
+    }, {
       duration: 8,
       rotate: -360,
       repeat: -1,
     }, '<' )
-    .to( '.trippyGrid.blue', {
+    .fromTo( '.trippyGrid.blue', {
+      scale: 1,
+      skewY: 0,
+    }, {
       duration: 4,
       scale: 5,
       skewY: '25%',
       repeat: -1,
       yoyo: true,
     }, '<' )
-    .to( '.trippyGrid.green', {
+    .fromTo( '.trippyGrid.green', {
+      rotate: 0,
+    }, {
       duration: 10,
       rotate: 360,
       repeat: -1,
     }, '<' )
-    .to( '.trippyGrid.green', {
+    .fromTo( '.trippyGrid.green', {
+      scale: 1,
+      skewX: 0,
+    }, {
       duration: 2,
       scale: 6,
       skewX: '25%',
       repeat: -1,
       yoyo: true,
     }, '<' )
-    .to( '.trippyGrid.indigo', {
+    .fromTo( '.trippyGrid.indigo', {
+      rotate: 0,
+    }, {
       duration: 12,
       rotate: -360,
       repeat: -1,
     }, '<' )
-    .to( '.trippyGrid.indigo', {
+    .fromTo( '.trippyGrid.indigo', {
+      scale: 1,
+      skewY: 0,
+    }, {
       duration: 6,
       scale: 12,
       skewY: '50%',
@@ -137,9 +157,6 @@ const startDeLorean = () => {
   if ( !g.three.on ) {
     g.el.deLorean.style.opacity = 1
     g.el.deLorean.style.pointerEvents = 'auto'
-    g.three.on = true
-    // g.three.mkr.io = undefined
-    g.three.mkr.startRendering()
   } else {
     console.log( { alreadyOn: g.three.on } )
   }
@@ -155,12 +172,21 @@ const beginFuture = () => {
     startDeLorean()
     setTimeout( () => {
       blindingFlashUnTick2()
+      wormHoleFlashTick2()
       g.qss.wormHoler( {
         opacity: 0,
       } )
+      g.tL.warp.play( 0 )
       gsap.set( '#moireAuras', {
         opacity: 1,
         backgroundColor: 'rgba(255,255,255,1)',
+        overwrite: 'auto',
+      } )
+      gsap.to( '#moireAuras', {
+        duration: 6,
+        backgroundColor: 'rgba(0,0,0,1)',
+        repeat: -1,
+        yoyo: true,
       } )
       g.three.cleanUp.moireAuras = setAddOn( '#moireAuras', 'click', fadeMoireAuras )
     }, 700 )
@@ -168,6 +194,7 @@ const beginFuture = () => {
 }
 
 const fadeMoireAuras = () => {
+  devLog( 'fadeMoireAuras()' )
   ifFunctionThenCall( g.three.cleanUp.moireAuras )
   g.three.cleanUp.moireAuras = undefined
   gsap.to( '#moireAuras', {
@@ -176,6 +203,9 @@ const fadeMoireAuras = () => {
     onComplete: function () {
       setClearActors( '#moireAuras, #blindingFlash, #flux' )
       g.three.cleanUp.backItUp = setAddOn( '#deLorean', 'click', toggleFlyAlongPath )
+      g.three.on = true
+      // g.three.mkr.io = undefined
+      g.three.mkr.startRendering()
     },
   } )
   gsap.to( '#moireAuras', {
