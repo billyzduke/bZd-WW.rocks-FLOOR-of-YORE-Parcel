@@ -33,6 +33,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
         wls: [],
         glo: [],
       },
+      cleanUp: {},
       clk: new THREE.Clock(),
       drg: false,
       flm: true,
@@ -243,7 +244,9 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
 
     g.three.mkr.backItUp = () => {
       g.three.mov = false
-      ifFunctionThenCall( g.three.cleanUp )
+      Object.keys( g.three.cleanUp ).forEach( cuFunc => {
+        ifFunctionThenCall( g.three.cleanUp[cuFunc] )
+      } )
       g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
       g.tL.dL.to( g.three.mkr.inScene.deLorean.position, {
         duration: 9,
@@ -464,11 +467,19 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
     g.three.grp.smoke.name = 'smoke'
     g.three.scene.add( g.three.grp.smoke )
     g.three.mkr.inScene.smoke = g.three.grp.smoke
+    g.three.mkr.smokem = [
+      'c56fdd',
+      'ac9bdd',
+      'c6b3dd',
+      'c8acdd',
+      'c4c4de',
+      '00dddd',
+    ]
     if ( smoke ) {
       const smokeTexture = g.three.mkr.textureLoader( assSmoke )
       const smokeAlphaTexture = g.three.mkr.textureLoader( assSmokeAlpha )
       const smokeMaterial = new THREE.MeshLambertMaterial( {
-        alphaMap: smokeAlphaTexture, emissive: 0x00dddd, emissiveIntensity: 0.2, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
+        alphaMap: smokeAlphaTexture, emissiveIntensity: 0.2, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
       } )
       const smokeDepth = 3500
       const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
@@ -476,6 +487,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
 
       for ( let p = 0; p < 99; p++ ) {
         const smokeMat = smokeMaterial.clone()
+        smokeMat.emissive = new THREE.Color( Number( `0x${g.three.mkr.smokem[randOnum( 0, g.three.mkr.smokem.length - 1 )]}` ) )
         smokeMat.opacity = randOnum( 23, 100 ) / 100
         const particle = new THREE.Mesh( smokeGeo, smokeMat )
         particle.name = `smokeCloud_${padStr( p )}`
@@ -571,7 +583,6 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
     if ( controls ) g.three.scene.add( new THREE.AxesHelper( 500 ) )
 
     ifFunctionThenCall( g.three.mkr.setMades )
-
   }
 }
 

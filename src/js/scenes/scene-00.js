@@ -33,6 +33,15 @@ const setScene00 = ( c, n ) => {
       },
       opacity: 0,
     } )
+    .fromTo( '#tpTitleYoreAnim', {
+      WebkitFilter: 'grayscale(1)',
+      filter: 'grayscale(1)',
+    }, {
+      duration: 8.23,
+      ease: 'none',
+      WebkitFilter: 'grayscale(0)',
+      filter: 'grayscale(0)',
+    }, '>' )
     .to( '#tpTitleYoreAnim path', {
       drawSVG: '100%',
       duration: 2.42,
@@ -52,7 +61,7 @@ const setScene00 = ( c, n ) => {
           }, '<1' )
       },
       stagger: 0.42,
-    }, '>' )
+    }, '<' )
   return true
 }
 

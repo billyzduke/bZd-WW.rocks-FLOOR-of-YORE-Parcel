@@ -7,6 +7,7 @@ import { setScene } from './scene'
 import { toggleGemGuy } from './lion-t-shirt'
 import { toggleLionEyes, toggleLionHalos, toggleLionJarp } from './lion-head'
 import { toggleLionHands } from './lion-hands'
+import { shockTick } from './lightning-rods'
 
 const toggleLion = forcePause => {
   toggleGemGuy( forcePause )
@@ -45,11 +46,8 @@ const lionShockTick = () => {
   g.lion.blur2X( {
     left: `${randOnum() ? '' : '-'}${randOnum( 12, 20 )}px`,
     opacity: randOnum( 42, 76 ) / 100,
-  } )
-  gsap.set( '.lightningRod', {
-    opacity: 0,
-  } )
-  Object.keys( g.qss.lightningRods ).forEach( lrw => g.qss.lightningRods[lrw][gsap.utils.snap( 1, gsap.utils.random( 0, 28 ) )]( 1 ) )
+  })
+  shockTick()
 }
 
 const relieveTheLion = () => {

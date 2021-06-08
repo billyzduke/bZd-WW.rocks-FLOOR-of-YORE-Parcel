@@ -15,7 +15,7 @@ import { setThree } from './three'
 import { setScene, setSceneSkipper } from './scene'
 import { resetCtrRingPos1 } from './baubles/layer-01'
 import { isSet, setAddOn, toggleFermata } from './utils'
-import { startDeLorean, toggleFlyAlongPath } from './future'
+import { setGlitches, startDeLorean, toggleFlyAlongPath } from './future'
 
 // import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
@@ -70,6 +70,8 @@ const loadApp = () => {
       'lionHead',
       'lolf01',
       'lolf02',
+      'lynchBox',
+      'mainStage',
       'model',
       'owlBeak',
       'owlLaser',
@@ -105,12 +107,7 @@ const loadApp = () => {
       'wormSignScreen',
       'yoreFloor',
     ] ),
-    ...htmEl( [
-      'html',
-      'body',
-      'header',
-      'main',
-    ], 'tag' ),
+    ...htmEl( [ 'html', 'body', 'header' ], 'tag' ),
     ...htmEl( '.cw', 'q', true ),
     ...htmEl( '.makisu', 'q', true ),
     ...htmEl( '.tpTitle', 'q', true ),
@@ -123,17 +120,19 @@ const loadApp = () => {
   el.bL = []
   g.el = el
   g.w = getW( g.cyOffPx )
+  g.mains = [ g.el.lynchBox, g.el.mainStage, g.el.future ]
 
-  if ( g.el.main ) {
-    g.main.scale = g.w.h / Number( g.window.getComputedStyle( g.el.main, null ).getPropertyValue( 'height' ).slice( 0, -2 ) )
-    g.el.main.style.transform = `scale(${g.main.scale})`
-    g.main.w = g.w.w / g.main.scale
-    g.el.main.style.width = `${g.main.w}px`
-    g.main.h = g.w.h / g.main.scale
-    g.main.cx = g.main.w / 2
-    g.main.cy = g.main.h / 2
-    g.main.cyOff = g.main.cy + g.cyOffPx
-  }
+  g.main.scale = g.w.h / Number( g.window.getComputedStyle( g.el.mainStage, null ).getPropertyValue( 'height' ).slice( 0, -2 ) )
+  g.main.w = g.w.w / g.main.scale
+  g.main.h = g.w.h / g.main.scale
+  g.main.cx = g.main.w / 2
+  g.main.cy = g.main.h / 2
+  g.main.cyOff = g.main.cy + g.cyOffPx
+
+  g.mains.forEach( main => {
+    main.style.transform = `scale(${g.main.scale})`
+    main.style.width = `${g.main.w}px`
+  } )
 
   if ( g.el.header && g.el.home ) {
     g.el.home.addEventListener( 'mouseenter', () => revealNav() )
@@ -149,6 +148,7 @@ const loadApp = () => {
   setTitles()
   setCurtains()
   setFloor()
+  setGlitches()
 
   if ( g.scene.current >= 3 ) resetCtrRingPos1()
 

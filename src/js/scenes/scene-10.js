@@ -10,10 +10,10 @@ import { setFolkLore } from '../folklore'
 
 const scene10 = 'Shock the Lion / Open All Eyes / Release the Owl'
 
-const setScene10 = (c, n) => {
+const setScene10 = ( c, n ) => {
   g.scene.setting = c
   shockTheLion()
-  g.scene.forCleanUp[c].lionShockTicker = gsapTick(lionShockTick)
+  g.scene.forCleanUp[c].lionShockTicker = gsapTick( lionShockTick )
 
   setFoetuses()
   setFolkLore()
@@ -21,22 +21,22 @@ const setScene10 = (c, n) => {
   setLionHands()
   toggleLionJarp()
 
-  gsap.fromTo('#theOwlIsNotWhatItSeems', {
+  gsap.fromTo( '#theOwlIsNotWhatItSeems', {
     translateY: '-=76',
   }, {
     duration: g.scene.skip.ff || 1.42,
     scale: 1,
     translateY: 0,
-  })
-  gsap.set('#gemGuy, #raelStar, #vajraCross, #heartPulse, #crossMyHeart', {
+  } )
+  gsap.set( '#gemGuy, #raelStar, #vajraCross, #heartPulse, #crossMyHeart', {
     cursor: 'no-drop',
-  })
-  gsap.set('#threshold', {
+  } )
+  gsap.set( '#threshold', {
     opacity: 1,
-  })
+  } )
 
-  const relieveTL = new TL({ defaults: { overwrite: 'auto' } })
-  relieveTL.call(relieveTheLion, [], g.scene.skip.ff || 4.242)
+  const relieveTL = new TL( { defaults: { overwrite: 'auto' } } )
+  relieveTL.call( relieveTheLion, [], g.scene.skip.ff || 4.242 )
 
   return true
 }

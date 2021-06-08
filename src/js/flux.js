@@ -10,6 +10,13 @@ import assFluxDisplay6 from 'url:/src/img/flux/flux-display-6.png'
 import assFluxDisplay7 from 'url:/src/img/flux/flux-display-7.png'
 import assFluxDisplay8 from 'url:/src/img/flux/flux-display-8.png'
 import assFluxDisplay9 from 'url:/src/img/flux/flux-display-9.png'
+import assFluxBroken1 from 'url:/src/img/flux/flux-display-broken-1.png'
+import assFluxBroken2 from 'url:/src/img/flux/flux-display-broken-2.png'
+import assFluxBroken3 from 'url:/src/img/flux/flux-display-broken-3.png'
+import assFluxBroken4 from 'url:/src/img/flux/flux-display-broken-4.png'
+import assFluxBroken5 from 'url:/src/img/flux/flux-display-broken-5.png'
+import assFluxBroken6 from 'url:/src/img/flux/flux-display-broken-6.png'
+import assFluxBroken7 from 'url:/src/img/flux/flux-display-broken-7.png'
 import g from './glob'
 import {
   gsapTick, ifFunctionThenCall, randOnum, setAddOn,
@@ -17,7 +24,8 @@ import {
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
 import { setScene } from './scene'
-import { prepDeLorean } from './future'
+import { prepDeLorean, startWarps } from './future'
+import { shockTick } from './lightning-rods'
 
 const setFlux = () => {
   g.flux = {
@@ -30,6 +38,20 @@ const setFlux = () => {
     capacitor: gsap.quickSetter( '#fluxCapacitorOn', 'css' ),
     mask: [ gsap.quickSetter( '#fluxMask', 'css' ), gsap.quickSetter( '#fluxUnMask', 'css' ) ],
   }
+  g.lynchBox = {
+    scaleFactorX10: 10,
+    logPoints: [
+      32,
+      52,
+      65,
+      74,
+      79,
+      82,
+      85,
+      86,
+      87,
+    ],
+  }
 
   gsap.set( '#fluxMask', { scale: 0, translateY: -45 } )
   gsap.set( '#fluxUnMask', { scale: 100, translateY: 45 } )
@@ -38,6 +60,12 @@ const setFlux = () => {
   setFluxEchoes()
   setFluxMeter()
 
+  gsap.set( '#lightningRodsWrapper', {
+    translateY: '+=550',
+    scale: 1.5,
+    transformOrigin: '50% 547px',
+  } )
+  g.el.lynchBox.style.opacity = 1
   g.el.flux.classList.remove( 'tuct' )
 }
 
@@ -54,19 +82,33 @@ const setFluxDisplay = () => {
     assFluxDisplay8,
     assFluxDisplay9,
   ]
+  const assFluxBrokenSegments = [
+    assFluxBroken1,
+    assFluxBroken2,
+    assFluxBroken3,
+    assFluxBroken4,
+    assFluxBroken5,
+    assFluxBroken6,
+    assFluxBroken7,
+  ]
+
   g.flux.display = [ {
     dispose: false,
     // eslint-disable-next-line array-bracket-newline, array-element-newline
-    pre: [ 0, 0, 1, 1, 2, 4 ],
-    current: 8, // how many other random digits should flash before fluxDisplay is ready for click
+    resetPre: [ 0, 0, 1, 1, 2, 4 ],
+    resetCurrent: 8, // how many other random digits should flash before fluxDisplay is ready for click
   },
   {
     dispose: false,
     // eslint-disable-next-line array-bracket-newline, array-element-newline
-    pre: [ 4, 8, 5, 6, 3, 2 ],
-    current: 12, // how many other random digits should flash before fluxDisplay is ready for click
+    resetPre: [ 4, 8, 5, 6, 3, 2 ],
+    resetCurrent: 12, // how many other random digits should flash before fluxDisplay is ready for click
   } ]
   g.qss.flux.display = [ [], [] ]
+  g.qss.flux.broken = [ [], [] ]
+  g.qss.flux.directive = gsap.quickSetter( '#fluxDisplayDirective', 'opacity' )
+  g.flux.resetDirective = 30 // how many times the fluxDirective light flickers before settling ON
+
   assFluxDisplayDigits.forEach( afdd => {
     const fdd10 = g.document.createElement( 'img' )
     fdd10.src = afdd
@@ -77,8 +119,17 @@ const setFluxDisplay = () => {
     g.el.fluxDisplay01.appendChild( fdd01 )
     g.qss.flux.display[1].push( gsap.quickSetter( fdd01, 'opacity' ) )
   } )
-  g.qss.flux.directive = gsap.quickSetter( '#fluxDisplayDirective', 'opacity' )
-  g.flux.directive = 30 // how many times the fluxDirective light flickers before settling ON
+
+  assFluxBrokenSegments.forEach( afbs => {
+    const fbs10 = g.document.createElement( 'img' )
+    fbs10.src = afbs
+    fbs10.classList.add( 'fluxDisplayBroken' )
+    g.el.fluxDisplay10.appendChild( fbs10 )
+    g.qss.flux.broken[0].push( gsap.quickSetter( fbs10, 'css' ) )
+    const fbs01 = fbs10.cloneNode( true )
+    g.el.fluxDisplay01.appendChild( fbs01 )
+    g.qss.flux.broken[1].push( gsap.quickSetter( fbs01, 'css' ) )
+  } )
 }
 
 const setFluxEchoes = () => {
@@ -216,6 +267,26 @@ const unMaskFlux = () => {
 }
 
 const eOnFlux = () => {
+  g.flux.directive = g.flux.resetDirective + 0
+  g.flux.display.forEach( ( _, flx ) => {
+    g.flux.display[flx].pre = [ ...g.flux.display[flx].resetPre ]
+    g.flux.display[flx].current = g.flux.display[flx].resetCurrent + 0
+  } )
+  if ( gsap.ticker._listeners.includes( brokenFluxDisplayTick10 ) ) {
+    gsap.ticker.remove( brokenFluxDisplayTick10 )
+    g.qss.flux.broken[0].forEach( broken => {
+      broken( { opacity: 0 } )
+    } )
+  }
+  if ( gsap.ticker._listeners.includes( brokenFluxDisplayTick01 ) ) {
+    gsap.ticker.remove( brokenFluxDisplayTick01 )
+    g.qss.flux.broken[1].forEach( broken => {
+      broken( { opacity: 0 } )
+    } )
+    gsap.set( '#glitches', { opacity: 0 } )
+    g.three.on = false
+    g.three.mkr.stopRendering()
+  }
   g.flux.forCleanUp.button()
   g.el.flux.classList.add( 'fluxOn' )
   gsap.to( '#fluxCapacitorOn', {
@@ -291,7 +362,7 @@ const randomizeFluxDisplayTick = d => {
     g.flux.display[d].dispose = false
   }
   if ( g.flux.display[d].current > 0 ) {
-    const nextNumberFrame = randOnum( 1, 9 )
+    const nextNumberFrame = randOnum( 0, 9 )
     g.qss.flux.display[d][nextNumberFrame]( randOnum( 12, 69 ) / 100 )
     g.flux.display[d].dispose = nextNumberFrame
     g.flux.display[d].current--
@@ -309,24 +380,68 @@ const randomizeTargetReached = d => {
   g.qss.flux.display[d][0]( 1 )
   g.flux.display[d].current = 0
   if ( !g.flux.display[d ? 0 : 1].current ) {
+    startWarps()
     g.flux.forCleanUp.display = [ setAddOn( '#fluxDisplay', 'click', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mousedown', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mouseup', activateFluxDisplay ) ]
     gsap.set( g.el.fluxDisplay, { cursor: 'pointer' } )
   }
 }
 
 const activateFluxDisplay = e => {
-  if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
-    if ( !g.three.mkr.prepped ) prepDeLorean()
-    else {
-      gsap.set( '#glitch01', { opacity: 0 } )
-      g.three.on = false
-      g.three.mkr.stopRendering()
-      if ( !gsap.ticker._listeners.includes( incrementFluxDisplay ) ) gsap.ticker.add( incrementFluxDisplay )
-    }
+  if ( !g.three.mkr.prepped ) stallCapacitor()
+  else if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
+    if ( !gsap.ticker._listeners.includes( incrementFluxDisplay ) ) gsap.ticker.add( incrementFluxDisplay )
   } else {
     gsap.ticker.remove( incrementFluxDisplay )
     gsap.ticker.add( decrementFluxDisplay )
   }
+}
+
+const stallCapacitor = () => {
+  gsap.set( g.el.fluxDisplay, { cursor: 'wait' } )
+  gsap.ticker.add( shockTick )
+  gsap.ticker.add( brokenFluxDisplayTick10 )
+  gsap.ticker.add( brokenFluxDisplayTick01 )
+  gsap.to( '#lightningRodsWrapper', {
+    duration: 4,
+    rotation: 360,
+    repeat: -1,
+  } )
+  setTimeout( breakFluxDisplay, 4200 )
+}
+
+const breakFluxDisplay = () => {
+  gsap.ticker.remove( shockTick )
+  gsap.set( '#lightningRodsWrapper', {
+    rotation: 0,
+    overwrite: 'auto',
+  } )
+  gsap.set( '.lightningRod', {
+    opacity: 0,
+    overwrite: 'auto',
+  } )
+  g.qss.flux.directive( 0 )
+  g.flux.forCleanUp.button = setAddOn( '#fluxButton', 'click', eOnFlux )
+  g.el.fluxButton.classList.add( 'ready' )
+  g.el.flux.classList.remove( 'fluxOn' )
+  gsap.set( '#fluxCapacitorOn', {
+    opacity: 0,
+  } )
+  prepDeLorean()
+  if ( g.scene.skip.ff ) g.el.fluxButton.click()
+}
+
+const brokenFluxDisplayTick10 = () => {
+  brokenFluxDisplayTick( 0 )
+}
+const brokenFluxDisplayTick01 = () => {
+  brokenFluxDisplayTick( 1 )
+}
+const brokenFluxDisplayTick = d => {
+  const nextBrokenFrame = randOnum( 0, 6 )
+  g.qss.flux.broken[d][nextBrokenFrame]( {
+    opacity: randOnum( 0, 100 ) / 100,
+    zIndex: randOnum( 0, 6 ),
+  } )
 }
 
 const getCurrentSpeed = () => Number( `${g.flux.display[0].current}${g.flux.display[1].current}` )
@@ -336,6 +451,23 @@ const dimFluxMeter = () => {
     duration: 0.25,
     opacity: 0,
     overwrite: true,
+  } )
+}
+
+const lynchBoxIt = () => {
+  const s = g.lynchBox.scaleFactorX10 / 10
+  const inv = 100 - ( g.lynchBox.scaleFactorX10 * 10 )
+  const newPos = inv / 2
+  const newWarpO = inv / 100
+  gsap.set( g.el.mainStage, {
+    scale: g.main.scale * s,
+    top: `${newPos}%`,
+    left: `${newPos}%`,
+  } )
+  gsap.to( '#moireAuras', {
+    duration: 0.76 * s,
+    opacity: newWarpO,
+    backgroundColor: `rgba(255,255,255, ${newWarpO / 2})`,
   } )
 }
 
@@ -369,7 +501,16 @@ const incrementFluxDisplay = () => {
     g.qss.flux.meter( {
       rotateZ: '+=1',
     } )
+    if ( g.lynchBox.logPoints.includes( currentSpeed ) ) {
+      g.lynchBox.scaleFactorX10--
+      lynchBoxIt()
+    }
   } else {
+    gsap.set( g.el.mainStage, {
+      scale: 0,
+      top: '50%',
+      left: '50%',
+    } )
     g.flux.forCleanUp.display.forEach( flfc => {
       ifFunctionThenCall( flfc )
     } )
@@ -423,6 +564,10 @@ const decrementFluxDisplay = () => {
       g.flux.display[0].dispose = 0
       gsap.ticker.remove( decrementFluxDisplay )
       lightFluxMeter( 'SUX' )
+    }
+    if ( g.lynchBox.logPoints.includes( currentSpeed ) ) {
+      g.lynchBox.scaleFactorX10++
+      lynchBoxIt()
     }
   }
 }

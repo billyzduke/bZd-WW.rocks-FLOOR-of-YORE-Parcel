@@ -4,16 +4,89 @@ import { TextPlugin } from 'gsap/TextPlugin'
 import g from './glob'
 import { setFlux } from './flux'
 import {
-  gsapTick, randOnum, setAddOn, toggleFermata,
+  ifFunctionThenCall, gsapTick, randOnum, setAddOn, setClearActors, toggleFermata,
 } from './utils'
 
 gsap.registerPlugin( TextPlugin )
+
+const setGlitches = () => {
+  gsap.set( '.colorBars', {
+    width: ( 42 / 112 ) * g.main.h,
+  } )
+}
 
 const setFuture = () => {
   g.tL.bttf = new TL( { defaults: { overwrite: 'auto' } } )
   g.qss.wormHoler = gsap.quickSetter( '#blindingFlash', 'css' )
   setFlux()
+  setWarps()
   gsap.set( '#future', { opacity: 1 } )
+}
+
+const setWarps = () => {
+  let gridSize = g.main.w > g.main.h ? g.main.w : g.main.h
+  gridSize *= 2
+  gsap.set( '.trippyGrid', {
+    width: gridSize,
+    height: gridSize,
+    scale: 1.25,
+    top: '50%',
+    left: '50%',
+    translateX: '-50%',
+    translateY: '-50%',
+  } )
+}
+
+const startWarps = () => {
+  g.tL.warp = new TL( { defaults: { overwrite: 'auto' } } )
+  g.tL.warp.to( '.trippyGrid.red', {
+    duration: 4,
+    rotate: 360,
+    repeat: -1,
+  } )
+    .to( '.trippyGrid.red', {
+      duration: 2,
+      scale: 3,
+      skewX: '50%',
+      repeat: -1,
+      yoyo: true,
+    }, '<' )
+    .to( '.trippyGrid.blue', {
+      duration: 8,
+      rotate: -360,
+      repeat: -1,
+    }, '<' )
+    .to( '.trippyGrid.blue', {
+      duration: 4,
+      scale: 5,
+      skewY: '25%',
+      repeat: -1,
+      yoyo: true,
+    }, '<' )
+    .to( '.trippyGrid.green', {
+      duration: 10,
+      rotate: 360,
+      repeat: -1,
+    }, '<' )
+    .to( '.trippyGrid.green', {
+      duration: 2,
+      scale: 6,
+      skewX: '25%',
+      repeat: -1,
+      yoyo: true,
+    }, '<' )
+    .to( '.trippyGrid.indigo', {
+      duration: 12,
+      rotate: -360,
+      repeat: -1,
+    }, '<' )
+    .to( '.trippyGrid.indigo', {
+      duration: 6,
+      scale: 12,
+      skewY: '50%',
+      repeat: -1,
+      yoyo: true,
+    }, '<' )
 }
 
 const wormHoleHexes = [
@@ -51,7 +124,7 @@ const wormHoleFlashTick2 = () => {
 const prepDeLorean = () => {
   if ( !g.three.mkr.prepped ) {
     g.three.mkr.prepped = true
-    gsap.set( '#glitch01', { opacity: 1 } )
+    gsap.set( '#glitches', { opacity: 1 } )
     g.three.on = true
     g.el.deLorean.style.left = 0
     setTimeout( () => {
@@ -66,7 +139,6 @@ const startDeLorean = () => {
     g.el.deLorean.style.pointerEvents = 'auto'
     g.three.on = true
     // g.three.mkr.io = undefined
-    g.three.cleanUp = setAddOn( '#deLorean', 'click', toggleFlyAlongPath )
     g.three.mkr.startRendering()
   } else {
     console.log( { alreadyOn: g.three.on } )
@@ -81,15 +153,35 @@ const beginFuture = () => {
     g.el.flux.style.opacity = 0
     toggleFermata( { exceptTLs: [ 'dL' ] } )
     startDeLorean()
-
     setTimeout( () => {
       blindingFlashUnTick2()
       g.qss.wormHoler( {
         opacity: 0,
       } )
+      gsap.set( '#moireAuras', {
+        opacity: 1,
+        backgroundColor: 'rgba(255,255,255,1)',
+      } )
+      g.three.cleanUp.moireAuras = setAddOn( '#moireAuras', 'click', fadeMoireAuras )
     }, 700 )
-  },
-  2300 )
+  }, 2300 )
+}
+
+const fadeMoireAuras = () => {
+  ifFunctionThenCall( g.three.cleanUp.moireAuras )
+  g.three.cleanUp.moireAuras = undefined
+  gsap.to( '#moireAuras', {
+    duration: 6,
+    opacity: 0,
+    onComplete: function () {
+      setClearActors( '#moireAuras, #blindingFlash, #flux' )
+      g.three.cleanUp.backItUp = setAddOn( '#deLorean', 'click', toggleFlyAlongPath )
+    },
+  } )
+  gsap.to( '#moireAuras', {
+    duration: 3,
+    backgroundColor: 'rgba(255,255,255,0)',
+  } )
 }
 
 const movable = [ '#deLorean', '#sideViewMirrorRight div:nth-child(2)' ]
@@ -140,5 +232,5 @@ const toggleWheelsDrop = () => {
 }
 
 export {
-  beginFuture, prepDeLorean, setFuture, setModel, startDeLorean, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
+  beginFuture, prepDeLorean, setFuture, setGlitches, setModel, startDeLorean, startWarps, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
 }
