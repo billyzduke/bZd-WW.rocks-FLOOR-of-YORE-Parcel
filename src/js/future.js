@@ -167,7 +167,6 @@ const beginFuture = () => {
   setTimeout( () => {
     blindingFlashUnTick1()
     const blindingFlashUnTick2 = gsapTick( wormHoleFlashTick2 )
-    g.el.flux.style.opacity = 0
     toggleFermata( { exceptTLs: [ 'dL' ] } )
     startDeLorean()
     setTimeout( () => {
@@ -188,7 +187,7 @@ const beginFuture = () => {
         repeat: -1,
         yoyo: true,
       } )
-      g.three.cleanUp.moireAuras = setAddOn( '#moireAuras', 'click', fadeMoireAuras )
+      g.three.cleanUp.moireAuras = setAddOn( '#flux, #moireAuras', 'click', fadeMoireAuras )
     }, 700 )
   }, 2300 )
 }
@@ -197,7 +196,7 @@ const fadeMoireAuras = () => {
   devLog( 'fadeMoireAuras()' )
   ifFunctionThenCall( g.three.cleanUp.moireAuras )
   g.three.cleanUp.moireAuras = undefined
-  gsap.to( '#moireAuras', {
+  gsap.to( '#moireAuras, #flux', {
     duration: 6,
     opacity: 0,
     onComplete: function () {
