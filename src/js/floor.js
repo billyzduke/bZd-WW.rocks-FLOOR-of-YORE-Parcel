@@ -21,14 +21,16 @@ const scrubTheFloor = () => {
 }
 
 const readTheFloor = () => {
-  gsap.to( '#yoreFloorTitle', {
-    duration: 2,
-    ease: 'elastic.out',
-    onComplete() {
-      setTimeout( scrubTheFloor, 4242 )
-    },
-    translateX: '-50%',
-  } )
+  if ( ![ 12, 13 ].includes( g.scene.current ) && ( !g.subScene.scene11 || !g.subScene.scene11.folklore || !g.subScene.scene11.folklore.active ) ) {
+    gsap.to( '#yoreFloorTitle', {
+      duration: 2,
+      ease: 'elastic.out',
+      onComplete() {
+        setTimeout( scrubTheFloor, 4242 )
+      },
+      translateX: '-50%',
+    } )
+  }
 }
 
 const toggleFloor = forcePause => {

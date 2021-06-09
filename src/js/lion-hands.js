@@ -100,9 +100,8 @@ const bloodDrop = side => {
         duration: 2,
         ease: 'power2.in',
         onComplete: () => {
-          g.foetus.unTick = gsapTick( side === 'L' ? bloodSplashL : bloodSplashR )
-          g.foetus.forCleanUp.push( setAddOn( `#womb${side}`, 'mouseenter', () => openFoetusEye( side ), 'wait' ) )
-          g.foetus.forCleanUp.push( setAddOn( `#womb${side}`, 'mouseleave', () => closeFoetusEye( side ), 'wait' ) )
+          g.foetus.bin.blood.push( gsapTick( side === 'L' ? bloodSplashL : bloodSplashR ) )
+          g.foetus.bin.eye[side].push( setAddOn( `#womb${side}`, 'mouseenter', () => openFoetusEye( side ), 'wait' ), setAddOn( `#womb${side}`, 'mouseleave', () => closeFoetusEye( side ), 'wait' ) )
         },
         opacity: 0.52,
         rotateZ: side === 'L' ? 232 : -240,

@@ -9,7 +9,6 @@ const scene01 = 'EXPLORE'
 
 const setScene01 = ( c, n ) => {
   g.scene.setting = c
-  g.scene.forCleanUp[c].exploreTitleClick = setAddOn( '#tpTitles', 'click', () => setScene( n ) )
   g.scene.forCleanUp[c].obscureNextScene = () => obscure( 2.42 )
 
   toggleLionJarp()
@@ -19,8 +18,11 @@ const setScene01 = ( c, n ) => {
     duration: 3,
     opacity: 0,
   } )
-    .to( '#tpTitleExplore', {
+    .to( '#tpTitleExplore, #photoSensitivityWarning', {
       duration: 3,
+      onComplete: function () {
+        g.scene.forCleanUp[c].exploreTitleClick = setAddOn( '#tpTitles', 'click', () => setScene( n ), 'pointer', 'wait' )
+      },
       opacity: 1,
     }, '<' )
 

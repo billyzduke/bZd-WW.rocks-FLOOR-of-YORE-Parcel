@@ -29,6 +29,51 @@ const devLog = log => {
   if ( g.dev ) console.log( log )
 }
 
+// https://gist.github.com/dmnsgn/36b26dfcd7695d02de77f5342b0979c7
+const getAllEventListeners = () => {
+  const allEls = Array.prototype.slice.call( g.document.querySelectorAll( '*' ) )
+  allEls.push( g.document )
+  allEls.push( g.window )
+
+  const types = getAllEventTypes()
+
+  let els = []
+  allEls.forEach( el => {
+    els = [ ...els, ...analyzeElementListeners( el, types ) ]
+  } )
+
+  return sortElementListeners( els )
+}
+
+const sortElementListeners = els => els.sort( ( a, b ) => a.type.localeCompare( b.type ) )
+
+const analyzeElementListeners = ( el, types ) => {
+  const listeners = []
+  for ( let j = 0; j < types.length; j++ ) {
+    if ( typeof el[types[j]] === 'function' ) {
+      listeners.push( {
+        node: el,
+        type: types[j],
+        func: el[types[j]].toString(),
+      } )
+    }
+  }
+  return listeners
+}
+
+const getAllEventTypes = () => {
+  const types = []
+  for ( const ev in g.window ) {
+    if ( /^on/.test( ev ) ) types[types.length] = ev
+  }
+  return types
+}
+
+const getElementEventListeners = el => {
+  const types = getAllEventTypes()
+  return sortElementListeners( analyzeElementListeners( el, types ) )
+}
+
 const getTranslateValues = element => {
   if ( isSet( g.window ) ) {
     // eslint-disable-next-line no-undef
@@ -85,19 +130,33 @@ const gsapToOrSet = ( tL, too, too2, pos, set = false ) => {
 }
 
 const gsapUnTick = tickFunc => {
-  if ( gsap.ticker._listeners.includes( tickFunc ) ) {
+  const typeOfInput = typeof tickFunc
+  const tickerHasIt = gsap.ticker._listeners.includes( tickFunc )
+  if ( typeOfInput === 'function' && tickerHasIt ) {
     gsap.ticker.remove( tickFunc )
     devLog( `${tickFunc.name}() removed from gsap.ticker` )
     return true
+  }
+  if ( tickerHasIt ) {
+    devLog( {
+      gsapUnTick: 'failed', wtFunc: tickFunc, typeOfInput, tickerHasIt,
+    } )
   }
   return [ tickFunc, gsap.ticker._listeners, gsap.ticker._listeners.includes( tickFunc ) ]
 }
 
 const gsapTick = tickFunc => {
-  if ( !gsap.ticker._listeners.includes( tickFunc ) ) {
+  const typeOfInput = typeof tickFunc
+  const tickerHasIt = gsap.ticker._listeners.includes( tickFunc )
+  if ( typeOfInput === 'function' && !tickerHasIt ) {
     gsap.ticker.add( tickFunc )
     devLog( `${tickFunc.name}() added to gsap.ticker` )
     return () => gsapUnTick( tickFunc )
+  }
+  if ( !tickerHasIt ) {
+    devLog( {
+      gsapTick: 'failed', wtFunc: tickFunc, typeOfInput, tickerHasIt,
+    } )
   }
   return false
 }
@@ -139,10 +198,20 @@ const randOcolor = ( as = 'hex' ) => {
 
 const roundNumberTo = ( num, dec = 0 ) => Math.round( ( ( num + Number.EPSILON ) * ( 10 ** dec ) ) / ( 10 ** dec ) )
 
+const cleanUp = messes => {
+  if ( messes && messes.length ) {
+    messes.forEach( ( _, cu ) => {
+      ifFunctionThenCall( messes[cu] )
+      messes.cu = undefined
+    } )
+  } else devLog({ messedUncleaned: messes, typeOfMess: typeof messes })
+  return []
+}
+
 const setClearActors = domSelector => {
   const domElements = g.document.querySelectorAll( domSelector )
-  domElements.forEach( domEl => {
-    if ( domEl.parentNode ) domEl.parentNode.removeChild( domEl )
+  Object.keys(domElements).forEach( domEl => {
+    if ( domElements[domEl].parentNode ) domElements[domEl].parentNode.removeChild( domElements[domEl] )
   } )
   return true
 }
@@ -155,6 +224,7 @@ const setClearInterval = ntrvl => {
 const setRemoveOn = ( domSelector, onEvent, doFunc, cursorOn = 'no-drop' ) => {
   const domElements = g.document.querySelectorAll( domSelector )
   domElements.forEach( domEl => {
+    devLog( { listeners: getElementEventListeners( domEl ) } )
     domEl.removeEventListener( onEvent, doFunc )
     devLog( `event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()` )
     if ( cursorOn ) domEl.style.cursor = cursorOn
@@ -368,7 +438,7 @@ const toggleFermata = ( { exceptTLs = [], exceptTickers = [], exceptEtc = [] } =
         if ( tckr.wasUnTicked ) g.tickers[ticker] = tckr.wasUnTicked[0]
       }
       devLog( tckr )
-    })
+    } )
     g.fermata = true
   } else {
     Object.keys( g.tL ).forEach( tL => {
@@ -389,11 +459,11 @@ const toggleFermata = ( { exceptTLs = [], exceptTickers = [], exceptEtc = [] } =
         tckr.wasReTicked = g.tickers[ticker] = gsapTick( g.tickers[ticker] )
       }
       devLog( tckr )
-    })
+    } )
     g.fermata = false
   }
-  if ( !exceptEtc.includes( 'lion' ) ) toggleLion(forcePause)
-  if ( !exceptEtc.includes( 'floor' ) ) toggleFloor(forcePause)
+  if ( !exceptEtc.includes( 'lion' ) ) toggleLion( forcePause )
+  if ( !exceptEtc.includes( 'floor' ) ) toggleFloor( forcePause )
   g.bL.forEach( ( _, i ) => {
     if ( !exceptEtc.includes( `bL${padStr( i )}` ) ) toggleBaubleLayer( i, forcePause )
   } )
@@ -448,7 +518,10 @@ const uuidv4 = () => {
 export {
   addCSSRule,
   convertTextToBinary,
+  cleanUp,
   devLog,
+  getAllEventListeners,
+  getElementEventListeners,
   getTranslateValues,
   gsapToOrSet,
   gsapTick,

@@ -53,13 +53,23 @@ import assFoetusEyeSquinch03 from 'url:/src/img/foetuses/foetusEyeSquinch-03.png
 import assFoetusEyeSquinch04 from 'url:/src/img/foetuses/foetusEyeSquinch-04.png'
 import g from './glob'
 import {
-  ifFunctionThenCall, randOnum, setAddOn,
+  cleanUp, gsapTick, randOnum, setAddOn,
 } from './utils'
 import { echoCry } from './flux'
 
 const setFoetuses = () => {
   g.foetus = {
-    forCleanUp: [],
+    bin: {
+      blood: [],
+      eye: {
+        L: [],
+        R: [],
+      },
+      yap: {
+        L: [],
+        R: [],
+      },
+    },
   }
   g.qss.bloodSplashes = {}
   g.qss.foetus = {}
@@ -92,7 +102,7 @@ const setFoetuses = () => {
     start: [ assFoetusCryStart01, assFoetusCryStart02, assFoetusCryStart03 ],
   }
 
-  foetuses.forEach(foe => {
+  foetuses.forEach( foe => {
     g.foetus[foe] = {
       drop: false,
       eye: 0,
@@ -109,39 +119,39 @@ const setFoetuses = () => {
       eye: [],
       squinch: [],
     }
-    if (g.el[`foetusEye${foe}`]) {
-      for (let fE = 0; fE <= 5; fE++) {
-        if (assFoetusEyeFrames[fE]) {
-          const fEyeFrame = g.document.createElement('img')
+    if ( g.el[`foetusEye${foe}`] ) {
+      for ( let fE = 0; fE <= 5; fE++ ) {
+        if ( assFoetusEyeFrames[fE] ) {
+          const fEyeFrame = g.document.createElement( 'img' )
           fEyeFrame.src = assFoetusEyeFrames[fE]
-          fEyeFrame.classList.add('foetusEyeFrame', `fEye${foe}`)
-          g.el[`foetusEye${foe}`].appendChild(fEyeFrame)
-          g.qss.foetus[foe].eye.push(gsap.quickSetter(fEyeFrame, 'opacity'))
+          fEyeFrame.classList.add( 'foetusEyeFrame', `fEye${foe}` )
+          g.el[`foetusEye${foe}`].appendChild( fEyeFrame )
+          g.qss.foetus[foe].eye.push( gsap.quickSetter( fEyeFrame, 'opacity' ) )
         }
-        if (assFoetusCryFrames.start[fE]) {
-          const fCryStartFrame = g.document.createElement('img')
+        if ( assFoetusCryFrames.start[fE] ) {
+          const fCryStartFrame = g.document.createElement( 'img' )
           fCryStartFrame.src = assFoetusCryFrames.start[fE]
-          fCryStartFrame.classList.add('foetusCryStartFrame', `fCryStart${foe}`)
-          g.el[`foetusCry${foe}`].appendChild(fCryStartFrame)
-          g.qss.foetus[foe].cry.start.push(gsap.quickSetter(fCryStartFrame, 'opacity'))
+          fCryStartFrame.classList.add( 'foetusCryStartFrame', `fCryStart${foe}` )
+          g.el[`foetusCry${foe}`].appendChild( fCryStartFrame )
+          g.qss.foetus[foe].cry.start.push( gsap.quickSetter( fCryStartFrame, 'opacity' ) )
         }
-        if (assFoetusCryFrames.loop[fE]) {
-          const fCryLoopFrame = g.document.createElement('img')
+        if ( assFoetusCryFrames.loop[fE] ) {
+          const fCryLoopFrame = g.document.createElement( 'img' )
           fCryLoopFrame.src = assFoetusCryFrames.loop[fE]
-          fCryLoopFrame.classList.add('foetusCryLoopFrame', `fCryLoop${foe}`)
-          g.el[`foetusCry${foe}`].appendChild(fCryLoopFrame)
-          g.qss.foetus[foe].cry.loop.push(gsap.quickSetter(fCryLoopFrame, 'opacity'))
+          fCryLoopFrame.classList.add( 'foetusCryLoopFrame', `fCryLoop${foe}` )
+          g.el[`foetusCry${foe}`].appendChild( fCryLoopFrame )
+          g.qss.foetus[foe].cry.loop.push( gsap.quickSetter( fCryLoopFrame, 'opacity' ) )
         }
-        if (assFoetusEyeSquinchFrames[fE]) {
-          const fEyeSquinchFrame = g.document.createElement('img')
+        if ( assFoetusEyeSquinchFrames[fE] ) {
+          const fEyeSquinchFrame = g.document.createElement( 'img' )
           fEyeSquinchFrame.src = assFoetusEyeSquinchFrames[fE]
-          fEyeSquinchFrame.classList.add('foetusEyeSquinchFrame', `fSquinch${foe}`)
-          g.el[`foetusEye${foe}`].appendChild(fEyeSquinchFrame)
-          g.qss.foetus[foe].squinch.push(gsap.quickSetter(fEyeSquinchFrame, 'opacity'))
+          fEyeSquinchFrame.classList.add( 'foetusEyeSquinchFrame', `fSquinch${foe}` )
+          g.el[`foetusEye${foe}`].appendChild( fEyeSquinchFrame )
+          g.qss.foetus[foe].squinch.push( gsap.quickSetter( fEyeSquinchFrame, 'opacity' ) )
         }
       }
     }
-  })
+  } )
   setBloodSplashes()
 }
 
@@ -183,147 +193,143 @@ const setBloodSplashes = () => {
     assBloodSplash34,
   ]
 
-  Object.keys(g.foetus).forEach(foe => {
-    if (g.el[`bloodSplash${foe}`]) {
+  Object.keys( g.foetus ).forEach( foe => {
+    if ( g.el[`bloodSplash${foe}`] ) {
       g.qss.bloodSplashes[foe] = []
-      for (let bSpl = 0; bSpl < 34; bSpl++) {
-        const bloodSplashFrame = g.document.createElement('img')
+      for ( let bSpl = 0; bSpl < 34; bSpl++ ) {
+        const bloodSplashFrame = g.document.createElement( 'img' )
         bloodSplashFrame.src = assBloodSplashFrames[bSpl]
-        bloodSplashFrame.classList.add('bloodSplashFrame', `bSplash${foe}`)
-        g.el[`bloodSplash${foe}`].appendChild(bloodSplashFrame)
-        g.qss.bloodSplashes[foe].push(gsap.quickSetter(bloodSplashFrame, 'opacity'))
+        bloodSplashFrame.classList.add( 'bloodSplashFrame', `bSplash${foe}` )
+        g.el[`bloodSplash${foe}`].appendChild( bloodSplashFrame )
+        g.qss.bloodSplashes[foe].push( gsap.quickSetter( bloodSplashFrame, 'opacity' ) )
       }
     }
-  })
+  } )
 }
 
 const bloodSplashL = () => {
-  bloodSplashTick('L')
+  bloodSplashTick( 'L' )
 }
 const bloodSplashR = () => {
-  bloodSplashTick('R')
+  bloodSplashTick( 'R' )
 }
 const bloodSplashTick = side => {
   const prevSplashFrame = g.foetus[side].splash - 1
-  if (g.qss.bloodSplashes[side][prevSplashFrame]) g.qss.bloodSplashes[side][prevSplashFrame](0)
-  if (g.qss.bloodSplashes[side][g.foetus[side].splash]) {
-    g.qss.bloodSplashes[side][g.foetus[side].splash](1)
+  if ( g.qss.bloodSplashes[side][prevSplashFrame] ) g.qss.bloodSplashes[side][prevSplashFrame]( 0 )
+  if ( g.qss.bloodSplashes[side][g.foetus[side].splash] ) {
+    g.qss.bloodSplashes[side][g.foetus[side].splash]( 1 )
     g.foetus[side].splash++
   } else {
-    g.foetus.unTick()
+    g.foetus.bin.blood = cleanUp( g.foetus.bin.blood )
   }
 }
 
 const openFoetusEye = foe => {
-  gsap.ticker.add(foe === 'L' ? openFoetusEyeL : openFoetusEyeR)
+  g.foetus.bin.eye[foe] = cleanUp( g.foetus.bin.eye[foe] )
+  g.foetus.bin.eye[foe].push( gsapTick( foe === 'L' ? openFoetusEyeL : openFoetusEyeR ) )
 }
 const openFoetusEyeL = () => {
-  gsap.ticker.remove(closeFoetusEyeL)
-  openFoetusEyeTick('L')
+  openFoetusEyeTick( 'L' )
 }
 const openFoetusEyeR = () => {
-  gsap.ticker.remove(closeFoetusEyeR)
-  openFoetusEyeTick('R')
+  openFoetusEyeTick( 'R' )
 }
 const openFoetusEyeTick = foe => {
   const nextOpenEyeFrame = g.foetus[foe].eye + 1
-  if (g.qss.foetus[foe].eye[nextOpenEyeFrame]) {
-    if (g.qss.foetus[foe].eye[g.foetus[foe].eye]) g.qss.foetus[foe].eye[g.foetus[foe].eye](0)
-    g.qss.foetus[foe].eye[nextOpenEyeFrame](1)
+  if ( g.qss.foetus[foe].eye[nextOpenEyeFrame] ) {
+    if ( g.qss.foetus[foe].eye[g.foetus[foe].eye] ) g.qss.foetus[foe].eye[g.foetus[foe].eye]( 0 )
+    g.qss.foetus[foe].eye[nextOpenEyeFrame]( 1 )
     g.foetus[foe].eye = nextOpenEyeFrame
   } else {
-    gsap.ticker.remove(foe === 'L' ? openFoetusEyeL : openFoetusEyeR)
-    if (![ g.scene.current, g.scene.setting ].includes(12)) {
-      setTimeout(() => {
-        gsap.ticker.add(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
-      }, 4242)
+    g.foetus.bin.eye[foe] = cleanUp( g.foetus.bin.eye[foe] )
+    if ( ![ g.scene.current, g.scene.setting ].includes( 12 ) ) {
+      setTimeout( () => {
+        g.foetus.bin.eye[foe].push( gsapTick( foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR ) )
+      }, 4242 )
     }
   }
 }
 
 const closeFoetusEye = foe => {
-  gsap.ticker.add(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
+  g.foetus.bin.eye[foe] = cleanUp( g.foetus.bin.eye[foe] )
+  g.foetus.bin.eye[foe].push( gsapTick( foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR ) )
 }
 const closeFoetusEyeL = () => {
-  gsap.ticker.remove(openFoetusEyeL)
-  closeFoetusEyeTick('L')
+  closeFoetusEyeTick( 'L' )
 }
 const closeFoetusEyeR = () => {
-  gsap.ticker.remove(openFoetusEyeR)
-  closeFoetusEyeTick('R')
+  closeFoetusEyeTick( 'R' )
 }
 const closeFoetusEyeTick = foe => {
   const nextCloseEyeFrame = g.foetus[foe].eye - 1
-  if (g.qss.foetus[foe].eye[nextCloseEyeFrame]) {
-    if (g.qss.foetus[foe].eye[g.foetus[foe].eye]) g.qss.foetus[foe].eye[g.foetus[foe].eye](0)
-    g.qss.foetus[foe].eye[nextCloseEyeFrame](1)
+  if ( g.qss.foetus[foe].eye[nextCloseEyeFrame] ) {
+    if ( g.qss.foetus[foe].eye[g.foetus[foe].eye] ) g.qss.foetus[foe].eye[g.foetus[foe].eye]( 0 )
+    g.qss.foetus[foe].eye[nextCloseEyeFrame]( 1 )
     g.foetus[foe].eye = nextCloseEyeFrame
   } else {
-    gsap.ticker.remove(foe === 'L' ? closeFoetusEyeL : closeFoetusEyeR)
-    if (g.scene.current === 12) {
-      g.qss.foetus[foe].eye[g.foetus[foe].eye](0)
-      squinchFoetusEye(foe)
+    g.foetus.bin.eye[foe]  =cleanUp( g.foetus.bin.eye[foe] )
+    if ( g.scene.current === 12 ) {
+      g.qss.foetus[foe].eye[g.foetus[foe].eye]( 0 )
+      squinchFoetusEye( foe )
     }
   }
 }
 
 const wakeFoetuses = () => {
-  g.foetus.forCleanUp.forEach(clup => {
-    ifFunctionThenCall(clup)
-  })
-  openFoetusEye('L')
-  openFoetusEye('R')
-  g.flux.forCleanUp.L = setAddOn('#wombL', 'click', () => annoyFoetus('L'))
-  g.flux.forCleanUp.R = setAddOn('#wombR', 'click', () => annoyFoetus('R'))
-  if (g.scene.skip.ff) {
-    setTimeout(() => {
+  openFoetusEye( 'L' )
+  openFoetusEye( 'R' )
+  g.flux.bin.L = [ setAddOn( '#wombL', 'click', () => annoyFoetus( 'L' ) ) ]
+  g.flux.bin.R = [ setAddOn( '#wombR', 'click', () => annoyFoetus( 'R' ) ) ]
+  if ( g.scene.skip.ff ) {
+    setTimeout( () => {
       g.el.theOwl.click()
       g.el.wombL.click()
       g.el.wombR.click()
-    }, 100)
+    }, 100 )
   }
 }
 
 const annoyFoetus = foe => {
-  echoCry(foe)
-  gsap.ticker.add(foe === 'L' ? annoyFoetusL : annoyFoetusR)
+  echoCry( foe )
+  g.foetus.bin.yap[foe].push( gsapTick( foe === 'L' ? annoyFoetusL : annoyFoetusR ) )
 }
 const annoyFoetusL = () => {
-  annoyFoetusTick('L')
+  annoyFoetusTick( 'L' )
 }
 const annoyFoetusR = () => {
-  annoyFoetusTick('R')
+  annoyFoetusTick( 'R' )
 }
 const annoyFoetusTick = foe => {
   let nextCryFrame = g.foetus[foe].cry + 1
-  if (nextCryFrame < 3 && g.qss.foetus[foe].cry.start[nextCryFrame]) {
-    if (g.qss.foetus[foe].cry.start[g.foetus[foe].cry]) g.qss.foetus[foe].cry.start[g.foetus[foe].cry](0)
-    g.qss.foetus[foe].cry.start[nextCryFrame](1)
+  if ( nextCryFrame < 3 && g.qss.foetus[foe].cry.start[nextCryFrame] ) {
+    if ( g.qss.foetus[foe].cry.start[g.foetus[foe].cry] ) g.qss.foetus[foe].cry.start[g.foetus[foe].cry]( 0 )
+    g.qss.foetus[foe].cry.start[nextCryFrame]( 1 )
     g.foetus[foe].cry++
   } else {
-    if (nextCryFrame === 3) g.qss.foetus[foe].cry.start[2](0)
-    else g.qss.foetus[foe].cry.loop[g.foetus[foe].cry / 10](0)
-    nextCryFrame = randOnum(0, 4)
-    g.qss.foetus[foe].cry.loop[nextCryFrame](1)
+    if ( nextCryFrame === 3 ) g.qss.foetus[foe].cry.start[2]( 0 )
+    else g.qss.foetus[foe].cry.loop[g.foetus[foe].cry / 10]( 0 )
+    nextCryFrame = randOnum( 0, 4 )
+    g.qss.foetus[foe].cry.loop[nextCryFrame]( 1 )
     g.foetus[foe].cry = nextCryFrame * 10
   }
 }
 
 const squinchFoetusEye = foe => {
-  gsap.ticker.add(foe === 'L' ? squinchFoetusEyeL : squinchFoetusEyeR)
+  g.foetus.bin.eye[foe] =( g.foetus.bin.eye[foe] )
+  g.foetus.bin.eye[foe].push( gsapTick( foe === 'L' ? squinchFoetusEyeL : squinchFoetusEyeR ) )
 }
 const squinchFoetusEyeL = () => {
-  squinchFoetusEyeTick('L')
+  squinchFoetusEyeTick( 'L' )
 }
 const squinchFoetusEyeR = () => {
-  squinchFoetusEyeTick('R')
+  squinchFoetusEyeTick( 'R' )
 }
 const squinchFoetusEyeTick = foe => {
-  if (g.foetus[foe].slow === 3) {
+  if ( g.foetus[foe].slow === 3 ) {
     let nextSquinchEyeFrame = g.foetus[foe].squinch + 1
-    if (!g.qss.foetus[foe].squinch[nextSquinchEyeFrame]) nextSquinchEyeFrame = 1
-    if (g.qss.foetus[foe].squinch[g.foetus[foe].squinch]) g.qss.foetus[foe].squinch[g.foetus[foe].squinch](0)
-    g.qss.foetus[foe].squinch[nextSquinchEyeFrame](1)
+    if ( !g.qss.foetus[foe].squinch[nextSquinchEyeFrame] ) nextSquinchEyeFrame = 1
+    if ( g.qss.foetus[foe].squinch[g.foetus[foe].squinch] ) g.qss.foetus[foe].squinch[g.foetus[foe].squinch]( 0 )
+    g.qss.foetus[foe].squinch[nextSquinchEyeFrame]( 1 )
     g.foetus[foe].squinch = nextSquinchEyeFrame
     g.foetus[foe].slow = 1
   } else g.foetus[foe].slow++

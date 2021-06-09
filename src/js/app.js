@@ -72,6 +72,7 @@ const loadApp = () => {
       'lolf02',
       'lynchBox',
       'mainStage',
+      'moireAuras',
       'model',
       'owlBeak',
       'owlLaser',

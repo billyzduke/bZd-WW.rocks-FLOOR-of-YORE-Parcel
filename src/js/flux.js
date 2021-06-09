@@ -19,24 +19,39 @@ import assFluxBroken6 from 'url:/src/img/flux/flux-display-broken-6.png'
 import assFluxBroken7 from 'url:/src/img/flux/flux-display-broken-7.png'
 import g from './glob'
 import {
-  gsapTick, ifFunctionThenCall, randOnum, setAddOn,
+  cleanUp, devLog, gsapTick, randOnum, setAddOn, setClearActors, toggleFermata,
 } from './utils'
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
 import { setScene } from './scene'
-import { prepDeLorean, startWarps } from './future'
+import { prepDeLorean } from './future'
 import { shockTick } from './lightning-rods'
 
 const setFlux = () => {
   g.flux = {
-    forCleanUp: {
-      C: setAddOn( '#theOwl', 'click', () => echoCry( 'C' ) ),
+    bin: {
+      button: [],
+      C: [ setAddOn( '#theOwl', 'click', () => echoCry( 'C' ) ) ],
+      capacitor: [],
+      directive: [],
+      display: {
+        activate: [],
+        broken: [ [], [] ],
+        preRandomize: [ [], [] ],
+        randomize: [ [], [] ],
+        speed: [],
+      },
+      nacht: [],
+      stall: [],
     },
     mask: 1,
+    nacht: 0.99,
+    resets: 0,
   }
   g.qss.flux = {
     capacitor: gsap.quickSetter( '#fluxCapacitorOn', 'css' ),
     mask: [ gsap.quickSetter( '#fluxMask', 'css' ), gsap.quickSetter( '#fluxUnMask', 'css' ) ],
+    nacht: gsap.quickSetter( '.stillNacht', 'css' ),
   }
   g.lynchBox = {
     scaleFactorX10: 10,
@@ -171,8 +186,8 @@ const setFluxMeter = () => {
 }
 
 const echoCry = axis => {
-  ifFunctionThenCall( g.flux.forCleanUp[axis] )
-  if ( axis === 'C' ) g.flux.forCleanUp[axis] = gsapTick( owlCawTick )
+  g.flux.bin[axis] = cleanUp( g.flux.bin[axis] )
+  if ( axis === 'C' ) g.flux.bin[axis].push( gsapTick( owlCawTick ) )
   else closeFoetusEye( axis )
   g.el.folkloreFinalForm.classList.add( 'faded' )
   gsap.to( g.el.folkloreFinalForm, {
@@ -217,7 +232,7 @@ const echoCry = axis => {
         repeat: 1,
         yoyo: true,
       } )
-      gsap.ticker.add( unMaskFlux )
+      g.flux.bin.capacitor.push( gsapTick( unMaskFlux ) )
     }, 4242 )
   }
 }
@@ -236,7 +251,7 @@ const unMaskFlux = () => {
     } )
     g.flux.mask += 2
   } else {
-    gsap.ticker.remove( unMaskFlux )
+    g.flux.bin.capacitor = cleanUp( g.flux.bin.capacitor )
     g.qss.flux.mask[0]( {
       opacity: 1,
       scale: 1,
@@ -253,7 +268,7 @@ const unMaskFlux = () => {
         gsap.set( '.fluxEcho', {
           scale: 1,
           onComplete: function () {
-            g.flux.forCleanUp.button = setAddOn( '#fluxButton', 'click', eOnFlux )
+            g.flux.bin.button.push( setAddOn( '#fluxButton', 'click', eOnFlux ) )
             g.el.fluxButton.classList.add( 'ready' )
             if ( g.scene.skip.ff ) g.el.fluxButton.click()
           },
@@ -267,27 +282,58 @@ const unMaskFlux = () => {
 }
 
 const eOnFlux = () => {
-  g.flux.directive = g.flux.resetDirective + 0
+  g.flux.bin.button = cleanUp( g.flux.bin.button )
+  g.flux.directive = g.flux.resetDirective
   g.flux.display.forEach( ( _, flx ) => {
     g.flux.display[flx].pre = [ ...g.flux.display[flx].resetPre ]
-    g.flux.display[flx].current = g.flux.display[flx].resetCurrent + 0
+    g.flux.display[flx].current = g.flux.display[flx].resetCurrent
   } )
-  if ( gsap.ticker._listeners.includes( brokenFluxDisplayTick10 ) ) {
-    gsap.ticker.remove( brokenFluxDisplayTick10 )
-    g.qss.flux.broken[0].forEach( broken => {
-      broken( { opacity: 0 } )
+  if ( g.flux.resets ) {
+    g.flux.bin.display.broken.forEach( ( _, cu ) => {
+      g.flux.bin.display.broken[cu] = cleanUp( g.flux.bin.display.broken[cu] )
     } )
-  }
-  if ( gsap.ticker._listeners.includes( brokenFluxDisplayTick01 ) ) {
-    gsap.ticker.remove( brokenFluxDisplayTick01 )
-    g.qss.flux.broken[1].forEach( broken => {
-      broken( { opacity: 0 } )
+    const fixDigit = { opacity: 0 }
+    g.qss.flux.broken[0].forEach( ( _, broken ) => {
+      g.qss.flux.broken[0][broken]( fixDigit )
+      g.qss.flux.broken[1][broken]( fixDigit )
     } )
-    gsap.set( '#glitches', { opacity: 0 } )
-    g.three.on = false
+    gsap.set( '.heiligeNacht', {
+      opacity: 0,
+      onComplete: function () {
+        setClearActors( '.heiligeNacht' )
+      },
+    } )
+    gsap.set( '.stillNacht', {
+      opacity: 1,
+    } )
+    toggleFermata()
     g.three.mkr.stopRendering()
+    g.three.on = false
+    g.flux.bin.nacht.push( gsapTick( nachtTick ) )
+    return
   }
-  g.flux.forCleanUp.button()
+  g.flux.resets++
+  getReadyToFlux()
+}
+
+const nachtTick = () => {
+  if ( g.flux.nacht > 0.01 ) {
+    const tag = 1 - g.flux.nacht
+    g.flux.nacht = 1 - ( tag * 1.5 )
+    g.qss.flux.nacht( {
+      transform: `scale(${g.flux.nacht})`,
+      borderRadius: `${tag * 50}%`,
+    } )
+  } else {
+    g.qss.flux.nacht( {
+      transform: 'scale(0)',
+      borderRadius: '50%',
+    } )
+    getReadyToFlux()
+  }
+}
+
+const getReadyToFlux = () => {
   g.el.flux.classList.add( 'fluxOn' )
   gsap.to( '#fluxCapacitorOn', {
     duration: 0.5,
@@ -298,10 +344,11 @@ const eOnFlux = () => {
 }
 
 const bootUpFluxDisplay = () => {
-  gsap.set( g.el.fluxDisplay, { cursor: 'wait' } )
-  flickOnFluxDisplayDirective()
-  gsap.ticker.add( preRandomizeFluxDisplayTick10 )
-  gsap.ticker.add( preRandomizeFluxDisplayTick01 )
+  if ( !g.flux.bin.display.preRandomize[0].length && !g.flux.bin.display.preRandomize[1].length ) {
+    gsap.set( g.el.fluxDisplay, { cursor: 'wait' } )
+    flickOnFluxDisplayDirective()
+    g.flux.bin.display.preRandomize = [ [ gsapTick( preRandomizeFluxDisplayTick10 ) ], [ gsapTick( preRandomizeFluxDisplayTick01 ) ] ]
+  }
 }
 
 const lightFluxMeter = ux => {
@@ -315,7 +362,7 @@ const lightFluxMeter = ux => {
 }
 
 const flickOnFluxDisplayDirective = () => {
-  gsap.ticker.add( flickTick )
+  g.flux.bin.directive.push( gsapTick( flickTick ) )
 }
 
 const flickTick = () => {
@@ -323,7 +370,7 @@ const flickTick = () => {
     g.qss.flux.directive( randOnum() )
     g.flux.directive--
   } else {
-    gsap.ticker.remove( flickTick )
+    g.flux.bin.directive = cleanUp( g.flux.bin.directive )
     g.qss.flux.directive( 1 )
     if ( g.scene.skip.ff ) g.el.fluxDisplay.click()
   }
@@ -336,17 +383,21 @@ const preRandomizeFluxDisplayTick01 = () => {
   preRandomizeFluxDisplayTick( 1 )
 }
 const preRandomizeFluxDisplayTick = d => {
-  if ( g.qss.flux.display[d][g.flux.display[d].dispose] ) {
-    g.qss.flux.display[d][g.flux.display[d].dispose]( 0 )
-    g.flux.display[d].dispose = false
-  }
-  if ( g.flux.display[d].pre.length ) {
-    const nextNotSoRandomNumber = g.flux.display[d].pre.shift()
-    g.qss.flux.display[d][nextNotSoRandomNumber]( randOnum( 12, 69 ) / 100 )
-    g.flux.display[d].dispose = nextNotSoRandomNumber
-  } else {
-    gsap.ticker.remove( d ? preRandomizeFluxDisplayTick01 : preRandomizeFluxDisplayTick10 )
-    gsap.ticker.add( d ? randomizeFluxDisplayTick01 : randomizeFluxDisplayTick10 )
+  console.log( { [`gFluxBinDisplayPreRandomize${d}`]: g.flux.bin.display.preRandomize[d] } )
+  if ( g.flux.bin.display.preRandomize[d].length ) {
+    if ( g.qss.flux.display[d][g.flux.display[d].dispose] ) {
+      g.qss.flux.display[d][g.flux.display[d].dispose]( 0 )
+      g.flux.display[d].dispose = false
+    }
+    // console.log({ [`gFluxDisplay${d}Pre`]: g.flux.display[d].pre } )
+    if ( g.flux.display[d].pre.length ) {
+      const nextNotSoRandomNumber = g.flux.display[d].pre.shift()
+      g.qss.flux.display[d][nextNotSoRandomNumber]( randOnum( 12, 69 ) / 100 )
+      g.flux.display[d].dispose = nextNotSoRandomNumber
+    } else {
+      g.flux.bin.display.preRandomize[d] = cleanUp( g.flux.bin.display.preRandomize[d] )
+      g.flux.bin.display.randomize[d] = [ gsapTick( d ? randomizeFluxDisplayTick01 : randomizeFluxDisplayTick10 ) ]
+    }
   }
 }
 
@@ -357,77 +408,101 @@ const randomizeFluxDisplayTick01 = () => {
   randomizeFluxDisplayTick( 1 )
 }
 const randomizeFluxDisplayTick = d => {
-  if ( g.qss.flux.display[d][g.flux.display[d].dispose] ) {
-    g.qss.flux.display[d][g.flux.display[d].dispose]( 0 )
-    g.flux.display[d].dispose = false
-  }
-  if ( g.flux.display[d].current > 0 ) {
-    const nextNumberFrame = randOnum( 0, 9 )
-    g.qss.flux.display[d][nextNumberFrame]( randOnum( 12, 69 ) / 100 )
-    g.flux.display[d].dispose = nextNumberFrame
-    g.flux.display[d].current--
-  } else {
-    randomizeTargetReached( d )
+  console.log( { [`gFluxBinDisplayRandomize${d}`]: g.flux.bin.display.randomize[d] } )
+  if ( g.flux.bin.display.randomize[d].length ) {
+    if ( g.qss.flux.display[d][g.flux.display[d].dispose] ) {
+      g.qss.flux.display[d][g.flux.display[d].dispose]( 0 )
+      g.flux.display[d].dispose = false
+    }
+    // console.log({ [`gFluxDisplay${d}Current`]: g.flux.display[d].current } )
+    if ( g.flux.display[d].current > 0 ) {
+      const nextNumberFrame = randOnum( 0, 9 )
+      g.qss.flux.display[d][nextNumberFrame]( randOnum( 12, 69 ) / 100 )
+      g.flux.display[d].dispose = nextNumberFrame
+      g.flux.display[d].current--
+    } else {
+      randomizeTargetReached( d )
+    }
   }
 }
 
 const randomizeTargetReached = d => {
-  if ( d && gsap.ticker._listeners.includes( randomizeFluxDisplayTick01 ) ) {
-    gsap.ticker.remove( randomizeFluxDisplayTick01 )
-  } else if ( gsap.ticker._listeners.includes( randomizeFluxDisplayTick10 ) ) {
-    gsap.ticker.remove( randomizeFluxDisplayTick10 )
-  }
-  g.qss.flux.display[d][0]( 1 )
-  g.flux.display[d].current = 0
-  if ( !g.flux.display[d ? 0 : 1].current ) {
-    startWarps()
-    g.flux.forCleanUp.display = [ setAddOn( '#fluxDisplay', 'click', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mousedown', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mouseup', activateFluxDisplay ) ]
-    gsap.set( g.el.fluxDisplay, { cursor: 'pointer' } )
+  if ( !g.flux.bin.display.activate.length ) {
+    g.flux.bin.display.randomize[d] = cleanUp( g.flux.bin.display.randomize[d] )
+    g.qss.flux.display[d][0]( 1 )
+    g.flux.display[d].current = 0
+    if ( !g.flux.display[0].current && !g.flux.display[1].current ) {
+      if ( !g.flux.bin.display.activate.length ) g.flux.bin.display.activate = [ setAddOn( '#fluxDisplay', 'click', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mousedown', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mouseup', activateFluxDisplay ) ]
+      gsap.set( g.el.fluxDisplay, { cursor: 'pointer' } )
+    }
   }
 }
 
 const activateFluxDisplay = e => {
-  if ( !g.three.mkr.prepped ) stallCapacitor()
-  else if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
-    if ( !gsap.ticker._listeners.includes( incrementFluxDisplay ) ) gsap.ticker.add( incrementFluxDisplay )
-  } else {
-    gsap.ticker.remove( incrementFluxDisplay )
-    gsap.ticker.add( decrementFluxDisplay )
+  console.log( { deLoreanPrepped: g.three.mkr.prepped } )
+  if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
+    if ( !g.three.mkr.prepped ) {
+      devLog( { activateFluxDisplay: '(!g.three.mkr.prepped)' } )
+      g.flux.bin.activate = cleanUp( g.flux.bin.activate )
+      stallCapacitor()
+    } else {
+      devLog( { activateFluxDisplay: "(e.type === 'mousedown' || (e.type === 'click' && g.scene.skip.ff))" } )
+      console.log( { gFluxBinDisplaySpeedLength: g.flux.bin.display.speed.length } )
+      if ( !g.flux.bin.display.speed.length ) g.flux.bin.display.speed.push( gsapTick( incrementFluxDisplay ) )
+    }
+  } else if ( g.three.mkr.prepped ) {
+    devLog( { activateFluxDisplay: '(g.three.mkr.prepped)', eType: e.type } )
+    g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
+    g.flux.bin.display.speed.push( gsapTick( decrementFluxDisplay ) )
   }
 }
 
+const staticNoiseTick = () => {
+  const o = randOnum( 1, 100 ) / 100
+  g.qss.staticNoise( o < 0.23 ? 0 : o )
+}
+
 const stallCapacitor = () => {
-  gsap.set( g.el.fluxDisplay, { cursor: 'wait' } )
-  gsap.ticker.add( shockTick )
-  gsap.ticker.add( brokenFluxDisplayTick10 )
-  gsap.ticker.add( brokenFluxDisplayTick01 )
-  gsap.to( '#lightningRodsWrapper', {
-    duration: 4,
-    rotation: 360,
-    repeat: -1,
-  } )
-  setTimeout( breakFluxDisplay, 4200 )
+  if ( !g.flux.stalled ) {
+    g.qss.staticNoise = gsap.quickSetter( '#staticNoise', 'opacity' )
+    gsap.set( g.el.fluxDisplay, { cursor: 'wait' } )
+    g.flux.bin.stall.push( gsapTick( shockTick ), gsapTick( staticNoiseTick ) )
+    g.flux.bin.display.broken[0].push( gsapTick( brokenFluxDisplayTick10 ) )
+    g.flux.bin.display.broken[1].push( gsapTick( brokenFluxDisplayTick01 ) )
+    gsap.to( '#lightningRodsWrapper', {
+      duration: 4,
+      rotation: 360,
+      repeat: -1,
+    } )
+    g.flux.stalled = true
+    setTimeout( breakFluxDisplay, 4200 )
+  }
 }
 
 const breakFluxDisplay = () => {
-  gsap.ticker.remove( shockTick )
-  gsap.set( '#lightningRodsWrapper', {
-    rotation: 0,
-    overwrite: 'auto',
-  } )
-  gsap.set( '.lightningRod', {
-    opacity: 0,
-    overwrite: 'auto',
-  } )
-  g.qss.flux.directive( 0 )
-  g.flux.forCleanUp.button = setAddOn( '#fluxButton', 'click', eOnFlux )
-  g.el.fluxButton.classList.add( 'ready' )
-  g.el.flux.classList.remove( 'fluxOn' )
-  gsap.set( '#fluxCapacitorOn', {
-    opacity: 0,
-  } )
-  prepDeLorean()
-  if ( g.scene.skip.ff ) g.el.fluxButton.click()
+  if ( !g.flux.broken ) {
+    g.flux.broken = true
+    toggleFermata( {}, true )
+    g.flux.bin.stall = cleanUp( g.flux.bin.stall )
+    g.qss.staticNoise( 1 )
+    gsap.set( '#lightningRodsWrapper', {
+      rotation: 0,
+      overwrite: 'auto',
+    } )
+    gsap.set( '.lightningRod', {
+      opacity: 0,
+      overwrite: 'auto',
+    } )
+    g.qss.flux.directive( 0 )
+    g.flux.bin.button.push( setAddOn( '#fluxButton', 'click', eOnFlux ) )
+    g.el.fluxButton.classList.add( 'ready' )
+    g.el.flux.classList.remove( 'fluxOn' )
+    gsap.set( '#fluxCapacitorOn', {
+      opacity: 0,
+    } )
+    prepDeLorean()
+    if ( g.scene.skip.ff ) g.el.fluxButton.click()
+  }
 }
 
 const brokenFluxDisplayTick10 = () => {
@@ -458,16 +533,10 @@ const lynchBoxIt = () => {
   const s = g.lynchBox.scaleFactorX10 / 10
   const inv = 100 - ( g.lynchBox.scaleFactorX10 * 10 )
   const newPos = inv / 2
-  const newWarpO = inv / 100
   gsap.set( g.el.mainStage, {
     scale: g.main.scale * s,
     top: `${newPos}%`,
     left: `${newPos}%`,
-  } )
-  gsap.to( '#moireAuras', {
-    duration: 0.76 * s,
-    opacity: newWarpO,
-    backgroundColor: `rgba(255,255,255, ${newWarpO / 2})`,
   } )
 }
 
@@ -506,17 +575,15 @@ const incrementFluxDisplay = () => {
       lynchBoxIt()
     }
   } else {
+    g.flux.bin.activate = cleanUp( g.flux.bin.activate )
     gsap.set( g.el.mainStage, {
       scale: 0,
       top: '50%',
       left: '50%',
     } )
-    g.flux.forCleanUp.display.forEach( fluxCleanUpFunc => {
-      ifFunctionThenCall( fluxCleanUpFunc )
-    } )
+    g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
     dimFluxMeter()
     lightFluxMeter( 'FLUX' )
-    gsap.ticker.remove( incrementFluxDisplay )
     gsap.set( '#fluxDisplay', { cursor: 'no-drop' } )
     g.qss.flux.directive( 0 )
     gsap.to( '.fluxDisplayNumber', {
@@ -562,8 +629,9 @@ const decrementFluxDisplay = () => {
       g.flux.display[1].dispose = false
       g.qss.flux.display[0][0]( 1 )
       g.flux.display[0].dispose = 0
-      gsap.ticker.remove( decrementFluxDisplay )
       lightFluxMeter( 'SUX' )
+      g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
+      if ( !g.flux.bin.display.activate.length ) g.flux.bin.display.activate = [ setAddOn( '#fluxDisplay', 'click', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mousedown', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mouseup', activateFluxDisplay ) ]
     }
     if ( g.lynchBox.logPoints.includes( currentSpeed ) ) {
       g.lynchBox.scaleFactorX10++

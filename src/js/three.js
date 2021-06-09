@@ -33,7 +33,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
         wls: [],
         glo: [],
       },
-      cleanUp: {},
+      bin: [],
       clk: new THREE.Clock(),
       drg: false,
       flm: true,

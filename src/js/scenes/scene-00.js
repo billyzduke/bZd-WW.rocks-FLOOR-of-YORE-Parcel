@@ -17,7 +17,6 @@ g.tL.yore = new TL( { defaults: { overwrite: 'auto' } } ) // general use global 
 const setScene00 = ( c, n ) => {
   g.scene.setting = c
   // Only functions that return a boolean can be included in forCleanUp
-  g.scene.forCleanUp[c].yoreTitleClick = setAddOn( '#tpTitles', 'click', () => setScene( n ) )
   g.scene.forCleanUp[c].obscureNextScene = () => obscure( 3 )
 
   // setBaubleLayer01()
@@ -53,9 +52,7 @@ const setScene00 = ( c, n ) => {
           .to( '#tpTitleYoreAnim', {
             duration: 2,
             onComplete: function () {
-              gsap.set( '#tpTitles', {
-                cursor: 'pointer',
-              } )
+              g.scene.forCleanUp[c].yoreTitleClick = setAddOn( '#tpTitles', 'click', () => setScene( n ), 'pointer', 'wait' )
             },
             opacity: 0,
           }, '<1' )
