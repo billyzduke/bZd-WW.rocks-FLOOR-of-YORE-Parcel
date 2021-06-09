@@ -243,7 +243,7 @@ const gradientorTick = ( seizureInducing = false ) => {
 const unMaskWarpTick = () => {
   if ( g.warps.scale < 1 ) {
     g.warps.scale *= 1.1
-    g.qss.warps( { transform: `scale(${g.warps.scale}) rotateZ(${360 - ( g.warps.scale * 360 )}deg)` } )
+    g.qss.warps( { opacity: '+=0.1', transform: `scale(${g.warps.scale}) rotateZ(${360 - ( g.warps.scale * 360 )}deg)` } )
   } else {
     g.warps.bin = cleanUp( g.warps.bin )
     g.qss.warps( { maskImage: 'none', WebkitMaskImage: 'none', transform: 'scale(1) rotateZ(0)' } )
@@ -274,15 +274,30 @@ const beginFuture = () => {
 const fadeMoireAuras = () => {
   g.warps.bin = cleanUp( g.warps.bin )
   g.gradientor.bin = cleanUp( g.gradientor.bin )
-  gsap.to( '#moireAuras, #flux, #gradientor', {
-    duration: 6,
+  gsap.to( '#gradientor', {
+    duration: 0.75,
     opacity: 0,
     onComplete: function () {
-      setClearActors( '#moireAuras, #blindingFlash, #flux, #gradientor, #staticNoise' )
-      g.three.bin.push( setAddOn( '#deLorean', 'click', toggleFlyAlongPath ) )
-      g.three.on = true
-      // g.three.mkr.io = undefined
-      g.three.mkr.startRendering()
+      setClearActors( '#blindingFlash, #gradientor, #staticNoise' )
+      gsap.to( '.trippyGrid', {
+        duration: 3.6,
+        opacity: 0,
+        onComplete: function () {
+          setClearActors( '#moireAuras' )
+          gsap.to( '#flux', {
+            duration: 0.75,
+            opacity: 0,
+            onComplete: function () {
+              setClearActors( '#flux' )
+              g.three.bin.push( setAddOn( '#deLorean', 'click', toggleFlyAlongPath ) )
+              g.three.on = true
+              // g.three.mkr.io = undefined
+              g.three.mkr.startRendering()
+            },
+          } )
+        },
+        stagger: 0.75,
+      } )
     },
   } )
 }

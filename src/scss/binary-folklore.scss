@@ -98,6 +98,10 @@ div.cow {
     left: 50%;
     transform: translateX(calc(-50% - 2px));
     transform-origin: 50% 0;
+    transition: opacity 0.5s ease-in-out;
+    &.cowBellAnim {
+      opacity: 0;
+    }
   }
   &#cowL {
     left: 76px;
@@ -144,6 +148,15 @@ div#folkloreFinal {
   }
   div.folkloreFinalForm.faded & {
     pointer-events: none !important;
+  }
+}
+
+.anim div.cow .cowBell {
+  &.cowBellAnim {
+    opacity: 1;
+  }
+  &.cowBellStill {
+    opacity: 0;
   }
 }
 

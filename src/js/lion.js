@@ -14,6 +14,24 @@ const toggleLion = forcePause => {
   toggleLionEyes( forcePause )
   toggleLionHalos( forcePause )
   toggleLionHands( forcePause )
+  toggleThreshold( forcePause )
+}
+
+const toggleThreshold = forcePause => {
+  if ( g.el.threshold.classList.contains( 'anim' ) || forcePause ) {
+    g.el.threshold.classList.remove( 'anim' )
+    devLog( 'threshold animations paused' )
+  } else {
+    g.el.threshold.classList.add( 'anim' )
+    devLog( 'threshold animations active' )
+  }
+  if ( g.el.theOwl.classList.contains( 'seems' ) || forcePause ) {
+    g.el.theOwl.classList.remove( 'seems' )
+    devLog( 'owl animations paused' )
+  } else {
+    g.el.theOwl.classList.add( 'seems' )
+    devLog( 'owl animations active' )
+  }
 }
 
 const setLion = () => {
@@ -46,7 +64,7 @@ const lionShockTick = () => {
   g.lion.blur2X( {
     left: `${randOnum() ? '' : '-'}${randOnum( 12, 20 )}px`,
     opacity: randOnum( 42, 76 ) / 100,
-  })
+  } )
   shockTick()
 }
 

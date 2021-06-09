@@ -36,22 +36,29 @@ const setFlux = () => {
       directive: [],
       display: {
         activate: [],
-        broken: [ [], [] ],
-        preRandomize: [ [], [] ],
-        randomize: [ [], [] ],
+        digits: [ {
+          broken: [],
+          preRandomize: [],
+          randomize: [],
+        },
+        {
+          broken: [],
+          preRandomize: [],
+          randomize: [],
+        } ],
         speed: [],
       },
-      nacht: [],
+      glitch: [],
       stall: [],
     },
     mask: 1,
-    nacht: 0.99,
+    glitch: 0.99,
     resets: 0,
   }
   g.qss.flux = {
     capacitor: gsap.quickSetter( '#fluxCapacitorOn', 'css' ),
     mask: [ gsap.quickSetter( '#fluxMask', 'css' ), gsap.quickSetter( '#fluxUnMask', 'css' ) ],
-    nacht: gsap.quickSetter( '.stillNacht', 'css' ),
+    glitch: gsap.quickSetter( '#glitches, #staticNoise', 'css' ),
   }
   g.lynchBox = {
     scaleFactorX10: 10,
@@ -74,6 +81,7 @@ const setFlux = () => {
   setFluxDisplay()
   setFluxEchoes()
   setFluxMeter()
+  setStaticLines()
 
   gsap.set( '#lightningRodsWrapper', {
     translateY: '+=550',
@@ -185,6 +193,14 @@ const setFluxMeter = () => {
   g.qss.flux.meter = gsap.quickSetter( '#fluxMeterNeedle', 'css' )
 }
 
+const setStaticLines = () => {
+  g.qss.staticLines = []
+  for ( let sl = 1; sl <= 3; sl++ ) {
+    g.qss.staticLines.push( gsap.quickSetter( `#staticLines > div:nth-child(${sl})`, 'css' ) )
+  }
+  console.log( { gQssStaticLines: g.qss.staticLines } )
+}
+
 const echoCry = axis => {
   g.flux.bin[axis] = cleanUp( g.flux.bin[axis] )
   if ( axis === 'C' ) g.flux.bin[axis].push( gsapTick( owlCawTick ) )
@@ -289,8 +305,8 @@ const eOnFlux = () => {
     g.flux.display[flx].current = g.flux.display[flx].resetCurrent
   } )
   if ( g.flux.resets ) {
-    g.flux.bin.display.broken.forEach( ( _, cu ) => {
-      g.flux.bin.display.broken[cu] = cleanUp( g.flux.bin.display.broken[cu] )
+    g.flux.bin.display.digits.forEach( ( _, d ) => {
+      g.flux.bin.display.digits[d].broken = cleanUp( g.flux.bin.display.digits[d].broken )
     } )
     const fixDigit = { opacity: 0 }
     g.qss.flux.broken[0].forEach( ( _, broken ) => {
@@ -309,26 +325,27 @@ const eOnFlux = () => {
     toggleFermata()
     g.three.mkr.stopRendering()
     g.three.on = false
-    g.flux.bin.nacht.push( gsapTick( nachtTick ) )
+    g.flux.bin.glitch.push( gsapTick( glitchAwayTick ) )
     return
   }
   g.flux.resets++
   getReadyToFlux()
 }
 
-const nachtTick = () => {
-  if ( g.flux.nacht > 0.01 ) {
-    const tag = 1 - g.flux.nacht
-    g.flux.nacht = 1 - ( tag * 1.5 )
-    g.qss.flux.nacht( {
-      transform: `scale(${g.flux.nacht})`,
+const glitchAwayTick = () => {
+  if ( g.flux.glitch > 0.01 ) {
+    const tag = 1 - g.flux.glitch
+    g.flux.glitch = 1 - ( tag * 1.5 )
+    g.qss.flux.glitch( {
+      transform: `scale(${g.flux.glitch})`,
       borderRadius: `${tag * 50}%`,
     } )
   } else {
-    g.qss.flux.nacht( {
+    g.qss.flux.glitch( {
       transform: 'scale(0)',
       borderRadius: '50%',
     } )
+    g.flux.bin.glitch = cleanUp( g.flux.bin.glitch )
     getReadyToFlux()
   }
 }
@@ -344,10 +361,12 @@ const getReadyToFlux = () => {
 }
 
 const bootUpFluxDisplay = () => {
-  if ( !g.flux.bin.display.preRandomize[0].length && !g.flux.bin.display.preRandomize[1].length ) {
+  if ( !g.flux.bin.display.digits[0].preRandomize.length && !g.flux.bin.display.digits[1].preRandomize.length ) {
     gsap.set( g.el.fluxDisplay, { cursor: 'wait' } )
     flickOnFluxDisplayDirective()
-    g.flux.bin.display.preRandomize = [ [ gsapTick( preRandomizeFluxDisplayTick10 ) ], [ gsapTick( preRandomizeFluxDisplayTick01 ) ] ]
+    g.flux.bin.display.digits.forEach( ( _, d ) => {
+      g.flux.bin.display.digits[d].preRandomize.push( gsapTick( d ? preRandomizeFluxDisplayTick01 : preRandomizeFluxDisplayTick10 ) )
+    } )
   }
 }
 
@@ -383,8 +402,7 @@ const preRandomizeFluxDisplayTick01 = () => {
   preRandomizeFluxDisplayTick( 1 )
 }
 const preRandomizeFluxDisplayTick = d => {
-  console.log( { [`gFluxBinDisplayPreRandomize${d}`]: g.flux.bin.display.preRandomize[d] } )
-  if ( g.flux.bin.display.preRandomize[d].length ) {
+  if ( g.flux.bin.display.digits[d].preRandomize.length && !g.flux.bin.display.digits[d].randomize.length ) {
     if ( g.qss.flux.display[d][g.flux.display[d].dispose] ) {
       g.qss.flux.display[d][g.flux.display[d].dispose]( 0 )
       g.flux.display[d].dispose = false
@@ -395,8 +413,8 @@ const preRandomizeFluxDisplayTick = d => {
       g.qss.flux.display[d][nextNotSoRandomNumber]( randOnum( 12, 69 ) / 100 )
       g.flux.display[d].dispose = nextNotSoRandomNumber
     } else {
-      g.flux.bin.display.preRandomize[d] = cleanUp( g.flux.bin.display.preRandomize[d] )
-      g.flux.bin.display.randomize[d] = [ gsapTick( d ? randomizeFluxDisplayTick01 : randomizeFluxDisplayTick10 ) ]
+      g.flux.bin.display.digits[d].preRandomize = cleanUp( g.flux.bin.display.digits[d].preRandomize )
+      g.flux.bin.display.digits[d].randomize = [ gsapTick( d ? randomizeFluxDisplayTick01 : randomizeFluxDisplayTick10 ) ]
     }
   }
 }
@@ -408,8 +426,7 @@ const randomizeFluxDisplayTick01 = () => {
   randomizeFluxDisplayTick( 1 )
 }
 const randomizeFluxDisplayTick = d => {
-  console.log( { [`gFluxBinDisplayRandomize${d}`]: g.flux.bin.display.randomize[d] } )
-  if ( g.flux.bin.display.randomize[d].length ) {
+  if ( g.flux.bin.display.digits[d].randomize.length ) {
     if ( g.qss.flux.display[d][g.flux.display[d].dispose] ) {
       g.qss.flux.display[d][g.flux.display[d].dispose]( 0 )
       g.flux.display[d].dispose = false
@@ -427,8 +444,8 @@ const randomizeFluxDisplayTick = d => {
 }
 
 const randomizeTargetReached = d => {
-  if ( !g.flux.bin.display.activate.length ) {
-    g.flux.bin.display.randomize[d] = cleanUp( g.flux.bin.display.randomize[d] )
+  if ( g.flux.bin.display.digits[d].randomize.length ) {
+    g.flux.bin.display.digits[d].randomize = cleanUp( g.flux.bin.display.digits[d].randomize )
     g.qss.flux.display[d][0]( 1 )
     g.flux.display[d].current = 0
     if ( !g.flux.display[0].current && !g.flux.display[1].current ) {
@@ -440,20 +457,19 @@ const randomizeTargetReached = d => {
 
 const activateFluxDisplay = e => {
   console.log( { deLoreanPrepped: g.three.mkr.prepped } )
-  if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
-    if ( !g.three.mkr.prepped ) {
-      devLog( { activateFluxDisplay: '(!g.three.mkr.prepped)' } )
-      g.flux.bin.activate = cleanUp( g.flux.bin.activate )
-      stallCapacitor()
-    } else {
-      devLog( { activateFluxDisplay: "(e.type === 'mousedown' || (e.type === 'click' && g.scene.skip.ff))" } )
-      console.log( { gFluxBinDisplaySpeedLength: g.flux.bin.display.speed.length } )
-      if ( !g.flux.bin.display.speed.length ) g.flux.bin.display.speed.push( gsapTick( incrementFluxDisplay ) )
-    }
-  } else if ( g.three.mkr.prepped ) {
+  if ( !g.three.mkr.prepped ) {
+    devLog( { activateFluxDisplay: '(!g.three.mkr.prepped)' } )
+    g.flux.bin.activate = cleanUp( g.flux.bin.activate )
+    stallCapacitor()
+  } else if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
+    devLog( { activateFluxDisplay: "(e.type === 'mousedown' || (e.type === 'click' && g.scene.skip.ff))" } )
+    console.log( { gFluxBinDisplaySpeedLength: g.flux.bin.display.speed.length } )
+    if ( g.flux.bin.display.speed.length ) g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
+    g.flux.bin.display.speed.push( gsapTick( incrementFluxDisplay ) )
+  } else {
     devLog( { activateFluxDisplay: '(g.three.mkr.prepped)', eType: e.type } )
     g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
-    g.flux.bin.display.speed.push( gsapTick( decrementFluxDisplay ) )
+    if ( getCurrentSpeed() < 88 ) g.flux.bin.display.speed.push( gsapTick( decrementFluxDisplay ) )
   }
 }
 
@@ -463,12 +479,12 @@ const staticNoiseTick = () => {
 }
 
 const stallCapacitor = () => {
-  if ( !g.flux.stalled ) {
+  if ( !g.flux.stalled && !g.flux.bin.display.digits[0].broken.length && !g.flux.bin.display.digits[1].broken.length ) {
     g.qss.staticNoise = gsap.quickSetter( '#staticNoise', 'opacity' )
     gsap.set( g.el.fluxDisplay, { cursor: 'wait' } )
     g.flux.bin.stall.push( gsapTick( shockTick ), gsapTick( staticNoiseTick ) )
-    g.flux.bin.display.broken[0].push( gsapTick( brokenFluxDisplayTick10 ) )
-    g.flux.bin.display.broken[1].push( gsapTick( brokenFluxDisplayTick01 ) )
+    g.flux.bin.display.digits[0].broken.push( gsapTick( brokenFluxDisplayTick10 ) )
+    g.flux.bin.display.digits[1].broken.push( gsapTick( brokenFluxDisplayTick01 ) )
     gsap.to( '#lightningRodsWrapper', {
       duration: 4,
       rotation: 360,
@@ -517,6 +533,25 @@ const brokenFluxDisplayTick = d => {
     opacity: randOnum( 0, 100 ) / 100,
     zIndex: randOnum( 0, 6 ),
   } )
+  if ( d && g.three.mkr.prepped ) {
+    g.qss.staticLines.forEach( sl => {
+      const staticLineO = randOnum( 0, 100 ) / 100
+      if ( staticLineO > 0.23 ) {
+        const staticLineHeight = randOnum( 1, 100 )
+        const staticLineTop = randOnum( 0, 100 - staticLineHeight )
+        sl( {
+          height: `${staticLineHeight}%`,
+          opacity: staticLineO,
+          top: `${staticLineTop}%`,
+          mixBlendMode: g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )],
+        } )
+      } else {
+        sl( {
+          opacity: 0,
+        } )
+      }
+    } )
+  }
 }
 
 const getCurrentSpeed = () => Number( `${g.flux.display[0].current}${g.flux.display[1].current}` )
@@ -530,13 +565,14 @@ const dimFluxMeter = () => {
 }
 
 const lynchBoxIt = () => {
-  const s = g.lynchBox.scaleFactorX10 / 10
-  const inv = 100 - ( g.lynchBox.scaleFactorX10 * 10 )
-  const newPos = inv / 2
+  const o = g.lynchBox.scaleFactorX10 / 10
+  const top = 100 - ( g.lynchBox.scaleFactorX10 * 10 )
+  const left = top / 2
   gsap.set( g.el.mainStage, {
-    scale: g.main.scale * s,
-    top: `${newPos}%`,
-    left: `${newPos}%`,
+    opacity: o,
+    scale: g.main.scale * o,
+    top: `${top - 7.5}%`,
+    left: `${left}%`,
   } )
 }
 
@@ -598,7 +634,7 @@ const incrementFluxDisplay = () => {
 
 const decrementFluxDisplay = () => {
   const currentSpeed = getCurrentSpeed()
-  if ( currentSpeed >= 0 && currentSpeed < 88 ) {
+  if ( currentSpeed >= 0 ) {
     if ( g.qss.flux.display[1][g.flux.display[1].dispose] ) {
       g.qss.flux.display[1][g.flux.display[1].dispose]( 0 )
       g.flux.display[1].dispose = false

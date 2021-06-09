@@ -30,7 +30,7 @@ main#future {
     left: 0;
     opacity: 0;
     overflow: hidden;
-    div {
+    > div {
       width: 100%;
       height: 100%;
       top: 0;
@@ -77,18 +77,39 @@ main#future {
         background-image: url(../img/glitch/glitch01.gif);
         opacity: 0.76;
       }
+      &#staticLines {
+        display: block;
+        div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url(../img/glitch/static-01.png);
+          &:nth-child(2) {
+            background-image: url(../img/glitch/static-02.gif);
+          }
+          &:nth-child(3) {
+            background-image: url(../img/glitch/static-03.png);
+          }
+        }
+      }
     }
   }
 
   div#moireAuras {
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    transform-origin: 50% 50%;
     transform: scale(0.01) rotateZ(360deg);
     mask-image: url(../img/future/warp-mask.png);
     mask-size: 100% 100%;
+    mask-position: center center;
     mask-repeat: no-repeat;
     z-index: 30000;
+    opacity: 0;
     .trippyGrid {
       mask-image: url(../img/future/grid-square-twirl.png);
       mask-position: 50% 50%;

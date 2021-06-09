@@ -14,18 +14,10 @@ const toggleLionEyes = forcePause => {
 
 const toggleLionHead = forcePause => {
   if ( g.el.thirdEyeClosed.classList.contains( 'open' ) || forcePause ) {
-    gsap.set( '#thirdEyeClosed', {
-      attr: {
-        class: '',
-      },
-    } )
+    g.el.thirdEyeClosed.classList.remove( 'open' )
     devLog( 'lionHead animations paused' )
   } else {
-    gsap.set( '#thirdEyeClosed', {
-      attr: {
-        class: 'open',
-      },
-    } )
+    g.el.thirdEyeClosed.classList.add( 'open' )
     devLog( 'lionHead animations active' )
   }
 }

@@ -889,17 +889,9 @@ const chewMe = () => {
                 cleanUpUsedEls.forEach( el => {
                   el.parentNode.removeChild( el )
                 } )
-                gsap.set( '#seemlyOwl', {
-                  opacity: 0,
-                } )
-                gsap.set( '#unSeemlyOwl', {
-                  opacity: 1,
-                } )
-                gsap.set( '#theOwlIsNotWhatItSeems', {
-                  attr: {
-                    class: 'flyAndCry',
-                  },
-                } )
+                g.el.theOwl.classList.add( 'seems' )
+                g.el.theOwlIsNotWhatItSeems.classList.remove( 'open' )
+                g.el.theOwlIsNotWhatItSeems.classList.add( 'flyAndCry' )
                 gsap.set( '#theOwl', {
                   cursor: 'wait',
                 } )
