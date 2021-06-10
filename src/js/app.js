@@ -12,7 +12,7 @@ import { setCurtains } from './curtains'
 import { setFloor } from './floor'
 import { setShaiHulud } from './shai-hulud'
 import { setThree } from './three'
-import { setScene, setSceneSkipper } from './scene'
+import { setScene, setSceneSkipper } from './scenes'
 import { resetCtrRingPos1 } from './baubles/layer-01'
 import { isSet, setAddOn, toggleFermata } from './utils'
 import { setGlitches, startDeLorean, toggleFlyAlongPath } from './future'
@@ -187,7 +187,7 @@ const initApp = () => {
 }
 
 const getM = () => {
-  if ( g.el.main ) g.m = getMouseMove( g.window.event, g.el.main.getBoundingClientRect() )
+  if ( g.el.mainStage ) g.m = getMouseMove( g.window.event, g.el.mainStage.getBoundingClientRect() )
   if ( g.el.phasingRainbow && g.scene.current >= 8 && g.lion.eyes.active ) moveLionEyes()
 }
 

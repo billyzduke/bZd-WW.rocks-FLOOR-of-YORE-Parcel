@@ -4,7 +4,7 @@ import assGemGuyOff from 'url:/src/img/tShirt/gem-guy-off.gif'
 import assGemGuyIdle from 'url:/src/img/tShirt/gem-guy-on.gif'
 import assGemGuyOver from 'url:/src/img/tShirt/gem-guy-over.gif'
 import g from './glob'
-import { setScene } from './scene'
+import { setScene } from './scenes'
 
 const toggleGemGuy = forcePause => {
   g.el.gemGuy.src = g.el.gemGuy.src === assGemGuyIdle || forcePause ? assGemGuyOff : assGemGuyIdle

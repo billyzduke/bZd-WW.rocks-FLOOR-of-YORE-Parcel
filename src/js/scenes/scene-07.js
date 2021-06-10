@@ -2,7 +2,7 @@ import { gsap } from 'gsap'
 
 import g from '../glob'
 import { gsapTick, setAddOn } from '../utils'
-import { setScene } from '../scene'
+import { setScene } from '.'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
 import { orbitRing } from '../baubles/layer-01'

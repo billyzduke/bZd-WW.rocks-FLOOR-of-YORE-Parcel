@@ -3,7 +3,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
 import g from '../glob'
 import { setAddOn } from '../utils'
-import { setScene } from '../scene'
+import { setScene } from '.'
 import { flashBulb } from '../flashbulb'
 import { revertTshirt, toggleGemGuy, transformTshirt } from '../lion-t-shirt'
 import { setLightningRods } from '../lightning-rods'

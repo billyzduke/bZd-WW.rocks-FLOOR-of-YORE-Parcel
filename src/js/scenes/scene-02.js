@@ -4,7 +4,7 @@ import assCurtainSectionMask from 'url:/src/img/curtains/curtain-section-mask.sv
 import assCurtainPeekMask from 'url:/src/img/curtains/curtains-peek-mask.svg'
 import g from '../glob'
 import { gsapTick, setAddOn, setClearActors } from '../utils'
-import { setScene } from '../scene'
+import { setScene } from '.'
 import { obscureGrandiose } from '../obscuro'
 import { blurCrtnsTick } from '../curtains'
 import { evadeMouseTick } from '../baubles/layer-01'

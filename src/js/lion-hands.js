@@ -7,7 +7,7 @@ import {
 import {
   bloodSplashL, bloodSplashR, closeFoetusEye, openFoetusEye,
 } from './foetuses'
-import { activateSubScene, setScene, subSceneProgress } from './scene'
+import { activateSubScene, setScene, subSceneProgress } from './scenes'
 import { animateBaubleLayer03or04 } from './baubles/layer-04'
 
 const toggleLionHands = forcePause => {

@@ -39,10 +39,10 @@ div.tpTitles {
   }
 }
 
-#photoSensitivityWarning {
+h3#photoSensitivityWarning {
   font-size: 22px;
   position: absolute;
-  max-width: 42%;
+  width: 96%;
   color: rgba(123,228,111,0.76);
   background: rgba(0,0,0,0.42);
   text-shadow: 0 0 6px black;
@@ -52,6 +52,9 @@ div.tpTitles {
   opacity: 0;
   text-align: center;
   padding: 16px;
+  span {
+    color: rgba(255,255,255,0.76);
+  }
 }
 
 

@@ -23,7 +23,7 @@ import {
 import { setCodeRain, unSetCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
 import { rollEmInInc, rollEmOut, setRamIcon } from './owl-ram'
-import { setScene, subSceneProgress } from './scene'
+import { setScene, subSceneProgress } from './scenes'
 import { animateBaubleLayer03or04 } from './baubles/layer-04'
 
 gsap.registerPlugin( MorphSVGPlugin )

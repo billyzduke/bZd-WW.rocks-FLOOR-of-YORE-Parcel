@@ -2,7 +2,7 @@ import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '../glob'
 import { gsapTick, setAddOn, setClearActors } from '../utils'
-import { setScene } from '../scene'
+import { setScene } from '.'
 import { flashBulb } from '../flashbulb'
 import { obscure } from '../obscuro'
 import { flingRingTick } from '../baubles/layer-01'

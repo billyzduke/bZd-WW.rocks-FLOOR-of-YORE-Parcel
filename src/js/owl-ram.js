@@ -37,7 +37,7 @@ import {
   convertTextToBinary, ifFunctionThenCall, isFunction, gsapTick,
 } from './utils'
 import { printOutBinary } from './folklore'
-import { activateSubScene, subSceneProgress } from './scene'
+import { activateSubScene, subSceneProgress } from './scenes'
 
 const setRamIcon = () => {
   g.ramIcon = {

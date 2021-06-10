@@ -1,6 +1,6 @@
 import g from '../glob'
 import { setAddOn } from '../utils'
-import { setScene } from '../scene'
+import { setScene } from '.'
 import { obscure } from '../obscuro'
 import { setCtrRing } from '../baubles/layer-01'
 import { toggleLionJarp } from '../lion-head'

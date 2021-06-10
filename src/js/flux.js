@@ -23,7 +23,7 @@ import {
 } from './utils'
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
-import { setScene } from './scene'
+import { setScene } from './scenes'
 import { prepDeLorean } from './future'
 import { shockTick } from './lightning-rods'
 

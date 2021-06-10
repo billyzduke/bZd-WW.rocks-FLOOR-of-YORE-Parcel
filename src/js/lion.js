@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import g from './glob'
 import { devLog, randOnum } from './utils'
 // eslint-disable-next-line import/no-cycle
-import { setScene } from './scene'
+import { setScene } from './scenes'
 import { toggleGemGuy } from './lion-t-shirt'
 import { toggleLionEyes, toggleLionHalos, toggleLionJarp } from './lion-head'
 import { toggleLionHands } from './lion-hands'

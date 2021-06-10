@@ -1,22 +1,22 @@
-import g from './glob'
+import g from '../glob'
 import {
   devLog, isFunction, padStr, setAddOn, upperCaseFirstLetter,
-} from './utils'
-import { scene00, setScene00 } from './scenes/scene-00'
-import { scene01, setScene01 } from './scenes/scene-01'
-import { scene02, setScene02 } from './scenes/scene-02'
-import { scene03, setScene03 } from './scenes/scene-03'
-import { scene04, setScene04 } from './scenes/scene-04'
-import { scene05, setScene05 } from './scenes/scene-05'
-import { scene06, setScene06 } from './scenes/scene-06'
-import { scene07, setScene07 } from './scenes/scene-07'
-import { scene08, setScene08 } from './scenes/scene-08'
-import { scene09, setScene09 } from './scenes/scene-09'
-import { scene10, setScene10 } from './scenes/scene-10'
-import { scene11, setScene11 } from './scenes/scene-11'
-import { scene12, setScene12 } from './scenes/scene-12'
-import { scene13, setScene13 } from './scenes/scene-13'
-import { rollEmOut } from './owl-ram'
+} from '../utils'
+import { scene00, setScene00 } from './scene-00'
+import { scene01, setScene01 } from './scene-01'
+import { scene02, setScene02 } from './scene-02'
+import { scene03, setScene03 } from './scene-03'
+import { scene04, setScene04 } from './scene-04'
+import { scene05, setScene05 } from './scene-05'
+import { scene06, setScene06 } from './scene-06'
+import { scene07, setScene07 } from './scene-07'
+import { scene08, setScene08 } from './scene-08'
+import { scene09, setScene09 } from './scene-09'
+import { scene10, setScene10 } from './scene-10'
+import { scene11, setScene11 } from './scene-11'
+import { scene12, setScene12 } from './scene-12'
+import { scene13, setScene13 } from './scene-13'
+import { rollEmOut } from '../owl-ram'
 
 const scenes = [
   scene00,
@@ -235,8 +235,8 @@ const setSceneSkipper = () => {
 
 const setSubSceneSkippers = scene => {
   if ( scene && g.dev ) {
-    const parentScene = `scene${padStr(scene)}`
-    console.log(g.el.subSceneSkippers.hasChildNodes())
+    const parentScene = `scene${padStr( scene )}`
+    console.log( g.el.subSceneSkippers.hasChildNodes() )
     if ( g.el.subSceneSkippers.hasChildNodes() ) {
       [ ...g.el.subSceneSkippers.children ].forEach( ssSk => {
         ssSk.parentNode.removeChild( ssSk )
