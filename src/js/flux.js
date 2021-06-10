@@ -52,7 +52,10 @@ const setFlux = () => {
       stall: [],
     },
     mask: 1,
-    glitch: 0.99,
+    glitch: {
+      inv: 0,
+      scl: 0.99,
+    },
     resets: 0,
   }
   g.qss.flux = {
@@ -333,16 +336,20 @@ const eOnFlux = () => {
 }
 
 const glitchAwayTick = () => {
-  if ( g.flux.glitch > 0.01 ) {
-    const tag = 1 - g.flux.glitch
-    g.flux.glitch = 1 - ( tag * 1.5 )
+  if ( g.flux.glitch.scl > 0.01 ) {
+    const tag = 1 - g.flux.glitch.scl
+    g.flux.glitch.scl = 1 - ( tag * 1.5 )
+    g.flux.glitch.inv++
+    if ( g.flux.glitch.inv > 9 ) g.flux.glitch.inv = 0
     g.qss.flux.glitch( {
-      transform: `scale(${g.flux.glitch})`,
+      scaleX: g.flux.glitch.scl,
+      scaleY: `${g.flux.glitch.inv < 5 ? '' : '-'}${g.flux.glitch.scl}`,
       borderRadius: `${tag * 50}%`,
     } )
   } else {
     g.qss.flux.glitch( {
-      transform: 'scale(0)',
+      scaleX: 0,
+      scaleY: 0,
       borderRadius: '50%',
     } )
     g.flux.bin.glitch = cleanUp( g.flux.bin.glitch )
@@ -456,18 +463,18 @@ const randomizeTargetReached = d => {
 }
 
 const activateFluxDisplay = e => {
-  console.log( { deLoreanPrepped: g.three.mkr.prepped } )
+  // console.log( { deLoreanPrepped: g.three.mkr.prepped } )
   if ( !g.three.mkr.prepped ) {
-    devLog( { activateFluxDisplay: '(!g.three.mkr.prepped)' } )
+    // devLog( { activateFluxDisplay: '(!g.three.mkr.prepped)' } )
     g.flux.bin.activate = cleanUp( g.flux.bin.activate )
     stallCapacitor()
   } else if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
-    devLog( { activateFluxDisplay: "(e.type === 'mousedown' || (e.type === 'click' && g.scene.skip.ff))" } )
-    console.log( { gFluxBinDisplaySpeedLength: g.flux.bin.display.speed.length } )
+    // devLog( { activateFluxDisplay: "(e.type === 'mousedown' || (e.type === 'click' && g.scene.skip.ff))" } )
+    // console.log( { gFluxBinDisplaySpeedLength: g.flux.bin.display.speed.length } )
     if ( g.flux.bin.display.speed.length ) g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
     g.flux.bin.display.speed.push( gsapTick( incrementFluxDisplay ) )
   } else {
-    devLog( { activateFluxDisplay: '(g.three.mkr.prepped)', eType: e.type } )
+    // devLog( { activateFluxDisplay: '(g.three.mkr.prepped)', eType: e.type } )
     g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
     if ( getCurrentSpeed() < 88 ) g.flux.bin.display.speed.push( gsapTick( decrementFluxDisplay ) )
   }
@@ -571,7 +578,7 @@ const lynchBoxIt = () => {
   gsap.set( g.el.mainStage, {
     opacity: o,
     scale: g.main.scale * o,
-    top: `${top - 7.5}%`,
+    top: `${top ? top - 7.5 : 0}%`,
     left: `${left}%`,
   } )
 }

@@ -13,7 +13,7 @@ import {
 } from './future'
 import { makeDeLorean } from './delorean'
 import {
-  devLog, ifFunctionThenCall, isFunction, padStr, randOnum, setAddOn,
+  cleanUp, devLog, ifFunctionThenCall, isFunction, padStr, randOnum, setAddOn,
 } from './utils'
 
 gsap.registerPlugin( Draggable, InertiaPlugin )
@@ -244,9 +244,7 @@ const setThree = ( controls = false, stats = false, smoke = true ) => {
 
     g.three.mkr.backItUp = () => {
       g.three.mov = false
-      Object.keys( g.three.cleanUp ).forEach( cuFunc => {
-        ifFunctionThenCall( g.three.cleanUp[cuFunc] )
-      } )
+      g.three.bin = cleanUp( g.three.bin )
       g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
       g.tL.dL.to( g.three.mkr.inScene.deLorean.position, {
         duration: 9,

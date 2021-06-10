@@ -20,11 +20,11 @@ const setFuture = () => {
   // g.qss.wormHoler = gsap.quickSetter( '#blindingFlash', 'css' )
   setFlux()
   setGradientor()
-  setWarps()
+  setwarp()
   gsap.set( '#future', { opacity: 1 } )
 }
 
-const setWarps = () => {
+const setwarp = () => {
   let gridSize = g.main.w > g.main.h ? g.main.w : g.main.h
   gridSize *= 2
   gsap.set( '.trippyGrid', {
@@ -36,14 +36,14 @@ const setWarps = () => {
     translateX: '-50%',
     translateY: '-50%',
   } )
-  g.warps = {
+  g.warp = {
     bin: [],
     scale: 0.01,
   }
-  g.qss.warps = gsap.quickSetter( '#moireAuras', 'css' )
+  g.qss.warp = gsap.quickSetter( '#moireAuras', 'css' )
 }
 
-const startWarps = () => {
+const startwarp = () => {
   g.tL.warp = new TL( { defaults: { overwrite: 'auto' } } )
   g.tL.warp.fromTo( '.trippyGrid.red', {
     rotate: 0,
@@ -241,14 +241,14 @@ const gradientorTick = ( seizureInducing = false ) => {
 }
 
 const unMaskWarpTick = () => {
-  if ( g.warps.scale < 1 ) {
-    g.warps.scale *= 1.1
-    g.qss.warps( { opacity: '+=0.1', transform: `scale(${g.warps.scale}) rotateZ(${360 - ( g.warps.scale * 360 )}deg)` } )
+  if ( g.warp.scale < 1 ) {
+    g.warp.scale *= 1.1
+    g.qss.warp( { opacity: '+=0.1', transform: `scale(${g.warp.scale}) rotateZ(${360 - ( g.warp.scale * 360 )}deg)` } )
   } else {
-    g.warps.bin = cleanUp( g.warps.bin )
-    g.qss.warps( { maskImage: 'none', WebkitMaskImage: 'none', transform: 'scale(1) rotateZ(0)' } )
-    startWarps()
-    g.warps.bin.push( setAddOn( '#flux, #moireAuras', 'click', fadeMoireAuras ) )
+    g.warp.bin = cleanUp( g.warp.bin )
+    g.qss.warp( { maskImage: 'none', WebkitMaskImage: 'none', transform: 'scale(1) rotateZ(0)' } )
+    startwarp()
+    g.warp.bin.push( setAddOn( '#flux, #moireAuras', 'click', fadeMoireAuras ) )
   }
 }
 
@@ -264,15 +264,15 @@ const beginFuture = () => {
     setTimeout( () => {
       // blindingFlashUnTick2()
       // wormHoleFlashTick2()
-      const warpsMaskSize = g.main.h < g.main.w ? g.main.h : g.main.w
-      g.qss.warps( { maskSize: `${warpsMaskSize}px ${warpsMaskSize}px` } )
-      g.warps.bin.push( gsapTick( unMaskWarpTick ) )
-    }, 777 )
+      const warpMaskSize = g.main.h < g.main.w ? g.main.h : g.main.w
+      g.qss.warp( { maskSize: `${warpMaskSize}px ${warpMaskSize}px` } )
+      g.warp.bin.push( gsapTick( unMaskWarpTick ) )
+    }, 1442 )
   }, 2342 )
 }
 
 const fadeMoireAuras = () => {
-  g.warps.bin = cleanUp( g.warps.bin )
+  g.warp.bin = cleanUp( g.warp.bin )
   g.gradientor.bin = cleanUp( g.gradientor.bin )
   gsap.to( '#gradientor', {
     duration: 0.75,
@@ -350,5 +350,5 @@ const toggleWheelsDrop = () => {
 }
 
 export {
-  beginFuture, prepDeLorean, setFuture, setGlitches, setModel, setWarps, startDeLorean, startGradientor, startWarps, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
+  beginFuture, prepDeLorean, setFuture, setGlitches, setModel, setwarp, startDeLorean, startGradientor, startwarp, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
 }
