@@ -15,100 +15,112 @@ import { setThree } from './three'
 import { setScene, setSceneSkipper } from './scenes'
 import { resetCtrRingPos1 } from './baubles/layer-01'
 import { isSet, setAddOn, toggleFermata } from './utils'
-import { setGlitches, startDeLorean, toggleFlyAlongPath } from './future'
+import {
+  prepDeLorean, setGlitches, startDeLorean, toggleFlyAlongPath,
+} from './future'
+import { setLynchTunnel, startLynchTunnel } from './lynch-tunnel'
 
-// import '~/node_modules/modern-css-reset/dist/reset.min.css' // prefers-reduced-motion settings has to be commented out
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
 import '/src/scss/app.scss'
 
 const loadApp = () => {
-  if ( g.document.body.classList.contains( 'dev' ) && !isSet( g.dev ) ) g.dev = true
-  // All the DOM elements we are going to need to directly manipulate later on
-  const el = {
-    ...htmEl([
-      'binary',
-      'binaryScroll',
-      'bloodSplashL',
-      'bloodSplashR',
-      'bronzeCauldron',
-      'bronzeVidWrapper',
-      'ctrRing',
-      'deLorean',
-      'dirtOnTheGround',
-      'dirtVidWrapper',
+  // Gather references to all the DOM elements we are going to need to directly manipulate later on
+  // Since GSAP and setAddOn/setRemoveOn utilities can or must use querySelectors, the list is a lot shorter than it otherwise would be
+  let devEl = []
+  if ( g.document.body.classList.contains( 'dev' ) && !isSet( g.dev ) ) {
+    g.dev = true
+    // Additional DOM elements only present during development / debugging
+    devEl = [
       'discoWall',
-      'drWorm',
-      'draggable',
-      'excWrapper',
-      'flux',
-      'fluxButton',
-      'fluxDisplay',
-      'fluxDisplay01',
-      'fluxDisplay10',
-      'fluxEchoAxisC',
-      'fluxEchoAxisL',
-      'fluxEchoAxisR',
-      'foetusCryL',
-      'foetusCryR',
-      'foetusEyeL',
-      'foetusEyeR',
-      'future',
-      'gemGuy',
-      'ggrove',
-      'heartChakra',
-      'help',
-      'helpList',
-      'helpScreen',
-      'helpToggle',
-      'home',
-      'jungL',
-      'jungR',
-      'jungSaganL',
-      'jungSaganR',
-      'jungle',
-      'lightningRodsWrapper',
-      'lionHead',
-      'lolf01',
-      'lolf02',
-      'lynchBox',
-      'lynchTunnel',
-      'mainStage',
+      'glitches',
+      'gradientor',
       'model',
-      'moireAuras',
-      'owlBeak',
-      'owlLaser',
-      'phasingRainbow',
-      'ramIcon',
-      'ramIconHornLeft',
-      'ramIconHornRight',
-      'rosetta',
       'rotateX0',
       'rotateY0',
       'rotateZ0',
-      'sayCeren',
-      'saySinan',
-      'sceneSkipper',
-      'shopNavBar',
-      'shopNavItem',
-      'spiralOutPath',
       'subSceneSkippers',
-      'theLion',
-      'theOwl',
-      'theOwlIsNotWhatItSeems',
-      'theRam',
-      'thirdEyeClosed',
+      'sceneSkipper',
       'threeCamX',
       'threeCamY',
       'threeCamZ',
-      'threshold',
       'translateX0',
       'translateY0',
       'translateZ0',
-      'wombL',
-      'wombR',
-      'wormSignScreen',
-      'yoreFloor',
-    ] ),
+    ]
+  }
+  const domEl = [
+    'binary',
+    'binaryScroll',
+    'bloodSplashL',
+    'bloodSplashR',
+    'bronzeCauldron',
+    'bronzeVidWrapper',
+    'ctrRing',
+    'deLorean',
+    'dirtOnTheGround',
+    'dirtVidWrapper',
+    'drWorm',
+    'draggable',
+    'excWrapper',
+    'flux',
+    'fluxButton',
+    'fluxDisplay',
+    'fluxDisplay01',
+    'fluxDisplay10',
+    'fluxEchoAxisC',
+    'fluxEchoAxisL',
+    'fluxEchoAxisR',
+    'foetusCryL',
+    'foetusCryR',
+    'foetusEyeL',
+    'foetusEyeR',
+    'future',
+    'gemGuy',
+    'ggrove',
+    'heartChakra',
+    'help',
+    'helpList',
+    'helpScreen',
+    'helpToggle',
+    'home',
+    'jungL',
+    'jungR',
+    'jungSaganL',
+    'jungSaganR',
+    'jungle',
+    'lightningRodsWrapper',
+    'lionHead',
+    'lolf01',
+    'lolf02',
+    'lynchBox',
+    'lynchTunnel',
+    'mainStage',
+    'moireAuras',
+    'owlBeak',
+    'owlLaser',
+    'phasingRainbow',
+    'ramIcon',
+    'ramIconHornLeft',
+    'ramIconHornRight',
+    'rosetta',
+    'sayCeren',
+    'saySinan',
+    'shopNavBar',
+    'shopNavItem',
+    'spiralOutPath',
+    'theLion',
+    'theOwl',
+    'theOwlIsNotWhatItSeems',
+    'theRam',
+    'thirdEyeClosed',
+    'threshold',
+    'wombL',
+    'wombR',
+    'wormSignScreen',
+    'yoreFloor',
+  ]
+  const el = {
+    ...htmEl( [ ...domEl, ...devEl ] ),
     ...htmEl( [ 'html', 'body', 'header' ], 'tag' ),
     ...htmEl( '.cw', 'q', true ),
     ...htmEl( '.makisu', 'q', true ),
@@ -118,6 +130,7 @@ const loadApp = () => {
     ...htmEl( '.wormRingSegment', 'q', true ),
     ...htmEl( '.folkloreFinalForm', 'q', false ),
     ...htmEl( '.handEyeWrapper', 'q', false ),
+    ...htmEl( '.trippyGrid', 'q', true ),
   }
   el.bL = []
   g.el = el
@@ -166,13 +179,18 @@ const loadApp = () => {
   }
 
   if ( g.el.deLorean && g.three ) g.three.mkr.reSize()
-  if ( g.el.future.classList.contains( 'model' ) ) {
+  if ( g.dev && g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
-    setThree( true, true, false )
-    startDeLorean()
+    setThree( { controls: false, stats: true, smoke: true } )
+    prepDeLorean()
+    startDeLorean( { force: true } )
+    g.el.lynchBox.style.opacity = 1
+    g.el.glitches.style.opacity = g.el.mainStage.style.opacity = 0
+    g.el.gradientor.style.pointerEvents = 'none'
+    // setLynchTunnel()
+    // startLynchTunnel()
     setAddOn( '#toggleFlyAlongPath', 'click', () => {
       toggleFlyAlongPath()
-      g.three.mkr.moveWithGsap( g.three.grp.deLorean, 0 )
     } )
   }
 
@@ -192,6 +210,7 @@ const getM = () => {
   if ( g.el.phasingRainbow && g.scene.current >= 8 && g.lion.eyes.active ) moveLionEyes()
 }
 
+// Add the document and window objects to the global object so we don't have to constantly disable this rule
 // eslint-disable-next-line no-undef
 g.document = document
 g.document.addEventListener( 'DOMContentLoaded', () => {

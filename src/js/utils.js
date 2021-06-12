@@ -224,7 +224,7 @@ const setClearInterval = ntrvl => {
 const setRemoveOn = ( domSelector, onEvent, doFunc, cursorOn = 'no-drop' ) => {
   const domElements = g.document.querySelectorAll( domSelector )
   domElements.forEach( domEl => {
-    devLog( { listeners: getElementEventListeners( domEl ) } )
+    // devLog( { listeners: getElementEventListeners( domEl ) } )
     domEl.removeEventListener( onEvent, doFunc )
     devLog( `event listener removed from #${domEl.id}: ${onEvent} => ${doFunc.name}()` )
     if ( cursorOn ) domEl.style.cursor = cursorOn

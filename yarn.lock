@@ -1652,7 +1652,7 @@
     "@pixi/ticker" "6.0.4"
     "@pixi/utils" "6.0.4"
 
-"@pixi/display@6.0.4", "@pixi/display@^6.0.4":
+"@pixi/display@6.0.4":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@pixi/display/-/display-6.0.4.tgz#f192edb57a1d68d0616b2d379284a84490df0411"
   integrity sha512-v6hjx5Gm5aIlLQ7xrsZ2lstI1cv/MtbWXJOhU8LXckkrHHUvAuJgml3+0pcHw8YLuOlepZngUuiqy/XjceVk8A==
@@ -1736,11 +1736,6 @@
     "@pixi/math" "6.0.4"
     "@pixi/ticker" "6.0.4"
     "@pixi/utils" "6.0.4"
-
-"@pixi/layers@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@pixi/layers/-/layers-1.0.2.tgz#bf14dc89ec8cd250dd257e441588fa43c84ca53d"
-  integrity sha512-R5arBNkE6/s7tLFmnJAig5XeP2SbjEl46QvQpg9RD/iNn1uH/5f1OqF81+OLgP8UCWXnqR3/wOiaYEG7Cc319A==
 
 "@pixi/loaders@6.0.4":
   version "6.0.4"
@@ -5337,11 +5332,6 @@ mkdirp@^0.5.1, mkdirp@~0.5.1:
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   dependencies:
     minimist "^1.2.5"
-
-modern-css-reset@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/modern-css-reset/-/modern-css-reset-1.4.0.tgz#5bee4d11eeca2ff19b882c6e8f1769773e792d04"
-  integrity sha512-0crZmSFmrxkI7159rvQWjpDhy0u4+Awg/iOycJdlVn0RSeft/a+6BrQHR3IqvmdK25sqt0o6Z5Ap7cWgUee2rw==
 
 mpd-parser@0.15.4:
   version "0.15.4"

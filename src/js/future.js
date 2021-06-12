@@ -4,8 +4,9 @@ import { TextPlugin } from 'gsap/TextPlugin'
 import g from './glob'
 import { setFlux } from './flux'
 import {
-  cleanUp, devLog, gsapTick, randOnum, setAddOn, setClearActors, toggleFermata,
+  cleanUp, devLog, gsapTick, randOnum, setAddOn, setClearActors, shuffleArray, toggleFermata,
 } from './utils'
+import { startLynchTunnel } from './lynch-tunnel'
 
 gsap.registerPlugin( TextPlugin )
 
@@ -20,11 +21,11 @@ const setFuture = () => {
   // g.qss.wormHoler = gsap.quickSetter( '#blindingFlash', 'css' )
   setFlux()
   setGradientor()
-  setwarp()
+  setWarp()
   gsap.set( '#future', { opacity: 1 } )
 }
 
-const setwarp = () => {
+const setWarp = () => {
   let gridSize = g.main.w > g.main.h ? g.main.w : g.main.h
   gridSize *= 2
   gsap.set( '.trippyGrid', {
@@ -38,12 +39,13 @@ const setwarp = () => {
   } )
   g.warp = {
     bin: [],
+    fade: [ '#gradientor', ...shuffleArray( g.el.trippyGrid ) ],
     scale: 0.01,
   }
   g.qss.warp = gsap.quickSetter( '#moireAuras', 'css' )
 }
 
-const startwarp = () => {
+const startWarp = () => {
   g.tL.warp = new TL( { defaults: { overwrite: 'auto' } } )
   g.tL.warp.fromTo( '.trippyGrid.red', {
     rotate: 0,
@@ -166,8 +168,8 @@ const prepDeLorean = () => {
   }
 }
 
-const startDeLorean = () => {
-  if ( !g.three.on ) {
+const startDeLorean = ( { force = false } = {} ) => {
+  if ( !g.three.on || force ) {
     g.el.deLorean.style.opacity = 1
     g.el.deLorean.style.pointerEvents = 'auto'
   } else {
@@ -190,13 +192,13 @@ const setGradientor = () => {
   }
 }
 
-const startGradientor = ( seizureInducing = false ) => {
+const startGradientor = ( { induceSeizure = false } = {} ) => {
   g.gradientor.bin = cleanUp( g.gradientor.bin )
   gsap.to( '#gradientor', {
     duration: 1,
     opacity: 1,
   } )
-  g.gradientor.bin.push( gsapTick( seizureInducing ? gradientorSeizureTick : gradientorGradualTick ) )
+  g.gradientor.bin.push( gsapTick( induceSeizure ? gradientorSeizureTick : gradientorGradualTick ) )
 }
 
 const switchStopColor = () => {
@@ -204,14 +206,14 @@ const switchStopColor = () => {
 }
 
 const gradientorGradualTick = () => {
-  gradientorTick( false )
+  gradientorTick( { induceSeizure: false } )
 }
 
 const gradientorSeizureTick = () => {
-  gradientorTick( true )
+  gradientorTick( { induceSeizure: true } )
 }
 
-const gradientorTick = ( seizureInducing = false ) => {
+const gradientorTick = ( { induceSeizure = false } = {} ) => {
   let gradBG = `radial-gradient(circle, ${g.gradientor.color} 0%`
   let gradO = 1
   g.gradientor.stops.forEach( ( perc, stop ) => {
@@ -229,7 +231,7 @@ const gradientorTick = ( seizureInducing = false ) => {
       switchStopColor()
     }
   } )
-  if ( !seizureInducing ) {
+  if ( !induceSeizure ) {
     switchStopColor()
     gradBG += `, ${g.gradientor.color} 100%`
   } else gradO = randOnum( 1, 100 ) / 100
@@ -247,7 +249,7 @@ const unMaskWarpTick = () => {
   } else {
     g.warp.bin = cleanUp( g.warp.bin )
     g.qss.warp( { maskImage: 'none', WebkitMaskImage: 'none', transform: 'scale(1) rotateZ(0)' } )
-    startwarp()
+    startWarp()
     g.warp.bin.push( setAddOn( '#flux, #moireAuras', 'click', fadeMoireAuras ) )
   }
 }
@@ -261,6 +263,7 @@ const beginFuture = () => {
     toggleFermata( { exceptTLs: [ 'dL', 'warp' ] } )
     startDeLorean()
     startGradientor()
+    // startLynchTunnel()
     setTimeout( () => {
       // blindingFlashUnTick2()
       // wormHoleFlashTick2()
@@ -272,20 +275,27 @@ const beginFuture = () => {
 }
 
 const fadeMoireAuras = () => {
-  g.warp.bin = cleanUp( g.warp.bin )
-  g.gradientor.bin = cleanUp( g.gradientor.bin )
-  gsap.to( '#gradientor', {
-    duration: 0.75,
-    opacity: 0,
-    onComplete: function () {
-      setClearActors( '#blindingFlash, #gradientor, #staticNoise' )
-      gsap.to( '.trippyGrid', {
-        duration: 3.6,
-        opacity: 0,
-        onComplete: function () {
-          setClearActors( '#moireAuras' )
+  if ( !g.warp.fading ) {
+    g.warp.fading = true
+    gsap.set( '#moireAuras', {
+      cursor: 'wait',
+    } )
+    const fadeNext = g.warp.fade.shift()
+    if ( fadeNext === '#gradientor' ) g.gradientor.bin = cleanUp( g.gradientor.bin )
+    gsap.to( fadeNext, {
+      duration: 1.5,
+      opacity: 0,
+      onComplete: function () {
+        g.warp.fading = false
+        gsap.set( '#moireAuras', {
+          cursor: 'copy',
+          pointerEvents: 'auto',
+        } )
+        if ( !g.warp.fade.length ) {
+          g.warp.bin = cleanUp( g.warp.bin )
+          setClearActors( '#blindingFlash, #gradientor, #moireAuras, #staticNoise' )
           gsap.to( '#flux', {
-            duration: 0.75,
+            duration: 0.25,
             opacity: 0,
             onComplete: function () {
               setClearActors( '#flux' )
@@ -295,11 +305,10 @@ const fadeMoireAuras = () => {
               g.three.mkr.startRendering()
             },
           } )
-        },
-        stagger: 0.75,
-      } )
-    },
-  } )
+        }
+      },
+    } )
+  }
 }
 
 const movable = [ '#deLorean', '#sideViewMirrorRight div:nth-child(2)' ]
@@ -350,5 +359,5 @@ const toggleWheelsDrop = () => {
 }
 
 export {
-  beginFuture, prepDeLorean, setFuture, setGlitches, setModel, setwarp, startDeLorean, startGradientor, startwarp, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
+  beginFuture, prepDeLorean, setFuture, setGlitches, setModel, setWarp, startDeLorean, startGradientor, startWarp, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
 }

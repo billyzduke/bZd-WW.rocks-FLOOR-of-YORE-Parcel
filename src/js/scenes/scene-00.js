@@ -6,7 +6,6 @@ import g from '../glob'
 import { obscure } from '../obscuro'
 import { setBaubleLayers } from '../baubles'
 import { drawYore } from '../titles'
-import { animateLynchBox, setLynchBox } from '../lynch-box'
 
 gsap.registerPlugin( DrawSVGPlugin )
 
@@ -22,9 +21,6 @@ const setScene00 = ( c, n ) => {
   // setBaubleLayer01()
   setBaubleLayers()
   if ( g.tL.yore ) drawYore( c, n )
-
-  setLynchBox()
-  // animateLynchBox( 10, 500 )
 
   return true
 }

@@ -18,7 +18,7 @@ import {
 
 gsap.registerPlugin( Draggable, InertiaPlugin )
 
-const setThree = ( controls = false, stats = false, smoke = true ) => {
+const setThree = ({ controls = false, stats = false, smoke = true } = {} ) => {
   if ( !g.three ) {
     if ( g.el.future.classList.contains( 'model' ) ) {
       if ( g.el.model ) setModel()

@@ -578,7 +578,7 @@ const lynchBoxIt = () => {
   gsap.set( g.el.mainStage, {
     opacity: o,
     scale: g.main.scale * o,
-    top: `${top ? top - 7.5 : 0}%`,
+    top: `${top ? top - 7.5 - Math.cbrt( top ) : 0}%`,
     left: `${left}%`,
   } )
 }
