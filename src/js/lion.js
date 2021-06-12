@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
-import g from './glob'
-import { devLog, randOnum } from './utils'
+import g from '/src/js/glob'
+import { devLog, randOnum } from '/src/js/utils'
 // eslint-disable-next-line import/no-cycle
 import { setScene } from './scenes'
 import { toggleGemGuy } from './lion-t-shirt'

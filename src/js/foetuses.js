@@ -51,10 +51,10 @@ import assFoetusEyeSquinch01 from 'url:/src/img/foetuses/foetusEyeSquinch-01.png
 import assFoetusEyeSquinch02 from 'url:/src/img/foetuses/foetusEyeSquinch-02.png'
 import assFoetusEyeSquinch03 from 'url:/src/img/foetuses/foetusEyeSquinch-03.png'
 import assFoetusEyeSquinch04 from 'url:/src/img/foetuses/foetusEyeSquinch-04.png'
-import g from './glob'
+import g from '/src/js/glob'
 import {
   cleanUp, gsapTick, randOnum, setAddOn,
-} from './utils'
+} from '/src/js/utils'
 import { echoCry } from './flux'
 
 const setFoetuses = () => {
@@ -267,7 +267,7 @@ const closeFoetusEyeTick = foe => {
     g.qss.foetus[foe].eye[nextCloseEyeFrame]( 1 )
     g.foetus[foe].eye = nextCloseEyeFrame
   } else {
-    g.foetus.bin.eye[foe]  =cleanUp( g.foetus.bin.eye[foe] )
+    g.foetus.bin.eye[foe] = cleanUp( g.foetus.bin.eye[foe] )
     if ( g.scene.current === 12 ) {
       g.qss.foetus[foe].eye[g.foetus[foe].eye]( 0 )
       squinchFoetusEye( foe )
@@ -315,7 +315,7 @@ const annoyFoetusTick = foe => {
 }
 
 const squinchFoetusEye = foe => {
-  g.foetus.bin.eye[foe] =( g.foetus.bin.eye[foe] )
+  g.foetus.bin.eye[foe] = ( g.foetus.bin.eye[foe] )
   g.foetus.bin.eye[foe].push( gsapTick( foe === 'L' ? squinchFoetusEyeL : squinchFoetusEyeR ) )
 }
 const squinchFoetusEyeL = () => {

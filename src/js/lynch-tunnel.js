@@ -5,7 +5,7 @@ import { gsap } from 'gsap'
 import { PixiPlugin } from 'gsap/PixiPlugin'
 
 import assLynchTunnelFrame from 'url:/src/img/future/lynchTunnelFrame.png'
-import g from './glob'
+import g from '/src/js/glob'
 
 gsap.registerPlugin( PixiPlugin )
 PixiPlugin.registerPIXI( PIXI )

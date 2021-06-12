@@ -2,9 +2,9 @@ import { gsap, TimelineMax as TL } from 'gsap'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
-import g from './glob'
+import g from '/src/js/glob'
 // eslint-disable-next-line object-curly-newline
-import { devLog, padStr, randOnum, randOcolor, setAddOn, shuffleArray } from './utils'
+import { devLog, padStr, randOnum, randOcolor, setAddOn, shuffleArray } from '/src/js/utils'
 
 gsap.registerPlugin( MorphSVGPlugin, MotionPathPlugin )
 

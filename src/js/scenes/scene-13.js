@@ -1,4 +1,4 @@
-import g from '../glob'
+import g from '/src/js/glob'
 import { beginFuture } from '../future'
 
 const scene13 = 'Enter the DeLorean'

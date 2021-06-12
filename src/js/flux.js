@@ -17,10 +17,10 @@ import assFluxBroken4 from 'url:/src/img/flux/flux-display-broken-4.png'
 import assFluxBroken5 from 'url:/src/img/flux/flux-display-broken-5.png'
 import assFluxBroken6 from 'url:/src/img/flux/flux-display-broken-6.png'
 import assFluxBroken7 from 'url:/src/img/flux/flux-display-broken-7.png'
-import g from './glob'
+import g from '/src/js/glob'
 import {
   cleanUp, devLog, gsapTick, randOnum, setAddOn, setClearActors, toggleFermata,
-} from './utils'
+} from '/src/js/utils'
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
 import { setScene } from './scenes'

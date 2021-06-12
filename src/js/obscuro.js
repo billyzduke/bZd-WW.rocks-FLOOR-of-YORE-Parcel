@@ -1,6 +1,6 @@
 import { TimelineMax as TL } from 'gsap'
 
-import g from './glob'
+import g from '/src/js/glob'
 
 const obscure = (forSecs = 1) => {
   if (!g.scene.skip.ff) {

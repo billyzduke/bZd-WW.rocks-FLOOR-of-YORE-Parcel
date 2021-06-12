@@ -1,7 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
-import g from '../glob'
-import { gsapTick } from '../utils'
+import g from '/src/js/glob'
+import { gsapTick } from '/src/js/utils'
 import { lionShockTick, relieveTheLion, shockTheLion } from '../lion'
 import { setLionHead, toggleLionJarp } from '../lion-head'
 import { setLionHands } from '../lion-hands'

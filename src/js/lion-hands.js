@@ -1,9 +1,9 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
-import g from './glob'
+import g from '/src/js/glob'
 import {
   devLog, gsapTick, ifFunctionThenCall, setAddOn,
-} from './utils'
+} from '/src/js/utils'
 import {
   bloodSplashL, bloodSplashR, closeFoetusEye, openFoetusEye,
 } from './foetuses'

@@ -30,8 +30,8 @@ import assLightningRod26 from 'url:/src/img/lightningRods/lightning-rod-26.png'
 import assLightningRod27 from 'url:/src/img/lightningRods/lightning-rod-27.png'
 import assLightningRod28 from 'url:/src/img/lightningRods/lightning-rod-28.png'
 
-import g from './glob'
-import { padStr } from './utils'
+import g from '/src/js/glob'
+import { padStr } from '/src/js/utils'
 
 const setLightningRods = () => {
   g.qss.lightningRods = {}
@@ -75,22 +75,22 @@ const setLightningRods = () => {
     'W',
   ]
 
-  lightningRodWrappers.forEach(lrw => {
-    const lightningRodWrapper = g.document.createElement('div')
+  lightningRodWrappers.forEach( lrw => {
+    const lightningRodWrapper = g.document.createElement( 'div' )
     lightningRodWrapper.id = `lightningRodWrapper_${lrw}`
-    lightningRodWrapper.classList.add('lightningRodWrapper')
+    lightningRodWrapper.classList.add( 'lightningRodWrapper' )
     g.qss.lightningRods[lrw] = []
-    for (let lr = 0; lr < 29; lr++) {
-      const plr = padStr(lr)
-      const lightningRod = g.document.createElement('img')
+    for ( let lr = 0; lr < 29; lr++ ) {
+      const plr = padStr( lr )
+      const lightningRod = g.document.createElement( 'img' )
       lightningRod.src = assLightningRods[lr]
       lightningRod.id = `lightningRod_${lrw}_${plr}`
-      lightningRod.classList.add('lightningRod')
-      lightningRodWrapper.appendChild(lightningRod)
-      g.qss.lightningRods[lrw].push(gsap.quickSetter(lightningRod, 'opacity'))
+      lightningRod.classList.add( 'lightningRod' )
+      lightningRodWrapper.appendChild( lightningRod )
+      g.qss.lightningRods[lrw].push( gsap.quickSetter( lightningRod, 'opacity' ) )
     }
-    g.el.lightningRodsWrapper.appendChild(lightningRodWrapper)
-  })
+    g.el.lightningRodsWrapper.appendChild( lightningRodWrapper )
+  } )
 }
 
 const shockTick = () => {

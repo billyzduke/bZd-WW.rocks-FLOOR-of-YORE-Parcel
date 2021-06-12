@@ -1,7 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
-import g from '../glob'
-import { gsapTick, setAddOn, setClearActors } from '../utils'
+import g from '/src/js/glob'
+import { gsapTick, setAddOn, setClearActors } from '/src/js/utils'
 import { setScene } from '.'
 import { flashBulb } from '../flashbulb'
 import { obscure } from '../obscuro'

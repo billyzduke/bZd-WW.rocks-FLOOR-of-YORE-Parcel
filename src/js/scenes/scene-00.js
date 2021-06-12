@@ -1,7 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 
-import g from '../glob'
+import g from '/src/js/glob'
 // import { setBaubleLayer01 } from '../baubles/layer-01'
 import { obscure } from '../obscuro'
 import { setBaubleLayers } from '../baubles'

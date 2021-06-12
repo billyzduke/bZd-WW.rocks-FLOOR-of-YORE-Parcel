@@ -1,8 +1,8 @@
 import { gsap } from 'gsap'
 // import sync from 'css-animation-sync'
 
-import { devLog, padStr } from '../utils'
-import g from '../glob'
+import { devLog, padStr } from '/src/js/utils'
+import g from '/src/js/glob'
 import { setBaubleLayer01 } from './layer-01'
 import { setBaubleLayer02 } from './layer-02'
 import { setBaubleLayer03 } from './layer-03'

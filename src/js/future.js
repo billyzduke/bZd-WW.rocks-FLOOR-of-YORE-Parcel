@@ -1,12 +1,13 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 import { TextPlugin } from 'gsap/TextPlugin'
 
-import g from './glob'
+import g from '/src/js/glob'
 import { setFlux } from './flux'
 import {
   cleanUp, devLog, gsapTick, randOnum, setAddOn, setClearActors, shuffleArray, toggleFermata,
-} from './utils'
-import { startLynchTunnel } from './lynch-tunnel'
+} from '/src/js/utils'
+// import { startLynchTunnel } from './lynch-tunnel'
+import * as threeRend from './three/rend'
 
 gsap.registerPlugin( TextPlugin )
 
@@ -39,7 +40,7 @@ const setWarp = () => {
   } )
   g.warp = {
     bin: [],
-    fade: [ '#gradientor', ...shuffleArray( g.el.trippyGrid ) ],
+    fade: [ '#flux, #gradientor', ...shuffleArray( g.el.trippyGrid ) ],
     scale: 0.01,
   }
   g.qss.warp = gsap.quickSetter( '#moireAuras', 'css' )
@@ -163,7 +164,7 @@ const prepDeLorean = () => {
     g.three.on = true
     g.el.deLorean.style.left = 0
     setTimeout( () => {
-      g.three.mkr.startRendering()
+      threeRend.startRendering()
     }, 100 )
   }
 }
@@ -281,7 +282,7 @@ const fadeMoireAuras = () => {
       cursor: 'wait',
     } )
     const fadeNext = g.warp.fade.shift()
-    if ( fadeNext === '#gradientor' ) g.gradientor.bin = cleanUp( g.gradientor.bin )
+    if ( typeof fadeNext === 'string' ) g.gradientor.bin = cleanUp( g.gradientor.bin )
     gsap.to( fadeNext, {
       duration: 1.5,
       opacity: 0,
@@ -302,7 +303,7 @@ const fadeMoireAuras = () => {
               g.three.bin.push( setAddOn( '#deLorean', 'click', toggleFlyAlongPath ) )
               g.three.on = true
               // g.three.mkr.io = undefined
-              g.three.mkr.startRendering()
+              threeRend.startRendering()
             },
           } )
         }

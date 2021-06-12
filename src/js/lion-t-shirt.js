@@ -3,7 +3,7 @@ import { gsap, TimelineMax as TL } from 'gsap'
 import assGemGuyOff from 'url:/src/img/tShirt/gem-guy-off.gif'
 import assGemGuyIdle from 'url:/src/img/tShirt/gem-guy-on.gif'
 import assGemGuyOver from 'url:/src/img/tShirt/gem-guy-over.gif'
-import g from './glob'
+import g from '/src/js/glob'
 import { setScene } from './scenes'
 
 const toggleGemGuy = forcePause => {

@@ -1,5 +1,7 @@
+import { gsap } from 'gsap'
+
 import assBodyBackground from 'url:/src/img/WWineBoxBG.jpg'
-import g from './glob'
+import g from '/src/js/glob'
 import { getW, getMouseMove } from './window'
 import htmEl from './el'
 import { revealNav, hideNav, toggleShopNav } from './nav'
@@ -14,7 +16,7 @@ import { setShaiHulud } from './shai-hulud'
 import { setThree } from './three'
 import { setScene, setSceneSkipper } from './scenes'
 import { resetCtrRingPos1 } from './baubles/layer-01'
-import { isSet, setAddOn, toggleFermata } from './utils'
+import { isSet, setAddOn, toggleFermata } from '/src/js/utils'
 import {
   prepDeLorean, setGlitches, startDeLorean, toggleFlyAlongPath,
 } from './future'
@@ -181,12 +183,27 @@ const loadApp = () => {
   if ( g.el.deLorean && g.three ) g.three.mkr.reSize()
   if ( g.dev && g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
-    setThree( { controls: false, stats: true, smoke: true } )
+    setThree( {
+      controls: false, stats: true, smoke: false, tunnel: true,
+    } )
     prepDeLorean()
     startDeLorean( { force: true } )
     g.el.lynchBox.style.opacity = 1
+    g.el.lynchBox.style.backgroundImage = 'none'
     g.el.glitches.style.opacity = g.el.mainStage.style.opacity = 0
     g.el.gradientor.style.pointerEvents = 'none'
+    // g.el.flux.classList.remove( 'tuct' )
+    // g.el.flux.style.opacity = 0.42
+    // gsap.set( '#fluxMask', {
+    //   opacity: 1,
+    //   scale: 1,
+    //   borderRadius: 0,
+    //   translateY: '+=44.55',
+    // } )
+    // gsap.set( '#fluxUnMask', {
+    //   scale: 1,
+    //   translateY: '-=44.55',
+    // } )
     // setLynchTunnel()
     // startLynchTunnel()
     setAddOn( '#toggleFlyAlongPath', 'click', () => {

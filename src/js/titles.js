@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
-import g from './glob'
-import { setAddOn } from './utils'
+import g from '/src/js/glob'
+import { setAddOn } from '/src/js/utils'
 import { setScene } from './scenes'
 
 const setTitles = () => {
@@ -14,7 +14,7 @@ const setTitles = () => {
   }
 }
 
-const drawYore = (c, n) => {
+const drawYore = ( c, n ) => {
   g.tL.yore.set( '#tpTitleYoreAnim path', {
     drawSVG: 0,
   } )

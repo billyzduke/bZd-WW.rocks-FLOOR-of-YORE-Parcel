@@ -1,4 +1,4 @@
-import g from '../glob'
+import g from '/src/js/glob'
 import { wakeFoetuses } from '../foetuses'
 import { setFuture } from '../future'
 

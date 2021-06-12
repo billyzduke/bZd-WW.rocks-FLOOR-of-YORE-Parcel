@@ -118,8 +118,8 @@ import assSmoke2frame54 from 'url:/src/img/smoke/smoke_2_54.png'
 import assSmoke2frame55 from 'url:/src/img/smoke/smoke_2_55.png'
 import assSmoke2frame56 from 'url:/src/img/smoke/smoke_2_56.png'
 import assSmoke2frame57 from 'url:/src/img/smoke/smoke_2_57.png'
-import g from './glob'
-import { ifFunctionThenCall } from './utils'
+import g from '/src/js/glob'
+import { ifFunctionThenCall } from '/src/js/utils'
 
 const setSmokes = () => {
   g.smoke = {}
@@ -250,40 +250,40 @@ const setSmokes = () => {
     ],
   }
 
-  g.el.smoke.forEach(smoke => {
+  g.el.smoke.forEach( smoke => {
     g.qss.smoke[smoke.id] = []
     let whichSmokeFrames
-    Object.keys(assSmokeFrames).forEach(asf => {
-      if (smoke.classList.contains(asf)) whichSmokeFrames = assSmokeFrames[asf]
-    })
-    if (whichSmokeFrames) {
-      whichSmokeFrames.forEach(smkF => {
-        const smokeFrame = g.document.createElement('img')
+    Object.keys( assSmokeFrames ).forEach( asf => {
+      if ( smoke.classList.contains( asf ) ) whichSmokeFrames = assSmokeFrames[asf]
+    } )
+    if ( whichSmokeFrames ) {
+      whichSmokeFrames.forEach( smkF => {
+        const smokeFrame = g.document.createElement( 'img' )
         smokeFrame.src = smkF
-        smokeFrame.classList.add('smokeFrame', `${smoke.id}Frame`)
-        smoke.appendChild(smokeFrame)
-        g.qss.smoke[smoke.id].push(gsap.quickSetter(smokeFrame, 'opacity'))
-      })
+        smokeFrame.classList.add( 'smokeFrame', `${smoke.id}Frame` )
+        smoke.appendChild( smokeFrame )
+        g.qss.smoke[smoke.id].push( gsap.quickSetter( smokeFrame, 'opacity' ) )
+      } )
     }
     g.smoke[smoke.id] = {
       frame: 0,
       slow: 1,
     }
-  })
+  } )
 }
 
-const smokeTick = (smokeId, loop = false, slowFactor = 1) => {
-  if (g.smoke[smokeId].slow === slowFactor) {
+const smokeTick = ( smokeId, loop = false, slowFactor = 1 ) => {
+  if ( g.smoke[smokeId].slow === slowFactor ) {
     const prevSmokeFrame = g.smoke[smokeId].frame - 1
-    if (g.qss.smoke[smokeId][prevSmokeFrame]) g.qss.smoke[smokeId][prevSmokeFrame](0)
-    if (loop && !g.qss.smoke[smokeId][g.smoke[smokeId].frame]) {
+    if ( g.qss.smoke[smokeId][prevSmokeFrame] ) g.qss.smoke[smokeId][prevSmokeFrame]( 0 )
+    if ( loop && !g.qss.smoke[smokeId][g.smoke[smokeId].frame] ) {
       g.smoke[smokeId].frame = 0
     }
-    if (g.qss.smoke[smokeId][g.smoke[smokeId].frame]) {
-      g.qss.smoke[smokeId][g.smoke[smokeId].frame](1)
+    if ( g.qss.smoke[smokeId][g.smoke[smokeId].frame] ) {
+      g.qss.smoke[smokeId][g.smoke[smokeId].frame]( 1 )
       g.smoke[smokeId].frame++
     } else {
-      ifFunctionThenCall(g.smoke[smokeId].unTick)
+      ifFunctionThenCall( g.smoke[smokeId].unTick )
       g.smoke[smokeId].frame = 0
     }
     g.smoke[smokeId].slow = 1
@@ -291,15 +291,15 @@ const smokeTick = (smokeId, loop = false, slowFactor = 1) => {
 }
 
 const stoneSmokeTick1 = () => {
-  smokeTick('stoneSmoke1', true)
+  smokeTick( 'stoneSmoke1', true )
 }
 
 const stoneSmokeTick2 = () => {
-  smokeTick('stoneSmoke2', false, 2)
+  smokeTick( 'stoneSmoke2', false, 2 )
 }
 
 const stoneSmokeTick3 = () => {
-  smokeTick('stoneSmoke2', false)
+  smokeTick( 'stoneSmoke2', false )
 }
 
 export {

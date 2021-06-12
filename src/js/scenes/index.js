@@ -1,7 +1,7 @@
-import g from '../glob'
+import g from '/src/js/glob'
 import {
   devLog, isFunction, padStr, setAddOn, upperCaseFirstLetter,
-} from '../utils'
+} from '/src/js/utils'
 import { scene00, setScene00 } from './scene-00'
 import { scene01, setScene01 } from './scene-01'
 import { scene02, setScene02 } from './scene-02'

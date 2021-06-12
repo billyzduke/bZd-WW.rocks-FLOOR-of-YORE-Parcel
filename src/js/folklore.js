@@ -16,10 +16,10 @@ import assFolkloreFinal05 from 'url:/src/img/binaryFolklore/folklore-final-form-
 import assFolkloreFinal06 from 'url:/src/img/binaryFolklore/folklore-final-form-06.png'
 import assFolkloreFinal07 from 'url:/src/img/binaryFolklore/folklore-final-form-07.png'
 import { random } from 'gsap/gsap-core'
-import g from './glob'
+import g from '/src/js/glob'
 import {
   devLog, gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, navToNewTab, setAddOn, randOnum, setClearActors, shuffleArray,
-} from './utils'
+} from '/src/js/utils'
 import { setCodeRain, unSetCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
 import { rollEmInInc, rollEmOut, setRamIcon } from './owl-ram'

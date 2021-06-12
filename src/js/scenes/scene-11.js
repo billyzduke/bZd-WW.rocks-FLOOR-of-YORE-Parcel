@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 
-import g from '../glob'
+import g from '/src/js/glob'
 import { setScene, setSubScenes } from '.'
 import { setSmokes } from '../smoke'
 // import { setBaubleLayer03 } from '../baubles/layer-03'

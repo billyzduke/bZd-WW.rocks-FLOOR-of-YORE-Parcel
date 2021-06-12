@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 import { Draggable } from 'gsap/Draggable'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
-import g from './glob'
+import g from '/src/js/glob'
 import { toggleBaubleLayer } from './baubles'
 import { toggleFloor } from './floor'
 import { toggleLion } from './lion'
@@ -204,13 +204,13 @@ const cleanUp = messes => {
       ifFunctionThenCall( messes[cu] )
       messes.cu = undefined
     } )
-  } else devLog({ messedUncleaned: messes, typeOfMess: typeof messes })
+  } else devLog( { messEscapedCleaning: messes, typeOfMess: typeof messes } )
   return []
 }
 
 const setClearActors = domSelector => {
   const domElements = g.document.querySelectorAll( domSelector )
-  Object.keys(domElements).forEach( domEl => {
+  Object.keys( domElements ).forEach( domEl => {
     if ( domElements[domEl].parentNode ) domElements[domEl].parentNode.removeChild( domElements[domEl] )
   } )
   return true

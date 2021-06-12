@@ -1,5 +1,5 @@
-import g from '../glob'
-import { setAddOn } from '../utils'
+import g from '/src/js/glob'
+import { setAddOn } from '/src/js/utils'
 import { setScene } from '.'
 import { obscure } from '../obscuro'
 import { setCtrRing } from '../baubles/layer-01'

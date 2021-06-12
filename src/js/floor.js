@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
-import g from './glob'
-import { randOnum } from './utils'
+import g from '/src/js/glob'
+import { randOnum } from '/src/js/utils'
 
 const setFloor = () => {
   if ( g.el.yoreFloor ) {

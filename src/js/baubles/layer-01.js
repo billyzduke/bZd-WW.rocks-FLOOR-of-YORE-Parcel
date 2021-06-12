@@ -10,7 +10,7 @@ import assLightning07 from 'url:/src/img/lightningBalls/lightning-ball-07.png'
 import assLightning08 from 'url:/src/img/lightningBalls/lightning-ball-08.png'
 import assLightning09 from 'url:/src/img/lightningBalls/lightning-ball-09.png'
 import { setBaublesInLayer } from '.'
-import g from '../glob'
+import g from '/src/js/glob'
 
 const assLightning = [
   assLightning01,

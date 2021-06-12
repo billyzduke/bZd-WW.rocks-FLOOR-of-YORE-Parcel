@@ -32,10 +32,10 @@ import assRamIconHornRoll28 from 'url:/src/img/ramIcon/ramIcon-horn-rollout-28.p
 import assOwlBeak01 from 'url:/src/img/owl/owlBeak-01.png'
 import assOwlBeak02 from 'url:/src/img/owl/owlBeak-02.png'
 import assOwlBeak03 from 'url:/src/img/owl/owlBeak-03.png'
-import g from './glob'
+import g from '/src/js/glob'
 import {
   convertTextToBinary, ifFunctionThenCall, isFunction, gsapTick,
-} from './utils'
+} from '/src/js/utils'
 import { printOutBinary } from './folklore'
 import { activateSubScene, subSceneProgress } from './scenes'
 
@@ -100,92 +100,92 @@ const setRamIcon = () => {
   }
   g.qss.owl = []
 
-  if (g.el.ramIconHornLeft && g.el.ramIconHornRight) {
-    assRamIconHornRollFrames.forEach(assRam => {
-      const ramIconHornFrameL = g.document.createElement('img')
-      const ramIconHornFrameR = g.document.createElement('img')
+  if ( g.el.ramIconHornLeft && g.el.ramIconHornRight ) {
+    assRamIconHornRollFrames.forEach( assRam => {
+      const ramIconHornFrameL = g.document.createElement( 'img' )
+      const ramIconHornFrameR = g.document.createElement( 'img' )
       ramIconHornFrameL.src = ramIconHornFrameR.src = assRam
-      ramIconHornFrameL.classList.add('ramIconHornFrame', 'ramIconHornFrameL')
-      ramIconHornFrameR.classList.add('ramIconHornFrame', 'ramIconHornFrameR')
-      g.el.ramIconHornLeft.appendChild(ramIconHornFrameL)
-      g.el.ramIconHornRight.appendChild(ramIconHornFrameR)
-      g.qss.ramIconHorns.both.push(gsap.quickSetter([ ramIconHornFrameL, ramIconHornFrameR ], 'opacity'))
-      g.qss.ramIconHorns.L.push(gsap.quickSetter(ramIconHornFrameL, 'opacity'))
-      g.qss.ramIconHorns.R.push(gsap.quickSetter(ramIconHornFrameR, 'opacity'))
-    })
+      ramIconHornFrameL.classList.add( 'ramIconHornFrame', 'ramIconHornFrameL' )
+      ramIconHornFrameR.classList.add( 'ramIconHornFrame', 'ramIconHornFrameR' )
+      g.el.ramIconHornLeft.appendChild( ramIconHornFrameL )
+      g.el.ramIconHornRight.appendChild( ramIconHornFrameR )
+      g.qss.ramIconHorns.both.push( gsap.quickSetter( [ ramIconHornFrameL, ramIconHornFrameR ], 'opacity' ) )
+      g.qss.ramIconHorns.L.push( gsap.quickSetter( ramIconHornFrameL, 'opacity' ) )
+      g.qss.ramIconHorns.R.push( gsap.quickSetter( ramIconHornFrameR, 'opacity' ) )
+    } )
   }
 
-  if (g.el.owlBeak) {
-    assOwlBeakFrames.forEach(assBeak => {
-      const beakFrame = g.document.createElement('img')
+  if ( g.el.owlBeak ) {
+    assOwlBeakFrames.forEach( assBeak => {
+      const beakFrame = g.document.createElement( 'img' )
       beakFrame.src = assBeak
-      beakFrame.classList.add('owlBeakFrame')
-      g.el.owlBeak.appendChild(beakFrame)
-      g.qss.owl.push(gsap.quickSetter(beakFrame, 'opacity'))
-    })
+      beakFrame.classList.add( 'owlBeakFrame' )
+      g.el.owlBeak.appendChild( beakFrame )
+      g.qss.owl.push( gsap.quickSetter( beakFrame, 'opacity' ) )
+    } )
   }
 }
 
 const rollEmOut = () => {
-  if (!g.subScene.scene11.ss.active) {
-    activateSubScene('scene11', 'folklore', 'unrollRam')
-    g.ramIcon.forCleanUp.ready.forEach(cleanUp => {
-      ifFunctionThenCall(cleanUp)
-    })
-    gsap.set('#theOwlIsNotWhatItSeems', {
+  if ( !g.subScene.scene11.ss.active ) {
+    activateSubScene( 'scene11', 'folklore', 'unrollRam' )
+    g.ramIcon.forCleanUp.ready.forEach( cleanUp => {
+      ifFunctionThenCall( cleanUp )
+    } )
+    gsap.set( '#theOwlIsNotWhatItSeems', {
       cursor: 'auto',
-    })
-    gsap.set('#ramIcon', {
+    } )
+    gsap.set( '#ramIcon', {
       cursor: 'wait',
-    })
-    g.ramIcon.unTick = gsapTick(ramIconHornsRollOutTick)
-    gsap.set('#theOwlIsNotWhatItSeems', {
+    } )
+    g.ramIcon.unTick = gsapTick( ramIconHornsRollOutTick )
+    gsap.set( '#theOwlIsNotWhatItSeems', {
       attr: {
         class: 'open',
       },
-    })
+    } )
   }
 }
 
 const ramIconHornsRollOutTick = () => {
   const nextHornRollFrame = g.ramIcon.horns.both + 1
-  if (g.qss.ramIconHorns.both[nextHornRollFrame]) {
-    if (g.qss.ramIconHorns.both[g.ramIcon.horns.both]) g.qss.ramIconHorns.both[g.ramIcon.horns.both](0)
-    g.qss.ramIconHorns.both[nextHornRollFrame](1)
+  if ( g.qss.ramIconHorns.both[nextHornRollFrame] ) {
+    if ( g.qss.ramIconHorns.both[g.ramIcon.horns.both] ) g.qss.ramIconHorns.both[g.ramIcon.horns.both]( 0 )
+    g.qss.ramIconHorns.both[nextHornRollFrame]( 1 )
     g.ramIcon.horns.both = nextHornRollFrame
-  } else if (g.subScene.scene11.folklore.progress === 'unrollRam') {
-    ifFunctionThenCall(g.ramIcon.unTick)
-    subSceneProgress('scene11', 'folklore', 'ramUnrolled')
+  } else if ( g.subScene.scene11.folklore.progress === 'unrollRam' ) {
+    ifFunctionThenCall( g.ramIcon.unTick )
+    subSceneProgress( 'scene11', 'folklore', 'ramUnrolled' )
     const textLyrics = "The cows are coming home for dinner/The cynic's circus slops their trough with memes/They'll never deign to touch the feed I pour for them again/They'll starve themselves awaiting greener dreams/The zeitgeist is in need of reupholstering/We shabby dolls bereft of dopamine/A cop in every kitchen and a chef in every pot/All our streets paved o'er with baby bumps/We've made ourselves immune to revolution/Wittgenstein escaped in a balloon/Our actions speak so loud that we can't hear the words no more/Binary folklore/Engraven on all fours/You've just enough blood left to paint the door/Gone are the days of yore/Gone are the days of yore/They won't be back no more/Gone are the days of yore"
-    subSceneProgress('scene11', 'folklore', 'prepLyrics')
-    const binaryLyricsUnspaced = convertTextToBinary(textLyrics).replace(/\s/g, '')
-    printOutBinary(binaryLyricsUnspaced)
+    subSceneProgress( 'scene11', 'folklore', 'prepLyrics' )
+    const binaryLyricsUnspaced = convertTextToBinary( textLyrics ).replace( /\s/g, '' )
+    printOutBinary( binaryLyricsUnspaced )
   }
 }
 
-const rollEmInInc = (horn, rollAmount) => {
+const rollEmInInc = ( horn, rollAmount ) => {
   g.ramIcon.horns[horn].to = g.ramIcon.horns[horn].from - rollAmount
-  g.ramIcon.unTick = gsapTick(horn === 'L' ? rollEmInIncTickL : rollEmInIncTickR)
+  g.ramIcon.unTick = gsapTick( horn === 'L' ? rollEmInIncTickL : rollEmInIncTickR )
 }
 const rollEmInIncTickL = () => {
-  ramIconHornsRollInIncTick('L')
+  ramIconHornsRollInIncTick( 'L' )
 }
 const rollEmInIncTickR = () => {
-  ramIconHornsRollInIncTick('R')
+  ramIconHornsRollInIncTick( 'R' )
 }
 const ramIconHornsRollInIncTick = horn => {
   const nextHornRollFrame = g.ramIcon.horns[horn].from - 1
-  if (g.ramIcon.horns[horn].from > g.ramIcon.horns[horn].to && g.qss.ramIconHorns[horn][nextHornRollFrame]) {
-    if (g.qss.ramIconHorns[horn][g.ramIcon.horns[horn].from]) g.qss.ramIconHorns[horn][g.ramIcon.horns[horn].from](0)
-    g.qss.ramIconHorns[horn][nextHornRollFrame](1)
+  if ( g.ramIcon.horns[horn].from > g.ramIcon.horns[horn].to && g.qss.ramIconHorns[horn][nextHornRollFrame] ) {
+    if ( g.qss.ramIconHorns[horn][g.ramIcon.horns[horn].from] ) g.qss.ramIconHorns[horn][g.ramIcon.horns[horn].from]( 0 )
+    g.qss.ramIconHorns[horn][nextHornRollFrame]( 1 )
     g.ramIcon.horns[horn].from = nextHornRollFrame
-  } else ifFunctionThenCall(g.ramIcon.unTick)
+  } else ifFunctionThenCall( g.ramIcon.unTick )
 }
 
 const owlCawTick = () => {
-  if (g.owl.slow === 2) {
+  if ( g.owl.slow === 2 ) {
     let nextBeakFrame
-    switch (g.owl.caw) {
+    switch ( g.owl.caw ) {
       case -1:
         g.owl.open = !g.owl.open
         nextBeakFrame = 0
@@ -198,8 +198,8 @@ const owlCawTick = () => {
         g.owl.open = !g.owl.open
         nextBeakFrame = 1
     }
-    if (isFunction(g.qss.owl[g.owl.caw])) g.qss.owl[g.owl.caw](0)
-    if (isFunction(g.qss.owl[nextBeakFrame])) g.qss.owl[nextBeakFrame](1)
+    if ( isFunction( g.qss.owl[g.owl.caw] ) ) g.qss.owl[g.owl.caw]( 0 )
+    if ( isFunction( g.qss.owl[nextBeakFrame] ) ) g.qss.owl[nextBeakFrame]( 1 )
     g.owl.caw = nextBeakFrame
     g.owl.slow = 1
   } else g.owl.slow++
