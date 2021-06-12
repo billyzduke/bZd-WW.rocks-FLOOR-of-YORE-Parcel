@@ -25,7 +25,7 @@ const loadApp = () => {
   if ( g.document.body.classList.contains( 'dev' ) && !isSet( g.dev ) ) g.dev = true
   // All the DOM elements we are going to need to directly manipulate later on
   const el = {
-    ...htmEl( [
+    ...htmEl([
       'binary',
       'binaryScroll',
       'bloodSplashL',
@@ -71,6 +71,7 @@ const loadApp = () => {
       'lolf01',
       'lolf02',
       'lynchBox',
+      'lynchTunnel',
       'mainStage',
       'model',
       'moireAuras',

@@ -57,10 +57,12 @@
   },
   "dependencies": {
     "@gsap/shockingly": "^3.6.1",
-    "@svgdotjs/svg.js": "^3.0.16",
+    "@pixi/display": "^6.0.4",
+    "@pixi/layers": "^1.0.2",
     "css-animation-sync": "^0.2.0",
     "gsap": "npm:@gsap/shockingly",
     "howler": "^2.2.1",
+    "pixi.js": "^6.0.4",
     "stats.js": "^0.17.0",
     "three": "^0.129.0"
   },

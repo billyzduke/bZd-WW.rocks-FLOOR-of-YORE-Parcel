@@ -4,4 +4,8 @@ main#lynchBox {
   background-repeat: no-repeat;
   z-index: -100;
   opacity: 0;
+  canvas#lynchTunnel {
+    width: 100%;
+    height: 100%;
+  }
 }
