@@ -60,7 +60,6 @@
     "css-animation-sync": "^0.2.0",
     "gsap": "npm:@gsap/shockingly",
     "howler": "^2.2.1",
-    "pixi.js": "^6.0.4",
     "three": "^0.129.0"
   },
   "devDependencies": {

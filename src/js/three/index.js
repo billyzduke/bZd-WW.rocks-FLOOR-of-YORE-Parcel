@@ -67,8 +67,9 @@ const setThree = ( {
     }
 
     g.three.scene = new THREE.Scene()
+    g.three.scene.fog = new THREE.Fog( new THREE.Color( 0x000000 ), 10000, 17500 )
     g.three.aspectRatio = g.main.w / g.main.h
-    g.three.camera = new THREE.PerspectiveCamera( 76, g.three.aspectRatio, 0.1, 10000 )
+    g.three.camera = new THREE.PerspectiveCamera( 76, g.three.aspectRatio, 0.1, 17500 )
 
     g.three.renderer = new THREE.WebGLRenderer( { alpha: true } )
     g.three.renderer.shadowMap.enabled = true
@@ -102,7 +103,7 @@ const setThree = ( {
     g.three.grp.smoke.name = 'smoke'
     g.three.scene.add( g.three.grp.smoke )
     g.three.mkr.inScene.smoke = g.three.grp.smoke
-    if ( smoke ) threeMake.setSmokePuffs()
+    if ( smoke ) threeMake.setSmoke()
 
     if ( tunnel ) threeMake.setLynchTunnel()
 

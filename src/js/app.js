@@ -20,7 +20,7 @@ import { isSet, setAddOn, toggleFermata } from '/src/js/utils'
 import {
   prepDeLorean, setGlitches, startDeLorean, toggleFlyAlongPath,
 } from './future'
-import { setLynchTunnel, startLynchTunnel } from './lynch-tunnel'
+// import { setLynchTunnel, startLynchTunnel } from './lynch-tunnel'
 
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
 import '/src/scss/app.scss'

@@ -144,6 +144,7 @@ const updateAnimationFrame = () => {
 
     if ( isFunction( g.three.ani.smk.swirlSmoke ) ) g.three.ani.smk.swirlSmoke( delta )
 
+    if ( isFunction( g.three.ani.tnl.zoomTunnel ) ) g.three.ani.tnl.zoomTunnel( delta )
     // ROCKET FLARE TEXTURES SWAP
     g.three.ani.flr.forEach( ani => {
       ani( 1000 * delta )
@@ -208,7 +209,7 @@ const updateAnimationFrame = () => {
     // if ( g.three.mov ) g.three.mkr.moveAlongPath( g.three.grp.deLorean, 0 )
 
     if ( g.three.camReset ) {
-      if ( g.three.camera.rotation.x > 0 ) g.three.camera.rotateX( -THREE.Math.degToRad( 0.075 ) )
+      if ( g.three.camera.rotation.x > 0 ) g.three.camera.rotateX( -THREE.Math.degToRad( 0.065 ) )
       else g.three.camReset = false
     }
 

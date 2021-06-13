@@ -4,6 +4,7 @@ import assSmoke from 'url:/src/img/smoke/smoke_3.png'
 import assSmokeAlpha from 'url:/src/img/smoke/smoke_3_alpha.png'
 import assTunnel from 'url:/src/img/future/lynchTunnelFrame.png'
 import assTunnelAlpha from 'url:/src/img/future/lynchTunnelAlpha.png'
+import assTunnelEmissive from 'url:/src/img/future/lynchTunnelEmissive.png'
 import g from '/src/js/glob'
 import { padStr, randOnum } from '/src/js/utils'
 
@@ -33,38 +34,43 @@ const createVector3s = v3s => {
   return madeV3s
 }
 
-const setLynchTunnel = ( { girders = 30, depth = 3600 } = {} ) => {
+const setLynchTunnel = ( { girders = 25, depth = 3600 } = {} ) => {
   g.three.grp.tunnel = new THREE.Group()
   g.three.grp.tunnel.name = 'tunnel'
   g.three.scene.add( g.three.grp.tunnel )
   g.three.mkr.inScene.tunnel = g.three.grp.tunnel
+
+  const girderSpacing = 575
+  const zoomSpeed = 25
+
   const tunnelTexture = textureLoader( assTunnel )
-  // const tunnelAlphaTexture = g.three.mkr.textureLoader( assTunnelAlpha )
-  // const tunnelMaterial = new THREE.MeshLambertMaterial( {
-  //   alphaMap: tunnelAlphaTexture, emissiveIntensity: 1, emissiveMap: tunnelAlphaTexture, map: tunnelTexture, transparent: true,
-  // } )
-  const tunnelMaterial = new THREE.MeshBasicMaterial( {
-    alphaTest: 0.36, map: tunnelTexture, transparent: true,
+  const tunnelAlphaTexture = textureLoader( assTunnelAlpha )
+  const tunnelEmissiveTexture = textureLoader( assTunnelEmissive )
+  const tunnelMaterial = new THREE.MeshLambertMaterial( {
+    alphaMap: tunnelAlphaTexture, emissive: new THREE.Color( 0xad837e ), emissiveMap: tunnelEmissiveTexture, map: tunnelTexture, transparent: true,
   } )
+  // const tunnelMaterial = new THREE.MeshBasicMaterial( {
+  //   alphaTest: 0.36, map: tunnelTexture, transparent: true,
+  // } )
   const tunnelDepth = depth
   const tunnelViewPort = visibleSizeAtZDepth( tunnelDepth )
   const tunnelGeo = new THREE.PlaneGeometry( tunnelViewPort.w, tunnelViewPort.h, 25, 25 )
 
   for ( let grd = 0; grd < girders; grd++ ) {
     const tunnelMat = tunnelMaterial.clone()
-    // tunnelMat.emissive = new THREE.Color( 0x1a1514 ) )
-    // tunnelMat.opacity = randOnum( 23, 100 ) / 100
     const tunnelGirder = new THREE.Mesh( tunnelGeo, tunnelMat )
     tunnelGirder.name = `tunnelGirder_${padStr( grd )}`
-    tunnelGirder.position.set( 0, 0, -tunnelDepth )
+    tunnelGirder.position.set( 0, 0, -tunnelDepth - ( girderSpacing * grd ) )
     g.three.grp.tunnel.children.push( tunnelGirder )
   }
 
   g.three.ani.tnl.zoomTunnel = delta => {
-    const tgr = g.three.grp.tunnel.children.length
-    // while (tgr--) {
-
-    // }
+    let tgr = girders
+    while ( tgr-- ) {
+      g.three.grp.tunnel.children[tgr].position.z += zoomSpeed
+      g.three.grp.tunnel.children[tgr].material.emissiveIntensity = ( ( girderSpacing * girders ) + g.three.grp.tunnel.children[tgr].position.z ) / ( girderSpacing * girders )
+      if ( g.three.grp.tunnel.children[tgr].position.z >= girderSpacing - tunnelDepth ) g.three.grp.tunnel.children[tgr].position.z = -tunnelDepth - ( girderSpacing * ( girders - 1 ) )
+    }
   }
 }
 
