@@ -1,7 +1,7 @@
 import { gsap, TimelineMax as TL } from 'gsap'
 
 import g from '/src/js/glob'
-import { setAddOn, setClearActors } from '/src/js/utils'
+import { cleanUp, setAddOn, setClearActors } from '/src/js/utils'
 import { setScene } from '.'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
@@ -15,7 +15,7 @@ g.tL.bronze = new TL({ defaults: { overwrite: 'auto' } })
 const setScene05 = (c, n) => {
   g.scene.setting = c
   g.scene.forCleanUp[c].ctrRingClick = setAddOn('#ctrRing', 'click', () => setScene(n))
-  g.scene.forCleanUp[c].clearBronze = () => setClearActors('#bronzeVidWrapper')
+  let clearBronze = [() => setClearActors('#bronzeVidWrapper')]
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose(8)
   resetCtrRingPos2()
 
@@ -44,6 +44,9 @@ const setScene05 = (c, n) => {
     }, '<')
     .to(g.el.bronzeVidWrapper, {
       duration: 0.5,
+      onComplete: function () {
+        clearBronze = cleanUp(clearBronze)
+      },
       ease: 'power4.out',
       rotateZ: 360,
       scale: 0,

@@ -77,6 +77,10 @@ div#helpToggle:hover,
 div#help.open div#helpToggle {
   border: solid 3px white;
 }
+div#helpToggle.hover {
+  border: solid 3px white !important;
+  opacity: 1 !important;
+}
 
 div#helpList {
   margin-top: 3px;
@@ -152,7 +156,7 @@ div#help.open div#helpList {
 .mkTitle h1 i {
   letter-spacing: -4px;
 }
-.mkOpen .mkTitle h1 {
+.mkTitle h1 {
   background-position: 120% 6px;
   font-size: 20.5px;
 }

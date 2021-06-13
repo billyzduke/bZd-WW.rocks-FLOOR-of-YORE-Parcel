@@ -12,33 +12,36 @@ gsap.registerPlugin( MorphSVGPlugin )
 const hideHelp = dur => {
   if ( g.el.help && g.el.helpList && g.el.help.classList.contains( 'open' ) && !g.el.help.classList.contains( 'anim' ) ) {
     g.el.help.classList.add( 'anim' )
-    gsap.to( '#que_fill', {
-      duration: dur,
-      morphSVG: {
-        shape: '#que_fill',
-        origin: '15% 13%, 15% 27%',
-      },
-    } )
-    gsap.to( '#que_stroke', {
-      duration: dur,
-      morphSVG: {
-        shape: '#que_stroke',
-        origin: '15% 13%, 15% 27%',
-      },
-    } )
-    gsap.set( '#helpListW', {
-      overflow: 'hidden',
-    } )
-    gsap.to( g.el.helpList, {
-      duration: dur,
-      ease: 'power4.in',
-      onComplete() {
-        g.el.help.classList.remove( 'anim', 'open' )
-        if ( g.el.helpList.classList.contains( 'mkOpen' ) ) g.el.helpList.classList.remove( 'mkOpen' )
-      },
-      translateX: '100%',
-      translateY: 3,
-    } )
+    mkToggle( g.mk )
+    setTimeout( () => {
+      gsap.to( '#que_fill', {
+        duration: dur,
+        morphSVG: {
+          shape: '#que_fill',
+          origin: '15% 13%, 15% 27%',
+        },
+      } )
+      gsap.to( '#que_stroke', {
+        duration: dur,
+        morphSVG: {
+          shape: '#que_stroke',
+          origin: '15% 13%, 15% 27%',
+        },
+      } )
+      gsap.set( '#helpListW', {
+        overflow: 'hidden',
+      } )
+      gsap.to( g.el.helpList, {
+        duration: dur,
+        ease: 'power4.in',
+        onComplete() {
+          g.el.help.classList.remove( 'anim', 'open' )
+          if ( g.el.helpList.classList.contains( 'mkOpen' ) ) g.el.helpList.classList.remove( 'mkOpen' )
+        },
+        translateX: '100%',
+        translateY: 3,
+      } )
+    }, 2500 )
   }
 }
 
@@ -72,6 +75,7 @@ const helpToggle = () => {
         onComplete() {
           g.el.help.classList.add( 'open' )
           g.el.help.classList.remove( 'anim' )
+          mkToggle( g.mk )
           gsap.set( '#helpListW', {
             overflow: 'visible',
           } )
@@ -210,7 +214,8 @@ const makisusan = () => {
       mkListW.appendChild( mkRoot )
       m.removeChild( m.children[0] )
       m.appendChild( mkListW )
-      m.addEventListener( 'click', () => mkToggle( m ) )
+      m.addEventListener( 'click', () => helpToggle( ) )
+      g.mk = m
 
       const childNode = makisu( mk, mkNodes )
       if ( isNode( childNode ) ) mkRoot.appendChild( childNode )
@@ -232,8 +237,8 @@ const makisusan = () => {
       editNode.innerHTML = editNode.innerHTML.replace( nRe[0], nRe[1] )
     } )
 
-    g.el.helpToggle.addEventListener( 'click', () => helpToggle() )
-    g.el.helpScreen.addEventListener( 'click', () => helpToggle() )
+    g.el.helpToggle.addEventListener( 'click', () => helpToggle( ) )
+    g.el.helpScreen.addEventListener( 'click', () => helpToggle( ) )
     setTimeout( () => {
       g.el.helpScreen.style.backgroundImage = `url(${assFloorBGtile})`
     }, 1001 )

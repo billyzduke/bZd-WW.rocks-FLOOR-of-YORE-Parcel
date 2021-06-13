@@ -31,6 +31,7 @@ const g = {
     'color',
     'luminosity',
   ],
+  obscure: false,
   qss: {}, // gsap quickSetters
   scene: { // global scene manager
     action: '',

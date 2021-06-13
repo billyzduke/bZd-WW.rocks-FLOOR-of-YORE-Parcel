@@ -1,14 +1,8 @@
-div#obscuro {
+main#obscuro {
   cursor: wait;
-  display: block;
-  height: 100%;
-  left: 0;
   opacity: 0;
   pointer-events: none;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 900;
+  z-index: 1000;
 }
 div#obscuroGlo {
   background: linear-gradient(0deg, rgba(255,0,0,0.32) 0%, rgba(255,0,0,0) 16px),

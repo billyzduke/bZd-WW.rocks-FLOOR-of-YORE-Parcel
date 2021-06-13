@@ -164,7 +164,7 @@ const ramIconHornsRollOutTick = () => {
 }
 
 const rollEmInInc = ( horn, rollAmount ) => {
-  g.ramIcon.horns[horn].to = g.ramIcon.horns[horn].from - rollAmount
+  g.ramIcon.horns[horn].to = g.scene.skip.ff ? 0 : g.ramIcon.horns[horn].from - rollAmount
   g.ramIcon.unTick = gsapTick( horn === 'L' ? rollEmInIncTickL : rollEmInIncTickR )
 }
 const rollEmInIncTickL = () => {

@@ -18,7 +18,7 @@ import assFolkloreFinal07 from 'url:/src/img/binaryFolklore/folklore-final-form-
 import { random } from 'gsap/gsap-core'
 import g from '/src/js/glob'
 import {
-  devLog, gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, navToNewTab, setAddOn, randOnum, setClearActors, shuffleArray,
+  devLog, gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, mixItUp, navToNewTab, setAddOn, randOnum, setClearActors, shuffleArray,
 } from '/src/js/utils'
 import { setCodeRain, unSetCodeRain } from './code-rain'
 import { stoneSmokeTick1, stoneSmokeTick2, stoneSmokeTick3 } from './smoke'
@@ -221,7 +221,7 @@ const printOutRow = ( pLine = 1, biBlobRow = '', pLines ) => {
         onComplete() {
           g.folklore.binary.owlLaserQuickSetter( {
             opacity: randOnum( 23, 88 ) / 100,
-            mixBlendMode: g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )],
+            mixBlendMode: mixItUp(),
           } )
         },
       },
@@ -299,7 +299,7 @@ const scanFolkLore = () => {
 const primeRamLaserTick = () => {
   g.folklore.binary.ramLaserQuickSetter( {
     opacity: randOnum( 23, 88 ) / 100,
-    mixBlendMode: g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )],
+    mixBlendMode: mixItUp(),
   } )
 }
 
@@ -326,7 +326,7 @@ const scanFolkLoreTick = ( f, mv = 0, rv = false ) => {
   if ( laserMustMove ) {
     g.folklore.binary.ramLaserQuickSetter( {
       opacity: randOnum( 23, 88 ) / 100,
-      mixBlendMode: g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )],
+      mixBlendMode: mixItUp(),
       translateX: mvMe,
     } )
   }
@@ -624,7 +624,7 @@ const stoneColdLaserFlash = laserQss => {
   laserQss.forEach( lqss => {
     lqss( {
       opacity: randOnum( 23, 88 ) / 100,
-      mixBlendMode: g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )],
+      mixBlendMode: mixItUp(),
       scale: 1,
     } )
   } )
@@ -661,7 +661,7 @@ const stoneColdLaserTickC = () => {
   stoneColdLaserFlash( [ g.folklore.binary.ramLaser2QuickSetter, g.folklore.binary.ramLaser3QuickSetter ] )
   g.folklore.binary.owlLaser2QuickSetter( {
     opacity: randOnum( 52, 96 ) / 100,
-    mixBlendMode: g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )],
+    mixBlendMode: mixItUp(),
     scale: 1,
   } )
   const flashCrack = g.folklore.binary.stoneDemolition >= 2 || randOnum( 0, 3 ) ? 1 : randOnum( 64, 96 ) / 100

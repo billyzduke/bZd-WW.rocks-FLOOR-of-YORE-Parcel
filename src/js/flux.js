@@ -19,13 +19,15 @@ import assFluxBroken6 from 'url:/src/img/flux/flux-display-broken-6.png'
 import assFluxBroken7 from 'url:/src/img/flux/flux-display-broken-7.png'
 import g from '/src/js/glob'
 import {
-  cleanUp, devLog, gsapTick, randOnum, setAddOn, setClearActors, toggleFermata,
+  cleanUp, devLog, gsapTick, mixItUp, randOnum, setAddOn, setClearActors, toggleFermata,
 } from '/src/js/utils'
 import { closeFoetusEye } from './foetuses'
 import { owlCawTick } from './owl-ram'
 import { setScene } from './scenes'
 import { prepDeLorean } from './future'
 import { shockTick } from './lightning-rods'
+import { obscureThen } from './obscuro'
+import * as threeRend from './three/rend'
 
 const setFlux = () => {
   g.flux = {
@@ -326,7 +328,7 @@ const eOnFlux = () => {
       opacity: 1,
     } )
     toggleFermata()
-    g.three.mkr.stopRendering()
+    threeRend.stopRendering()
     g.three.on = false
     g.flux.bin.glitch.push( gsapTick( glitchAwayTick ) )
     return
@@ -516,14 +518,14 @@ const breakFluxDisplay = () => {
       opacity: 0,
       overwrite: 'auto',
     } )
-    g.qss.flux.directive( 0 )
+    g.qss.flux.directive(0)
     g.flux.bin.button.push( setAddOn( '#fluxButton', 'click', eOnFlux ) )
     g.el.fluxButton.classList.add( 'ready' )
     g.el.flux.classList.remove( 'fluxOn' )
     gsap.set( '#fluxCapacitorOn', {
       opacity: 0,
-    } )
-    prepDeLorean()
+    })
+    obscureThen(prepDeLorean)
     if ( g.scene.skip.ff ) g.el.fluxButton.click()
   }
 }
@@ -550,7 +552,7 @@ const brokenFluxDisplayTick = d => {
           height: `${staticLineHeight}%`,
           opacity: staticLineO,
           top: `${staticLineTop}%`,
-          mixBlendMode: g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )],
+          mixBlendMode: mixItUp(),
         } )
       } else {
         sl( {

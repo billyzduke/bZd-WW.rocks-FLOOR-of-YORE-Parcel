@@ -1,9 +1,9 @@
 import g from '/src/js/glob'
 import { beginFuture } from '../future'
 
-const scene13 = 'Enter the DeLorean'
+const scene13 = 'Do the Time Warp / Pilot the DeLorean'
 
-const setScene13 = (c, n) => {
+const setScene13 = ( c, n ) => {
   g.scene.setting = c
 
   beginFuture()

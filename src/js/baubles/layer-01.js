@@ -52,7 +52,7 @@ const setBaubleLayer01 = () => {
   }
 }
 
-const resetCtrRingPos1 = ( dur = 0.25 ) => {
+const resetCtrRingPos1 = ( dur = 0.5 ) => {
   if ( g.bL[1] && g.bL[1].b && g.bL[1].b.length ) {
     g.bL[1].b.forEach( ( b, i ) => {
       const a = i * g.bL[1].st
@@ -124,7 +124,7 @@ const evadeMouseTick = re => {
       x = Math.round( ( x - g.b.r ) / g.main.scale )
       y = Math.round( ( ( y - g.b.r ) / g.main.scale ) + g.cyOffPx )
       gsap.to( b, {
-        duration: 0.42,
+        duration: gsap.utils.clamp( 0.05, 0.42, 0.58 - ( fromC / ( ( g.main.w + g.main.h ) / 2 ) ) ),
         filter: blur || 'none',
         overwrite: true,
         translateX: x,

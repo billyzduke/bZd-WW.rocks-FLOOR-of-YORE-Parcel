@@ -35,7 +35,7 @@ const createVector3s = v3s => {
   return madeV3s
 }
 
-const setLynchTunnel = ( { girders = 25, depth = 3600 } = {} ) => {
+const setLynchTunnel = ( { girders = 20, depth = 3600 } = {} ) => {
   g.three.grp.tunnel = new THREE.Group()
   g.three.grp.tunnel.name = 'tunnel'
   g.three.scene.add( g.three.grp.tunnel )
@@ -76,13 +76,13 @@ const setLynchTunnel = ( { girders = 25, depth = 3600 } = {} ) => {
         const dz = g.three.grp.tunnel.children[tgr].position.z / ( ( girderSpacing * girders ) - girderSpacing )
 
         g.three.grp.tunnel.children[tgr].position.x = -( ( g.three.inScene.deLorean.position.x / g.main.w ) * girderViewPort.cx ) * ( 1 - ( girderViewPort.w / tunnelViewPort.w ) ) * Math.cbrt( dz )
-        g.three.grp.tunnel.children[tgr].position.y = -( ( g.three.inScene.deLorean.position.y / g.main.h ) * girderViewPort.cy ) * ( 1 - ( girderViewPort.h / tunnelViewPort.h ) ) * Math.cbrt( dz ) - 109 // half the height of car, since origin is still in the undercarriage
+        g.three.grp.tunnel.children[tgr].position.y = -( ( g.three.inScene.deLorean.position.y / g.main.h ) * girderViewPort.cy ) * ( 1 - ( girderViewPort.h / tunnelViewPort.h ) ) * Math.cbrt( dz ) - 200 // delorean origin is still in the undercarriage
       }
     }
   }
 }
 
-const setSmoke = ( { puffs = 99, depth = 3500 } = {} ) => {
+const setSmoke = ( { puffs = 99, depth = 3000 } = {} ) => {
   const smokem = [
     'c56fdd',
     'ac9bdd',
@@ -104,7 +104,7 @@ const setSmoke = ( { puffs = 99, depth = 3500 } = {} ) => {
   for ( let pf = 0; pf < puffs; pf++ ) {
     let puffZ = 0
     while ( puffZs.includes( puffZ ) ) puffZ = randOnum( 0, 1000 ) - smokeDepth
-    puffZs.push( puffZ )
+    puffZs.push( puffZ, puffZ + 1, puffZ - 1, puffZ - 2, puffZ + 2 )
     const puffX = randOnum( 0, smokeViewPort.w ) - smokeViewPort.cx
     const puffY = randOnum( 0, smokeViewPort.h ) - smokeViewPort.cy
     const smokeMat = smokeMaterial.clone()

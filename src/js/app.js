@@ -98,6 +98,7 @@ const loadApp = () => {
     'lynchTunnel',
     'mainStage',
     'moireAuras',
+    'obscuro',
     'owlBeak',
     'owlLaser',
     'phasingRainbow',
@@ -137,7 +138,7 @@ const loadApp = () => {
   el.bL = []
   g.el = el
   g.w = getW( g.cyOffPx )
-  g.mains = [ g.el.lynchBox, g.el.mainStage, g.el.future ]
+  g.mains = [ g.el.lynchBox, g.el.mainStage, g.el.future, g.el.obscuro ]
 
   g.main.scale = g.w.h / Number( g.window.getComputedStyle( g.el.mainStage, null ).getPropertyValue( 'height' ).slice( 0, -2 ) )
   g.main.w = g.w.w / g.main.scale

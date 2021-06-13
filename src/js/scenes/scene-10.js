@@ -35,8 +35,13 @@ const setScene10 = ( c, n ) => {
     opacity: 1,
   } )
 
-  const relieveTL = new TL( { defaults: { overwrite: 'auto' } } )
-  relieveTL.call( relieveTheLion, [], g.scene.skip.ff || 4.242 )
+  gsap.set('#threshold', {
+    delay: g.scene.skip.ff || 4.242 ,
+    onComplete: function () {
+      relieveTheLion()
+    },
+    opacity: 1,
+  } )
 
   return true
 }

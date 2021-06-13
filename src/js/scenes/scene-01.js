@@ -21,6 +21,14 @@ const setScene01 = ( c, n ) => {
     .to( '#tpTitleExplore, #photoSensitivityWarning', {
       duration: 3,
       onComplete: function () {
+        g.tL.yore.to( '#helpToggle', {
+          attr: {
+            class: 'hover',
+          },
+          repeatDelay: 2.5,
+          repeat: 5,
+          yoyo: true,
+        } )
         g.scene.forCleanUp[c].exploreTitleClick = setAddOn( '#tpTitles', 'click', () => setScene( n ), 'pointer', 'wait' )
       },
       opacity: 1,

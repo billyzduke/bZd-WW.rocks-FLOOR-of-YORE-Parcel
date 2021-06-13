@@ -14,6 +14,7 @@ import { makeDeLorean } from './delorean'
 import {
   devLog, ifFunctionThenCall, isFunction, setAddOn,
 } from '/src/js/utils'
+import { deObscureThen } from '../obscuro'
 
 const setThree = ( {
   controls = false, stats = false, car = true, tunnel = true, smoke = true,
@@ -144,12 +145,13 @@ const setThree = ( {
       g.el.deLorean.appendChild( g.three.stats.dom )
     }
 
-    g.three.ani.go = () => {
+    g.three.ani.go = ({startYourEngines = false} = {}) => {
       if ( stats ) g.three.stats.begin()
       g.three.raf = g.window.requestAnimationFrame( g.three.ani.go )
       g.three.renderer.render( g.three.scene, g.three.camera )
       threeAnim.updateAnimationFrame()
-      if ( stats ) g.three.stats.end()
+      if (stats) g.three.stats.end()
+      if (startYourEngines && g.obscure) deObscureThen()
     }
 
     if ( controls ) g.three.scene.add( new THREE.AxesHelper( 500 ) )

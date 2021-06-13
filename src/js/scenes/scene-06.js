@@ -3,6 +3,7 @@ import { gsap, TimelineMax as TL } from 'gsap'
 import g from '/src/js/glob'
 import { gsapTick, setAddOn, setClearActors } from '/src/js/utils'
 import { setScene } from '.'
+import { cleanUp } from '../utils'
 import { flashBulb } from '../flashbulb'
 import { obscureGrandiose } from '../obscuro'
 import { spinRing } from '../baubles/layer-01'
@@ -52,7 +53,7 @@ const setScene06 = ( c, n ) => {
   g.scene.setting = c
   g.scene.forCleanUp[c].ctrRingClick = setAddOn( '#ctrRing', 'click', () => setScene( n ) )
   g.scene.forCleanUp[c].spinRingTicker = gsapTick( spinRing )
-  g.scene.forCleanUp[c].clearDirt = () => setClearActors( '#dirtVidWrapper' )
+  let clearDirt = [ () => setClearActors( '#dirtVidWrapper' ) ]
   g.scene.forCleanUp[c].presetFutureScene = () => presetScene08()
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose( 8 )
 
@@ -107,6 +108,14 @@ const setScene06 = ( c, n ) => {
     repeat: -1,
     rotateZ: '+=360',
     overwrite: 'auto',
+  } )
+
+  gsap.set( '#dirtVidWrapper', {
+    delay: g.scene.skip.ff || 10,
+    opacity: 0,
+    onComplete: function () {
+      clearDirt = cleanUp( clearDirt )
+    },
   } )
 
   if ( g.scene.skip.ff ) setTimeout( () => setScene( n ), 100 )

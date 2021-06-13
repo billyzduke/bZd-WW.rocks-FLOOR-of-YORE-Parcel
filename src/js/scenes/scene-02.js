@@ -19,8 +19,9 @@ const setScene02 = ( c, n ) => {
   g.scene.forCleanUp[c].clearTitles = () => setClearActors( '#tpTitles' )
   g.scene.forCleanUp[c].obscureNextScene = () => obscureGrandiose( 2 )
 
-  g.tL.yore.to( '#tpTitles', {
-    duration: 3.24,
+  g.tL.wtf = new TL( { defaults: { overwrite: 'auto' } } )
+  g.tL.wtf.to( '#tpTitles', {
+    duration: g.scene.skip.ff || 3.24,
     ease: 'power3.in',
     opacity: 0,
     WebkitFilter: 'blur(100px)',
@@ -33,7 +34,7 @@ const setScene02 = ( c, n ) => {
       WebkitFilter: 'grayscale(0)',
       filter: 'grayscale(0)',
     }, {
-      duration: 1.5,
+      duration: g.scene.skip.ff || 1.5,
       ease: 'power3.in',
       WebkitFilter: 'grayscale(1)',
       filter: 'grayscale(1)',
@@ -51,14 +52,14 @@ const setScene02 = ( c, n ) => {
       maskSize: `${g.crtns.h}px ${g.crtns.h}px`,
     }, '<' )
     .to( '#bL01', {
-      duration: 3,
+      duration: g.scene.skip.ff || 3,
       opacity: 1,
     }, '<' )
     .set( '#tpTitles', {
       pointerEvents: 'none',
     }, '<' )
     .to( '#curtains', {
-      duration: 5,
+      duration: g.scene.skip.ff || 5,
       opacity: 1,
     }, '<' )
 

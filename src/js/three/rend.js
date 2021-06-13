@@ -16,9 +16,9 @@ const sizeRenderer = () => {
   g.three.renderer.setSize( g.three.cvs.w, g.three.cvs.h )
 }
 
-const startRendering = () => {
+const startRendering = ({startYourEngines = false} = {}) => {
   if ( g.three.on ) {
-    g.three.ani.go()
+    g.three.ani.go({startYourEngines})
     devLog( `three: deLorean is rendering` )
   }
 }

@@ -170,6 +170,8 @@ const isNode = o => ( typeof Node === 'object' ? o instanceof Node : o && typeof
 
 const isSet = value => !( typeof value === 'undefined' )
 
+const mixItUp = () => g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )]
+
 const navToNewTab = dest => g.window.open( dest )
 
 const padStr = ( input, padLen = 2, padWith = '0', start = true ) => ( start ? input.toString().padStart( padLen, padWith ) : input.toString().padEnd( padLen, padWith ) )
@@ -530,6 +532,7 @@ export {
   isFunction,
   isNode,
   isSet,
+  mixItUp,
   navToNewTab,
   padStr,
   randOnum,

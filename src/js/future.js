@@ -4,7 +4,7 @@ import { TextPlugin } from 'gsap/TextPlugin'
 import g from '/src/js/glob'
 import { setFlux } from './flux'
 import {
-  cleanUp, devLog, gsapTick, randOnum, setAddOn, setClearActors, shuffleArray, toggleFermata,
+  cleanUp, devLog, gsapTick, mixItUp, randOnum, setAddOn, setClearActors, shuffleArray, toggleFermata,
 } from '/src/js/utils'
 // import { startLynchTunnel } from './lynch-tunnel'
 import * as threeRend from './three/rend'
@@ -164,7 +164,7 @@ const prepDeLorean = () => {
     g.three.on = true
     g.el.deLorean.style.left = 0
     setTimeout( () => {
-      threeRend.startRendering()
+      threeRend.startRendering( { startYourEngines: true } )
     }, 100 )
   }
 }
@@ -252,6 +252,9 @@ const unMaskWarpTick = () => {
     g.qss.warp( { maskImage: 'none', WebkitMaskImage: 'none', transform: 'scale(1) rotateZ(0)' } )
     startWarp()
     g.warp.bin.push( setAddOn( '#flux, #moireAuras', 'click', fadeMoireAuras ) )
+    gsap.set( '#lynchBox', {
+      backgroundImage: 'none',
+    } )
   }
 }
 
@@ -282,7 +285,14 @@ const fadeMoireAuras = () => {
       cursor: 'wait',
     } )
     const fadeNext = g.warp.fade.shift()
-    if ( typeof fadeNext === 'string' ) g.gradientor.bin = cleanUp( g.gradientor.bin )
+    let mixable
+    if ( typeof fadeNext === 'string' ) {
+      g.gradientor.bin = cleanUp( g.gradientor.bin )
+      mixable = [ ...g.warp.fade ]
+    } else mixable = [ fadeNext, ...g.warp.fade ]
+    mixable.forEach( warp => {
+      warp.style.mixBlendMode = mixItUp()
+    } )
     gsap.to( fadeNext, {
       duration: 1.5,
       opacity: 0,
@@ -306,6 +316,7 @@ const fadeMoireAuras = () => {
               threeRend.startRendering()
             },
           } )
+        } else {
         }
       },
     } )

@@ -30,6 +30,11 @@ const backItUp = () => {
     ease: 'power2.in',
     z: '-=1200',
   } )
+    .to( g.three.inScene.deLorean.position, {
+      duration: 4.2,
+      ease: 'power2.inOut',
+      y: '+=36',
+    }, '<' )
     .to( g.three.inScene.deLorean.rotation, {
       duration: 11.5,
       ease: 'power2.in',
@@ -54,7 +59,7 @@ const backItUp = () => {
       duration: 5,
       ease: 'power2.in',
       x: '+=350',
-      y: '+=200',
+      y: '+=164',
     }, '<' )
     .to( g.three.inScene.carGyro.rotation, {
       duration: 3.5,
