@@ -25,12 +25,12 @@ const backItUp = () => {
   g.three.camReset = true
   g.three.bin = cleanUp( g.three.bin )
   g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
-  g.tL.dL.to( g.three.mkr.inScene.deLorean.position, {
+  g.tL.dL.to( g.three.inScene.deLorean.position, {
     duration: 9,
     ease: 'power2.in',
     z: '-=1200',
   } )
-    .to( g.three.mkr.inScene.deLorean.rotation, {
+    .to( g.three.inScene.deLorean.rotation, {
       duration: 11.5,
       ease: 'power2.in',
       y: THREE.Math.degToRad( -180 ),
@@ -43,20 +43,20 @@ const backItUp = () => {
   //   duration: 5,
   //   opacity: 0.23,
   // }, '<' )
-    .to( g.three.mkr.inScene.deLorean.rotation, {
+    .to( g.three.inScene.deLorean.rotation, {
       duration: 3.5,
       ease: 'power2.in',
       x: THREE.Math.degToRad( 30 ),
       repeat: 1,
       yoyo: true,
     }, '<2' )
-    .to( g.three.mkr.inScene.deLorean.position, {
+    .to( g.three.inScene.deLorean.position, {
       duration: 5,
       ease: 'power2.in',
       x: '+=350',
       y: '+=200',
     }, '<' )
-    .to( g.three.mkr.inScene.carGyro.rotation, {
+    .to( g.three.inScene.carGyro.rotation, {
       duration: 3.5,
       ease: 'power2.in',
       x: THREE.Math.degToRad( 75 ),
@@ -65,26 +65,26 @@ const backItUp = () => {
       repeat: 1,
       yoyo: true,
     }, '>' )
-    .to( g.three.mkr.inScene.deLorean.position, {
+    .to( g.three.inScene.deLorean.position, {
       duration: 4,
       ease: 'power2.out',
       onComplete: function () {
         allowDragging()
-        g.tL.dL.to( g.three.mkr.inScene.carGyro.rotation, {
+        g.tL.dL.to( g.three.inScene.carGyro.rotation, {
           duration: 5.5,
           ease: 'power1.inOut',
           x: `+=${THREE.Math.degToRad( 30 )}`,
           repeat: -1,
           yoyo: true,
         }, '>' )
-          .to( g.three.mkr.inScene.carGyro.rotation, {
+          .to( g.three.inScene.carGyro.rotation, {
             duration: 4.5,
             ease: 'power1.inOut',
             y: `+=${THREE.Math.degToRad( 30 )}`,
             repeat: -1,
             yoyo: true,
           }, '<' )
-          .to( g.three.mkr.inScene.carGyro.rotation, {
+          .to( g.three.inScene.carGyro.rotation, {
             duration: 7.5,
             ease: 'power1.inOut',
             z: `-=${THREE.Math.degToRad( 40 )}`,
@@ -167,43 +167,43 @@ const updateAnimationFrame = () => {
     if ( g.three.flm ) {
       // we don't ever need to reverse the wheels retraction. so suck me
     } else {
-      g.three.mkr.inScene.wheelRockets.forEach( ( flareSet, i ) => {
+      g.three.inScene.wheelRockets.forEach( ( flareSet, i ) => {
         if ( flareSet.scale.x > 0.2 ) {
           msh.scaleMesh( flareSet, 0.75 )
         } else {
           flareSet.scale.set( 0 )
-          g.three.mkr.inScene.hubCaps[i].material.map.offset.x = 0.5
+          g.three.inScene.hubCaps[i].material.map.offset.x = 0.5
           if ( i < 2 ) {
             const side = i % 2
             const whereWheel = {
-              mechsRadY: g.three.mkr.inScene.wheelMechs[side].rotation.y,
-              mechsPosX: g.three.mkr.inScene.wheelMechs[side].position.x,
-              mechsPosZ: g.three.mkr.inScene.wheelMechs[side].position.z,
-              wheelsRadY: g.three.mkr.inScene.wheelSides[side].rotation.y,
-              wheelsPosX: g.three.mkr.inScene.wheelSides[side].position.x,
-              wheelsPosZ: g.three.mkr.inScene.wheelSides[side].position.z,
+              mechsRadY: g.three.inScene.wheelMechs[side].rotation.y,
+              mechsPosX: g.three.inScene.wheelMechs[side].position.x,
+              mechsPosZ: g.three.inScene.wheelMechs[side].position.z,
+              wheelsRadY: g.three.inScene.wheelSides[side].rotation.y,
+              wheelsPosX: g.three.inScene.wheelSides[side].position.x,
+              wheelsPosZ: g.three.inScene.wheelSides[side].position.z,
             }
             if ( side ) {
               // RIGHT SIDE
-              if ( whereWheel.wheelsRadY > -g.three.mkr.wheels.rotTarget ) g.three.mkr.inScene.wheelSides[side].rotateY( -g.three.mkr.wheels.rotIncRad )
-              if ( whereWheel.wheelsPosX < -g.three.mkr.wheels.posTarget.x ) g.three.mkr.inScene.wheelSides[side].position.x += 2
-              if ( whereWheel.mechsPosX < -g.three.mkr.wheels.armTarget.x ) g.three.mkr.inScene.wheelMechs[side].position.x += 1.8571
-              if ( whereWheel.mechsRadY > 0 ) g.three.mkr.inScene.wheelMechs[side].rotateY( -0.00698131 )
+              if ( whereWheel.wheelsRadY > -g.three.mkr.wheels.rotTarget ) g.three.inScene.wheelSides[side].rotateY( -g.three.mkr.wheels.rotIncRad )
+              if ( whereWheel.wheelsPosX < -g.three.mkr.wheels.posTarget.x ) g.three.inScene.wheelSides[side].position.x += 2
+              if ( whereWheel.mechsPosX < -g.three.mkr.wheels.armTarget.x ) g.three.inScene.wheelMechs[side].position.x += 1.8571
+              if ( whereWheel.mechsRadY > 0 ) g.three.inScene.wheelMechs[side].rotateY( -0.00698131 )
             } else {
               // LEFT SIDE
-              if ( whereWheel.wheelsRadY < g.three.mkr.wheels.rotTarget ) g.three.mkr.inScene.wheelSides[side].rotateY( g.three.mkr.wheels.rotIncRad )
-              if ( whereWheel.wheelsPosX > g.three.mkr.wheels.posTarget.x ) g.three.mkr.inScene.wheelSides[side].position.x -= 2
-              if ( whereWheel.mechsPosX > g.three.mkr.wheels.armTarget.x ) g.three.mkr.inScene.wheelMechs[side].position.x -= 1.8571
-              if ( whereWheel.mechsRadY < 0 ) g.three.mkr.inScene.wheelMechs[side].rotateY( 0.00698131 )
+              if ( whereWheel.wheelsRadY < g.three.mkr.wheels.rotTarget ) g.three.inScene.wheelSides[side].rotateY( g.three.mkr.wheels.rotIncRad )
+              if ( whereWheel.wheelsPosX > g.three.mkr.wheels.posTarget.x ) g.three.inScene.wheelSides[side].position.x -= 2
+              if ( whereWheel.mechsPosX > g.three.mkr.wheels.armTarget.x ) g.three.inScene.wheelMechs[side].position.x -= 1.8571
+              if ( whereWheel.mechsRadY < 0 ) g.three.inScene.wheelMechs[side].rotateY( 0.00698131 )
             }
-            if ( whereWheel.wheelsPosZ > g.three.mkr.wheels.posTarget.z ) g.three.mkr.inScene.wheelSides[side].position.z -= 1.6
-            if ( whereWheel.mechsPosZ > g.three.mkr.wheels.armTarget.z ) g.three.mkr.inScene.wheelMechs[side].position.z -= 0.9144
+            if ( whereWheel.wheelsPosZ > g.three.mkr.wheels.posTarget.z ) g.three.inScene.wheelSides[side].position.z -= 1.6
+            if ( whereWheel.mechsPosZ > g.three.mkr.wheels.armTarget.z ) g.three.inScene.wheelMechs[side].position.z -= 0.9144
           }
         }
       } )
     }
 
-    if ( g.three.lve ) g.three.mkr.inScene.flyAway.position.z -= 1
+    if ( g.three.lve ) g.three.inScene.flyAway.position.z -= 1
 
     if ( g.three.mov ) backItUp()
     // if ( g.three.mov ) g.three.mkr.moveAlongPath( g.three.grp.deLorean, 0 )
@@ -217,8 +217,8 @@ const updateAnimationFrame = () => {
 
     // // TILT TEST
     // g.three.xyz.forEach(axis => {
-    //   g.three.mkr.inScene.deLorean.rotation[axis] = g.three.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.three.mkr.inScene.deLorean.rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.three.mkr.inScene.deLorean.rotation[axis]) - 1)
-    //   if (g.three.mkr.inScene.deLorean.rotation[axis] > THREE.Math.degToRad(20) || g.three.mkr.inScene.deLorean.rotation[axis] < THREE.Math.degToRad(-20)) g.three.mkr.tlt[axis] = !g.three.mkr.tlt[axis]
+    //   g.three.inScene.deLorean.rotation[axis] = g.three.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.three.inScene.deLorean.rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.three.inScene.deLorean.rotation[axis]) - 1)
+    //   if (g.three.inScene.deLorean.rotation[axis] > THREE.Math.degToRad(20) || g.three.inScene.deLorean.rotation[axis] < THREE.Math.degToRad(-20)) g.three.mkr.tlt[axis] = !g.three.mkr.tlt[axis]
     // })
   }
 }

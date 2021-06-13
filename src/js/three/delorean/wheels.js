@@ -87,7 +87,7 @@ const makeWheel = wheel => {
     position: [ 0, 0, 26 ],
     mat: hubCapMsh,
   }
-  g.three.mkr.inScene.hubCaps.push( `wheelHubOuter${wheel}` )
+  g.three.inScene.hubCaps.push( `wheelHubOuter${wheel}` )
   const flares = {}
   for ( let flare = 0; flare < 3; flare++ ) {
     const thisFlare = `wheel${wheel}flare${flare + 1}`
@@ -143,7 +143,7 @@ const makeWheel = wheel => {
     rotation: [ -90 ],
     children: flares,
   }
-  g.three.mkr.inScene.wheelRockets.push( `wheelFlares${wheel}` )
+  g.three.inScene.wheelRockets.push( `wheelFlares${wheel}` )
 
   wheelies[`wheelMechTireMount${wheel}`] = {
     children: {

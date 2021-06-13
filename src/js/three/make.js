@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { gsap } from 'gsap'
 
 import assSmoke from 'url:/src/img/smoke/smoke_3.png'
 import assSmokeAlpha from 'url:/src/img/smoke/smoke_3_alpha.png'
@@ -38,7 +39,7 @@ const setLynchTunnel = ( { girders = 25, depth = 3600 } = {} ) => {
   g.three.grp.tunnel = new THREE.Group()
   g.three.grp.tunnel.name = 'tunnel'
   g.three.scene.add( g.three.grp.tunnel )
-  g.three.mkr.inScene.tunnel = g.three.grp.tunnel
+  g.three.inScene.tunnel = g.three.grp.tunnel
 
   const girderSpacing = 575
   const zoomSpeed = 25
@@ -70,6 +71,13 @@ const setLynchTunnel = ( { girders = 25, depth = 3600 } = {} ) => {
       g.three.grp.tunnel.children[tgr].position.z += zoomSpeed
       g.three.grp.tunnel.children[tgr].material.emissiveIntensity = ( ( girderSpacing * girders ) + g.three.grp.tunnel.children[tgr].position.z ) / ( girderSpacing * girders )
       if ( g.three.grp.tunnel.children[tgr].position.z >= girderSpacing - tunnelDepth ) g.three.grp.tunnel.children[tgr].position.z = -tunnelDepth - ( girderSpacing * ( girders - 1 ) )
+      if ( g.three.drg ) {
+        const girderViewPort = visibleSizeAtZDepth( g.three.grp.tunnel.children[tgr].position.z )
+        const dz = g.three.grp.tunnel.children[tgr].position.z / ( ( girderSpacing * girders ) - girderSpacing )
+
+        g.three.grp.tunnel.children[tgr].position.x = -( ( g.three.inScene.deLorean.position.x / g.main.w ) * girderViewPort.cx ) * ( 1 - ( girderViewPort.w / tunnelViewPort.w ) ) * Math.cbrt( dz )
+        g.three.grp.tunnel.children[tgr].position.y = -( ( g.three.inScene.deLorean.position.y / g.main.h ) * girderViewPort.cy ) * ( 1 - ( girderViewPort.h / tunnelViewPort.h ) ) * Math.cbrt( dz ) - 109 // half the height of car, since origin is still in the undercarriage
+      }
     }
   }
 }
@@ -91,14 +99,23 @@ const setSmoke = ( { puffs = 99, depth = 3500 } = {} ) => {
   const smokeDepth = depth
   const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
   const smokeViewPort = visibleSizeAtZDepth( smokeDepth )
+  const puffZs = [ 0 ]
 
   for ( let pf = 0; pf < puffs; pf++ ) {
+    let puffZ = 0
+    while ( puffZs.includes( puffZ ) ) puffZ = randOnum( 0, 1000 ) - smokeDepth
+    puffZs.push( puffZ )
+    const puffX = randOnum( 0, smokeViewPort.w ) - smokeViewPort.cx
+    const puffY = randOnum( 0, smokeViewPort.h ) - smokeViewPort.cy
     const smokeMat = smokeMaterial.clone()
     smokeMat.emissive = new THREE.Color( Number( `0x${smokem[randOnum( 0, smokem.length - 1 )]}` ) )
-    smokeMat.opacity = randOnum( 23, 100 ) / 100
+    const dcx = Math.abs( smokeViewPort.cx - puffX )
+    const dcy = Math.abs( smokeViewPort.cy - puffY )
+    const o = ( ( dcx + dcy ) / 2 ) / ( ( smokeViewPort.w + smokeViewPort.h ) / 2 )
+    smokeMat.opacity = gsap.utils.clamp( 0.23, 1, 1.23 - o )
     const puff = new THREE.Mesh( smokeGeo, smokeMat )
     puff.name = `smokeCloud_${padStr( pf )}`
-    puff.position.set( randOnum( 0, smokeViewPort.w ) - ( smokeViewPort.w / 2 ), randOnum( 0, smokeViewPort.h ) - ( smokeViewPort.h / 2 ), Math.random() * 1000 - smokeDepth )
+    puff.position.set( puffX, puffY, puffZ )
     puff.rotation.z = Math.random() * 360
     g.three.grp.smoke.children.push( puff )
   }
@@ -130,10 +147,13 @@ const visibleHeightAtZDepth = depth => {
 
 const visibleSizeAtZDepth = depth => {
   const h = visibleHeightAtZDepth( depth )
-  return {
+  const vsz = {
+    cy: h / 2,
     h,
     w: h * g.three.camera.aspect,
   }
+  vsz.cx = vsz.w / 2
+  return vsz
 }
 
 export {

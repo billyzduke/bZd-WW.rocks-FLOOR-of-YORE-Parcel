@@ -184,7 +184,7 @@ const loadApp = () => {
   if ( g.dev && g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
     setThree( {
-      controls: false, stats: true, smoke: false, tunnel: true,
+      controls: false, stats: true, smoke: true, tunnel: true,
     } )
     prepDeLorean()
     startDeLorean( { force: true } )

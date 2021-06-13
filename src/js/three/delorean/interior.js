@@ -45,7 +45,7 @@ const makeSeats = () => {
       seatCtrMat.map.offset.y = seatCtrMat.emissiveMap.offset.y = 0.125
       seatCtrMat.map.rotation = seatCtrMat.emissiveMap.rotation = THREE.Math.degToRad( 180 )
       const seatCtrMsh = new THREE.Mesh( seatCtrGeo, [ seatMat, seatCtrMat ] )
-      g.three.mkr.inScene.seats = [ seatCtrMsh, seatCtrMsh.clone() ]
+      g.three.inScene.seats = [ seatCtrMsh, seatCtrMsh.clone() ]
       const seatBackFlankShape = SVGLoader.createShapes( paths[1] )
       const seatBackFlankGeo = new THREE.LatheGeometry( seatBackFlankShape[0].getPoints() )
       const seatBackFlankMsh = new THREE.Mesh( seatBackFlankGeo, seatMat )
@@ -56,19 +56,19 @@ const makeSeats = () => {
       const seatBaseFrontGeo = new THREE.LatheGeometry( seatBaseFrontShape[0].getPoints() )
       const seatBaseFrontMsh = new THREE.Mesh( seatBaseFrontGeo, seatMat )
       const seatBaseFronts = [ seatBaseFrontMsh, seatBaseFrontMsh.clone() ]
-      g.three.mkr.inScene.seats.forEach( ( _, side ) => {
-        g.three.mkr.inScene.seats[side].position.set( side ? -100 : 100, -176, -188 )
-        g.three.mkr.inScene.seats[side].rotateY( THREE.Math.degToRad( 90 ) )
-        g.three.mkr.inScene.seats[side].rotateZ( THREE.Math.degToRad( 90 ) )
-        g.three.mkr.inScene.seats[side].name = side ? 'passengerSeat' : 'driversSeat'
-        g.three.mkr.inScene.interior.add( g.three.mkr.inScene.seats[side] )
+      g.three.inScene.seats.forEach( ( _, side ) => {
+        g.three.inScene.seats[side].position.set( side ? -100 : 100, -176, -188 )
+        g.three.inScene.seats[side].rotateY( THREE.Math.degToRad( 90 ) )
+        g.three.inScene.seats[side].rotateZ( THREE.Math.degToRad( 90 ) )
+        g.three.inScene.seats[side].name = side ? 'passengerSeat' : 'driversSeat'
+        g.three.inScene.interior.add( g.three.inScene.seats[side] )
         const seatBackFlanks = [ seatBackFlankMsh.clone(), seatBackFlankMsh.clone() ]
         seatBackFlanks.forEach( ( bkf, s ) => {
           bkf.position.x = 8
           bkf.position.y = 3
           bkf.position.z = s ? 46 : -46
           bkf.rotateZ( THREE.Math.degToRad( -23 ) )
-          g.three.mkr.inScene.seats[side].add( bkf )
+          g.three.inScene.seats[side].add( bkf )
         } )
         const seatBaseFlanks = [ seatBaseFlankMsh.clone(), seatBaseFlankMsh.clone() ]
         seatBaseFlanks.forEach( ( bbf, s ) => {
@@ -76,14 +76,14 @@ const makeSeats = () => {
           bbf.position.y = 142
           bbf.position.z = s ? 46 : -46
           bbf.rotateZ( THREE.Math.degToRad( -90 ) )
-          g.three.mkr.inScene.seats[side].add( bbf )
+          g.three.inScene.seats[side].add( bbf )
         } )
         const seatBaseFront = seatBaseFronts.shift()
         seatBaseFront.position.x = 178
         seatBaseFront.position.y = 142
         seatBaseFront.position.z = -103
         seatBaseFront.rotateX( THREE.Math.degToRad( 90 ) )
-        g.three.mkr.inScene.seats[side].add( seatBaseFront )
+        g.three.inScene.seats[side].add( seatBaseFront )
       } )
     },
   )

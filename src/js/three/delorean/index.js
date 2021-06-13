@@ -161,7 +161,7 @@ const setMakes = () => {
     rotTarget: Math.PI / 2,
   }
 
-  g.three.mkr.inScene = {
+  g.three.inScene = {
     carGyro: [ 'carGyro' ],
     deLorean: [ 'deLorean' ],
     fluxCapacitor: [ 'fluxCapacitor' ],
@@ -175,19 +175,19 @@ const setMakes = () => {
   }
 
   g.three.mkr.setMades = () => {
-    g.three.mkr.inScene.wheelRockets.forEach( ( flareSet, i ) => {
+    g.three.inScene.wheelRockets.forEach( ( flareSet, i ) => {
       const flareGrp = g.three.scene.getObjectByName( flareSet, true )
       flareGrp.children.forEach( ( flare, flr ) => {
         if ( flr < flareGrp.children.length - 1 ) g.three.ani.flr.push( threeAnim.setRocketFlareAnimator( flare, flr ) ) // texture, #horiz, #vert, #total, duration
       } )
-      g.three.mkr.inScene.wheelRockets[i] = flareGrp
+      g.three.inScene.wheelRockets[i] = flareGrp
     } )
     g.three.mkr.tlt = {}
     g.three.xyz.forEach( axis => {
       g.three.mkr.tlt[axis] = 0
     } )
 
-    g.three.mkr.inScene.headLights.forEach( ( headLight, i ) => {
+    g.three.inScene.headLights.forEach( ( headLight, i ) => {
       const lightBox = g.three.scene.getObjectByName( headLight, true )
 
       const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
@@ -229,23 +229,23 @@ const setMakes = () => {
       spotLightCone.add( spotLightTarget )
       spotLight.target = spotLightTarget
 
-      g.three.mkr.inScene.headLights[i] = lightBox
+      g.three.inScene.headLights[i] = lightBox
     } )
 
-    console.log( g.three.mkr.inScene )
-    Object.keys( g.three.mkr.inScene ).forEach( itemType => {
-      if ( Array.isArray( g.three.mkr.inScene[itemType] ) ) {
-        g.three.mkr.inScene[itemType].forEach( ( item, i ) => {
+    console.log( g.three.inScene )
+    Object.keys( g.three.inScene ).forEach( itemType => {
+      if ( Array.isArray( g.three.inScene[itemType] ) ) {
+        g.three.inScene[itemType].forEach( ( item, i ) => {
           if ( typeof item === 'string' ) {
             const itemInScene = g.three.scene.getObjectByName( item, true )
-            if ( g.three.mkr.inScene[itemType].length === 1 ) g.three.mkr.inScene[itemType] = itemInScene
-            else g.three.mkr.inScene[itemType][i] = itemInScene
+            if ( g.three.inScene[itemType].length === 1 ) g.three.inScene[itemType] = itemInScene
+            else g.three.inScene[itemType][i] = itemInScene
           }
         } )
       }
     } )
 
-    g.three.ani.flx = threeAnim.setFluxCapacitorAnimator( g.three.mkr.inScene.fluxCapacitor )
+    g.three.ani.flx = threeAnim.setFluxCapacitorAnimator( g.three.inScene.fluxCapacitor )
   }
 }
 

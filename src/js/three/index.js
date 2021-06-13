@@ -44,6 +44,7 @@ const setThree = ( {
         ctl: 0,
       },
       grp: {},
+      inScene: {},
       lve: false,
       m: {
         axis: new THREE.Vector3(),
@@ -67,7 +68,7 @@ const setThree = ( {
     }
 
     g.three.scene = new THREE.Scene()
-    g.three.scene.fog = new THREE.Fog( new THREE.Color( 0x000000 ), 10000, 17500 )
+    g.three.scene.fog = new THREE.Fog( new THREE.Color( 0x000000 ), 7500, 17000 )
     g.three.aspectRatio = g.main.w / g.main.h
     g.three.camera = new THREE.PerspectiveCamera( 76, g.three.aspectRatio, 0.1, 17500 )
 
@@ -102,7 +103,7 @@ const setThree = ( {
     g.three.grp.smoke = new THREE.Group()
     g.three.grp.smoke.name = 'smoke'
     g.three.scene.add( g.three.grp.smoke )
-    g.three.mkr.inScene.smoke = g.three.grp.smoke
+    g.three.inScene.smoke = g.three.grp.smoke
     if ( smoke ) threeMake.setSmoke()
 
     if ( tunnel ) threeMake.setLynchTunnel()
@@ -120,7 +121,7 @@ const setThree = ( {
     g.three.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
     g.three.lights.forEach( light => {
       if ( light instanceof THREE.DirectionalLight ) {
-        light.target = g.three.mkr.inScene.smoke
+        light.target = g.three.inScene.smoke
         light.castShadow = true // default false
         light.shadow.camera.far = 5000 // default 500
         light.shadow.camera.left = -2500
