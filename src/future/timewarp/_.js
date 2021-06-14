@@ -227,7 +227,6 @@ const fadeWarp = () => {
   }
 }
 
-
 // const wormHoleHexes = [
 //   'f8f8f8',
 //   'fff7f7',

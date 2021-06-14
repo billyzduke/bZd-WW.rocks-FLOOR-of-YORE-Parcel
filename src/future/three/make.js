@@ -83,7 +83,7 @@ const setLynchTunnel = ( { girders = 20, depth = 3600 } = {} ) => {
 }
 
 const setPuff = ( {
-  baseZ = 0, exclude = [], spacingZ = 0, vp = {},
+  baseZ = 0, exclude = [ 0 ], spacingZ = 0, vp = {},
 } = {} ) => {
   let z = 0
   while ( exclude.includes( z ) ) z = randoNum( 0, 1000 ) - baseZ
@@ -117,6 +117,8 @@ const setSmoke = ( { puffs = 99, depth = 3000 } = {} ) => {
   const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
   const smokeViewPort = visibleSizeAtZDepth( smokeDepth )
   const usedZs = [ 0 ]
+  // const closestZ = -smokeDepth
+  // let closestPuff
 
   for ( let pf = 0; pf < puffs; pf++ ) {
     const puffPos = setPuff( {
@@ -133,25 +135,35 @@ const setSmoke = ( { puffs = 99, depth = 3000 } = {} ) => {
     puff.position.set( puffPos.x, puffPos.y, puffPos.z )
     puff.rotation.z = Math.random() * 360
     g.three.grp.smoke.children.push( puff )
+    // if ( puffPos.z > closestZ ) {
+    //   closestZ = puffPos.z
+    //   closestPuff = pf
+    // }
   }
 
+  // console.log( { closestZ, closestPuff, cpObj: g.three.grp.smoke.children[closestPuff] } )
+
   g.three.ani.smk.swirlSmoke = delta => {
-    const rotateSmoke = delta * 0.2
     let spf = g.three.grp.smoke.children.length
+    let spr = 0.1
     while ( spf-- ) {
+      const rotateSmoke = delta * spr
+      spr += 0.1
+      if ( spr > 0.3 ) spr = 0.1
       if ( spf % 2 ) g.three.grp.smoke.children[spf].rotation.z += rotateSmoke
       else g.three.grp.smoke.children[spf].rotation.z -= rotateSmoke
       g.three.grp.smoke.children[spf].position.z += 1
-      if ( g.three.grp.smoke.children[spf].position.z >= -1600 ) {
-        g.three.grp.smoke.children[spf].material.opacity -= 0.01
-        if ( g.three.grp.smoke.children[spf].position.z >= -1500 ) {
+      if ( g.three.grp.smoke.children[spf].position.z >= -2000 ) {
+        if ( g.three.grp.smoke.children[spf].material.opacity > 0 ) g.three.grp.smoke.children[spf].material.opacity -= 0.01
+        if ( g.three.grp.smoke.children[spf].position.z >= -1900 ) {
           const puffPos = setPuff( {
-            baseZ: smokeDepth, spacingZ: 2, vp: smokeViewPort,
+            baseZ: smokeDepth, vp: smokeViewPort,
           } )
           g.three.grp.smoke.children[spf].material.opacity = 0
-          g.three.grp.smoke.children[spf].position.set( puffPos.x, puffPos.y, puffPos.z )
+          g.three.grp.smoke.children[spf].position.set( puffPos.x, puffPos.y, -smokeDepth )
         }
       } else if ( g.three.grp.smoke.children[spf].material.opacity < 1 ) g.three.grp.smoke.children[spf].material.opacity += 0.01
+      // if ( spf === closestPuff ) console.log( { o: g.three.grp.smoke.children[spf].material.opacity, z: g.three.grp.smoke.children[spf].position.z } )
     }
   }
 }
