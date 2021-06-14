@@ -1,0 +1,47 @@
+div.cow {
+  width: 110px; /* 108px; */
+  height: 90px; /* 88px; */
+  top: 62px;
+  pointer-events: auto;
+  .cowBell {
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(calc(-50% - 2px));
+    transform-origin: 50% 0;
+    transition: opacity 0.5s ease-in-out;
+    &.cowBellAnim {
+      opacity: 0;
+    }
+  }
+  &#cowL {
+    left: 76px;
+    transform: translate(132px, -32px) scale(0);
+    background-image: url(main-stage/threshold/two-cows-one-owl/cows/cow-still.gif);
+    background-size: 100% 100%;
+  }
+  &#cowR {
+    transform: translate(-130px, -32px) scale(0);
+    right: 78px;
+    &:before {
+      background-image: url(main-stage/threshold/two-cows-one-owl/cows/cow-still.gif);
+      background-size: 100% 100%;
+      content: '';
+      display: block;
+      height: 100%;
+      transform: scaleX(-1);
+      width: 100%;
+    }
+    .cowBell {
+      transform: translateX(calc(-50% - 3px)) scaleX(-1);
+    }
+  }
+}
+
+.anim div.cow .cowBell {
+  &.cowBellAnim {
+    opacity: 1;
+  }
+  &.cowBellStill {
+    opacity: 0;
+  }
+}

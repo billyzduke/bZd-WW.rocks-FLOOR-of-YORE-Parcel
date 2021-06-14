@@ -1,0 +1,24 @@
+.innerSpace {
+  display: block;
+  height: inherit;
+  opacity: 0;
+  position: absolute;
+  width: inherit;
+}
+.starField {
+  display: block;
+  height: 8192px;
+  position: absolute;
+  width: 8192px;
+}
+.starField_02 {
+  mix-blend-mode: hard-light;
+  opacity: 0.36;
+}
+.starField_03 {
+  mix-blend-mode: lighten;
+}
+.starField_04 {
+  mix-blend-mode: screen;
+  opacity: 0.52;
+}

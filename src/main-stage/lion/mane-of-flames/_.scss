@@ -1,0 +1,190 @@
+div#maneOfFlamesWrapper {
+
+  div#maneCoronaBehind {
+    background: radial-gradient(circle, rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 1) 17%, rgba(255, 0, 0, 0) 52%, rgba(255, 0, 0, 0) 100%);
+    height: 650px;
+    left: 0.75px;
+    pointer-events: none;
+    top: -12px;
+    width: 650px;
+    animation: pulseScale 0.75s ease-out infinite alternate forwards;
+    animation-play-state: paused;
+  }
+
+  div#maneHaloBehind {
+    background: conic-gradient(from 90deg, silver, gold, silver, gold, silver, gold, silver, gold, silver, gold, silver, gold, silver, gold, silver, gold, silver);
+    border-radius: 50%;
+    height: 386px;
+    left: 132px;
+    opacity: 0.52;
+    top: 124px;
+    width: 386px;
+    animation: spinZ 2.5s linear infinite reverse;
+    animation-play-state: paused;
+  }
+
+  div#fieryRingWispy {
+    height: 539px;
+    left: 55.5px;
+    top: 47px;
+    width: 539px;
+    animation: spinZ 10s linear infinite reverse;
+    animation-play-state: paused;
+
+    div.fieryRingWispyQuarter {
+      height: 228px;
+      left: 311px;
+      top: 0;
+      transform-origin: -18.28% 118.25%;
+      width: 228px;
+
+      div.fieryRingWispyFlame {
+        height: 45px;
+        transform-origin: 50.88% 611.02%;
+        width: 36px;
+        &.fieryRingWispyFlame_1 {
+          transform: translate(-60px, -5px) rotate(15deg);
+        }
+        &.fieryRingWispyFlame_2 {
+          transform: translate(-60px, -5px) rotate(45deg);
+        }
+        &.fieryRingWispyFlame_3 {
+          transform: translate(-60px, -5px) rotate(75deg);
+        }
+        div {
+          width: 100%;
+          height: 100%;
+          &.paused {
+            background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Wispy-Flame.png);
+            transition: opacity 0.15s ease-in-out 0.15s;
+          }
+          &.burning {
+            background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Wispy-Flame.gif);
+            transition: opacity 0.15s ease-in-out;
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+
+  div#fieryRingWispyQuarter_2,
+  div#fieryRingDryQuarter_2 {
+    transform: rotate(90deg);
+    z-index: -1;
+  }
+  div#fieryRingWispyQuarter_3,
+  div#fieryRingDryQuarter_3 {
+    transform: rotate(180deg);
+    z-index: -2;
+  }
+  div#fieryRingWispyQuarter_4,
+  div#fieryRingDryQuarter_4 {
+    transform: rotate(270deg);
+    z-index: -3;
+  }
+
+  div#fieryRingDry {
+    height: 549px;
+    left: 50.5px;
+    top: 42px;
+    width: 549px;
+    animation: spinZ 10s linear infinite;
+    animation-play-state: paused;
+
+    div.fieryRingDryQuarter {
+      height: 235px;
+      left: 223px;
+      top: 0;
+      transform-origin: 16.34% 116.76%;
+      width: 315px;
+
+      div.fieryRingDryFlame {
+        height: 96px;
+        transform-origin: 50.38% 286.18%;
+        width: 102px;
+        div {
+          width: 100%;
+          height: 100%;
+          &.paused {
+            transition: opacity 0.15s ease-in-out 0.15s;
+            background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Dry-Flame-1.png);
+          }
+          &.burning {
+            transition: opacity 0.15s ease-in-out;
+            background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Dry-Flame-1.gif);
+            opacity: 0;
+          }
+        }
+        &.fieryRingDryFlame_2 {
+          transform: rotate(30deg);
+          div {
+            &.paused {
+              background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Dry-Flame-2.png);
+            }
+            &.burning {
+              background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Dry-Flame-2.gif);
+            }
+          }
+        }
+        &.fieryRingDryFlame_3 {
+          transform: rotate(60deg);
+          div {
+            &.paused {
+              background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Dry-Flame-3.png);
+            }
+            &.burning {
+              background-image: url(main-stage/lion/mane-of-flames/Ring-of-Fire--Dry-Flame-3.gif);
+            }
+          }
+        }
+      }
+
+      div.fieryRingDryOrb {
+        border-radius: 50%;
+        border: none;
+        height: 12px;
+        transform-origin: 53.16% 1566.99%;
+        width: 12px;
+        z-index: 12;
+        &.fieryRingDryOrb_1 {
+          transform: translate(45px, 87px) rotate(15deg);
+        }
+        &.fieryRingDryOrb_2 {
+          transform: translate(45px, 87px) rotate(45deg);
+        }
+        &.fieryRingDryOrb_3 {
+          transform: translate(45px, 87px) rotate(75deg);
+        }
+        &.orb_A {
+          animation: pulseDryOrb 10s ease-in-out infinite alternate;
+          animation-play-state: paused;
+        }
+        &.orb_B {
+          animation: pulseDryOrb 10s ease-in-out infinite alternate-reverse;
+          animation-play-state: paused;
+        }
+      }
+    }
+  }
+}
+
+div#theLion.anim div#maneOfFlamesWrapper {
+  div#fieryRingWispy div.fieryRingWispyQuarter div.fieryRingWispyFlame div,
+  div#fieryRingDry div.fieryRingDryQuarter div.fieryRingDryFlame div {
+    &.paused {
+      opacity: 0;
+    }
+    &.burning {
+      opacity: 1;
+    }
+  }
+  div#maneCoronaBehind,
+  div#maneHaloBehind,
+  div#fieryRingWispy,
+  div#fieryRingDry,
+  div#fieryRingDry div.fieryRingDryQuarter div.fieryRingDryOrb.orb_A,
+  div#fieryRingDry div.fieryRingDryQuarter div.fieryRingDryOrb.orb_B {
+    animation-play-state: running;
+  }
+}

@@ -1,0 +1,100 @@
+@import 'fonts/_';
+@import 'vars';
+@import 'funcs';
+@import 'keyframes';
+@import 'reset';
+
+@import 'video/_';
+
+@import 'dev/_'; // obviously only during development
+
+@import 'lightning-rods/_';
+@import 'smoke/_';
+@import 'turbulence/_';
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+html,
+body {
+  position: fixed;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+}
+body {
+  background-color: black;
+  background-position: center top;
+  background-repeat: repeat;
+  font-family: Monaco, Menlo, "Lucida Sans Unicode", monospace;
+  &.grScr {
+    background-color: #00ff00;
+    background-image: none;
+  }
+}
+
+main {
+  // background-image: url(shared/dev/1306x1306.png);
+  // background-size: 1306px 1306px;
+  // background-position: center center;
+  // background-repeat: no-repeat;
+  height: 1306px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  transform-origin: 0 0;
+  z-index: 0;
+  overflow: hidden;
+  display: block;
+  img.transClicker {
+    border: none;
+    height: 100%;
+    opacity: 0;
+    width: 100%;
+    z-index: -1;
+    pointer-events: auto;
+  }
+  .wayLaid {
+    cursor: wait !important;
+  }
+}
+@media screen and (max-width: 1220px) {
+  main {
+    overflow-x: auto;
+  }
+}
+
+a,
+a:visited {
+  color: coloring('anchorOff');
+  text-decoration: none;
+  transition: color 0.25s ease-in-out;
+}
+a:hover,
+a:active {
+  color: coloring('anchorOn');
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.animBlock {
+  position: absolute;
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    display: block;
+    margin: 0;
+    position: absolute;
+    transform-origin: 50% 50%;
+    transform-style: preserve-3d !important;
+  }
+}
+

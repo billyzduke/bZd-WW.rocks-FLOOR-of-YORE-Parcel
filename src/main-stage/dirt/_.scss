@@ -1,0 +1,8 @@
+div#dirtVidWrapper {
+  bottom: 0;
+  z-index: -300;
+}
+video#dirtOnTheGround {
+  object-fit: cover;
+  min-height: 100vh;
+}

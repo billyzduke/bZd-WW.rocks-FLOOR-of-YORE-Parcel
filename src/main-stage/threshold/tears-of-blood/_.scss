@@ -1,0 +1,32 @@
+img.bloodDrop {
+  top: -348px;
+  width: 23px;
+  height: 42px;
+  transform-origin: 50% 0;
+  transform: scale(0);
+  filter: drop-shadow(0 0 4.2px rgba(0,0,0,0.76));
+  &#bloodDropL {
+    left: 110px;
+  }
+  &#bloodDropR {
+    left: 524px;
+  }
+}
+div.bloodSplash {
+  width: 300px;
+  height: 131.2525px;
+  img {
+    height: 100%;
+    opacity: 0;
+    width: 100%;
+  }
+  &#bloodSplashL {
+    left: -6px;
+    top: 216px;
+    transform: scaleX(-1);
+  }
+  &#bloodSplashR {
+    left: 367px;
+    top: 220px;
+  }
+}

@@ -1,0 +1,16 @@
+div#bronzeVidWrapper {
+  top: 0;
+  z-index: -100;
+}
+div#bronzeCauldron {
+  width: 100vw !important;
+}
+div.bronze {
+  background-color: #b58954;
+}
+div.color-burn {
+  mix-blend-mode: color-burn;
+}
+div.multiply {
+  mix-blend-mode: multiply;
+}

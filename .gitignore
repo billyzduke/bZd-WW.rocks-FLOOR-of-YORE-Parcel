@@ -7,7 +7,7 @@ yarn-error.log*
 .parcel-cache/
 .yarn/
 .vscode/
-vid/
+*.mp4
 
 # Editor directories and files
 .idea

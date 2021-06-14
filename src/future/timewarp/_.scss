@@ -1,0 +1,34 @@
+div#moireAuras {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  transform: scale(0.01) rotateZ(360deg);
+  mask-image: url(future/timewarp/warp-mask.png);
+  mask-size: 100% 100%;
+  mask-position: center center;
+  mask-repeat: no-repeat;
+  z-index: 30000;
+  opacity: 0;
+  .trippyGrid {
+    mask-image: url(future/timewarp/grid-square-twirl.png);
+    mask-position: 50% 50%;
+    border-radius: 50%;
+    mix-blend-mode: hard-light;
+    &.red {
+      background-color: red;
+    }
+    &.green {
+      background-color: green;
+    }
+    &.blue {
+      background-color: blue;
+      mix-blend-mode: difference;
+    }
+    &.indigo {
+      background-color: indigo;
+      opacity: 0.5;
+    }
+  }
+}

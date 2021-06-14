@@ -1,0 +1,42 @@
+div#bL01 {
+  height: 1338px;
+  left: calc(50% + 3px);
+  top: -8px;
+  opacity: 0;
+  position: fixed;
+  width: 102.4%;
+  z-index: 500;
+  transform: scale(0.98) translateX(-50%);
+  perspective: 23em;
+}
+div#bW01.orbit {
+  height: 1024px;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, -256px) rotateX(75deg) rotateY(-60deg);
+  width: 1024px;
+}
+div#ctrRing {
+  border-radius: 50%;
+  cursor: pointer;
+  height: 138px;
+  left: calc(48.8% - 69px);
+  position: absolute;
+  top: 50%;
+  transform: translateY(calc(-50% - 4.5px));
+  width: 138px;
+  mask-image: url(main-stage/baubles/layer-01/lightning-ball-mask.svg);
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-position: center center;
+  // background-color: rgba(255,0,0,0.64);
+}
+img.z {
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}

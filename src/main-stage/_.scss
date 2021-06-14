@@ -1,0 +1,43 @@
+@import 'disco-wall/_';
+@import 'jungle/_';
+@import 'dirt/_';
+@import 'shai-hulud/_';
+@import 'bronze-cauldron/_';
+// @import 'static-noise/_';
+@import 'lion/_';
+@import 'grove/_';
+@import 'floor/_';
+@import 'threshold/_';
+@import 'curtains/_';
+@import 'baubles/_';
+@import 'titles/_';
+@import 'flashbulb/_';
+
+div.pW {
+  height: 1220px;
+  margin: -42px 0 84px 0;
+  transform-origin: 50% 0%;
+  transform: scale(0.985);
+  width: 1220px;
+  z-index: 0;
+  div.pC {
+    position: absolute;
+    width: 650px;
+    height: 1220px;
+    opacity: 0;
+    &.pCC {
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+    }
+    &:not(.pCC) {
+      margin: 0 38px;
+      width: 285px;
+      transform-origin: left top;
+    }
+    &.pCR {
+      left: 935px;
+    }
+  }
+}
+

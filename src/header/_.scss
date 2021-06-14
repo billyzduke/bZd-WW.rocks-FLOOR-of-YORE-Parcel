@@ -1,0 +1,19 @@
+@import 'nav/_';
+@import 'help/_';
+
+header {
+  animation: fadeIn 2.5s ease-in-out normal forwards;
+  height: 76px;
+  left: 0;
+  opacity: 0;
+  overflow: visible !important;
+  position: fixed;
+  top: 0;
+  transition: all 0.15s ease-in-out;
+  width: 100%;
+  z-index: 10000;
+  &.hover:not(.navHidden) {
+    box-shadow: 0 2px 4px rgba(255,255,255,0.42);
+    transition: all 0.15s ease-in-out 0.5s;
+  }
+}

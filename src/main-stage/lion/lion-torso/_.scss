@@ -1,0 +1,25 @@
+@import 'lion-t-shirt/_';
+@import 'lion-hands/_';
+
+div#lionTorso {
+  height: 285px;
+  left: 1px;
+  top: 277px;
+  transform: scale(1.05);
+  width: 650px;
+}
+div#lionTorsoGlow {
+  background-image: url(main-stage/lion/lion-torso/lion-torso-n-hands-glow.png);
+  height: 285px;
+  opacity: 0;
+  width: 650px;
+}
+.anim div#lionTorsoGlow {
+  animation: pulseOpacity 1.25s ease-in-out infinite alternate forwards;
+}
+div#lionShirtAndArms {
+  background-image: url(main-stage/lion/lion-torso/lion-torso-n-hands-2021.png);
+  height: 267px;
+  left: 9px;
+  width: 632px;
+}

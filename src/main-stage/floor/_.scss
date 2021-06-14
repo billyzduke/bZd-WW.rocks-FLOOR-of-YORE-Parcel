@@ -1,0 +1,45 @@
+div#yoreFloor {
+  box-sizing: content-box !important;
+  background-color: white;
+  background-image: url(main-stage/floor/WW_Black_Lodge_Tile.png);
+  background-repeat: repeat;
+  background-size: 48px auto;
+  height: 324px;
+  left: 0;
+  opacity: 0;
+  overflow: visible;
+  perspective-origin: top;
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: perspective(23em) rotateX(50deg);
+  width: 6000px !important;
+  z-index: 200;
+  animation: floorScroll 7.2s linear infinite backwards;
+  animation-play-state: paused;
+  div#yoreFloorGradient {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
+    height: 100%;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
+  div#yoreFloorTitle {
+    color: white;
+    font-size: 42px;
+    font-weight: 900;
+    left: 50%;
+    letter-spacing: 0.09em;
+    pointer-events: none;
+    position: absolute;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0px 1px 0 #000, 1px 0px 0 #000, 0px -1px 0 #000, -1px 0px 0 #000, 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0px 2px 0 #000, 2px 0px 0 #000, 0px -2px 0 #000, -2px 0px 0 #000, 3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 0px 3px 0 #000, 3px 0px 0 #000, 0px -3px 0 #000, -3px 0px 0 #000, 4px 4px 0 #000, -4px -4px 0 #000, 4px -4px 0 #000, -4px 4px 0 #000, 0px 4px 0 #000, 4px 0px 0 #000, 0px -4px 0 #000, -4px 0px 0 #000, 5px 5px 0 #000, -5px -5px 0 #000, 5px -5px 0 #000, -5px 5px 0 #000, 0px 5px 0 #000, 5px 0px 0 #000, 0px -5px 0 #000, -5px 0px 0 #000;
+    text-transform: uppercase;
+    top: 50%;
+    transform: scale(1.5) translateX(500%) translateY(-58%);
+    z-index: 1;
+  }
+  &.anim {
+    animation-play-state: running;
+  }
+}

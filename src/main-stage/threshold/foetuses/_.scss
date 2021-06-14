@@ -1,0 +1,65 @@
+div.womb,
+div.womb * {
+  pointer-events: auto;
+}
+div#wombL,
+div#wombL div.foetusRocker {
+  width: 146px;
+  height: 136px;
+}
+div#wombL {
+  opacity: 0;
+  transform: translate(48px, -315px) scale(0.1);
+  div.foetusRocker {
+    animation: balancing 3s ease-in-out infinite alternate-reverse;
+    animation-play-state: paused;
+  }
+}
+div#wombR,
+div#wombR div.foetusRocker {
+  width: 151px;
+  height: 131px;
+}
+div#wombR {
+  opacity: 0;
+  transform: translate(457px, -315px) scale(0.1);
+  div.foetusRocker {
+    animation: balancing 3s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+}
+.anim {
+  div#wombL div.foetusRocker,
+  div#wombR div.foetusRocker {
+    animation-play-state: running;
+  }
+}
+div.foetusEye {
+  width: 14px;
+  height: 17px;
+  z-index: 3;
+  img:not(:first-child) {
+    opacity: 0;
+  }
+  &#foetusEyeL {
+    top: 60px;
+    left: 61px;
+    transform: scaleX(-1);
+  }
+  &#foetusEyeR {
+    left: 75px;
+    top: 61px;
+  }
+}
+div.foetusCry {
+  height: 100%;
+  width: 100%;
+  img {
+    opacity: 0;
+  }
+  &#foetusCryL {
+    transform: scaleX(-1);
+    top: 3px;
+    left: 4.5px;
+  }
+}
