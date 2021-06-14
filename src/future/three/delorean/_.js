@@ -1,11 +1,14 @@
 import * as THREE from 'three'
+import { gsap } from 'gsap'
 
 import assPipeMetal01 from 'url:/src/future/three/delorean/metalPipe.png'
 import assPipeMetal02 from 'url:/src/future/three/delorean/metalSphere.png'
 import assHeadLightCone from 'url:/src/future/three/delorean/headLightCone.png'
 import g from '/src/shared/_'
+import { setAddOn } from '/src/shared/utils'
 import * as threeAnim from '/src/future/three/anim'
 import * as threeMake from '/src/future/three/make'
+import * as threeRend from '/src/future/three/rend'
 import { makeBody } from './body/_'
 import { makeExterior } from './exterior/_'
 import { makeInterior } from './interior/_'
@@ -273,4 +276,74 @@ const makeDeLorean = () => {
   }
 }
 
-export { makeDeLorean }
+const prepDeLorean = () => {
+  if ( !g.three.mkr.prepped ) {
+    g.three.mkr.prepped = true
+    g.el.glitches.style.opacity = 1
+    g.three.on = true
+    g.el.deLorean.style.left = 0
+    setTimeout( () => {
+      threeRend.startRendering( { startYourEngines: true } )
+    }, 100 )
+  }
+}
+
+const startDeLorean = ( { force = false } = {} ) => {
+  if ( !g.three.on || force ) {
+    g.el.deLorean.style.opacity = 1
+    g.el.deLorean.style.pointerEvents = 'auto'
+  } else {
+    console.log( { alreadyOn: g.three.on } )
+  }
+}
+
+const toggleFlightMode = () => {
+  if ( g.three ) g.three.flm = !g.three.flm
+}
+
+const toggleFlyAlongPath = () => {
+  if ( g.three.on ) {
+    g.three.mov = true
+  }
+}
+
+const toggleWheelsDrop = () => {
+  if ( g.three ) g.three.lve = !g.three.lve
+}
+
+const movable = [ '#deLorean', '#sideViewMirrorRight div:nth-child(2)' ]
+
+const moveModel = ( movement, axis, el, value ) => {
+  const p = `${movement}${axis}`
+  const m = movement === 'rotate' ? 'rotation' : 'translation'
+  const d = `#${m}${axis}${el}`
+  gsap.to( movable[el], {
+    duration: 0.25,
+    onComplete: function () {
+      gsap.set( d, {
+        text: value,
+      } )
+    },
+    overwrite: 'auto',
+    [p]: value,
+  } )
+}
+
+const setModel = () => {
+  setAddOn( '#rotateX0', 'change', e => { moveModel( 'rotate', 'X', 0, e.target.value ) } )
+  setAddOn( '#rotateY0', 'change', e => { moveModel( 'rotate', 'Y', 0, e.target.value ) } )
+  setAddOn( '#rotateZ0', 'change', e => { moveModel( 'rotate', 'Z', 0, e.target.value ) } )
+  setAddOn( '#translateX0', 'change', e => { moveModel( 'translate', 'X', 0, e.target.value ) } )
+  setAddOn( '#translateY0', 'change', e => { moveModel( 'translate', 'Y', 0, e.target.value ) } )
+  setAddOn( '#translateZ0', 'change', e => { moveModel( 'translate', 'Z', 0, e.target.value ) } )
+  setAddOn( '#rotateX1', 'change', e => { moveModel( 'rotate', 'X', 1, e.target.value ) } )
+  setAddOn( '#rotateY1', 'change', e => { moveModel( 'rotate', 'Y', 1, e.target.value ) } )
+  setAddOn( '#rotateZ1', 'change', e => { moveModel( 'rotate', 'Z', 1, e.target.value ) } )
+  setAddOn( '#translateX1', 'change', e => { moveModel( 'translate', 'X', 1, e.target.value ) } )
+  setAddOn( '#translateY1', 'change', e => { moveModel( 'translate', 'Y', 1, e.target.value ) } )
+  setAddOn( '#translateZ1', 'change', e => { moveModel( 'translate', 'Z', 1, e.target.value ) } )
+}
+
+export {
+  makeDeLorean, prepDeLorean, setModel, startDeLorean, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
+}

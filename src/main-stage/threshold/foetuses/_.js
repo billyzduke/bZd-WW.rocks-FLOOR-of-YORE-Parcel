@@ -53,7 +53,7 @@ import assFoetusEyeSquinch03 from 'url:/src/main-stage/threshold/foetuses/foetus
 import assFoetusEyeSquinch04 from 'url:/src/main-stage/threshold/foetuses/foetusEyeSquinch-04.png'
 import g from '/src/shared/_'
 import {
-  cleanUp, gsapTick, randOnum, setAddOn,
+  cleanUp, gsapTick, randoNum, setAddOn,
 } from '/src/shared/utils'
 import { echoCry } from '/src/future/flux/_'
 
@@ -308,7 +308,7 @@ const annoyFoetusTick = foe => {
   } else {
     if ( nextCryFrame === 3 ) g.qss.foetus[foe].cry.start[2]( 0 )
     else g.qss.foetus[foe].cry.loop[g.foetus[foe].cry / 10]( 0 )
-    nextCryFrame = randOnum( 0, 4 )
+    nextCryFrame = randoNum( 0, 4 )
     g.qss.foetus[foe].cry.loop[nextCryFrame]( 1 )
     g.foetus[foe].cry = nextCryFrame * 10
   }

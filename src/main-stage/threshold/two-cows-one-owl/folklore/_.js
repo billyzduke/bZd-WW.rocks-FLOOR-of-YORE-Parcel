@@ -18,7 +18,7 @@ import assFolkloreFinal07 from 'url:/src/main-stage/threshold/two-cows-one-owl/f
 import { random } from 'gsap/gsap-core'
 import g from '/src/shared/_'
 import {
-  gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, mixItUp, navToPopUp, setAddOn, randOnum, setClearActors, shuffleArray,
+  gsapTick, gsapUnTick, ifFunctionThenCall, isFunction, mixItUp, navToPopUp, setAddOn, randoNum, setClearActors, shuffleArray,
 } from '/src/shared/utils'
 import { devLog } from '/src/shared/dev/_'
 import { setCodeRain, unSetCodeRain } from '/src/main-stage/threshold/two-cows-one-owl/folklore/code-rain/_'
@@ -221,7 +221,7 @@ const printOutRow = ( pLine = 1, biBlobRow = '', pLines ) => {
         each: g.folklore.binary.drawCharsReversed ? -g.folklore.binary.drawSingleCharS : g.folklore.binary.drawSingleCharS,
         onComplete() {
           g.folklore.binary.owlLaserQuickSetter( {
-            opacity: randOnum( 23, 88 ) / 100,
+            opacity: randoNum( 23, 88 ) / 100,
             mixBlendMode: mixItUp(),
           } )
         },
@@ -299,7 +299,7 @@ const scanFolkLore = () => {
 
 const primeRamLaserTick = () => {
   g.folklore.binary.ramLaserQuickSetter( {
-    opacity: randOnum( 23, 88 ) / 100,
+    opacity: randoNum( 23, 88 ) / 100,
     mixBlendMode: mixItUp(),
   } )
 }
@@ -326,7 +326,7 @@ const scanFolkLoreTick = ( f, mv = 0, rv = false ) => {
   }
   if ( laserMustMove ) {
     g.folklore.binary.ramLaserQuickSetter( {
-      opacity: randOnum( 23, 88 ) / 100,
+      opacity: randoNum( 23, 88 ) / 100,
       mixBlendMode: mixItUp(),
       translateX: mvMe,
     } )
@@ -624,7 +624,7 @@ const clearAwayTheStone = () => {
 const stoneColdLaserFlash = laserQss => {
   laserQss.forEach( lqss => {
     lqss( {
-      opacity: randOnum( 23, 88 ) / 100,
+      opacity: randoNum( 23, 88 ) / 100,
       mixBlendMode: mixItUp(),
       scale: 1,
     } )
@@ -634,11 +634,11 @@ const stoneColdLaserFlash = laserQss => {
 const stoneColdLaserTick = ( laserQss, stoneShiftPx ) => {
   stoneColdLaserFlash( laserQss )
   g.folklore.binary.oldStoneImgQuickSetter( {
-    scale: randOnum( 96, 104 ) / 100,
-    skewX: randOnum( 0, 15 ) / 10 - 0.75,
-    skewY: randOnum( 0, 15 ) / 10 - 0.75,
-    translateX: randOnum( 0, stoneShiftPx * 2 ) - stoneShiftPx,
-    translateY: randOnum( 0, stoneShiftPx * 2 ) - stoneShiftPx,
+    scale: randoNum( 96, 104 ) / 100,
+    skewX: randoNum( 0, 15 ) / 10 - 0.75,
+    skewY: randoNum( 0, 15 ) / 10 - 0.75,
+    translateX: randoNum( 0, stoneShiftPx * 2 ) - stoneShiftPx,
+    translateY: randoNum( 0, stoneShiftPx * 2 ) - stoneShiftPx,
   } )
 }
 
@@ -661,19 +661,19 @@ const stoneColdLaserTick2R = () => {
 const stoneColdLaserTickC = () => {
   stoneColdLaserFlash( [ g.folklore.binary.ramLaser2QuickSetter, g.folklore.binary.ramLaser3QuickSetter ] )
   g.folklore.binary.owlLaser2QuickSetter( {
-    opacity: randOnum( 52, 96 ) / 100,
+    opacity: randoNum( 52, 96 ) / 100,
     mixBlendMode: mixItUp(),
     scale: 1,
   } )
-  const flashCrack = g.folklore.binary.stoneDemolition >= 2 || randOnum( 0, 3 ) ? 1 : randOnum( 64, 96 ) / 100
+  const flashCrack = g.folklore.binary.stoneDemolition >= 2 || randoNum( 0, 3 ) ? 1 : randoNum( 64, 96 ) / 100
   g.folklore.binary.oldStoneImgQuickSetter( {
-    filter: g.folklore.binary.stoneFilters[randOnum( 0, g.folklore.binary.stoneFilters.length - 1 )],
+    filter: g.folklore.binary.stoneFilters[randoNum( 0, g.folklore.binary.stoneFilters.length - 1 )],
     opacity: flashCrack,
-    scale: randOnum( 96, 104 ) / 100,
-    skewX: randOnum( 0, 15 ) / 10 - 0.75,
-    skewY: randOnum( 0, 15 ) / 10 - 0.75,
-    translateX: randOnum( 0, g.folklore.binary.stoneColdLaserMagnitude[2] * 2 ) - g.folklore.binary.stoneColdLaserMagnitude[2],
-    translateY: randOnum( 0, g.folklore.binary.stoneColdLaserMagnitude[2] * 2 ) - g.folklore.binary.stoneColdLaserMagnitude[2],
+    scale: randoNum( 96, 104 ) / 100,
+    skewX: randoNum( 0, 15 ) / 10 - 0.75,
+    skewY: randoNum( 0, 15 ) / 10 - 0.75,
+    translateX: randoNum( 0, g.folklore.binary.stoneColdLaserMagnitude[2] * 2 ) - g.folklore.binary.stoneColdLaserMagnitude[2],
+    translateY: randoNum( 0, g.folklore.binary.stoneColdLaserMagnitude[2] * 2 ) - g.folklore.binary.stoneColdLaserMagnitude[2],
   } )
   g.folklore.binary.newStoneImgQuickSetter( flashCrack === 1 ? 0 : 1 )
 }
@@ -824,9 +824,9 @@ const chewMe = () => {
       g.tL.cowWow.to( `#cow${whichCow}`, {
         duration: 0.25,
         ease: 'none',
-        skewX: randOnum( 0, 1 ) ? random( -3, -1 ) : random( 1, 3 ),
-        skewY: randOnum( 0, 1 ) ? random( 3, 5 ) : random( -3, -5 ),
-        scaleX: randOnum( 0, 1 ) ? 1.12 : 0.96,
+        skewX: randoNum( 0, 1 ) ? random( -3, -1 ) : random( 1, 3 ),
+        skewY: randoNum( 0, 1 ) ? random( 3, 5 ) : random( -3, -5 ),
+        scaleX: randoNum( 0, 1 ) ? 1.12 : 0.96,
         scaleY: 1,
         repeat: 1,
         yoyo: true,
@@ -950,9 +950,9 @@ const idleChew = whichCow => {
     g.tL.cowWow.to( `#cow${whichCow}`, {
       duration: 0.25,
       ease: 'none',
-      skewX: randOnum( 0, 1 ) ? random( -3, -1 ) : random( 1, 3 ),
-      skewY: randOnum( 0, 1 ) ? random( 3, 5 ) : random( -3, -5 ),
-      scaleX: randOnum( 0, 1 ) ? 1.12 : 0.96,
+      skewX: randoNum( 0, 1 ) ? random( -3, -1 ) : random( 1, 3 ),
+      skewY: randoNum( 0, 1 ) ? random( 3, 5 ) : random( -3, -5 ),
+      scaleX: randoNum( 0, 1 ) ? 1.12 : 0.96,
       scaleY: 1,
       repeat: 1,
       yoyo: true,

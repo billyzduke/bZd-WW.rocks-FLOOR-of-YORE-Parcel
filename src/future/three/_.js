@@ -8,9 +8,8 @@ import * as threeAnim from './anim'
 import * as threeMake from './make'
 import * as threeRend from './rend'
 import {
-  setModel, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
-} from '/src/future/_'
-import { makeDeLorean } from './delorean/_'
+  makeDeLorean, setModel, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
+} from '/src/future/three/delorean/_'
 import {
   ifFunctionThenCall, isFunction, setAddOn,
 } from '/src/shared/utils'

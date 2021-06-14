@@ -7,7 +7,7 @@ import assTunnel from 'url:/src/future/three/tunnel/lynchTunnelFrame.png'
 import assTunnelAlpha from 'url:/src/future/three/tunnel/lynchTunnelAlpha.png'
 import assTunnelEmissive from 'url:/src/future/three/tunnel/lynchTunnelEmissive.png'
 import g from '/src/shared/_'
-import { padStr, randOnum } from '/src/shared/utils'
+import { padStr, randoNum } from '/src/shared/utils'
 
 const createVector2s = v2s => {
   if ( !v2s || !v2s.length ) return false
@@ -82,6 +82,23 @@ const setLynchTunnel = ( { girders = 20, depth = 3600 } = {} ) => {
   }
 }
 
+const setPuff = ( {
+  baseZ = 0, exclude = [], spacingZ = 0, vp = {},
+} = {} ) => {
+  let z = 0
+  while ( exclude.includes( z ) ) z = randoNum( 0, 1000 ) - baseZ
+  exclude.push( z )
+  for ( let spz = 1; spz <= spacingZ; spz++ ) exclude.push( z + spz, z - spz )
+  const x = randoNum( 0, vp.w ) - vp.cx
+  const y = randoNum( 0, vp.h ) - vp.cy
+  return {
+    x,
+    y,
+    z,
+    // exclude
+  }
+}
+
 const setSmoke = ( { puffs = 99, depth = 3000 } = {} ) => {
   const smokem = [
     'c56fdd',
@@ -99,23 +116,21 @@ const setSmoke = ( { puffs = 99, depth = 3000 } = {} ) => {
   const smokeDepth = depth
   const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
   const smokeViewPort = visibleSizeAtZDepth( smokeDepth )
-  const puffZs = [ 0 ]
+  const usedZs = [ 0 ]
 
   for ( let pf = 0; pf < puffs; pf++ ) {
-    let puffZ = 0
-    while ( puffZs.includes( puffZ ) ) puffZ = randOnum( 0, 1000 ) - smokeDepth
-    puffZs.push( puffZ, puffZ + 1, puffZ - 1, puffZ - 2, puffZ + 2 )
-    const puffX = randOnum( 0, smokeViewPort.w ) - smokeViewPort.cx
-    const puffY = randOnum( 0, smokeViewPort.h ) - smokeViewPort.cy
+    const puffPos = setPuff( {
+      baseZ: smokeDepth, exclude: usedZs, spacingZ: 2, vp: smokeViewPort,
+    } )
     const smokeMat = smokeMaterial.clone()
-    smokeMat.emissive = new THREE.Color( Number( `0x${smokem[randOnum( 0, smokem.length - 1 )]}` ) )
-    const dcx = Math.abs( smokeViewPort.cx - puffX )
-    const dcy = Math.abs( smokeViewPort.cy - puffY )
+    smokeMat.emissive = new THREE.Color( Number( `0x${smokem[randoNum( 0, smokem.length - 1 )]}` ) )
+    const dcx = Math.abs( smokeViewPort.cx - puffPos.x )
+    const dcy = Math.abs( smokeViewPort.cy - puffPos.y )
     const o = ( ( dcx + dcy ) / 2 ) / ( ( smokeViewPort.w + smokeViewPort.h ) / 2 )
     smokeMat.opacity = gsap.utils.clamp( 0.23, 1, 1.23 - o )
     const puff = new THREE.Mesh( smokeGeo, smokeMat )
     puff.name = `smokeCloud_${padStr( pf )}`
-    puff.position.set( puffX, puffY, puffZ )
+    puff.position.set( puffPos.x, puffPos.y, puffPos.z )
     puff.rotation.z = Math.random() * 360
     g.three.grp.smoke.children.push( puff )
   }
@@ -126,6 +141,17 @@ const setSmoke = ( { puffs = 99, depth = 3000 } = {} ) => {
     while ( spf-- ) {
       if ( spf % 2 ) g.three.grp.smoke.children[spf].rotation.z += rotateSmoke
       else g.three.grp.smoke.children[spf].rotation.z -= rotateSmoke
+      g.three.grp.smoke.children[spf].position.z += 1
+      if ( g.three.grp.smoke.children[spf].position.z >= -1600 ) {
+        g.three.grp.smoke.children[spf].material.opacity -= 0.01
+        if ( g.three.grp.smoke.children[spf].position.z >= -1500 ) {
+          const puffPos = setPuff( {
+            baseZ: smokeDepth, spacingZ: 2, vp: smokeViewPort,
+          } )
+          g.three.grp.smoke.children[spf].material.opacity = 0
+          g.three.grp.smoke.children[spf].position.set( puffPos.x, puffPos.y, puffPos.z )
+        }
+      } else if ( g.three.grp.smoke.children[spf].material.opacity < 1 ) g.three.grp.smoke.children[spf].material.opacity += 0.01
     }
   }
 }

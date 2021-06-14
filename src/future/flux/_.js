@@ -1,4 +1,4 @@
-import { gsap, TimelineMax as TL } from 'gsap'
+import { gsap } from 'gsap'
 
 import assFluxDisplay0 from 'url:/src/future/flux/flux-display-0.png'
 import assFluxDisplay1 from 'url:/src/future/flux/flux-display-1.png'
@@ -19,13 +19,14 @@ import assFluxBroken6 from 'url:/src/future/flux/flux-display-broken-6.png'
 import assFluxBroken7 from 'url:/src/future/flux/flux-display-broken-7.png'
 import g from '/src/shared/_'
 import {
-  cleanUp, gsapTick, mixItUp, randOnum, setAddOn, setClearActors, toggleFermata,
+  cleanUp, gsapTick, mixItUp, randoNum, setAddOn, setClearActors, toggleFermata,
 } from '/src/shared/utils'
 import { devLog } from '/src/shared/dev/_'
+import { setHorzNoise } from '/src/future/glitch/_'
 import { closeFoetusEye } from '/src/main-stage/threshold/foetuses/_'
 import { owlCawTick } from '/src/main-stage/threshold/two-cows-one-owl/owl-ram/_'
 import { setScene } from '/src/scenes/_'
-import { prepDeLorean } from '/src/future/_'
+import { prepDeLorean } from '/src/future/three/delorean/_'
 import { shockTick } from '/src/shared/lightning-rods/_'
 import { obscureThen } from '/src/obscuro/_'
 import * as threeRend from '/src/future/three/rend'
@@ -68,13 +69,16 @@ const setFlux = () => {
   }
   g.lynchBox = {
     scaleFactorX10: 10,
-    logPoints: [
+    transitionSpeeds: [
       32,
       52,
       65,
       74,
       79,
+      81,
       82,
+      83,
+      84,
       85,
       86,
       87,
@@ -87,7 +91,7 @@ const setFlux = () => {
   setFluxDisplay()
   setFluxEchoes()
   setFluxMeter()
-  setStaticLines()
+  setHorzNoise()
 
   gsap.set( '#lightningRodsWrapper', {
     translateY: '+=550',
@@ -197,14 +201,6 @@ const setFluxEchoes = () => {
 
 const setFluxMeter = () => {
   g.qss.flux.meter = gsap.quickSetter( '#fluxMeterNeedle', 'css' )
-}
-
-const setStaticLines = () => {
-  g.qss.staticLines = []
-  for ( let sl = 1; sl <= 3; sl++ ) {
-    g.qss.staticLines.push( gsap.quickSetter( `#staticLines > div:nth-child(${sl})`, 'css' ) )
-  }
-  console.log( { gQssStaticLines: g.qss.staticLines } )
 }
 
 const echoCry = axis => {
@@ -396,7 +392,7 @@ const flickOnFluxDisplayDirective = () => {
 
 const flickTick = () => {
   if ( g.flux.directive ) {
-    g.qss.flux.directive( randOnum() )
+    g.qss.flux.directive( randoNum() )
     g.flux.directive--
   } else {
     g.flux.bin.directive = cleanUp( g.flux.bin.directive )
@@ -420,7 +416,7 @@ const preRandomizeFluxDisplayTick = d => {
     // console.log({ [`gFluxDisplay${d}Pre`]: g.flux.display[d].pre } )
     if ( g.flux.display[d].pre.length ) {
       const nextNotSoRandomNumber = g.flux.display[d].pre.shift()
-      g.qss.flux.display[d][nextNotSoRandomNumber]( randOnum( 12, 69 ) / 100 )
+      g.qss.flux.display[d][nextNotSoRandomNumber]( randoNum( 12, 69 ) / 100 )
       g.flux.display[d].dispose = nextNotSoRandomNumber
     } else {
       g.flux.bin.display.digits[d].preRandomize = cleanUp( g.flux.bin.display.digits[d].preRandomize )
@@ -443,8 +439,8 @@ const randomizeFluxDisplayTick = d => {
     }
     // console.log({ [`gFluxDisplay${d}Current`]: g.flux.display[d].current } )
     if ( g.flux.display[d].current > 0 ) {
-      const nextNumberFrame = randOnum( 0, 9 )
-      g.qss.flux.display[d][nextNumberFrame]( randOnum( 12, 69 ) / 100 )
+      const nextNumberFrame = randoNum( 0, 9 )
+      g.qss.flux.display[d][nextNumberFrame]( randoNum( 12, 69 ) / 100 )
       g.flux.display[d].dispose = nextNumberFrame
       g.flux.display[d].current--
     } else {
@@ -484,7 +480,7 @@ const activateFluxDisplay = e => {
 }
 
 const staticNoiseTick = () => {
-  const o = randOnum( 1, 100 ) / 100
+  const o = randoNum( 1, 100 ) / 100
   g.qss.staticNoise( o < 0.23 ? 0 : o )
 }
 
@@ -538,17 +534,17 @@ const brokenFluxDisplayTick01 = () => {
   brokenFluxDisplayTick( 1 )
 }
 const brokenFluxDisplayTick = d => {
-  const nextBrokenFrame = randOnum( 0, 6 )
+  const nextBrokenFrame = randoNum( 0, 6 )
   g.qss.flux.broken[d][nextBrokenFrame]( {
-    opacity: randOnum( 0, 100 ) / 100,
-    zIndex: randOnum( 0, 6 ),
+    opacity: randoNum( 0, 100 ) / 100,
+    zIndex: randoNum( 0, 6 ),
   } )
   if ( d && g.three.mkr.prepped ) {
-    g.qss.staticLines.forEach( sl => {
-      const staticLineO = randOnum( 0, 100 ) / 100
+    g.qss.horzNoise.forEach( ( sl, i ) => {
+      const staticLineO = randoNum( 0, 100 ) / 100
       if ( staticLineO > 0.23 ) {
-        const staticLineHeight = randOnum( 1, 100 )
-        const staticLineTop = randOnum( 0, 100 - staticLineHeight )
+        const staticLineHeight = randoNum( 1, i ? 100 : 50 )
+        const staticLineTop = randoNum( 0, 100 - staticLineHeight )
         sl( {
           height: `${staticLineHeight}%`,
           opacity: staticLineO,
@@ -574,9 +570,9 @@ const dimFluxMeter = () => {
   } )
 }
 
-const lynchBoxIt = () => {
-  const o = g.lynchBox.scaleFactorX10 / 10
-  const top = 100 - ( g.lynchBox.scaleFactorX10 * 10 )
+const lynchBoxIt = scaleFactorX10 => {
+  const o = scaleFactorX10 / 10
+  const top = 100 - ( scaleFactorX10 * 10 )
   const left = top / 2
   gsap.set( g.el.mainStage, {
     opacity: o,
@@ -616,9 +612,10 @@ const incrementFluxDisplay = () => {
     g.qss.flux.meter( {
       rotateZ: '+=1',
     } )
-    if ( g.lynchBox.logPoints.includes( currentSpeed ) ) {
-      g.lynchBox.scaleFactorX10--
-      lynchBoxIt()
+    if ( g.lynchBox.transitionSpeeds.includes( currentSpeed ) ) {
+      if ( g.lynchBox.scaleFactorX10 <= 5 ) g.lynchBox.scaleFactorX10 -= 0.7
+      else g.lynchBox.scaleFactorX10--
+      lynchBoxIt( g.lynchBox.scaleFactorX10 )
     }
   } else {
     g.flux.bin.activate = cleanUp( g.flux.bin.activate )
@@ -679,7 +676,7 @@ const decrementFluxDisplay = () => {
       g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
       if ( !g.flux.bin.display.activate.length ) g.flux.bin.display.activate = [ setAddOn( '#fluxDisplay', 'click', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mousedown', activateFluxDisplay ), setAddOn( '#fluxDisplay', 'mouseup', activateFluxDisplay ) ]
     }
-    if ( g.lynchBox.logPoints.includes( currentSpeed ) ) {
+    if ( g.lynchBox.transitionSpeeds.includes( currentSpeed ) ) {
       g.lynchBox.scaleFactorX10++
       lynchBoxIt()
     }

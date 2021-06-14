@@ -8,7 +8,7 @@ import assTruffulaTree04 from 'url:/src/main-stage/jungle/TruffulaTree-4.png'
 import assWildTree01 from 'url:/src/main-stage/jungle/WildTree-1.png'
 import assWildTree02 from 'url:/src/main-stage/jungle/WildTree-2.png'
 import g from '/src/shared/_'
-import { padStr, randOnum, shuffleArray } from '/src/shared/utils'
+import { padStr, randoNum, shuffleArray } from '/src/shared/utils'
 
 const assJungleLayers = [
   assWildTree01,
@@ -69,7 +69,7 @@ const setJungleLayer = ( ajl, lyr ) => {
     lr: jungLayerClass,
     from: startPos,
     to: {
-      dl: jungleJumble ? lyr ** 2 * 0.76 + randOnum( 0, 140 ) : 0,
+      dl: jungleJumble ? lyr ** 2 * 0.76 + randoNum( 0, 140 ) : 0,
       dr: !jungleJumble ? 180 : ( jungleJumble * 60 ) + 140,
       tx: !jungleJumble ? '51%' : ( jungLayerL.getBoundingClientRect().width * 2 ) + g.document.querySelector( '.jungScreen' ).getBoundingClientRect().width,
     },
@@ -111,7 +111,7 @@ const setJungle = () => {
 
 const randOjung = ajl => {
   gsap.set( ajl, {
-    scale: randOnum( 23, 96 ) / 100,
+    scale: randoNum( 23, 96 ) / 100,
   } )
 }
 

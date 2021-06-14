@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
 import g from '/src/shared/_'
-import { randOnum } from '/src/shared/utils'
+import { randoNum } from '/src/shared/utils'
 
 const setFloor = () => {
   if ( g.el.yoreFloor ) {
@@ -16,7 +16,7 @@ const scrubTheFloor = () => {
   gsap.to( '#yoreFloorTitle', {
     duration: 1,
     ease: 'back.in',
-    translateX: `${randOnum() ? '-' : ''}${g.main.w * 1.5}`,
+    translateX: `${randoNum() ? '-' : ''}${g.main.w * 1.5}`,
   } )
 }
 

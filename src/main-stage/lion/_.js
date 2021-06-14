@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 
 import g from '/src/shared/_'
-import { randOnum } from '/src/shared/utils'
+import { randoNum } from '/src/shared/utils'
 import { devLog } from '/src/shared/dev/_'
 import { setScene } from '/src/scenes/_'
 import { toggleGemGuy } from './lion-torso/lion-t-shirt/_'
@@ -62,8 +62,8 @@ const shockTheLion = () => {
 
 const lionShockTick = () => {
   g.lion.blur2X( {
-    left: `${randOnum() ? '' : '-'}${randOnum( 12, 20 )}px`,
-    opacity: randOnum( 42, 76 ) / 100,
+    left: `${randoNum() ? '' : '-'}${randoNum( 12, 20 )}px`,
+    opacity: randoNum( 42, 76 ) / 100,
   } )
   shockTick()
 }

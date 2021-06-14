@@ -4,7 +4,7 @@ import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
 import g from '/src/shared/_'
-import { cleanUp, isFunction, randOnum } from '/src/shared/utils'
+import { cleanUp, isFunction, randoNum } from '/src/shared/utils'
 import * as msh from './mesh'
 import * as mkr from './make'
 
@@ -132,7 +132,7 @@ const textureAnimator = ( mesh, trkObj, hTiles, vTiles, totTiles, tileDisplayDur
     while ( trkObj.cdt > tileDisplayDuration ) {
       trkObj.cdt -= tileDisplayDuration
       let nextTile = trkObj.ctl
-      while ( nextTile === trkObj.ctl ) nextTile = randOnum( 0, totTiles - 1 )
+      while ( nextTile === trkObj.ctl ) nextTile = randoNum( 0, totTiles - 1 )
       trkObj.ctl = nextTile
       const currentColumn = trkObj.ctl % hTiles
       mesh.material.map.offset.x = currentColumn / hTiles

@@ -166,7 +166,7 @@ const isNode = o => ( typeof Node === 'object' ? o instanceof Node : o && typeof
 
 const isSet = value => !( typeof value === 'undefined' )
 
-const mixItUp = () => g.mixBlendModes[randOnum( 0, g.mixBlendModes.length - 1 )]
+const mixItUp = () => g.mixBlendModes[randoNum( 0, g.mixBlendModes.length - 1 )]
 
 const navToNewTab = dest => g.window.open( dest )
 
@@ -176,7 +176,7 @@ const navToPopUp = ( { url = '/', name = '', params = '' } = {} ) => {
 
 const padStr = ( input, padLen = 2, padWith = '0', start = true ) => ( start ? input.toString().padStart( padLen, padWith ) : input.toString().padEnd( padLen, padWith ) )
 
-const randOnum = ( mn = 0, mx = 1, inc = 1 ) => {
+const randoNum = ( mn = 0, mx = 1, inc = 1 ) => {
   const totalSteps = ( mx - mn ) / inc
   const possibleValues = []
   for ( let step = 0; step <= totalSteps; step += inc ) {
@@ -188,12 +188,12 @@ const randOnum = ( mn = 0, mx = 1, inc = 1 ) => {
   return ( rando )
 }
 
-const randOcolor = ( as = 'hex' ) => {
+const randoColor = ( as = 'hex' ) => {
   const rgb = []
   switch ( as ) {
     case 'hex':
     default:
-      for ( let h = 0; h < 3; h++ ) rgb[h] = padStr( randOnum( 0, 255 ).toString( 16 ) )
+      for ( let h = 0; h < 3; h++ ) rgb[h] = padStr( randoNum( 0, 255 ).toString( 16 ) )
       return `#${rgb.join( '' )}`
   }
 }
@@ -379,8 +379,8 @@ export {
   navToNewTab,
   navToPopUp,
   padStr,
-  randOnum,
-  randOcolor,
+  randoNum,
+  randoColor,
   roundNumberTo,
   setAddOn,
   setClearActors,

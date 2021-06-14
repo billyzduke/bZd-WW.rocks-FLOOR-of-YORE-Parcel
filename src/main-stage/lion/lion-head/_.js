@@ -4,7 +4,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 
 import g from '/src/shared/_'
 // eslint-disable-next-line object-curly-newline
-import { padStr, randOnum, randOcolor, setAddOn, shuffleArray } from '/src/shared/utils'
+import { padStr, randoNum, randoColor, setAddOn, shuffleArray } from '/src/shared/utils'
 import { devLog } from '/src/shared/dev/_'
 
 gsap.registerPlugin( MorphSVGPlugin, MotionPathPlugin )
@@ -89,7 +89,7 @@ const setExcs = () => {
   for ( let x = 0; x < g.exc.max; x++ ) {
     const pathsRay = Array.from( { length: g.exc.path.length }, ( _, i ) => padStr( i ) )
     const shuffled = shuffleArray( pathsRay )
-    const fillColor = randOcolor()
+    const fillColor = randoColor()
 
     const excEl = g.document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
     excEl.setAttributeNS( 'http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink' )
@@ -161,11 +161,11 @@ const ex = () => {
 const claim = whEx => {
   if ( g.scene.current >= 11 && g.el.theLion.classList.contains( 'anim' ) ) {
     const excTL02 = new TL( { defaults: { overwrite: 'auto' } } )
-    const randSpeed = randOnum( 12, 16 ) / 4
+    const randSpeed = randoNum( 12, 16 ) / 4
     excTL02.to( `#ex${whEx}`, {
       duration: randSpeed * 2,
       ease: 'none',
-      fill: randOcolor(),
+      fill: randoColor(),
       motionPath: {
         align: '#excOrbit',
         alignOrigin: [ 0.5, 0.5 ],
@@ -188,14 +188,14 @@ const claim = whEx => {
       if ( i + 1 < g.exc.path.length ) {
         excTL02.to( `#ex${whEx} .xPath00`, {
           duration: 1,
-          fill: randOcolor(),
+          fill: randoColor(),
           morphSVG: `#ex${whEx} .xPath${padStr( i + 1 )}`,
         }, i === 0 ? 0 : '<2.5' )
       }
     } )
     excTL02.to( `#ex${whEx}`, {
       duration: 2.5,
-      fill: randOcolor(),
+      fill: randoColor(),
       opacity: 0,
     }, '>' )
     g.exc.dir = g.exc.dir ? 0 : 1

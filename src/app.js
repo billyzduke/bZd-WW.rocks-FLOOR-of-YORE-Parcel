@@ -1,5 +1,3 @@
-import { gsap } from 'gsap'
-
 import assBodyBackground from 'url:/src/shared/WWineBoxBG.jpg'
 import g from '/src/shared/_'
 import { getW, getMouseMove } from '/src/shared/window'
@@ -19,8 +17,9 @@ import { setSceneSkipper } from '/src/shared/dev/_'
 import { resetCtrRingPos1 } from '/src/main-stage/baubles/layer-01/_'
 import { isSet, setAddOn, toggleFermata } from '/src/shared/utils'
 import {
-  prepDeLorean, setGlitches, startDeLorean, toggleFlyAlongPath,
-} from '/src/future/_'
+  prepDeLorean, startDeLorean, toggleFlyAlongPath,
+} from '/src/future/three/delorean/_'
+import { setGlitches } from '/src/future/glitch/_'
 // import { setLynchTunnel, startLynchTunnel } from './lynch-tunnel'
 
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
@@ -35,7 +34,6 @@ const loadApp = () => {
     // Additional DOM elements only present during development / debugging
     devEl = [
       'discoWall',
-      'glitches',
       'gradientor',
       'model',
       'rotateX0',
@@ -80,6 +78,7 @@ const loadApp = () => {
     'future',
     'gemGuy',
     'ggrove',
+    'glitches',
     'heartChakra',
     'help',
     'helpList',
@@ -139,7 +138,12 @@ const loadApp = () => {
   el.bL = []
   g.el = el
   g.w = getW( g.cyOffPx )
-  g.mains = [ g.el.lynchBox, g.el.mainStage, g.el.future, g.el.obscuro ]
+  g.mains = [
+    g.el.lynchBox,
+    g.el.mainStage,
+    g.el.future,
+    g.el.obscuro,
+  ]
 
   g.main.scale = g.w.h / Number( g.window.getComputedStyle( g.el.mainStage, null ).getPropertyValue( 'height' ).slice( 0, -2 ) )
   g.main.w = g.w.w / g.main.scale
