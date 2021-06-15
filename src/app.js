@@ -16,14 +16,16 @@ import { setScene } from '/src/scenes/_'
 import { setSceneSkipper } from '/src/shared/dev/_'
 import { resetCtrRingPos1 } from '/src/main-stage/baubles/layer-01/_'
 import { isSet, setAddOn, toggleFermata } from '/src/shared/utils'
+import { beginFuture, setFuture } from '/src/future/_'
 import {
-  prepDeLorean, startDeLorean, toggleFlyAlongPath,
+  prepDeLorean, toggleFlyAlongPath,
 } from '/src/future/three/delorean/_'
 import { setGlitches } from '/src/future/glitch/_'
 // import { setLynchTunnel, startLynchTunnel } from './lynch-tunnel'
 
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
 import '/src/app.scss'
+import { startDeLorean } from './future/three/delorean/_'
 
 const loadApp = () => {
   // Gather references to all the DOM elements we are going to need to directly manipulate later on
@@ -190,14 +192,16 @@ const loadApp = () => {
   if ( g.dev && g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
     setThree( {
-      controls: false, stats: true, smoke: true, tunnel: true,
+      controls: true, stats: true, smoke: false, tunnel: false,
     } )
     prepDeLorean()
-    startDeLorean( { force: true } )
     g.el.lynchBox.style.opacity = 1
     g.el.lynchBox.style.backgroundImage = 'none'
     g.el.glitches.style.opacity = g.el.mainStage.style.opacity = 0
     g.el.gradientor.style.pointerEvents = 'none'
+    // setFuture()
+    // beginFuture()
+    startDeLorean( { force: true } )
     // g.el.flux.classList.remove( 'tuct' )
     // g.el.flux.style.opacity = 0.42
     // gsap.set( '#fluxMask', {

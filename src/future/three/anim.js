@@ -37,7 +37,7 @@ const backItUp = () => {
     }, '<' )
     .to( g.three.inScene.deLorean.rotation, {
       duration: 11.5,
-      ease: 'power2.in',
+      ease: 'power2.inOut',
       y: THREE.Math.degToRad( -180 ),
     }, '<4.5' )
     .to( g.three.obj.windShieldGlass.msh.material, {
@@ -50,20 +50,20 @@ const backItUp = () => {
   // }, '<' )
     .to( g.three.inScene.deLorean.rotation, {
       duration: 3.5,
-      ease: 'power2.in',
+      ease: 'power2.inOut',
       x: THREE.Math.degToRad( 30 ),
       repeat: 1,
       yoyo: true,
     }, '<2' )
     .to( g.three.inScene.deLorean.position, {
       duration: 5,
-      ease: 'power2.in',
+      ease: 'power2.inOut',
       x: '+=350',
       y: '+=164',
     }, '<' )
     .to( g.three.inScene.carGyro.rotation, {
       duration: 3.5,
-      ease: 'power2.in',
+      ease: 'power2.inOut',
       x: THREE.Math.degToRad( 75 ),
       y: -THREE.Math.degToRad( 15 ),
       z: THREE.Math.degToRad( 20 ),

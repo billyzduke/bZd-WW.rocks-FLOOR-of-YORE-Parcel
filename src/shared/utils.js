@@ -166,8 +166,10 @@ const isNode = o => ( typeof Node === 'object' ? o instanceof Node : o && typeof
 
 const isSet = value => !( typeof value === 'undefined' )
 
-const mixItUp = () => g.mixBlendModes[randoNum( 0, g.mixBlendModes.length - 1 )]
-
+const mixItUp = ( { mixModesAllowed = [] } = {} ) => {
+  const randoMix = mixModesAllowed.length ? mixModesAllowed : g.mixBlendModes
+  return randoMix[randoNum( 0, randoMix.length - 1 )]
+}
 const navToNewTab = dest => g.window.open( dest )
 
 const navToPopUp = ( { url = '/', name = '', params = '' } = {} ) => {

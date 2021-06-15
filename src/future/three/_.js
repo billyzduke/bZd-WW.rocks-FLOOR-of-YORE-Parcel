@@ -15,6 +15,7 @@ import {
 } from '/src/shared/utils'
 import { devLog } from '/src/shared/dev/_'
 import { deObscureThen } from '/src/obscuro/_'
+import { makeFloaterLamp } from './tunnel/_'
 
 const setThree = ( {
   controls = false, stats = false, car = true, tunnel = true, smoke = true,
@@ -144,6 +145,8 @@ const setThree = ( {
       g.three.stats.dom.classList.add( 'threeDev' )
       g.el.deLorean.appendChild( g.three.stats.dom )
     }
+
+    makeFloaterLamp()
 
     g.three.ani.go = ( { startYourEngines = false } = {} ) => {
       if ( stats ) g.three.stats.begin()

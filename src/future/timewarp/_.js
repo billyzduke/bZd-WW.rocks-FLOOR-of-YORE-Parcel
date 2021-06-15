@@ -6,6 +6,7 @@ import {
 } from '/src/shared/utils'
 import { toggleFlyAlongPath } from '/src/future/three/delorean/_'
 import * as threeRend from '/src/future/three/rend'
+import { devLog } from '../../shared/utils'
 
 const setGradientor = () => {
   g.qss.gradientor = gsap.quickSetter( '#gradientor', 'css' )
@@ -113,15 +114,16 @@ const startWarp = () => {
     rotate: 0,
   }, {
     duration: 4,
-    ease: 'power1.out',
+    ease: 'power1.inOut',
     rotate: 360,
     repeat: -1,
   } )
     .fromTo( '.trippyGrid.red', {
-      scale: 1,
+      scale: 0.6,
       skewX: 0,
     }, {
       duration: 2,
+      ease: 'power2.inOut',
       scale: 2,
       skewX: '50%',
       repeat: -1,
@@ -131,15 +133,16 @@ const startWarp = () => {
       rotate: 0,
     }, {
       duration: 7,
-      ease: 'power1.out',
+      ease: 'power1.inOut',
       rotate: -360,
       repeat: -1,
     }, '<' )
     .fromTo( '.trippyGrid.blue', {
-      scale: 1,
+      scale: 0.76,
       skewY: 0,
     }, {
-      duration: 4,
+      duration: 3.6,
+      ease: 'power2.inOut',
       scale: 4,
       skewY: '25%',
       repeat: -1,
@@ -149,16 +152,17 @@ const startWarp = () => {
       rotate: 0,
     }, {
       duration: 10,
+      ease: 'power2.inOut',
       rotate: 360,
       repeat: -1,
     }, '<' )
     .fromTo( '.trippyGrid.green', {
-      scale: 1,
+      scale: 0.88,
       skewX: 0,
     }, {
       duration: 3,
-      ease: 'power1.out',
-      scale: 6,
+      ease: 'power1.inOut',
+      scale: 4.2,
       skewX: '25%',
       repeat: -1,
       yoyo: true,
@@ -167,16 +171,17 @@ const startWarp = () => {
       rotate: 0,
     }, {
       duration: 11,
+      ease: 'power2.inOut',
       rotate: -360,
       repeat: -1,
     }, '<' )
     .fromTo( '.trippyGrid.indigo', {
-      scale: 1,
+      scale: 0.75,
       skewY: 0,
     }, {
       duration: 5,
-      ease: 'power1.out',
-      scale: 8,
+      ease: 'power1.inOut',
+      scale: 4.8,
       skewY: '50%',
       repeat: -1,
       yoyo: true,
@@ -192,11 +197,25 @@ const fadeWarp = () => {
     const fadeNext = g.warp.fade.shift()
     let mixable
     if ( typeof fadeNext === 'string' ) {
+      devLog( { warpFades: g.warp.fade } )
       g.gradientor.bin = cleanUp( g.gradientor.bin )
       mixable = [ ...g.warp.fade ]
     } else mixable = [ fadeNext, ...g.warp.fade ]
-    mixable.forEach( warp => {
-      warp.style.mixBlendMode = mixItUp()
+    const mixModesAllowed = mixable.length === 1
+      ? [
+        'multiply',
+        'screen',
+        'overlay',
+        'hard-light',
+        'soft-light',
+        'difference',
+        'exclusion',
+      ]
+      : []
+    mixable.forEach( ( warp, i ) => {
+      const mbm = mixItUp( { mixModesAllowed } )
+      devLog( { warp: i, mbm, mixModesAllowed } )
+      warp.style.mixBlendMode = mbm
     } )
     gsap.to( fadeNext, {
       duration: 1.5,

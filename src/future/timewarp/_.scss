@@ -17,17 +17,18 @@ div#moireAuras {
     border-radius: 50%;
     mix-blend-mode: hard-light;
     &.red {
-      background-color: red;
+      background: radial-gradient(circle closest-side, red 0%, orange 33%, yellow 69%);
     }
     &.green {
-      background-color: green;
+      background: radial-gradient(circle closest-side, cyan 0%, green 33%, chartreuse 69%);
+      mix-blend-mode: soft-light;
     }
     &.blue {
-      background-color: blue;
+      background: radial-gradient(circle closest-side, blue 0%, purple 33%, red 69%);
       mix-blend-mode: difference;
     }
     &.indigo {
-      background-color: indigo;
+      background: radial-gradient(circle closest-side, indigo 0%, magenta 33%, pink 69%);
       opacity: 0.5;
     }
   }

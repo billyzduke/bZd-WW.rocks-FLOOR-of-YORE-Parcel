@@ -8,6 +8,7 @@ yarn-error.log*
 .yarn/
 .vscode/
 *.mp4
+suckme*
 
 # Editor directories and files
 .idea
