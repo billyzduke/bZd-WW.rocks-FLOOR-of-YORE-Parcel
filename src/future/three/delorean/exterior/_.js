@@ -19,7 +19,7 @@ import assFusionFaceBackCorner from 'url:/src/future/three/delorean/exterior/fus
 import assFusionTop from 'url:/src/future/three/delorean/exterior/fusionTop.png'
 import assFusionCrossSection from 'url:/src/future/three/delorean/exterior/fusionCrossSection.png'
 import assFusionLockFace from 'url:/src/future/three/delorean/exterior/fusionLock.png'
-import assPipeMetal03 from 'url:/src/future/three/delorean/exterior/metalPipe2.png'
+import assPipeMetal03 from 'url:/src/future/three/metalPipeHorizontal.png'
 import assPanelScreen from 'url:/src/future/three/delorean/exterior/panelScreen.png'
 import g from '/src/shared/_'
 import * as threeMake from '/src/future/three/make'

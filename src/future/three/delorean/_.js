@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 
-import assPipeMetal01 from 'url:/src/future/three/delorean/metalPipe.png'
+import assPipeMetal01 from 'url:/src/future/three/metalPipeVertical.png'
 import assPipeMetal02 from 'url:/src/future/three/delorean/metalSphere.png'
 import assHeadLightCone from 'url:/src/future/three/delorean/headLightCone.png'
 import g from '/src/shared/_'

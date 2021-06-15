@@ -1,0 +1,17 @@
+#staticNoise {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  overflow: hidden;
+  * {
+    background-size: 800px 450px;
+    background-repeat: repeat;
+    background-position: 50% 50%;
+    width: 100%;
+    height: 100%;
+    background-image: url(main-stage/static-noise/fwwm-noise-very-poor.jpg);
+    &.heiligeNacht {
+      background-image: url(main-stage/static-noise/fwwm-noise-16x9.gif);
+    }
+  }
+}

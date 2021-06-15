@@ -1,7 +1,9 @@
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
 
-import assSupportShape from 'url:/src/future/three/tunnel/floatingLightSupportShape.svg'
+import assSupportShape from 'url:/src/future/three/tunnel/floatingLightSupportShapes.svg'
+import assPipeMetal from 'url:/src/future/three/metalPipeVertical.png'
+import assPipeMetalEmissive from 'url:/src/future/three/metalPipeVerticalEmissive.png'
 import g from '/src/shared/_'
 import * as threeMake from '/src/future/three/make'
 
@@ -19,48 +21,39 @@ const makeFloaterLamp = () => {
         [ [ 0, 0, 0 ], [ 0, -42, 0 ] ],
         [ [ 0, -42, 0 ], [ 64, -106, 36 ] ],
         [ [ 64, -106, 36 ], [ 64, -318, 36 ] ],
-        [ [ 64, -318, 36 ], [ -42, -388, 36 ] ],
-        [ [ -42, -388, 36 ], [ -60, -388, 36 ] ],
+        [ [ 64, -318, 36 ], [ -52, -388, 36 ] ],
       ]
       const extrudePath = new THREE.CurvePath()
       lineSegments.forEach( lc3 => {
         const extrudePts = threeMake.createVector3s( lc3 )
         extrudePath.curves.push( new THREE.LineCurve3( extrudePts[0], extrudePts[1] ) )
       } )
-
-      // const extrudeCrv1 = [
-      //   [ 0, 0, 0 ],
-      //   [ 0, -30, 0 ],
-      //   [ 0, -42, 0 ],
-      //   [ 64, -106, 36 ],
-      //   [ 64, -112, 36 ],
-      //   [ 64, -318, 36 ],
-      //   // [ 64, -324, 36 ],
-      // ]
-
-      // const extrudeCrv2 = [
-      //   [ 0, -12, 0 ],
-      //   [ 0, -30, 0 ],
-      //   [ 0, -42, 0 ],
-      //   [ -64, -130, 36 ],
-      //   [ -70, -132, 36 ],
-      //   [ -82, -132, 36 ],
-      // ]
-
-      // const extrudePts1 = threeMake.createVector3s( extrudeCrv1 )
-      // let extrudePath = new THREE.CatmullRomCurve3( extrudePts1 )
       const supportGeo1 = new THREE.ExtrudeGeometry( supportShape, { extrudePath, steps: 100, depth: 360 } )
-      // const extrudePts2 = threeMake.createVector3s( extrudeCrv2 )
-      // extrudePath = new THREE.CatmullRomCurve3( extrudePts2 )
-      // const supportGeo2 = new THREE.ExtrudeGeometry( supportShape, { extrudePath, steps: 200, depth: 164 } )
-      const supportMat = new THREE.MeshStandardMaterial( {
-        color: 0x999999,
+      const supportMap = threeMake.textureLoader( assPipeMetal )
+      const supportEmissiveMap = threeMake.textureLoader( assPipeMetalEmissive )
+      const supportMat = new THREE.MeshPhysicalMaterial( {
+        metalness: 1,
+        roughness: 0.4,
+        color: 0x4f191f,
         side: THREE.DoubleSide,
-        emissive: new THREE.Color( 0x999999 ),
+        emissive: new THREE.Color( 0x4f191f ),
+        emissiveMap: supportEmissiveMap,
+        map: supportMap,
       } )
+      supportMat.map.wrapS = supportMat.map.wrapT = supportMat.emissiveMap.wrapS = supportMat.emissiveMap.wrapT = THREE.RepeatWrapping
+      supportMat.map.repeat.set( 0.025, 0.1 )
+      supportMat.emissiveMap.repeat.set( 0.025, 0.1 )
       const supportMsh1 = new THREE.Mesh( supportGeo1, supportMat )
       supportMsh1.position.y = 120
       supportMsh1.rotation.x = THREE.Math.degToRad( 180 )
+      const supportEndCapShape = SVGLoader.createShapes( paths[1] )
+      const supportEndCapGeo = new THREE.LatheGeometry( supportEndCapShape[0].getPoints(), 8, 0, Math.PI )
+      const supportMsh3 = new THREE.Mesh( supportEndCapGeo, supportMat )
+      supportMsh3.position.set( 78.75, -403.5, -36 )
+      supportMsh3.rotateX( THREE.Math.degToRad( 90 ) )
+      supportMsh3.rotateY( THREE.Math.degToRad( -30 ) )
+      supportMsh1.add( supportMsh3 )
+
       g.three.scene.add( supportMsh1 )
       const supportMsh2 = supportMsh1.clone()
       supportMsh2.position.x = 36
