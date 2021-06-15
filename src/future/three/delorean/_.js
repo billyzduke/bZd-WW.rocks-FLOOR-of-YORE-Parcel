@@ -227,7 +227,7 @@ const setMakes = () => {
       spotLightCone.rotateX( THREE.Math.degToRad( -120.5 ) )
       spotLightCone.rotateZ( THREE.Math.degToRad( i % 2 ? -8 : 8 ) )
 
-      const spotLightTarget = new THREE.Mesh( new THREE.TetrahedronGeometry(), new THREE.MeshBasicMaterial( { opacity: 0, depthWrite: false } ) )
+      const spotLightTarget = new THREE.Mesh( new THREE.TetrahedronGeometry(), new THREE.MeshBasicMaterial( { opacity: 0, depthWrite: false, transparent: true } ) )
       spotLightTarget.position.y = spotLightConeLength / 4
       spotLightCone.add( spotLightTarget )
       spotLight.target = spotLightTarget
