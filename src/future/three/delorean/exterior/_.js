@@ -425,7 +425,7 @@ const makeLightBarPanel = where => {
         position: lb.pos,
       }
       const glowGeom = new THREE.ExtrudeGeometry( g.three.mkr.lb.glowProfile, { extrudePath: panelCrv, steps: 64, depth: 400 } )
-      const glowMesh = threeX.GeometricGlowMesh( glowGeom, panelMat.alphaMap, [ 2, 4, 0 ] )
+      const glowMesh = threeX.GeometricGlowMesh( true, glowGeom, [ 2, 4, 0 ] )
       panelMsh.add( glowMesh.object3d )
       // var insideUniforms = glowMesh.insideMesh.material.uniforms
       // insideUniforms.glowColor.value.set('hotpink')

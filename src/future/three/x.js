@@ -2,7 +2,7 @@ import * as THREE from 'three'
 
 import g from '/src/shared/_'
 
-const createAtmosphericMaterial = alphaMap => {
+const createAtmosphericMaterial = () => {
   const vertexShader = [
     'varying vec3 vVertexWorldPosition;',
     'varying vec3 vVertexNormal;',
@@ -18,6 +18,7 @@ const createAtmosphericMaterial = alphaMap => {
     ' gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
     '}',
   ].join( '\n' )
+
   const fragmentShader = [
     'uniform vec3 glowColor;',
     'uniform float coeficient;',
@@ -36,6 +37,7 @@ const createAtmosphericMaterial = alphaMap => {
     ' gl_FragColor  = vec4(glowColor, intensity);',
     '}',
   ].join( '\n' )
+
   // create custom material from the shader code above
   //   that is within specially labeled script tags
   const material = new THREE.ShaderMaterial( {
@@ -50,7 +52,7 @@ const createAtmosphericMaterial = alphaMap => {
       },
       glowColor: {
         type: 'c',
-        value: new THREE.Color( 'pink' ),
+        value: new THREE.Color( 'white' ),
       },
     },
     vertexShader: vertexShader,
@@ -63,29 +65,29 @@ const createAtmosphericMaterial = alphaMap => {
   return material
 }
 
-const GeometricGlowMesh = ( geoInner, alphaMap, [ offsetX, offsetY, offsetZ ] = [ 0, 0, 0 ] ) => {
+const GeometricGlowMesh = ( animate = true, geoInner, [ offsetX = 0, offsetY = 0, offsetZ = 0 ] = [], color = 0x00D8FF ) => {
   const object3d = new THREE.Object3D()
 
   geoInner.scale( 1.01, 1.01, 1.01 )
   geoInner.translate( 0, 2, 0 )
-  const matInner = createAtmosphericMaterial( alphaMap )
-  matInner.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
+  const matInner = createAtmosphericMaterial()
+  matInner.uniforms.glowColor.value = new THREE.Color( color )
   matInner.uniforms.coeficient.value = 1.3
-  matInner.uniforms.power.value = 1.3
-  const innerMesh = new THREE.Mesh( geoInner, [ new THREE.MeshBasicMaterial( { opacity: 0, transparent: true } ), matInner ] )
-  g.three.ani.glo.push( { wax: false, msh: innerMesh } )
+  matInner.uniforms.power.value = animate ? 1.3 : 5
+  const innerMesh = new THREE.Mesh( geoInner, [ new THREE.MeshBasicMaterial( { opacity: animate ? 0 : 0.88, transparent: true } ), matInner ] )
+  if ( animate ) g.three.ani.glo.push( { wax: false, msh: innerMesh } )
   object3d.add( innerMesh )
 
   const geoOuter = geoInner.clone()
   geoOuter.scale( 1.025, 1.025, 1.025 )
   geoOuter.translate( offsetX, offsetY, offsetZ )
-  const matOuter = createAtmosphericMaterial( alphaMap )
-  matOuter.uniforms.glowColor.value = new THREE.Color( 0x00D8FF )
+  const matOuter = createAtmosphericMaterial()
+  matOuter.uniforms.glowColor.value = new THREE.Color( color )
   matOuter.uniforms.coeficient.value = 0.26
-  matOuter.uniforms.power.value = 0.9
+  matOuter.uniforms.power.value = animate ? 0.9 : 5
   matOuter.side = THREE.BackSide
-  const outerMesh = new THREE.Mesh( geoOuter, [ new THREE.MeshBasicMaterial( { opacity: 0, transparent: true } ), matOuter ] )
-  g.three.ani.glo.push( { wax: false, msh: outerMesh } )
+  const outerMesh = new THREE.Mesh( geoOuter, [ new THREE.MeshBasicMaterial( { opacity: animate ? 0 : 0.88, transparent: true } ), matOuter ] )
+  if ( animate ) g.three.ani.glo.push( { wax: false, msh: outerMesh } )
   object3d.add( outerMesh )
 
   return {
