@@ -110,20 +110,26 @@ const makeFloaterLamp = () => {
       supportMshMirrored.rotation.y = THREE.Math.degToRad( 180 )
       floaterLamp.add( supportMshMirrored )
 
-      const supportBaseShape = SVGLoader.createShapes( paths[3] )
-      const supportBaseGeo = new THREE.ExtrudeGeometry( supportBaseShape, {
+      const supportBaseDiamondShape = SVGLoader.createShapes( paths[3] )
+      const supportBaseDiamondGeo = new THREE.ExtrudeGeometry( supportBaseDiamondShape, {
         steps: 1, depth: 36, bevelThickness: 8, bevelOffset: -6,
       } )
-      const supportBaseMsh = new THREE.Mesh( supportBaseGeo, supportMat.clone() )
-      supportBaseMsh.material.emissive = supportBaseMsh.material.color = new THREE.Color( 0x99999 )
-      supportBaseMsh.material.map.repeat.set( 0.01, 0.01 )
-      supportBaseMsh.material.emissiveMap.repeat.set( 0.01, 0.01 )
-      supportBaseMsh.rotateX( THREE.Math.degToRad( 90 ) )
-      supportBaseMsh.rotateZ( THREE.Math.degToRad( -90 ) )
-      supportBaseMsh.position.y = 32
-      supportBaseMsh.position.x = -54
-      floaterLamp.add( supportBaseMsh )
+      const supportBase = new THREE.Mesh( supportBaseDiamondGeo, supportMat.clone() )
+      supportBase.material.emissive = supportBase.material.color = new THREE.Color( 0x99999 )
+      supportBase.material.map.repeat.set( 0.01, 0.01 )
+      supportBase.material.emissiveMap.repeat.set( 0.01, 0.01 )
+      supportBase.rotateX( THREE.Math.degToRad( 90 ) )
+      supportBase.rotateZ( THREE.Math.degToRad( -90 ) )
+      supportBase.position.y = 32
+      supportBase.position.x = -54
 
+      const supportBaseCylinderGeo = new THREE.CylinderGeometry( 32, 72, 12, 16, 1, true )
+      const supportBaseCylinder = new THREE.Mesh( supportBaseCylinderGeo, supportBase.material )
+      supportBaseCylinder.rotateX( THREE.Math.degToRad( -90 ) )
+
+      supportBase.add( supportBaseCylinder )
+
+      floaterLamp.add( supportBase )
 
       floaterLamp.position.y = 120
       g.three.inScene.floaters.add( floaterLamp )
