@@ -42,7 +42,7 @@ const makeFloaterLamp = () => {
       const supportMat = new THREE.MeshPhysicalMaterial( {
         metalness: 1,
         roughness: 0.4,
-        color: 0x4f191f,
+        color: new THREE.Color( 0x4f191f ),
         side: THREE.DoubleSide,
         emissive: new THREE.Color( 0x4f191f ),
         emissiveMap: supportEmissiveMap,
@@ -67,7 +67,7 @@ const makeFloaterLamp = () => {
       const lightBarGuardMat = new THREE.MeshPhysicalMaterial( {
         metalness: 1,
         roughness: 0.25,
-        color: 0x999999,
+        color: new THREE.Color( 0x999999 ),
         side: THREE.DoubleSide,
         emissive: new THREE.Color( 0x999999 ),
         emissiveMap: lightBarGuardEmissiveMap,
@@ -110,23 +110,51 @@ const makeFloaterLamp = () => {
       supportMshMirrored.rotation.y = THREE.Math.degToRad( 180 )
       floaterLamp.add( supportMshMirrored )
 
+      // cloning materials and textures doesn't seem to really create a distinct copy,
+      // in that when then trying to alter the properties of the copy, the original is still affected
+      // SO WHAT IS THE POINT OF CLONING THEN
+      const supportBase = new THREE.Group()
       const supportBaseDiamondShape = SVGLoader.createShapes( paths[3] )
       const supportBaseDiamondGeo = new THREE.ExtrudeGeometry( supportBaseDiamondShape, {
         steps: 1, depth: 36, bevelThickness: 8, bevelOffset: -6,
       } )
-      const supportBase = new THREE.Mesh( supportBaseDiamondGeo, supportMat.clone() )
-      supportBase.material.emissive = supportBase.material.color = new THREE.Color( 0x99999 )
-      supportBase.material.map.repeat.set( 0.01, 0.01 )
-      supportBase.material.emissiveMap.repeat.set( 0.01, 0.01 )
-      supportBase.rotateX( THREE.Math.degToRad( 90 ) )
-      supportBase.rotateZ( THREE.Math.degToRad( -90 ) )
-      supportBase.position.y = 32
-      supportBase.position.x = -54
+      const supportBaseDiamondMap = threeMake.textureLoader( assRoughMetal )
+      const supportBaseDiamondEmissiveMap = threeMake.textureLoader( assRoughMetalEmissive )
+      const supportBaseDiamondMat = new THREE.MeshPhysicalMaterial( {
+        roughness: 0.8,
+        color: new THREE.Color( 0x99999 ),
+        side: THREE.DoubleSide,
+        emissive: new THREE.Color( 0x99999 ),
+        emissiveMap: supportBaseDiamondEmissiveMap,
+        map: supportBaseDiamondMap,
+      } )
+      supportBaseDiamondMat.map.wrapS = supportBaseDiamondMat.map.wrapT = supportBaseDiamondMat.emissiveMap.wrapS = supportBaseDiamondMat.emissiveMap.wrapT = THREE.RepeatWrapping
+      supportBaseDiamondMat.map.repeat.set( 0.01, 0.01 )
+      supportBaseDiamondMat.emissiveMap.repeat.set( 0.01, 0.01 )
+      const supportBaseDiamond = new THREE.Mesh( supportBaseDiamondGeo, supportBaseDiamondMat )
+      supportBaseDiamond.rotateX( THREE.Math.degToRad( 90 ) )
+      supportBaseDiamond.rotateZ( THREE.Math.degToRad( -90 ) )
+      supportBaseDiamond.position.y = 32
+      supportBaseDiamond.position.x = -54
+      supportBase.add( supportBaseDiamond )
 
-      const supportBaseCylinderGeo = new THREE.CylinderGeometry( 32, 72, 12, 16, 1, true )
-      const supportBaseCylinder = new THREE.Mesh( supportBaseCylinderGeo, supportBase.material )
-      supportBaseCylinder.rotateX( THREE.Math.degToRad( -90 ) )
-
+      const supportBaseCylinderGeo = new THREE.CylinderGeometry( 18, 96, 12, 16, 1, true )
+      const supportBaseCylinderMap = threeMake.textureLoader( assRoughMetal )
+      const supportBaseCylinderEmissiveMap = threeMake.textureLoader( assRoughMetalEmissive )
+      const supportBaseCylinderMat = new THREE.MeshPhysicalMaterial( {
+        roughness: 0.8,
+        color: new THREE.Color( 0x99999 ),
+        side: THREE.DoubleSide,
+        emissive: new THREE.Color( 0x99999 ),
+        emissiveMap: supportBaseCylinderEmissiveMap,
+        map: supportBaseCylinderMap,
+      } )
+      supportBaseCylinderMat.map.wrapS = supportBaseCylinderMat.map.wrapT = supportBaseCylinderMat.emissiveMap.wrapS = supportBaseCylinderMat.emissiveMap.wrapT = THREE.RepeatWrapping
+      supportBaseCylinderMat.map.repeat.set( 1, 1 )
+      supportBaseCylinderMat.emissiveMap.repeat.set( 1, 1 )
+      const supportBaseCylinder = new THREE.Mesh( supportBaseCylinderGeo, supportBaseCylinderMat )
+      supportBaseCylinder.rotateY( THREE.Math.degToRad( -90 ) )
+      supportBaseCylinder.position.set( 17, -5, -21 )
       supportBase.add( supportBaseCylinder )
 
       floaterLamp.add( supportBase )
