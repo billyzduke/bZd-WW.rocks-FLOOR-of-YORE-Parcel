@@ -27,9 +27,9 @@ const makeFloaterLamp = () => {
 
       const lineSegments = [
         [ [ 0, 0, 0 ], [ 0, -42, 0 ] ],
-        [ [ 0, -42, 0 ], [ 64, -106, 36 ] ],
-        [ [ 64, -106, 36 ], [ 64, -318, 36 ] ],
-        [ [ 64, -318, 36 ], [ -52, -388, 36 ] ],
+        [ [ 0, -42, 0 ], [ 64, -106, 48 ] ],
+        [ [ 64, -106, 48 ], [ 64, -318, 48 ] ],
+        [ [ 64, -318, 48 ], [ -52, -388, 48 ] ],
       ]
       const extrudePath = new THREE.CurvePath()
       lineSegments.forEach( lc3 => {
@@ -56,7 +56,7 @@ const makeFloaterLamp = () => {
       const supportEndCapShape = SVGLoader.createShapes( paths[1] )
       const supportEndCapGeo = new THREE.LatheGeometry( supportEndCapShape[0].getPoints(), 8, 0, Math.PI )
       const supportEndCapMsh = new THREE.Mesh( supportEndCapGeo, supportMat )
-      supportEndCapMsh.position.set( -42.5, -403.25, 62 )
+      supportEndCapMsh.position.set( -42.5, -403.25, 74 )
       supportEndCapMsh.rotateX( THREE.Math.degToRad( -90 ) )
       supportEndCapMsh.rotateY( THREE.Math.degToRad( 149.5 ) )
       supportEndCapMsh.castShadow = supportEndCapMsh.receiveShadow = supportMsh.castShadow = supportMsh.receiveShadow = true
@@ -71,13 +71,14 @@ const makeFloaterLamp = () => {
         side: THREE.DoubleSide,
         emissive: new THREE.Color( 0x999999 ),
         emissiveMap: lightBarGuardEmissiveMap,
+        emissiveIntensity: 0.75,
         map: lightBarGuardMap,
       } )
       lightBarGuardMat.map.wrapS = lightBarGuardMat.map.wrapT = lightBarGuardMat.emissiveMap.wrapS = lightBarGuardMat.emissiveMap.wrapT = THREE.RepeatWrapping
       lightBarGuardMat.map.repeat.set( 0.025, 0.1 )
       lightBarGuardMat.emissiveMap.repeat.set( 0.025, 0.1 )
       const lightBarGuardMsh = new THREE.Mesh( lightBarGuardGeo, lightBarGuardMat )
-      lightBarGuardMsh.position.set( -42.5, -403.25, 82 )
+      lightBarGuardMsh.position.set( -42.5, -403.25, 94 )
       lightBarGuardMsh.rotateX( THREE.Math.degToRad( 90 ) )
       const lightBarGuardEndCapGeo = new THREE.SphereGeometry( 12, 10, 10, 0, Math.PI, 0, Math.PI / 2 )
       const lightBarGuardEndCapMsh = new THREE.Mesh( lightBarGuardEndCapGeo, lightBarGuardMat )
@@ -88,18 +89,41 @@ const makeFloaterLamp = () => {
 
       const lightBarShape = SVGLoader.createShapes( paths[2] )
       const glowGeom = new THREE.LatheGeometry( lightBarShape[0].getPoints(), 16 )
-      const glowMesh = threeX.GeometricGlowMesh( false, glowGeom, [ 2, 4, 0 ], 0xb8fce5 )
-      glowMesh.object3d.position.y = -40
-      lightBarGuardMsh.add( glowMesh.object3d )
-
+      const glowMate = new THREE.MeshPhysicalMaterial( {
+        color: 0xb8fce5,
+        emissive: new THREE.Color( 0xb8fce5 ),
+        emissiveIntensity: 0.9,
+      } )
+      const glowMesh = new THREE.Mesh( glowGeom, glowMate )
+      glowMesh.position.y = -46
+      lightBarGuardMsh.add( glowMesh )
+      // no idea why this doesn't work in this case
+      // const glowMesh = threeX.GeometricGlowMesh( false, glowGeom, [ 0, 0, 0 ], 0xb8fce5 )
+      // glowMesh.object3d.position.y = -40
+      // lightBarGuardMsh.add( glowMesh.object3d )
       supportMsh.add( lightBarGuardMsh )
 
       floaterLamp.add( supportMsh )
       const supportMshMirrored = supportMsh.clone()
       supportMshMirrored.position.x = 36
-      supportMshMirrored.position.z = -26
+      supportMshMirrored.position.z = -42
       supportMshMirrored.rotation.y = THREE.Math.degToRad( 180 )
-      // floaterLamp.add( supportMshMirrored )
+      floaterLamp.add( supportMshMirrored )
+
+      const supportBaseShape = SVGLoader.createShapes( paths[3] )
+      const supportBaseGeo = new THREE.ExtrudeGeometry( supportBaseShape, {
+        steps: 1, depth: 36, bevelThickness: 8, bevelOffset: -6,
+      } )
+      const supportBaseMsh = new THREE.Mesh( supportBaseGeo, supportMat.clone() )
+      supportBaseMsh.material.emissive = supportBaseMsh.material.color = new THREE.Color( 0x99999 )
+      supportBaseMsh.material.map.repeat.set( 0.01, 0.01 )
+      supportBaseMsh.material.emissiveMap.repeat.set( 0.01, 0.01 )
+      supportBaseMsh.rotateX( THREE.Math.degToRad( 90 ) )
+      supportBaseMsh.rotateZ( THREE.Math.degToRad( -90 ) )
+      supportBaseMsh.position.y = 32
+      supportBaseMsh.position.x = -54
+      floaterLamp.add( supportBaseMsh )
+
 
       floaterLamp.position.y = 120
       g.three.inScene.floaters.add( floaterLamp )
