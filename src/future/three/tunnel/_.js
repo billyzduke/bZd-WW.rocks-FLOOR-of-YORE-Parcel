@@ -6,6 +6,8 @@ import assRoughMetal from 'url:/src/future/three/metalRough.jpg'
 import assRoughMetalEmissive from 'url:/src/future/three/metalRoughEmissive.jpg'
 import assPipeMetal from 'url:/src/future/three/metalPipeHorizontal.png'
 import assPipeMetalEmissive from 'url:/src/future/three/metalPipeHorizontalEmissive.png'
+import assTireTread from 'url:/src/future/three/tunnel/floatingLampTireTread.jpg'
+import assTireTreadEmissive from 'url:/src/future/three/tunnel/floatingLampTireTreadEmissive.jpg'
 import g from '/src/shared/_'
 import { padStr } from '/src/shared/utils'
 import * as threeMake from '/src/future/three/make'
@@ -121,10 +123,11 @@ const makeFloaterLamp = () => {
       const supportBaseDiamondMap = threeMake.textureLoader( assRoughMetal )
       const supportBaseDiamondEmissiveMap = threeMake.textureLoader( assRoughMetalEmissive )
       const supportBaseDiamondMat = new THREE.MeshPhysicalMaterial( {
+        metalness: 0,
         roughness: 0.8,
-        color: new THREE.Color( 0x99999 ),
+        color: new THREE.Color( 0x666666 ),
         side: THREE.DoubleSide,
-        emissive: new THREE.Color( 0x99999 ),
+        emissive: new THREE.Color( 0x666666 ),
         emissiveMap: supportBaseDiamondEmissiveMap,
         map: supportBaseDiamondMap,
       } )
@@ -142,10 +145,11 @@ const makeFloaterLamp = () => {
       const supportBaseCylinderMap = threeMake.textureLoader( assRoughMetal )
       const supportBaseCylinderEmissiveMap = threeMake.textureLoader( assRoughMetalEmissive )
       const supportBaseCylinderMat = new THREE.MeshPhysicalMaterial( {
+        metalness: 0,
         roughness: 0.8,
-        color: new THREE.Color( 0x99999 ),
+        color: new THREE.Color( 0x666666 ),
         side: THREE.DoubleSide,
-        emissive: new THREE.Color( 0x99999 ),
+        emissive: new THREE.Color( 0x666666 ),
         emissiveMap: supportBaseCylinderEmissiveMap,
         map: supportBaseCylinderMap,
       } )
@@ -157,9 +161,33 @@ const makeFloaterLamp = () => {
       supportBaseCylinder.position.set( 17, -5, -21 )
       supportBase.add( supportBaseCylinder )
 
+      const supportBaseBumperShape = SVGLoader.createShapes( paths[4] )
+      const supportBaseBumperGeo = new THREE.ExtrudeGeometry( supportBaseBumperShape, {
+        steps: 16, depth: 36, bevelThickness: 20,
+      } )
+      const supportBaseBumperMap = threeMake.textureLoader( assTireTread )
+      const supportBaseBumperEmissiveMap = threeMake.textureLoader( assTireTreadEmissive )
+      const supportBaseBumperMat = new THREE.MeshPhysicalMaterial( {
+        metalness: 0,
+        roughness: 0.75,
+        color: new THREE.Color( 0x454545 ),
+        side: THREE.DoubleSide,
+        emissive: new THREE.Color( 0x454545 ),
+        emissiveMap: supportBaseBumperEmissiveMap,
+        map: supportBaseBumperMap,
+      } )
+      supportBaseBumperMat.map.wrapS = supportBaseBumperMat.map.wrapT = supportBaseBumperMat.emissiveMap.wrapS = supportBaseBumperMat.emissiveMap.wrapT = THREE.RepeatWrapping
+      supportBaseBumperMat.map.repeat.set( 0.1, 0.015 )
+      supportBaseBumperMat.emissiveMap.repeat.set( 0.1, 0.015 )
+      supportBaseBumperMat.map.offset.y = supportBaseBumperMat.emissiveMap.offset.y = 0.75
+      const supportBaseBumper = new THREE.Mesh( supportBaseBumperGeo, supportBaseBumperMat )
+      supportBaseBumper.rotateX( THREE.Math.degToRad( 90 ) )
+      supportBaseBumper.position.set( -94.5, -31.05, -131.5 )
+      supportBase.add( supportBaseBumper )
+
       floaterLamp.add( supportBase )
 
-      floaterLamp.position.y = 120
+      floaterLamp.position.y = 350
       g.three.inScene.floaters.add( floaterLamp )
     },
   )
