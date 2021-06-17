@@ -1,14 +1,14 @@
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 
-import assPipeMetal01 from 'url:/src/future/three/metalPipeVertical.png'
-import assPipeMetal02 from 'url:/src/future/three/delorean/metalSphere.png'
-import assHeadLightCone from 'url:/src/future/three/delorean/headLightCone.png'
+import assPipeMetal01 from 'url:/src/future/bttf-tunnel/delorean/metalPipeVertical.png'
+import assPipeMetal02 from 'url:/src/future/bttf-tunnel/delorean/metalSphere.png'
+import assHeadLightCone from 'url:/src/future/bttf-tunnel/delorean/headLightCone.png'
 import g from '/src/shared/_'
 import { setAddOn } from '/src/shared/utils'
-import * as threeAnim from '/src/future/three/anim'
-import * as threeMake from '/src/future/three/make'
-import * as threeRend from '/src/future/three/rend'
+import * as bttfAnim from '/src/future/bttf-tunnel/anim'
+import * as threeMake from '/src/shared/three/make'
+import * as threeRend from '/src/shared/three/rend'
 import { makeBody } from './body/_'
 import { makeExterior } from './exterior/_'
 import { makeInterior } from './interior/_'
@@ -16,7 +16,7 @@ import { makeUnderCarriage } from './undercarriage/_'
 import { makeWheels } from './wheels/_'
 
 const setMakes = () => {
-  g.three.mkr.pipe = {
+  g.bttf.mkr.pipe = {
     map: [ { emissiveMap: threeMake.textureLoader( assPipeMetal01 ), emissive: new THREE.Color( 0x999999 ) }, { emissiveMap: threeMake.textureLoader( assPipeMetal02 ), emissive: new THREE.Color( 0x666666 ) }, { emissiveMap: threeMake.textureLoader( assPipeMetal01 ), emissive: new THREE.Color( 0xffffff ) } ],
     mat: {
       roughness: 0.4,
@@ -24,7 +24,7 @@ const setMakes = () => {
     },
   }
 
-  g.three.mkr.lb = {
+  g.bttf.mkr.lb = {
     crvF: [
       [ 0, 0, 0 ],
       [ -180, 0, 0 ],
@@ -34,14 +34,14 @@ const setMakes = () => {
     ],
   }
 
-  g.three.mkr.lb.rail = {
+  g.bttf.mkr.lb.rail = {
     F: {
       T: {
-        crv: g.three.mkr.lb.crvF,
+        crv: g.bttf.mkr.lb.crvF,
         pos: [ 0, 486, -101 ],
       },
       B: {
-        crv: g.three.mkr.lb.crvF,
+        crv: g.bttf.mkr.lb.crvF,
         pos: [ 0, 486, -73 ],
       },
     },
@@ -86,41 +86,41 @@ const setMakes = () => {
   }
 
   const glowCrv = new THREE.EllipseCurve( 11.5, 2.5, 10.5, 6 )
-  g.three.mkr.lb.glowProfile = new THREE.Shape( glowCrv.getPoints( 16 ) )
+  g.bttf.mkr.lb.glowProfile = new THREE.Shape( glowCrv.getPoints( 16 ) )
 
-  g.three.mkr.lb.panelProfile = new THREE.Shape()
-  g.three.mkr.lb.panelProfile.moveTo( 0, 1.75 )
-  g.three.mkr.lb.panelProfile.lineTo( 0, 3.25 )
-  g.three.mkr.lb.panelProfile.quadraticCurveTo( 0, 5, 0.875, 5 )
-  g.three.mkr.lb.panelProfile.quadraticCurveTo( 1.75, 5, 1.75, 3.25 )
-  g.three.mkr.lb.panelProfile.lineTo( 1.75, 1.75 )
-  g.three.mkr.lb.panelProfile.lineTo( 21.25, 1.75 )
-  g.three.mkr.lb.panelProfile.lineTo( 21.25, 3.25 )
-  g.three.mkr.lb.panelProfile.quadraticCurveTo( 21.25, 5, 22.125, 5 )
-  g.three.mkr.lb.panelProfile.quadraticCurveTo( 23, 5, 23, 3.25 )
-  g.three.mkr.lb.panelProfile.lineTo( 23, 1.75 )
-  g.three.mkr.lb.panelProfile.quadraticCurveTo( 23, 0, 21.25, 0 )
-  g.three.mkr.lb.panelProfile.lineTo( 1.75, 0 )
-  g.three.mkr.lb.panelProfile.quadraticCurveTo( 0, 0, 0, 1.75 )
+  g.bttf.mkr.lb.panelProfile = new THREE.Shape()
+  g.bttf.mkr.lb.panelProfile.moveTo( 0, 1.75 )
+  g.bttf.mkr.lb.panelProfile.lineTo( 0, 3.25 )
+  g.bttf.mkr.lb.panelProfile.quadraticCurveTo( 0, 5, 0.875, 5 )
+  g.bttf.mkr.lb.panelProfile.quadraticCurveTo( 1.75, 5, 1.75, 3.25 )
+  g.bttf.mkr.lb.panelProfile.lineTo( 1.75, 1.75 )
+  g.bttf.mkr.lb.panelProfile.lineTo( 21.25, 1.75 )
+  g.bttf.mkr.lb.panelProfile.lineTo( 21.25, 3.25 )
+  g.bttf.mkr.lb.panelProfile.quadraticCurveTo( 21.25, 5, 22.125, 5 )
+  g.bttf.mkr.lb.panelProfile.quadraticCurveTo( 23, 5, 23, 3.25 )
+  g.bttf.mkr.lb.panelProfile.lineTo( 23, 1.75 )
+  g.bttf.mkr.lb.panelProfile.quadraticCurveTo( 23, 0, 21.25, 0 )
+  g.bttf.mkr.lb.panelProfile.lineTo( 1.75, 0 )
+  g.bttf.mkr.lb.panelProfile.quadraticCurveTo( 0, 0, 0, 1.75 )
 
   const panelCrvA = []
-  g.three.mkr.lb.rail.A.F.crv.forEach( ( v3c, v ) => {
+  g.bttf.mkr.lb.rail.A.F.crv.forEach( ( v3c, v ) => {
     const panelV3c = []
     v3c.forEach( ( axis, a ) => {
-      panelV3c.push( ( axis + g.three.mkr.lb.rail.A.F.crv[v][a] ) / 2 )
+      panelV3c.push( ( axis + g.bttf.mkr.lb.rail.A.F.crv[v][a] ) / 2 )
     } )
     panelCrvA.push( panelV3c )
   } )
   const panelPosA = []
-  g.three.mkr.lb.rail.A.F.pos.forEach( ( axis, a ) => {
-    panelPosA.push( ( axis + g.three.mkr.lb.rail.A.F.pos[a] ) / 2 )
+  g.bttf.mkr.lb.rail.A.F.pos.forEach( ( axis, a ) => {
+    panelPosA.push( ( axis + g.bttf.mkr.lb.rail.A.F.pos[a] ) / 2 )
   } )
   panelPosA[1] -= 5
   panelPosA[2] -= 5.5
 
-  g.three.mkr.lb.panel = {
+  g.bttf.mkr.lb.panel = {
     F: {
-      crv: g.three.mkr.lb.crvF,
+      crv: g.bttf.mkr.lb.crvF,
       pos: [ -1, 485, -76 ],
       scl: { x: 1.005 },
     },
@@ -131,27 +131,27 @@ const setMakes = () => {
     },
   }
 
-  g.three.mkr.lb.panels = {
-    F: [ g.three.mkr.lb.panel.F, g.three.mkr.lb.panel.F ],
-    A: [ g.three.mkr.lb.panel.A, g.three.mkr.lb.panel.A ],
+  g.bttf.mkr.lb.panels = {
+    F: [ g.bttf.mkr.lb.panel.F, g.bttf.mkr.lb.panel.F ],
+    A: [ g.bttf.mkr.lb.panel.A, g.bttf.mkr.lb.panel.A ],
   }
 
-  g.three.mkr.lb.rails = {
+  g.bttf.mkr.lb.rails = {
     F: [
-      g.three.mkr.lb.rail.F.T,
-      g.three.mkr.lb.rail.F.T,
-      g.three.mkr.lb.rail.F.B,
-      g.three.mkr.lb.rail.F.B,
+      g.bttf.mkr.lb.rail.F.T,
+      g.bttf.mkr.lb.rail.F.T,
+      g.bttf.mkr.lb.rail.F.B,
+      g.bttf.mkr.lb.rail.F.B,
     ],
     A: [
-      g.three.mkr.lb.rail.A.F,
-      g.three.mkr.lb.rail.A.F,
-      g.three.mkr.lb.rail.A.A,
-      g.three.mkr.lb.rail.A.A,
+      g.bttf.mkr.lb.rail.A.F,
+      g.bttf.mkr.lb.rail.A.F,
+      g.bttf.mkr.lb.rail.A.A,
+      g.bttf.mkr.lb.rail.A.A,
     ],
   }
 
-  g.three.mkr.wheels = {
+  g.bttf.mkr.wheels = {
     armTarget: {
       x: 158,
       z: -16,
@@ -164,7 +164,7 @@ const setMakes = () => {
     rotTarget: Math.PI / 2,
   }
 
-  g.three.inScene = {
+  g.bttf.inScene = {
     carGyro: [ 'carGyro' ],
     deLorean: [ 'deLorean' ],
     fluxCapacitor: [ 'fluxCapacitor' ],
@@ -177,35 +177,35 @@ const setMakes = () => {
     wheelSides: [ 'wheelsL', 'wheelsR' ],
   }
 
-  g.three.mkr.setMades = () => {
-    g.three.inScene.wheelRockets.forEach( ( flareSet, i ) => {
-      const flareGrp = g.three.scene.getObjectByName( flareSet, true )
+  g.bttf.mkr.setMades = () => {
+    g.bttf.inScene.wheelRockets.forEach( ( flareSet, i ) => {
+      const flareGrp = g.bttf.scene.getObjectByName( flareSet, true )
       flareGrp.children.forEach( ( flare, flr ) => {
-        if ( flr < flareGrp.children.length - 1 ) g.three.ani.flr.push( threeAnim.setRocketFlareAnimator( flare, flr ) ) // texture, #horiz, #vert, #total, duration
+        if ( flr < flareGrp.children.length - 1 ) g.bttf.ani.flr.push( bttfAnim.setRocketFlareAnimator( flare, flr ) ) // texture, #horiz, #vert, #total, duration
       } )
-      g.three.inScene.wheelRockets[i] = flareGrp
+      g.bttf.inScene.wheelRockets[i] = flareGrp
     } )
-    g.three.mkr.tlt = {}
-    g.three.xyz.forEach( axis => {
-      g.three.mkr.tlt[axis] = 0
+    g.bttf.mkr.tlt = {}
+    g.bttf.xyz.forEach( axis => {
+      g.bttf.mkr.tlt[axis] = 0
     } )
 
-    g.three.inScene.headLights.forEach( ( headLight, i ) => {
-      const lightBox = g.three.scene.getObjectByName( headLight, true )
+    g.bttf.inScene.headLights.forEach( ( headLight, i ) => {
+      const lightBox = g.bttf.scene.getObjectByName( headLight, true )
 
       const pointLight = new THREE.PointLight( 0x8ebcf0, 16, 256 )
       pointLight.castShadow = true // default false
       pointLight.position.y = 20.42
       pointLight.position.z = 23
       lightBox.add( pointLight )
-      // g.three.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
+      // g.bttf.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
 
       const spotLight = new THREE.SpotLight( 0xb3e7fb, 1.5, 0, THREE.Math.degToRad( 16 ), 0.25 )
       spotLight.castShadow = true // default false
       spotLight.position.y = 21
       spotLight.position.z = 12
       lightBox.add( spotLight )
-      // g.three.scene.add( new THREE.SpotLightHelper( spotLight ) )
+      // g.bttf.scene.add( new THREE.SpotLightHelper( spotLight ) )
 
       const spotLightConeLength = 2500
       const spotLightCone = new THREE.Mesh(
@@ -221,8 +221,8 @@ const setMakes = () => {
       spotLightCone.geometry.translate( 0, spotLightConeLength / 2, 0 )
       spotLightCone.position.y = 21
       spotLightCone.position.z = 19
-      if ( !g.three.obj.spotLightConeMats ) g.three.obj.spotLightConeMats = []
-      g.three.obj.spotLightConeMats.push( spotLightCone.material )
+      if ( !g.bttf.obj.spotLightConeMats ) g.bttf.obj.spotLightConeMats = []
+      g.bttf.obj.spotLightConeMats.push( spotLightCone.material )
       lightBox.add( spotLightCone )
       spotLightCone.rotateX( THREE.Math.degToRad( -120.5 ) )
       spotLightCone.rotateZ( THREE.Math.degToRad( i % 2 ? -8 : 8 ) )
@@ -232,23 +232,23 @@ const setMakes = () => {
       spotLightCone.add( spotLightTarget )
       spotLight.target = spotLightTarget
 
-      g.three.inScene.headLights[i] = lightBox
+      g.bttf.inScene.headLights[i] = lightBox
     } )
 
-    console.log( g.three.inScene )
-    Object.keys( g.three.inScene ).forEach( itemType => {
-      if ( Array.isArray( g.three.inScene[itemType] ) ) {
-        g.three.inScene[itemType].forEach( ( item, i ) => {
+    console.log( g.bttf.inScene )
+    Object.keys( g.bttf.inScene ).forEach( itemType => {
+      if ( Array.isArray( g.bttf.inScene[itemType] ) ) {
+        g.bttf.inScene[itemType].forEach( ( item, i ) => {
           if ( typeof item === 'string' ) {
-            const itemInScene = g.three.scene.getObjectByName( item, true )
-            if ( g.three.inScene[itemType].length === 1 ) g.three.inScene[itemType] = itemInScene
-            else g.three.inScene[itemType][i] = itemInScene
+            const itemInScene = g.bttf.scene.getObjectByName( item, true )
+            if ( g.bttf.inScene[itemType].length === 1 ) g.bttf.inScene[itemType] = itemInScene
+            else g.bttf.inScene[itemType][i] = itemInScene
           }
         } )
       }
     } )
 
-    g.three.ani.flx = threeAnim.setFluxCapacitorAnimator( g.three.inScene.fluxCapacitor )
+    g.bttf.ani.flx = bttfAnim.setFluxCapacitorAnimator( g.bttf.inScene.fluxCapacitor )
   }
 }
 
@@ -277,11 +277,11 @@ const makeDeLorean = () => {
 }
 
 const prepDeLorean = () => {
-  if ( !g.three.mkr.prepped ) {
-    g.three.mkr.prepped = true
+  if ( !g.bttf.mkr.prepped ) {
+    g.bttf.mkr.prepped = true
     g.el.glitches.style.opacity = 1
-    g.three.on = true
-    g.el.deLorean.style.left = 0
+    g.bttf.on = true
+    g.el.bttfTunnel.style.left = 0
     setTimeout( () => {
       threeRend.startRendering( { startYourEngines: true } )
     }, 100 )
@@ -289,26 +289,26 @@ const prepDeLorean = () => {
 }
 
 const startDeLorean = ( { force = false } = {} ) => {
-  if ( !g.three.on || force ) {
-    g.el.deLorean.style.opacity = 1
-    g.el.deLorean.style.pointerEvents = 'auto'
+  if ( !g.bttf.on || force ) {
+    g.el.bttfTunnel.style.opacity = 1
+    g.el.bttfTunnel.style.pointerEvents = 'auto'
   } else {
-    console.log( { alreadyOn: g.three.on } )
+    console.log( { alreadyOn: g.bttf.on } )
   }
 }
 
 const toggleFlightMode = () => {
-  if ( g.three ) g.three.flm = !g.three.flm
+  if ( g.bttf ) g.bttf.flm = !g.bttf.flm
 }
 
 const toggleFlyAlongPath = () => {
-  if ( g.three.on ) {
-    g.three.mov = true
+  if ( g.bttf.on ) {
+    g.bttf.mov = true
   }
 }
 
 const toggleWheelsDrop = () => {
-  if ( g.three ) g.three.lve = !g.three.lve
+  if ( g.bttf ) g.bttf.lve = !g.bttf.lve
 }
 
 const movable = [ '#deLorean', '#sideViewMirrorRight div:nth-child(2)' ]

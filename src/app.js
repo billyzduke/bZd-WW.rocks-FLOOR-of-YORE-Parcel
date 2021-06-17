@@ -11,21 +11,18 @@ import { setTitles } from '/src/main-stage/titles/_'
 import { setCurtains } from '/src/main-stage/curtains/_'
 import { setFloor } from '/src/main-stage/floor/_'
 import { setShaiHulud } from '/src/main-stage/shai-hulud/_'
-import { setThree } from '/src/future/three/_'
+import { setBTTF } from '/src/future/bttf-tunnel/_'
 import { setScene } from '/src/scenes/_'
 import { setSceneSkipper } from '/src/shared/dev/_'
 import { resetCtrRingPos1 } from '/src/main-stage/baubles/layer-01/_'
 import { isSet, setAddOn, toggleFermata } from '/src/shared/utils'
-import { beginFuture, setFuture } from '/src/future/_'
 import {
-  prepDeLorean, toggleFlyAlongPath,
-} from '/src/future/three/delorean/_'
+  prepDeLorean, startDeLorean, toggleFlyAlongPath,
+} from '/src/future/bttf-tunnel/delorean/_'
 import { setGlitches } from '/src/future/glitch/_'
-// import { setLynchTunnel, startLynchTunnel } from './lynch-tunnel'
 
 // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
 import '/src/app.scss'
-import { startDeLorean } from './future/three/delorean/_'
 
 const loadApp = () => {
   // Gather references to all the DOM elements we are going to need to directly manipulate later on
@@ -58,8 +55,8 @@ const loadApp = () => {
     'bloodSplashR',
     'bronzeCauldron',
     'bronzeVidWrapper',
+    'bttfTunnel',
     'ctrRing',
-    'deLorean',
     'dirtOnTheGround',
     'dirtVidWrapper',
     'drWorm',
@@ -188,34 +185,18 @@ const loadApp = () => {
     g.el.body.style.backgroundColor = `rgb(118, 122, 131)`
   }
 
-  if ( g.el.deLorean && g.three ) g.three.mkr.reSize()
+  if ( g.el.bttfTunnel && g.bttf ) g.bttf.mkr.reSize()
   if ( g.dev && g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
-    setThree( {
-      controls: true, stats: true, smoke: false, tunnel: false,
+    setBTTF( {
+      controls: false, stats: true, smoke: true, tunnel: true,
     } )
     prepDeLorean()
     g.el.lynchBox.style.opacity = 1
     g.el.lynchBox.style.backgroundImage = 'none'
     g.el.glitches.style.opacity = g.el.mainStage.style.opacity = 0
     g.el.gradientor.style.pointerEvents = 'none'
-    // setFuture()
-    // beginFuture()
     startDeLorean( { force: true } )
-    // g.el.flux.classList.remove( 'tuct' )
-    // g.el.flux.style.opacity = 0.42
-    // gsap.set( '#fluxMask', {
-    //   opacity: 1,
-    //   scale: 1,
-    //   borderRadius: 0,
-    //   translateY: '+=44.55',
-    // } )
-    // gsap.set( '#fluxUnMask', {
-    //   scale: 1,
-    //   translateY: '-=44.55',
-    // } )
-    // setLynchTunnel()
-    // startLynchTunnel()
     setAddOn( '#toggleFlyAlongPath', 'click', () => {
       toggleFlyAlongPath()
     } )
@@ -228,7 +209,7 @@ const initApp = () => {
   const loaded = loadApp()
   if ( loaded ) {
     makisusan()
-    setThree()
+    setBTTF()
   }
 }
 

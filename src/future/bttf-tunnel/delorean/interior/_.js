@@ -1,19 +1,19 @@
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
 
-import assSeatCtrTexture from 'url:/src/future/three/delorean/interior/seatCtr.png'
-import assSeatCtrEmMap from 'url:/src/future/three/delorean/interior/seatCtrEmMap.png'
-import assSeatShapePaths from 'url:/src/future/three/delorean/interior/seatShapes.svg'
-import assIntRoof from 'url:/src/future/three/delorean/interior/interiorRoof.png'
-import assIntRearPanel1 from 'url:/src/future/three/delorean/interior/interiorRearPanel1.png'
-import assIntRearPanel2 from 'url:/src/future/three/delorean/interior/interiorRearPanel2.png'
-import assIntRearPanel3 from 'url:/src/future/three/delorean/interior/interiorRearPanel3.png'
-import assIntDoorLower from 'url:/src/future/three/delorean/interior/interiorDoorLower.png'
-import assIntDoorMiddle from 'url:/src/future/three/delorean/interior/interiorDoorMiddle.png'
-import assIntDoorUpper from 'url:/src/future/three/delorean/interior/interiorDoorUpper.png'
+import assSeatCtrTexture from 'url:/src/future/bttf-tunnel/delorean/interior/seatCtr.png'
+import assSeatCtrEmMap from 'url:/src/future/bttf-tunnel/delorean/interior/seatCtrEmMap.png'
+import assSeatShapePaths from 'url:/src/future/bttf-tunnel/delorean/interior/seatShapes.svg'
+import assIntRoof from 'url:/src/future/bttf-tunnel/delorean/interior/interiorRoof.png'
+import assIntRearPanel1 from 'url:/src/future/bttf-tunnel/delorean/interior/interiorRearPanel1.png'
+import assIntRearPanel2 from 'url:/src/future/bttf-tunnel/delorean/interior/interiorRearPanel2.png'
+import assIntRearPanel3 from 'url:/src/future/bttf-tunnel/delorean/interior/interiorRearPanel3.png'
+import assIntDoorLower from 'url:/src/future/bttf-tunnel/delorean/interior/interiorDoorLower.png'
+import assIntDoorMiddle from 'url:/src/future/bttf-tunnel/delorean/interior/interiorDoorMiddle.png'
+import assIntDoorUpper from 'url:/src/future/bttf-tunnel/delorean/interior/interiorDoorUpper.png'
 import assFluxCC from 'url:/src/future/flux/flux-capacitor-fluxed-cc.png'
 import g from '/src/shared/_'
-import * as threeMake from '/src/future/three/make'
+import * as threeMake from '/src/shared/three/make'
 
 const makeSeats = () => {
   const loader = new SVGLoader()
@@ -45,7 +45,7 @@ const makeSeats = () => {
       seatCtrMat.map.offset.y = seatCtrMat.emissiveMap.offset.y = 0.125
       seatCtrMat.map.rotation = seatCtrMat.emissiveMap.rotation = THREE.Math.degToRad( 180 )
       const seatCtrMsh = new THREE.Mesh( seatCtrGeo, [ seatMat, seatCtrMat ] )
-      g.three.inScene.seats = [ seatCtrMsh, seatCtrMsh.clone() ]
+      g.bttf.inScene.seats = [ seatCtrMsh, seatCtrMsh.clone() ]
       const seatBackFlankShape = SVGLoader.createShapes( paths[1] )
       const seatBackFlankGeo = new THREE.LatheGeometry( seatBackFlankShape[0].getPoints() )
       const seatBackFlankMsh = new THREE.Mesh( seatBackFlankGeo, seatMat )
@@ -56,19 +56,19 @@ const makeSeats = () => {
       const seatBaseFrontGeo = new THREE.LatheGeometry( seatBaseFrontShape[0].getPoints() )
       const seatBaseFrontMsh = new THREE.Mesh( seatBaseFrontGeo, seatMat )
       const seatBaseFronts = [ seatBaseFrontMsh, seatBaseFrontMsh.clone() ]
-      g.three.inScene.seats.forEach( ( _, side ) => {
-        g.three.inScene.seats[side].position.set( side ? -100 : 100, -176, -188 )
-        g.three.inScene.seats[side].rotateY( THREE.Math.degToRad( 90 ) )
-        g.three.inScene.seats[side].rotateZ( THREE.Math.degToRad( 90 ) )
-        g.three.inScene.seats[side].name = side ? 'passengerSeat' : 'driversSeat'
-        g.three.inScene.interior.add( g.three.inScene.seats[side] )
+      g.bttf.inScene.seats.forEach( ( _, side ) => {
+        g.bttf.inScene.seats[side].position.set( side ? -100 : 100, -176, -188 )
+        g.bttf.inScene.seats[side].rotateY( THREE.Math.degToRad( 90 ) )
+        g.bttf.inScene.seats[side].rotateZ( THREE.Math.degToRad( 90 ) )
+        g.bttf.inScene.seats[side].name = side ? 'passengerSeat' : 'driversSeat'
+        g.bttf.inScene.interior.add( g.bttf.inScene.seats[side] )
         const seatBackFlanks = [ seatBackFlankMsh.clone(), seatBackFlankMsh.clone() ]
         seatBackFlanks.forEach( ( bkf, s ) => {
           bkf.position.x = 8
           bkf.position.y = 3
           bkf.position.z = s ? 46 : -46
           bkf.rotateZ( THREE.Math.degToRad( -23 ) )
-          g.three.inScene.seats[side].add( bkf )
+          g.bttf.inScene.seats[side].add( bkf )
         } )
         const seatBaseFlanks = [ seatBaseFlankMsh.clone(), seatBaseFlankMsh.clone() ]
         seatBaseFlanks.forEach( ( bbf, s ) => {
@@ -76,14 +76,14 @@ const makeSeats = () => {
           bbf.position.y = 142
           bbf.position.z = s ? 46 : -46
           bbf.rotateZ( THREE.Math.degToRad( -90 ) )
-          g.three.inScene.seats[side].add( bbf )
+          g.bttf.inScene.seats[side].add( bbf )
         } )
         const seatBaseFront = seatBaseFronts.shift()
         seatBaseFront.position.x = 178
         seatBaseFront.position.y = 142
         seatBaseFront.position.z = -103
         seatBaseFront.rotateX( THREE.Math.degToRad( 90 ) )
-        g.three.inScene.seats[side].add( seatBaseFront )
+        g.bttf.inScene.seats[side].add( seatBaseFront )
       } )
     },
   )

@@ -1,14 +1,14 @@
 import * as THREE from 'three'
 
-import assTireTread from 'url:/src/future/three/delorean/wheels/tireTread.png'
-import assTireWallLong from 'url:/src/future/three/delorean/wheels/tireWallLong.png'
-import assTireWallShort from 'url:/src/future/three/delorean/wheels/tireWallShort.png'
-import assTireHubCapF from 'url:/src/future/three/delorean/wheels/hubCapFront.png'
-import assTireHubCapA from 'url:/src/future/three/delorean/wheels/hubCapRear.png'
-import assRocketFlare from 'url:/src/future/three/delorean/wheels/skyrocket.png'
-import assTireBiter from 'url:/src/future/three/delorean/wheels/tireInner.png'
+import assTireTread from 'url:/src/future/bttf-tunnel/delorean/wheels/tireTread.png'
+import assTireWallLong from 'url:/src/future/bttf-tunnel/delorean/wheels/tireWallLong.png'
+import assTireWallShort from 'url:/src/future/bttf-tunnel/delorean/wheels/tireWallShort.png'
+import assTireHubCapF from 'url:/src/future/bttf-tunnel/delorean/wheels/hubCapFront.png'
+import assTireHubCapA from 'url:/src/future/bttf-tunnel/delorean/wheels/hubCapRear.png'
+import assRocketFlare from 'url:/src/future/bttf-tunnel/delorean/wheels/skyrocket.png'
+import assTireBiter from 'url:/src/future/bttf-tunnel/delorean/wheels/tireInner.png'
 import g from '/src/shared/_'
-import * as threeMake from '/src/future/three/make'
+import * as threeMake from '/src/shared/three/make'
 
 const makeSpokeMap = () => {
   const spokeMap = {
@@ -31,7 +31,7 @@ const makeSpokeMap = () => {
 const makeWheel = wheel => {
   const wheelIsFront = wheel.includes( 'F' )
   const wheelIsLeft = wheel.includes( 'L' )
-  const msh = { ...g.three.msh }
+  const msh = { ...g.bttf.msh }
   const wheelies = {}
   const spokeMap = makeSpokeMap()
   for ( let spoke = 0; spoke < 6; spoke++ ) {
@@ -87,7 +87,7 @@ const makeWheel = wheel => {
     position: [ 0, 0, 26 ],
     mat: hubCapMsh,
   }
-  g.three.inScene.hubCaps.push( `wheelHubOuter${wheel}` )
+  g.bttf.inScene.hubCaps.push( `wheelHubOuter${wheel}` )
   const flares = {}
   for ( let flare = 0; flare < 3; flare++ ) {
     const thisFlare = `wheel${wheel}flare${flare + 1}`
@@ -119,7 +119,7 @@ const makeWheel = wheel => {
       } ),
     }
     flares[thisFlare].mat.depthWrite = false
-    g.three.flr.push( {
+    g.bttf.flr.push( {
       cdt: 0,
       ctl: 0,
     } )
@@ -143,7 +143,7 @@ const makeWheel = wheel => {
     rotation: [ -90 ],
     children: flares,
   }
-  g.three.inScene.wheelRockets.push( `wheelFlares${wheel}` )
+  g.bttf.inScene.wheelRockets.push( `wheelFlares${wheel}` )
 
   wheelies[`wheelMechTireMount${wheel}`] = {
     children: {
@@ -153,8 +153,8 @@ const makeWheel = wheel => {
         struct: [ 15, 15, 15, 12 ],
         mat: new THREE.MeshStandardMaterial( {
           ...msh,
-          ...g.three.mkr.pipe.mat,
-          ...g.three.mkr.pipe.map[2],
+          ...g.bttf.mkr.pipe.mat,
+          ...g.bttf.mkr.pipe.map[2],
         } ),
         position: [ 0, 0, -22 ],
         // rotation: { x: 90 },
@@ -165,8 +165,8 @@ const makeWheel = wheel => {
         struct: [ 18, 18, 15, 14 ],
         mat: new THREE.MeshStandardMaterial( {
           ...msh,
-          ...g.three.mkr.pipe.mat,
-          ...g.three.mkr.pipe.map[0],
+          ...g.bttf.mkr.pipe.mat,
+          ...g.bttf.mkr.pipe.map[0],
         } ),
         pivot: [ 0, -7 ],
         position: [ 0, 0, -7 ],

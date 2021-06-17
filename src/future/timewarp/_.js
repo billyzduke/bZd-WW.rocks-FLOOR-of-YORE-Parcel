@@ -4,8 +4,8 @@ import g from '/src/shared/_'
 import {
   cleanUp, gsapTick, mixItUp, randoNum, setAddOn, setClearActors, shuffleArray,
 } from '/src/shared/utils'
-import { toggleFlyAlongPath } from '/src/future/three/delorean/_'
-import * as threeRend from '/src/future/three/rend'
+import { toggleFlyAlongPath } from '/src/future/bttf-tunnel/delorean/_'
+import * as threeRend from '/src/shared/three/rend'
 import { devLog } from '../../shared/utils'
 
 const setGradientor = () => {
@@ -234,9 +234,9 @@ const fadeWarp = () => {
             opacity: 0,
             onComplete: function () {
               setClearActors( '#flux' )
-              g.three.bin.push( setAddOn( '#deLorean', 'click', toggleFlyAlongPath ) )
-              g.three.on = true
-              // g.three.mkr.io = undefined
+              g.bttf.bin.push( setAddOn( '#deLorean', 'click', toggleFlyAlongPath ) )
+              g.bttf.on = true
+              // g.bttf.mkr.io = undefined
               threeRend.startRendering()
             },
           } )

@@ -75,7 +75,7 @@ const GeometricGlowMesh = ( animate = true, geoInner, [ offsetX = 0, offsetY = 0
   matInner.uniforms.coeficient.value = 1.3
   matInner.uniforms.power.value = animate ? 1.3 : 5
   const innerMesh = new THREE.Mesh( geoInner, [ new THREE.MeshBasicMaterial( { opacity: animate ? 0 : 0.88, transparent: true } ), matInner ] )
-  if ( animate ) g.three.ani.glo.push( { wax: false, msh: innerMesh } )
+  if ( animate ) g.bttf.ani.glo.push( { wax: false, msh: innerMesh } )
   object3d.add( innerMesh )
 
   const geoOuter = geoInner.clone()
@@ -87,7 +87,7 @@ const GeometricGlowMesh = ( animate = true, geoInner, [ offsetX = 0, offsetY = 0
   matOuter.uniforms.power.value = animate ? 0.9 : 5
   matOuter.side = THREE.BackSide
   const outerMesh = new THREE.Mesh( geoOuter, [ new THREE.MeshBasicMaterial( { opacity: animate ? 0 : 0.88, transparent: true } ), matOuter ] )
-  if ( animate ) g.three.ani.glo.push( { wax: false, msh: outerMesh } )
+  if ( animate ) g.bttf.ani.glo.push( { wax: false, msh: outerMesh } )
   object3d.add( outerMesh )
 
   return {

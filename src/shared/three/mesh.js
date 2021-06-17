@@ -12,7 +12,7 @@ const scaleMesh = ( msh, scale, axis ) => {
   const scaleMe = new THREE.Vector3( 1, 1, 1 )
   if ( axis ) scaleMe[axis] *= scale
   else {
-    g.three.xy.forEach( ax => {
+    g.bttf.xy.forEach( ax => {
       scaleMe[ax] *= scale
     } )
   }

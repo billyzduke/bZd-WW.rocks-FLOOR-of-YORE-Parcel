@@ -2,7 +2,7 @@ import { gsap, TimelineMax as TL } from 'gsap'
 import { TextPlugin } from 'gsap/TextPlugin'
 
 import g from '/src/shared/_'
-import { startDeLorean } from '/src/future/three/delorean/_'
+import { startDeLorean } from '/src/future/bttf-tunnel/delorean/_'
 import { setFlux } from '/src/future/flux/_'
 import {
   setGradientor, setWarp, startGradientor, unMaskWarpTick,

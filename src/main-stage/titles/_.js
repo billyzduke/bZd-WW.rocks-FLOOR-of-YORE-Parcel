@@ -21,7 +21,7 @@ const drawYore = ( c, n ) => {
     .to( '#tpTitleScreen', {
       duration: 2,
       // onComplete: function () {
-      //   if ( g.el.deLorean && g.el.model && g.el.future.classList.contains( 'model' ) ) spinTime()
+      //   if ( g.el.bttfTunnel && g.el.model && g.el.future.classList.contains( 'model' ) ) spinTime()
       // },
       opacity: 0,
     } )

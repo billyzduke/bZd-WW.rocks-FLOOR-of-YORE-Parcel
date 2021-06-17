@@ -21,15 +21,14 @@ import g from '/src/shared/_'
 import {
   cleanUp, gsapTick, mixItUp, randoNum, setAddOn, setClearActors, toggleFermata,
 } from '/src/shared/utils'
-import { devLog } from '/src/shared/dev/_'
 import { setHorzNoise } from '/src/future/glitch/_'
 import { closeFoetusEye } from '/src/main-stage/threshold/foetuses/_'
 import { owlCawTick } from '/src/main-stage/threshold/two-cows-one-owl/owl-ram/_'
 import { setScene } from '/src/scenes/_'
-import { prepDeLorean } from '/src/future/three/delorean/_'
+import { prepDeLorean } from '/src/future/bttf-tunnel/delorean/_'
 import { shockTick } from '/src/shared/lightning-rods/_'
 import { obscureThen } from '/src/obscuro/_'
-import * as threeRend from '/src/future/three/rend'
+import * as threeRend from '/src/shared/three/rend'
 
 const setFlux = () => {
   g.flux = {
@@ -326,7 +325,7 @@ const eOnFlux = () => {
     } )
     toggleFermata()
     threeRend.stopRendering()
-    g.three.on = false
+    g.bttf.on = false
     g.flux.bin.glitch.push( gsapTick( glitchAwayTick ) )
     return
   }
@@ -462,9 +461,9 @@ const randomizeTargetReached = d => {
 }
 
 const activateFluxDisplay = e => {
-  // console.log( { deLoreanPrepped: g.three.mkr.prepped } )
-  if ( !g.three.mkr.prepped ) {
-    // devLog( { activateFluxDisplay: '(!g.three.mkr.prepped)' } )
+  // console.log( { deLoreanPrepped: g.bttf.mkr.prepped } )
+  if ( !g.bttf.mkr.prepped ) {
+    // devLog( { activateFluxDisplay: '(!g.bttf.mkr.prepped)' } )
     g.flux.bin.activate = cleanUp( g.flux.bin.activate )
     stallCapacitor()
   } else if ( e.type === 'mousedown' || ( e.type === 'click' && g.scene.skip.ff ) ) {
@@ -473,7 +472,7 @@ const activateFluxDisplay = e => {
     if ( g.flux.bin.display.speed.length ) g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
     g.flux.bin.display.speed.push( gsapTick( incrementFluxDisplay ) )
   } else {
-    // devLog( { activateFluxDisplay: '(g.three.mkr.prepped)', eType: e.type } )
+    // devLog( { activateFluxDisplay: '(g.bttf.mkr.prepped)', eType: e.type } )
     g.flux.bin.display.speed = cleanUp( g.flux.bin.display.speed )
     if ( getCurrentSpeed() < 88 ) g.flux.bin.display.speed.push( gsapTick( decrementFluxDisplay ) )
   }
@@ -539,7 +538,7 @@ const brokenFluxDisplayTick = d => {
     opacity: randoNum( 0, 100 ) / 100,
     zIndex: randoNum( 0, 6 ),
   } )
-  if ( d && g.three.mkr.prepped ) {
+  if ( d && g.bttf.mkr.prepped ) {
     g.qss.horzNoise.forEach( ( sl, i ) => {
       const staticLineO = randoNum( 0, 100 ) / 100
       if ( staticLineO > 0.23 ) {
