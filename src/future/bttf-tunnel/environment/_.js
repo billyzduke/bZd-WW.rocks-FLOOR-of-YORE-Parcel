@@ -83,7 +83,7 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
         const backBulbs = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampBackBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampBackBulb`, true ) ]
         const frontBulbs = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampFrontBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampFrontBulb`, true ) ]
         backBulbs.forEach( bulb => {
-          if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPostTurnDepthAdjustment ) ) {
+          if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPosts.turnDepthAdjustment ) ) {
             if ( g.bttf.blink[bulb.name] ) {
               bulb.material.emissiveIntensity += 0.25
               g.bttf.lampLights[bulb.name].intensity += 0.075
@@ -99,7 +99,7 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
           }
         } )
         frontBulbs.forEach( bulb => {
-          if ( gdrGrp.position.z < -( g.bttf.pilotingDepth + g.bttf.lampPostTurnDepthAdjustment ) ) {
+          if ( gdrGrp.position.z < -( g.bttf.pilotingDepth + g.bttf.lampPosts.turnDepthAdjustment ) ) {
             if ( g.bttf.blink[bulb.name] ) {
               bulb.material.emissiveIntensity += 0.25
               g.bttf.lampLights[bulb.name].intensity += 0.075
@@ -114,7 +114,7 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
             if ( g.bttf.lampLights[bulb.name].intensity > 0 ) g.bttf.lampLights[bulb.name].intensity -= 0.075
           }
         } )
-        if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPostTurnDepthAdjustment ) ) {
+        if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPosts.turnDepthAdjustment ) ) {
           if ( lampPostPair.children[0].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[0].rotateY( threeMake.degToRad( -10 ) )
           if ( lampPostPair.children[1].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[1].rotateY( threeMake.degToRad( 10 ) )
         }
@@ -124,11 +124,12 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
       if ( gdrGrp.position.z >= 0 ) {
         gdrGrp.position.z = 0 - ( g.bttf.tunnel.girderSpacing * ( girders - 1 ) )
         if ( lampPostPair.children.length === 2 ) {
+          if ( g.bttf.lampPostPairs.visible ) lampPostPair.visible = true
           lampPostPair.children[0].rotateY( threeMake.degToRad( 180 ) )
-          lampPostPair.children[0].position.x = randoNum( ( tvp.w * 0.25 ) + g.bttf.lampPostClearance.cx, ( tvp.w * 0.65 ) - g.bttf.lampPostClearance.cx - g.bttf.lampPostPairClearance ) - tvp.cx
-          lampPostPair.children[0].position.y = randoNum( ( tvp.h * 0.3 ) + g.bttf.lampPostClearance.cy, ( tvp.h * 0.75 ) - g.bttf.lampPostClearance.cy ) - tvp.cy
+          lampPostPair.children[0].position.x = randoNum( ( tvp.w * g.bttf.lampPostPairs.position.x.min ) + g.bttf.lampPosts.clearance.cx, ( tvp.w * g.bttf.lampPostPairs.position.x.max ) - g.bttf.lampPosts.clearance.cx - g.bttf.lampPostPairs.clearance ) - tvp.cx
+          lampPostPair.children[0].position.y = randoNum( ( tvp.h * g.bttf.lampPostPairs.position.y.min ) + g.bttf.lampPosts.clearance.cy, ( tvp.h * g.bttf.lampPostPairs.position.y.max ) - g.bttf.lampPosts.clearance.cy ) - tvp.cy
           lampPostPair.children[1].rotateY( threeMake.degToRad( -180 ) )
-          lampPostPair.children[1].position.x = lampPostPair.children[0].position.x + g.bttf.lampPostPairClearance + g.bttf.lampPostClearance.w
+          lampPostPair.children[1].position.x = lampPostPair.children[0].position.x + g.bttf.lampPostPairs.clearance + g.bttf.lampPosts.clearance.w
           lampPostPair.children[1].position.y = lampPostPair.children[0].position.y
         }
       }
@@ -173,103 +174,112 @@ const setTunnelSmoke = ( {
     'c4c4de',
     '00dddd',
   ]
-  const smokeTexture = threeMake.textureLoader( assSmoke )
-  const smokeAlphaTexture = threeMake.textureLoader( assSmokeAlpha )
-  const smokeMaterial = new THREE.MeshLambertMaterial( {
-    alphaMap: smokeAlphaTexture, emissiveIntensity: 0.2, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
-  } )
-  const smokeDepth = depth
-  const smokeGeo = new THREE.PlaneGeometry( smokeDepth, smokeDepth, 25, 25 )
-  const svp = threeMake.visibleSizeAtZDepth( smokeDepth )
-  let usedZs = [ 0 ]
-  // const closestZ = -smokeDepth
-  // let closestPuff
+  threeMake.textureLoader( assSmoke, smokeTexture => {
+    const smokeAlphaTexture = threeMake.textureLoader( assSmokeAlpha )
+    const smokeDepth = depth
+    const smokeSize = {
+      w: depth + 600,
+    }
+    smokeSize.h = ( smokeSize.w * smokeTexture.image.width ) / smokeTexture.image.height // maintain aspect ratio of original image
+    const smokeGeo = new THREE.PlaneGeometry( smokeSize.h, smokeSize.w, 25, 25 )
+    const svp = threeMake.visibleSizeAtZDepth( smokeDepth )
+    let usedZs = [ 0 ]
+    // const closestZ = -smokeDepth
+    // let closestPuff
 
-  for ( let gdr = 0; gdr < g.bttf.grp.tunnel.children.length - 1; gdr++ ) {
-    for ( let pf = 0; pf < puffsPerGirder; pf++ ) {
+    for ( let gdr = 0; gdr < g.bttf.grp.tunnel.children.length - 1; gdr++ ) {
+      for ( let pf = 0; pf < puffsPerGirder; pf++ ) {
+        const puffPos = setSmokePuff( {
+          baseZ: g.bttf.tunnel.girderSpacing - 2, exclude: usedZs, spacingZ: 2, svp: tvp, varZ: g.bttf.tunnel.girderSpacing - 4,
+        } )
+        const smokeMat = new THREE.MeshLambertMaterial( {
+          alphaMap: smokeAlphaTexture, emissiveIntensity: 0.2, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
+        } )
+        smokeMat.emissive = threeMake.color( Number( `0x${smokem[randoNum( 0, smokem.length - 1 )]}` ) )
+        const dcx = Math.abs( tvp.cx - puffPos.x )
+        const dcy = Math.abs( tvp.cy - puffPos.y )
+        const o = ( ( dcx + dcy ) / 2 ) / ( ( svp.w + svp.h ) / 2 )
+        smokeMat.opacity = gsap.utils.clamp( 0.23, 1, 1.23 - o )
+        const puff = new THREE.Mesh( smokeGeo, smokeMat )
+        puff.position.set( puffPos.x, puffPos.y, puffPos.z )
+        puff.rotation.z = Math.random() * 360
+        g.bttf.inScene.allSmoke.push( puff )
+        g.bttf.grp.tunnel.children[gdr].children[1].add( g.bttf.inScene.allSmoke[g.bttf.inScene.allSmoke.length - 1] )
+      }
+      usedZs = [ 0 ]
+    }
+
+    for ( let pf = 0; pf < freePuffs; pf++ ) {
       const puffPos = setSmokePuff( {
-        baseZ: g.bttf.tunnel.girderSpacing - 2, exclude: usedZs, spacingZ: 2, svp: tvp, varZ: g.bttf.tunnel.girderSpacing - 4,
+        baseZ: smokeDepth, exclude: usedZs, spacingZ: 2, svp,
       } )
-      const smokeMat = smokeMaterial.clone()
+      const smokeMat = new THREE.MeshLambertMaterial( {
+        alphaMap: smokeAlphaTexture, emissiveIntensity: 0.2, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
+      } )
       smokeMat.emissive = threeMake.color( Number( `0x${smokem[randoNum( 0, smokem.length - 1 )]}` ) )
-      const dcx = Math.abs( tvp.cx - puffPos.x )
-      const dcy = Math.abs( tvp.cy - puffPos.y )
+      const dcx = Math.abs( svp.cx - puffPos.x )
+      const dcy = Math.abs( svp.cy - puffPos.y )
       const o = ( ( dcx + dcy ) / 2 ) / ( ( svp.w + svp.h ) / 2 )
       smokeMat.opacity = gsap.utils.clamp( 0.23, 1, 1.23 - o )
       const puff = new THREE.Mesh( smokeGeo, smokeMat )
+      puff.name = `freePuff_${padStr( pf )}`
       puff.position.set( puffPos.x, puffPos.y, puffPos.z )
       puff.rotation.z = Math.random() * 360
-      g.bttf.grp.tunnel.children[gdr].children[1].add( puff )
+      g.bttf.grp.freeSmoke.add( puff )
       g.bttf.inScene.allSmoke.push( puff )
+      // if ( puffPos.z > closestZ ) {
+      //   closestZ = puffPos.z
+      //   closestPuff = pf
+      // }
     }
-    usedZs = [ 0 ]
-  }
 
-  for ( let pf = 0; pf < freePuffs; pf++ ) {
-    const puffPos = setSmokePuff( {
-      baseZ: smokeDepth, exclude: usedZs, spacingZ: 2, svp,
-    } )
-    const smokeMat = smokeMaterial.clone()
-    smokeMat.emissive = threeMake.color( Number( `0x${smokem[randoNum( 0, smokem.length - 1 )]}` ) )
-    const dcx = Math.abs( svp.cx - puffPos.x )
-    const dcy = Math.abs( svp.cy - puffPos.y )
-    const o = ( ( dcx + dcy ) / 2 ) / ( ( svp.w + svp.h ) / 2 )
-    smokeMat.opacity = gsap.utils.clamp( 0.23, 1, 1.23 - o )
-    const puff = new THREE.Mesh( smokeGeo, smokeMat )
-    puff.name = `freePuff_${padStr( pf )}`
-    puff.position.set( puffPos.x, puffPos.y, puffPos.z )
-    puff.rotation.z = Math.random() * 360
-    g.bttf.grp.freeSmoke.add( puff )
-    g.bttf.inScene.allSmoke.push( puff )
-    // if ( puffPos.z > closestZ ) {
-    //   closestZ = puffPos.z
-    //   closestPuff = pf
-    // }
-  }
+    // console.log( { closestZ, closestPuff, cpObj: g.bttf.inScene.allSmoke[closestPuff] } )
 
-  // console.log( { closestZ, closestPuff, cpObj: g.bttf.inScene.allSmoke[closestPuff] } )
+    g.bttf.ani.smk.swirlSmoke = delta => {
+      let spf = g.bttf.inScene.allSmoke.length
+      let spr = 0.1
+      while ( spf-- ) {
+        const rotateSmoke = delta * spr
+        spr += 0.1
+        if ( spr > 0.3 ) spr = 0.1
+        if ( spf % 2 ) g.bttf.inScene.allSmoke[spf].rotation.z += rotateSmoke
+        else g.bttf.inScene.allSmoke[spf].rotation.z -= rotateSmoke
+        g.bttf.inScene.allSmoke[spf].position.z += 1
 
-  g.bttf.ani.smk.swirlSmoke = delta => {
-    let spf = g.bttf.inScene.allSmoke.length
-    let spr = 0.1
-    while ( spf-- ) {
-      const rotateSmoke = delta * spr
-      spr += 0.1
-      if ( spr > 0.3 ) spr = 0.1
-      if ( spf % 2 ) g.bttf.inScene.allSmoke[spf].rotation.z += rotateSmoke
-      else g.bttf.inScene.allSmoke[spf].rotation.z -= rotateSmoke
-      g.bttf.inScene.allSmoke[spf].position.z += 1
-      if ( g.bttf.inScene.allSmoke[spf].name ) {
-        if ( g.bttf.inScene.allSmoke[spf].position.z >= -2000 ) {
-          if ( g.bttf.inScene.allSmoke[spf].material.opacity > 0 ) g.bttf.inScene.allSmoke[spf].material.opacity -= 0.01
-          if ( g.bttf.inScene.allSmoke[spf].position.z >= -1900 ) {
-            const puffPos = setSmokePuff( {
-              baseZ: smokeDepth, svp,
-            } )
-            g.bttf.inScene.allSmoke[spf].material.opacity = 0
-            g.bttf.inScene.allSmoke[spf].position.set( puffPos.x, puffPos.y, -smokeDepth )
+        if ( g.bttf.inScene.allSmoke[spf].name.length ) {
+          if ( g.bttf.inScene.allSmoke[spf].position.z >= -2000 ) {
+            if ( g.bttf.inScene.allSmoke[spf].material.opacity > 0 ) g.bttf.inScene.allSmoke[spf].material.opacity -= 0.01
+            if ( g.bttf.inScene.allSmoke[spf].position.z >= -1900 ) {
+              const puffPos = setSmokePuff( {
+                baseZ: smokeDepth, svp,
+              } )
+              g.bttf.inScene.allSmoke[spf].material.opacity = 0
+              g.bttf.inScene.allSmoke[spf].position.set( puffPos.x, puffPos.y, -smokeDepth )
+            }
+          } else if ( g.bttf.inScene.allSmoke[spf].material.opacity < 1 ) g.bttf.inScene.allSmoke[spf].material.opacity += 0.01
+          // if ( spf === closestPuff ) console.log( { o: g.bttf.inScene.allSmoke[spf].material.opacity, z: g.bttf.inScene.allSmoke[spf].position.z } )
+        } else {
+          const whichGirderGroup = g.bttf.inScene.allSmoke[spf].parent.parent
+          if ( whichGirderGroup.position.z >= -3900 ) {
+            if ( g.bttf.inScene.allSmoke[spf].material.opacity > 0 ) g.bttf.inScene.allSmoke[spf].material.opacity -= 0.0126
+            else g.bttf.inScene.allSmoke[spf].material.opacity = 0
+            if ( whichGirderGroup.position.z >= -1900 ) {
+              g.bttf.inScene.allSmoke[spf].material.depthWrite = false
+              const puffPos = setSmokePuff( {
+                baseZ: g.bttf.tunnel.girderSpacing - 2, spacingZ: 2, svp: tvp, varZ: g.bttf.tunnel.girderSpacing - 4,
+              } )
+              g.bttf.pause = 0
+              g.bttf.inScene.allSmoke[spf].material.opacity = 0
+              g.bttf.inScene.allSmoke[spf].position.set( puffPos.x, puffPos.y, puffPos.z )
+            }
+          } else if ( g.bttf.inScene.allSmoke[spf].material.opacity < 1 ) {
+            if ( !g.bttf.inScene.allSmoke[spf].material.depthWrite ) g.bttf.inScene.allSmoke[spf].material.depthWrite = true
+            g.bttf.inScene.allSmoke[spf].material.opacity += 0.01
           }
-        } else if ( g.bttf.inScene.allSmoke[spf].material.opacity < 1 ) g.bttf.inScene.allSmoke[spf].material.opacity += 0.01
-        // if ( spf === closestPuff ) console.log( { o: g.bttf.inScene.allSmoke[spf].material.opacity, z: g.bttf.inScene.allSmoke[spf].position.z } )
-      } else {
-        const whichGirderGroup = g.bttf.inScene.allSmoke[spf].parent.parent
-        if ( whichGirderGroup.position.z >= -2000 ) {
-          if ( g.bttf.inScene.allSmoke[spf].material.opacity > 0 ) g.bttf.inScene.allSmoke[spf].material.opacity -= 0.01
-          if ( whichGirderGroup.position.z >= -1900 ) {
-            const puffPos = setSmokePuff( {
-              baseZ: g.bttf.tunnel.girderSpacing - 2, spacingZ: 2, svp: tvp, varZ: g.bttf.tunnel.girderSpacing - 4,
-            } )
-            g.bttf.inScene.allSmoke[spf].material.opacity = 0
-            g.bttf.inScene.allSmoke[spf].material.depthWrite = false
-            g.bttf.inScene.allSmoke[spf].position.set( puffPos.x, puffPos.y, puffPos.z )
-          }
-        } else if ( g.bttf.inScene.allSmoke[spf].material.opacity < 1 ) {
-          if ( !g.bttf.inScene.allSmoke[spf].material.depthWrite ) g.bttf.inScene.allSmoke[spf].material.depthWrite = true
-          g.bttf.inScene.allSmoke[spf].material.opacity += 0.01
         }
       }
     }
-  }
+  } )
 }
 
 const pairLampPostsInto = ( lampPostPair, tvp ) => {
@@ -517,18 +527,19 @@ const pairLampPostsInto = ( lampPostPair, tvp ) => {
   }
   const leftLamp = lampPostPair.children[0]
   const box = new THREE.Box3().setFromObject( leftLamp )
-  const leftLampSizeV3 = box.getSize()
-  g.bttf.lampPostClearance.w = leftLampSizeV3.x
-  g.bttf.lampPostClearance.cx = g.bttf.lampPostClearance.w / 2
-  g.bttf.lampPostClearance.cy = leftLampSizeV3.y / 2
-  leftLamp.position.x = randoNum( ( tvp.w * 0.33 ) + g.bttf.lampPostClearance.cx, ( tvp.w * 0.66 ) - g.bttf.lampPostClearance.cx - g.bttf.lampPostPairClearance ) - tvp.cx
-  leftLamp.position.y = randoNum( ( tvp.h * 0.3 ) + g.bttf.lampPostClearance.cy, ( tvp.h * 0.75 ) - g.bttf.lampPostClearance.cy ) - tvp.cy
+  const leftLampSizeV3 = new THREE.Vector3()
+  box.getSize( leftLampSizeV3 )
+  g.bttf.lampPosts.clearance.w = leftLampSizeV3.x
+  g.bttf.lampPosts.clearance.cx = g.bttf.lampPosts.clearance.w / 2
+  g.bttf.lampPosts.clearance.cy = leftLampSizeV3.y / 2
+  leftLamp.position.x = randoNum( ( tvp.w * g.bttf.lampPostPairs.position.x.min ) + g.bttf.lampPosts.clearance.cx, ( tvp.w * g.bttf.lampPostPairs.position.x.max ) - g.bttf.lampPosts.clearance.cx - g.bttf.lampPostPairs.clearance ) - tvp.cx
+  leftLamp.position.y = randoNum( ( tvp.h * g.bttf.lampPostPairs.position.y.min ) + g.bttf.lampPosts.clearance.cy, ( tvp.h * g.bttf.lampPostPairs.position.y.max ) - g.bttf.lampPosts.clearance.cy ) - tvp.cy
 
   const rightLamp = leftLamp.clone()
   rightLamp.name = `rightLamp${whichPair}`
   rightLamp.children[0].name = `rightLampGyro${whichPair}`
   threeMesh.mirrorMesh( rightLamp )
-  rightLamp.position.x += g.bttf.lampPostPairClearance + g.bttf.lampPostClearance.w
+  rightLamp.position.x += g.bttf.lampPostPairs.clearance + g.bttf.lampPosts.clearance.w
   lampPostPair.add( rightLamp )
 
   rightLamp.children[0].children[0].children[1].children[1].name = `lampPostPair_${whichPair}_rightLampFrontBulb`
@@ -634,6 +645,7 @@ const addSpotLightsToLampPostPair = lampPostPair => {
 
 const setLampPosts = tvp => {
   const lampPostPair = new THREE.Group()
+  lampPostPair.visible = false
   if ( !g.bttf.inScene.lampPostPairs ) g.bttf.inScene.lampPostPairs = []
   lampPostPair.name = `lampPostPair_${padStr( g.bttf.inScene.lampPostPairs.length )}`
   g.bttf.inScene.tunnel.children[g.bttf.inScene.tunnel.children.length - 1].add( lampPostPair )

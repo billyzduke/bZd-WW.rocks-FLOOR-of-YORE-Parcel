@@ -33,7 +33,7 @@ const createVector3s = v3s => {
 
 const degToRad = ( degrees = 90 ) => THREE.Math.degToRad( degrees )
 
-const textureLoader = txtAss => new THREE.TextureLoader().load( txtAss )
+const textureLoader = ( txtAss, callBack = () => { } ) => new THREE.TextureLoader().load( txtAss, txt => { if ( isFunction( callBack ) ) callBack( txt ) } )
 
 const visibleHeightAtZDepth = depth => {
   // compensate for cameras not positioned at z=0

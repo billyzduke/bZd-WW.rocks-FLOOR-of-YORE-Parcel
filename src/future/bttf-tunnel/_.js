@@ -47,9 +47,24 @@ const setBTTF = ( {
         yellow: threeMake.color( 0xfcf921 ),
         red: threeMake.color( 0xfc252a ),
       },
-      lampPostClearance: {},
-      lampPostTurnDepthAdjustment: 500,
-      lampPostPairClearance: 1024,
+      lampPosts: {
+        clearance: {},
+        turnDepthAdjustment: 500,
+      },
+      lampPostPairs: {
+        clearance: 1024,
+        position: {
+          x: {
+            min: 0.33,
+            max: 0.66,
+          },
+          y: {
+            min: 0.3,
+            max: 0.75,
+          },
+        },
+        visible: false,
+      },
       lve: false,
       m: {
         axis: new THREE.Vector3(),
@@ -71,7 +86,7 @@ const setBTTF = ( {
       pilotingDepth: 1200,
       tunnel: {
         girderSpacing: 575,
-        zoomSpeed: 25
+        zoomSpeed: 25,
       },
       xy: [ 'x', 'y' ],
       xyz: [ 'x', 'y', 'z' ],
@@ -120,7 +135,7 @@ const setBTTF = ( {
     // smoke group creation needed even if smoke itself is suppressed for directional light target
     g.bttf.grp.freeSmoke = new THREE.Group()
     g.bttf.grp.freeSmoke.name = 'freeSmoke'
-    g.bttf.scene.add(g.bttf.grp.freeSmoke)
+    g.bttf.scene.add( g.bttf.grp.freeSmoke )
     g.bttf.inScene.allSmoke = []
     g.bttf.inScene.freeSmoke = g.bttf.grp.freeSmoke
 
