@@ -17,7 +17,7 @@ import { deObscureThen } from '/src/obscuro/_'
 import { setTunnelEnvironment } from './environment/_'
 
 const setBTTF = ( {
-  car = true, controls = false, floaters = true, smoke = true, stats = false, tunnel = true,
+  car = true, controls = false, floaters = true, fog = true, smoke = true, stats = false, tunnel = true,
 } = {} ) => {
   if ( !g.bttf ) {
     g.bttf = {
@@ -29,6 +29,7 @@ const setBTTF = ( {
         tnl: {},
       },
       bin: [],
+      blink: {},
       clk: new THREE.Clock(),
       dev: false,
       drg: false,
@@ -40,6 +41,14 @@ const setBTTF = ( {
       },
       grp: {},
       inScene: {},
+      lampLights: {},
+      lampLightBulbColors: {
+        green: threeMake.color( 0x1efcb2 ),
+        yellow: threeMake.color( 0xfcf921 ),
+        red: threeMake.color( 0xfc252a ),
+      },
+      lampPostClearance: {},
+      lampPostPairClearance: 1024,
       lve: false,
       m: {
         axis: new THREE.Vector3(),
@@ -58,6 +67,7 @@ const setBTTF = ( {
       },
       on: false,
       obj: {},
+      pilotingDepth: 1200,
       xy: [ 'x', 'y' ],
       xyz: [ 'x', 'y', 'z' ],
     }
@@ -71,7 +81,7 @@ const setBTTF = ( {
     }
 
     g.bttf.scene = new THREE.Scene()
-    g.bttf.scene.fog = new THREE.Fog( new THREE.Color( 0x000000 ), 7500, 17000 )
+    if ( fog ) g.bttf.scene.fog = new THREE.Fog( threeMake.color( 0x000000 ), 7500, 17000 )
     g.bttf.aspectRatio = g.main.w / g.main.h
     g.bttf.camera = new THREE.PerspectiveCamera( 76, g.bttf.aspectRatio, 0.1, 17500 )
 
@@ -90,7 +100,7 @@ const setBTTF = ( {
     //     g.bttf.camera.position[axis] = 500
     //   } )
     // }
-    g.bttf.camera.rotateX( THREE.Math.degToRad( 2.23 ) )
+    g.bttf.camera.rotateX( threeMake.degToRad( 2.23 ) )
 
     // it remains to be seen whether this approach will actually save any time or code... I think it will at least cut down some of three's repetition
     // just remember that ALL NAME/ID KEYS IN THE FOLLOWING OBJECT MUST BE UNIQUE, REGARDLESS OF NESTING LEVEL
@@ -99,8 +109,6 @@ const setBTTF = ( {
         deLorean: makeDeLorean(),
       }
       Object.keys( g.bttf.makeObjs ).forEach( obj => threeMake.makeThreeObj( obj, g.bttf.makeObjs[obj] ) )
-
-      console.log( { three: g.bttf } )
       Object.keys( g.bttf.makeObjs ).forEach( grp => g.bttf.scene.add( g.bttf.grp[grp] ) )
     }
 

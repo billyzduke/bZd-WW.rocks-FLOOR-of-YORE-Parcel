@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { gsap, TimelineMax as TL } from 'gsap'
+import { gsap } from 'gsap'
 import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
@@ -24,11 +24,10 @@ const backItUp = () => {
   g.bttf.mov = false
   g.bttf.camReset = true
   g.bttf.bin = cleanUp( g.bttf.bin )
-  g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
   g.tL.dL.to( g.bttf.inScene.deLorean.position, {
     duration: 9,
     ease: 'power2.in',
-    z: '-=1200',
+    z: `-=${g.bttf.pilotingDepth}`,
   } )
     .to( g.bttf.inScene.deLorean.position, {
       duration: 4.2,
@@ -38,7 +37,7 @@ const backItUp = () => {
     .to( g.bttf.inScene.deLorean.rotation, {
       duration: 11.5,
       ease: 'power2.inOut',
-      y: THREE.Math.degToRad( -180 ),
+      y: threeMake.degToRad( -180 ),
     }, '<4.5' )
     .to( g.bttf.obj.windShieldGlass.msh.material, {
       duration: 5,
@@ -51,7 +50,7 @@ const backItUp = () => {
     .to( g.bttf.inScene.deLorean.rotation, {
       duration: 3.5,
       ease: 'power2.inOut',
-      x: THREE.Math.degToRad( 30 ),
+      x: threeMake.degToRad( 30 ),
       repeat: 1,
       yoyo: true,
     }, '<2' )
@@ -64,9 +63,9 @@ const backItUp = () => {
     .to( g.bttf.inScene.carGyro.rotation, {
       duration: 3.5,
       ease: 'power2.inOut',
-      x: THREE.Math.degToRad( 75 ),
-      y: -THREE.Math.degToRad( 15 ),
-      z: THREE.Math.degToRad( 20 ),
+      x: threeMake.degToRad( 75 ),
+      y: -threeMake.degToRad( 15 ),
+      z: threeMake.degToRad( 20 ),
       repeat: 1,
       yoyo: true,
     }, '>' )
@@ -78,21 +77,21 @@ const backItUp = () => {
         g.tL.dL.to( g.bttf.inScene.carGyro.rotation, {
           duration: 5.5,
           ease: 'power1.inOut',
-          x: `+=${THREE.Math.degToRad( 30 )}`,
+          x: `+=${threeMake.degToRad( 30 )}`,
           repeat: -1,
           yoyo: true,
         }, '>' )
           .to( g.bttf.inScene.carGyro.rotation, {
             duration: 4.5,
             ease: 'power1.inOut',
-            y: `+=${THREE.Math.degToRad( 30 )}`,
+            y: `+=${threeMake.degToRad( 30 )}`,
             repeat: -1,
             yoyo: true,
           }, '<' )
           .to( g.bttf.inScene.carGyro.rotation, {
             duration: 7.5,
             ease: 'power1.inOut',
-            z: `-=${THREE.Math.degToRad( 40 )}`,
+            z: `-=${threeMake.degToRad( 40 )}`,
             repeat: -1,
             yoyo: true,
           }, '<' )
@@ -153,10 +152,10 @@ const updateAnimationFrame = () => {
 
     // ROCKET FLARE TEXTURES SWAP
     if ( g.bttf.ani.flr.length ) {
- g.bttf.ani.flr.forEach( ani => {
-      ani( 1000 * delta )
-    } )
- }
+      g.bttf.ani.flr.forEach( ani => {
+        ani( 1000 * delta )
+      } )
+    }
 
     if ( isFunction( g.bttf.ani.flx ) ) g.bttf.ani.flx( 1000 * delta )
 
@@ -217,7 +216,7 @@ const updateAnimationFrame = () => {
     // if ( g.bttf.mov ) g.bttf.mkr.moveAlongPath( g.bttf.grp.deLorean, 0 )
 
     if ( g.bttf.camReset ) {
-      if ( g.bttf.camera.rotation.x > 0 ) g.bttf.camera.rotateX( -THREE.Math.degToRad( 0.065 ) )
+      if ( g.bttf.camera.rotation.x > 0 ) g.bttf.camera.rotateX( -threeMake.degToRad( 0.065 ) )
       else g.bttf.camReset = false
     }
 
@@ -225,8 +224,8 @@ const updateAnimationFrame = () => {
 
     // // TILT TEST
     // g.bttf.xyz.forEach(axis => {
-    //   g.bttf.inScene.deLorean.rotation[axis] = g.bttf.mkr.tlt[axis] ? THREE.Math.degToRad(THREE.Math.radToDeg(g.bttf.inScene.deLorean.rotation[axis]) + 1) : THREE.Math.degToRad(THREE.Math.radToDeg(g.bttf.inScene.deLorean.rotation[axis]) - 1)
-    //   if (g.bttf.inScene.deLorean.rotation[axis] > THREE.Math.degToRad(20) || g.bttf.inScene.deLorean.rotation[axis] < THREE.Math.degToRad(-20)) g.bttf.mkr.tlt[axis] = !g.bttf.mkr.tlt[axis]
+    //   g.bttf.inScene.deLorean.rotation[axis] = g.bttf.mkr.tlt[axis] ? threeMake.degToRad(THREE.Math.radToDeg(g.bttf.inScene.deLorean.rotation[axis]) + 1) : threeMake.degToRad(THREE.Math.radToDeg(g.bttf.inScene.deLorean.rotation[axis]) - 1)
+    //   if (g.bttf.inScene.deLorean.rotation[axis] > threeMake.degToRad(20) || g.bttf.inScene.deLorean.rotation[axis] < threeMake.degToRad(-20)) g.bttf.mkr.tlt[axis] = !g.bttf.mkr.tlt[axis]
     // })
   }
 }

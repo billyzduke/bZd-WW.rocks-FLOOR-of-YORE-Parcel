@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 
 import g from '/src/shared/_'
+import * as threeMake from '/src/shared/three/make'
 
 const createAtmosphericMaterial = () => {
   const vertexShader = [
@@ -52,7 +53,7 @@ const createAtmosphericMaterial = () => {
       },
       glowColor: {
         type: 'c',
-        value: new THREE.Color( 'white' ),
+        value: threeMake.color( 'white' ),
       },
     },
     vertexShader: vertexShader,
@@ -71,7 +72,7 @@ const GeometricGlowMesh = ( animate = true, geoInner, [ offsetX = 0, offsetY = 0
   geoInner.scale( 1.01, 1.01, 1.01 )
   geoInner.translate( 0, 2, 0 )
   const matInner = createAtmosphericMaterial()
-  matInner.uniforms.glowColor.value = new THREE.Color( color )
+  matInner.uniforms.glowColor.value = threeMake.color( color )
   matInner.uniforms.coeficient.value = 1.3
   matInner.uniforms.power.value = animate ? 1.3 : 5
   const innerMesh = new THREE.Mesh( geoInner, [ new THREE.MeshBasicMaterial( { opacity: animate ? 0 : 0.88, transparent: true } ), matInner ] )
@@ -82,7 +83,7 @@ const GeometricGlowMesh = ( animate = true, geoInner, [ offsetX = 0, offsetY = 0
   geoOuter.scale( 1.025, 1.025, 1.025 )
   geoOuter.translate( offsetX, offsetY, offsetZ )
   const matOuter = createAtmosphericMaterial()
-  matOuter.uniforms.glowColor.value = new THREE.Color( color )
+  matOuter.uniforms.glowColor.value = threeMake.color( color )
   matOuter.uniforms.coeficient.value = 0.26
   matOuter.uniforms.power.value = animate ? 0.9 : 5
   matOuter.side = THREE.BackSide

@@ -3,6 +3,8 @@ import * as THREE from 'three'
 import g from '/src/shared/_'
 import { devLog, isFunction } from '/src/shared/utils'
 
+const color = ( colorVal = 0x000000 ) => new THREE.Color( colorVal )
+
 const createVector2s = v2s => {
   if ( !v2s || !v2s.length ) return false
   const makeV2 = []
@@ -28,6 +30,8 @@ const createVector3s = v3s => {
   } )
   return madeV3s
 }
+
+const degToRad = ( degrees = 90 ) => THREE.Math.degToRad( degrees )
 
 const textureLoader = txtAss => new THREE.TextureLoader().load( txtAss )
 
@@ -148,7 +152,7 @@ const makeThreeObj = ( obj, makeObj ) => {
       // eslint-disable-next-line new-cap
       g.bttf.obj[obj].mat = isFunction( makeObj.mat ) ? new makeObj.mat( makeMesh ) : makeObj.mat
       if ( g.bttf.obj[obj].mat instanceof THREE.MeshStandardMaterial && g.bttf.obj[obj].txt ) {
-        g.bttf.obj[obj].mat.emissive = new THREE.Color( 'white' )
+        g.bttf.obj[obj].mat.emissive = color( 'white' )
         g.bttf.obj[obj].mat.emissiveMap = g.bttf.obj[obj].txt
       }
       if ( makeObj.pivot ) setPivot( g.bttf.obj[obj], makeObj )
@@ -199,12 +203,12 @@ const rotateAxes = ( obj, makeObj ) => {
   Object.keys( makeObj.rotation ).forEach( axis => {
     if ( makeObj.rotation[axis] ) {
       const rotateAxis = `rotate${g.bttf.xyz.includes( axis ) ? axis.toUpperCase() : g.bttf.xyz[axis].toUpperCase()}`
-      const rotateRad = THREE.Math.degToRad( makeObj.rotation[axis] )
+      const rotateRad = degToRad( makeObj.rotation[axis] )
       mvMe[rotateAxis]( rotateRad )
     }
   } )
 }
 
 export {
-  createVector2s, createVector3s, makeThreeObj, textureLoader, visibleHeightAtZDepth, visibleSizeAtZDepth,
+  color, createVector2s, createVector3s, degToRad, makeThreeObj, textureLoader, visibleHeightAtZDepth, visibleSizeAtZDepth,
 }

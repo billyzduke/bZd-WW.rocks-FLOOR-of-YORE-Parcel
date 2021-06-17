@@ -125,7 +125,7 @@ const makeWheel = wheel => {
     } )
   }
   const flareFixMat = {
-    color: new THREE.Color( 'white' ),
+    color: threeMake.color( 'white' ),
   }
   flares[`flareFixer${wheel}`] = {
     geo: 'cylinder',

@@ -9,6 +9,7 @@ import assCrossAxleA from 'url:/src/future/bttf-tunnel/delorean/undercarriage/cr
 import assExhaustPipeOuter from 'url:/src/future/bttf-tunnel/delorean/undercarriage/exhaustPipe.png'
 import assExhaustPipeInner from 'url:/src/future/bttf-tunnel/delorean/undercarriage/exhaustPipeInner.png'
 import g from '/src/shared/_'
+import * as threeMake from '/src/shared/three/make'
 
 const makeExhaustPipeFace = face => {
   const rotation = [ 0, 0, 0 ]
@@ -163,7 +164,7 @@ const makeUnderCarriage = () => ( {
       children: {
         ucWheelWallFL: {
           struct: [ 127, 150 ],
-          color: new THREE.Color( 'black' ),
+          color: threeMake.color( 'black' ),
           pivot: [ 63.5 ],
           position: [ 142, 289.5 ],
           rotation: [ 0, 90 ],
@@ -172,7 +173,7 @@ const makeUnderCarriage = () => ( {
         },
         ucWheelWallFR: {
           struct: [ 127, 150 ],
-          color: new THREE.Color( 'black' ),
+          color: threeMake.color( 'black' ),
           pivot: [ -63.5 ],
           position: [ -142, 289.5 ],
           rotation: [ 0, -90 ],
@@ -181,7 +182,7 @@ const makeUnderCarriage = () => ( {
         },
         ucWheelWallAL: {
           struct: [ 127, 157 ],
-          color: new THREE.Color( 'black' ),
+          color: threeMake.color( 'black' ),
           pivot: [ 63.5 ],
           position: [ 142, -286 ],
           rotation: [ 0, 90 ],
@@ -190,7 +191,7 @@ const makeUnderCarriage = () => ( {
         },
         ucWheelWallAR: {
           struct: [ 127, 157 ],
-          color: new THREE.Color( 'black' ),
+          color: threeMake.color( 'black' ),
           pivot: [ -63.5 ],
           position: [ -142, -286 ],
           rotation: [ 0, -90 ],
@@ -234,14 +235,14 @@ const makeUnderCarriage = () => ( {
           msh: { transparent: false },
         },
         ucWheelWellF: {
-          color: new THREE.Color( 'black' ),
+          color: threeMake.color( 'black' ),
           struct: [ 402, 150 ],
           position: [ 0, 289.5, -127 ],
           mat: THREE.MeshStandardMaterial,
           msh: { transparent: false },
         },
         ucWheelWellA: {
-          color: new THREE.Color( 'black' ),
+          color: threeMake.color( 'black' ),
           struct: [ 402, 157 ],
           position: [ 0, -286, -127 ],
           mat: THREE.MeshStandardMaterial,

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { gsap } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import assPipeMetal01 from 'url:/src/future/bttf-tunnel/delorean/metalPipeVertical.png'
 import assPipeMetal02 from 'url:/src/future/bttf-tunnel/delorean/metalSphere.png'
@@ -16,8 +16,10 @@ import { makeUnderCarriage } from './undercarriage/_'
 import { makeWheels } from './wheels/_'
 
 const setMakes = () => {
+  g.tL.dL = new TL( { defaults: { overwrite: 'auto' } } )
+
   g.bttf.mkr.pipe = {
-    map: [ { emissiveMap: threeMake.textureLoader( assPipeMetal01 ), emissive: new THREE.Color( 0x999999 ) }, { emissiveMap: threeMake.textureLoader( assPipeMetal02 ), emissive: new THREE.Color( 0x666666 ) }, { emissiveMap: threeMake.textureLoader( assPipeMetal01 ), emissive: new THREE.Color( 0xffffff ) } ],
+    map: [ { emissiveMap: threeMake.textureLoader( assPipeMetal01 ), emissive: threeMake.color( 0x999999 ) }, { emissiveMap: threeMake.textureLoader( assPipeMetal02 ), emissive: threeMake.color( 0x666666 ) }, { emissiveMap: threeMake.textureLoader( assPipeMetal01 ), emissive: threeMake.color( 0xffffff ) } ],
     mat: {
       roughness: 0.4,
       metalness: 1,
@@ -160,7 +162,7 @@ const setMakes = () => {
       x: 188,
       z: -30,
     },
-    rotIncRad: THREE.Math.degToRad( 5 ),
+    rotIncRad: threeMake.degToRad( 5 ),
     rotTarget: Math.PI / 2,
   }
 
@@ -200,7 +202,7 @@ const setMakes = () => {
       lightBox.add( pointLight )
       // g.bttf.scene.add( new THREE.PointLightHelper( pointLight, 10 ) )
 
-      const spotLight = new THREE.SpotLight( 0xb3e7fb, 1.5, 0, THREE.Math.degToRad( 16 ), 0.25 )
+      const spotLight = new THREE.SpotLight( 0xb3e7fb, 1.5, 0, threeMake.degToRad( 16 ), 0.25 )
       spotLight.castShadow = true // default false
       spotLight.position.y = 21
       spotLight.position.z = 12
@@ -211,7 +213,7 @@ const setMakes = () => {
       const spotLightCone = new THREE.Mesh(
         new THREE.CylinderGeometry( 700, 10, spotLightConeLength, 20, 1, 1, true ),
         new THREE.MeshBasicMaterial( {
-          // color: new THREE.Color( 0xffff99 ),
+          // color: threeMake.color( 0xffff99 ),
           transparent: true,
           opacity: 0.23,
           map: threeMake.textureLoader( assHeadLightCone ),
@@ -224,8 +226,8 @@ const setMakes = () => {
       if ( !g.bttf.obj.spotLightConeMats ) g.bttf.obj.spotLightConeMats = []
       g.bttf.obj.spotLightConeMats.push( spotLightCone.material )
       lightBox.add( spotLightCone )
-      spotLightCone.rotateX( THREE.Math.degToRad( -120.5 ) )
-      spotLightCone.rotateZ( THREE.Math.degToRad( i % 2 ? -8 : 8 ) )
+      spotLightCone.rotateX( threeMake.degToRad( -120.5 ) )
+      spotLightCone.rotateZ( threeMake.degToRad( i % 2 ? -8 : 8 ) )
 
       const spotLightTarget = new THREE.Mesh( new THREE.TetrahedronGeometry(), new THREE.MeshBasicMaterial( { opacity: 0, depthWrite: false, transparent: true } ) )
       spotLightTarget.position.y = spotLightConeLength / 4

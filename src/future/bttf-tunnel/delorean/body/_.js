@@ -23,8 +23,9 @@ import assBodyEngineLeft from 'url:/src/future/bttf-tunnel/delorean/body/bodyEng
 import assBodyEngineRight from 'url:/src/future/bttf-tunnel/delorean/body/bodyEngineUpperRight.png'
 import assBodyBackPlate from 'url:/src/future/bttf-tunnel/delorean/body/bodyBackPlate.png'
 import assBodyBackLedge from 'url:/src/future/bttf-tunnel/delorean/body/bodyBackLedge.png'
+import * as threeMake from '/src/shared/three/make'
 
-const makeBody = () => ({
+const makeBody = () => ( {
   struct: [ 432, 1000, 300 ],
   children: {
     bcLowerL: {
@@ -193,21 +194,21 @@ const makeBody = () => ({
       rotation: { x: 59.5 },
     },
     bumperFrontBottomUpper: {
-      color: new THREE.Color( 0x18171d ),
+      color: threeMake.color( 0x18171d ),
       struct: [ 381, 24 ],
       pivot: [ 0, -12 ],
       position: [ 0, 480, -67.5 ],
       rotation: { x: -16 },
     },
     bumperFrontBottomMiddle: {
-      color: new THREE.Color( 0x101010 ),
+      color: threeMake.color( 0x101010 ),
       struct: [ 381, 24 ],
       pivot: [ 0, -12 ],
       position: [ 0, 464, -42 ],
       rotation: { x: 90 },
     },
     bumperFrontBottomLower: {
-      color: new THREE.Color( 0x2f2f2f ),
+      color: threeMake.color( 0x2f2f2f ),
       struct: [ 381, 24 ],
       pivot: [ 0, -12 ],
       position: [ 0, 483, -37 ],
@@ -319,20 +320,20 @@ const makeBody = () => ({
       rotation: { x: -22 },
     },
     bumperAftUpper: {
-      color: new THREE.Color( 0x2f2f2f ),
+      color: threeMake.color( 0x2f2f2f ),
       struct: [ 376, 32 ],
       pivot: [ 0, 16.5 ],
       position: [ 0, -486.5, -72 ],
       rotation: { x: -90 },
     },
     bumperAftMiddle: {
-      color: new THREE.Color( 0x101010 ),
+      color: threeMake.color( 0x101010 ),
       struct: [ 376.5, 9 ],
       pivot: [ 0, 4.5 ],
       position: [ 0, -487, -72 ],
     },
     bumperAftLower: {
-      color: new THREE.Color( 0x18171d ),
+      color: threeMake.color( 0x18171d ),
       struct: [ 381, 50 ],
       pivot: [ 0, 25 ],
       position: [ 0, -474, -41 ],

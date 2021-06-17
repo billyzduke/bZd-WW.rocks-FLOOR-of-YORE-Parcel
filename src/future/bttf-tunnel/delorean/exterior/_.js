@@ -55,11 +55,11 @@ const makeBackBar = () => {
           break
         case 1:
           barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
+          barFaceMats[f].map.rotation = threeMake.degToRad( -90 )
           break
         case 2:
           barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
+          barFaceMats[f].map.rotation = threeMake.degToRad( -90 )
           break
         case 3:
           barFaceMats[f].map.repeat.set( 1, bb.c / bb.h )
@@ -67,15 +67,15 @@ const makeBackBar = () => {
           break
         case 4:
           barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( 90 )
+          barFaceMats[f].map.rotation = threeMake.degToRad( 90 )
           barFaceMats[f].map.offset.x = ( bb.w - bb.c ) / bb.w
           break
         case 5:
           barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( -90 )
+          barFaceMats[f].map.rotation = threeMake.degToRad( -90 )
           break
         case 6:
-          barFaceMats[f].map.rotation = THREE.Math.degToRad( 180 )
+          barFaceMats[f].map.rotation = threeMake.degToRad( 180 )
           break
       }
     }
@@ -157,7 +157,7 @@ const makeRearVent = side => ( {
   position: [ side === 'L' ? 96 : -94 ],
   children: {
     [`rearVentBottom${side}`]: {
-      color: new THREE.Color( 0x191e34 ),
+      color: threeMake.color( 0x191e34 ),
       struct: [ 74, 92 ],
     },
     [`rearVentLeftSide${side}`]: {
@@ -221,7 +221,7 @@ const makeMrFusion = () => ( {
       rotation: { x: -90 },
     },
     fusionBaseLevel2BlackTop: {
-      color: new THREE.Color( 0x3c3c3c ),
+      color: threeMake.color( 0x3c3c3c ),
       geo: 'circle',
       struct: [ 23, 16 ],
       pivot: [ 0, 0, -20 ],
@@ -320,21 +320,21 @@ const makeMrFusion = () => ( {
       rotation: { y: -25 },
     },
     fusionBodyInterior: {
-      color: new THREE.Color( 0xefefef ),
+      color: threeMake.color( 0xefefef ),
       struct: [ 16, 24 ],
       pivot: [ 0, 12 ],
       position: [ 0, 0, -23.5 ],
       rotation: { x: -90 },
     },
     fusionLockBack: {
-      color: new THREE.Color( 0xa31c18 ),
+      color: threeMake.color( 0xa31c18 ),
       struct: [ 10, 10 ],
       pivot: [ 0, -5 ],
       position: [ 0, -27, -24 ],
       rotation: { x: -90 },
     },
     fusionLockTop: {
-      color: new THREE.Color( 0xac4139 ),
+      color: threeMake.color( 0xac4139 ),
       struct: [ 10, 10 ],
       position: [ 0, -22, -24 ],
     },
@@ -357,7 +357,7 @@ const makeMrFusion = () => ( {
 
 const makeLightBox = side => {
   const msh = { ...g.bttf.msh }
-  const col = { color: new THREE.Color( 0xcccccc ) }
+  const col = { color: threeMake.color( 0xcccccc ) }
   const makePolyObj = {
     position: [ 0, 14, 58.25 ],
   }
@@ -409,7 +409,7 @@ const makeLightBarPanel = where => {
         color: 0x999999,
         side: THREE.DoubleSide,
         emissiveMap: panelMap,
-        emissive: new THREE.Color( 0x999999 ),
+        emissive: threeMake.color( 0x999999 ),
         alphaMap: panelMap,
         transparent: true,
       } )
@@ -450,7 +450,7 @@ const makeLightBarRails = where => {
         color: 0xcccccc,
         side: THREE.DoubleSide,
         emissiveMap: tubeMap,
-        emissive: new THREE.Color( 0xffffff ),
+        emissive: threeMake.color( 0xffffff ),
       } )
       const tubeMsh = new THREE.Mesh( tubeGeo, tubeMat )
       if ( lbr % 2 ) threeMesh.mirrorMesh( tubeMsh )
