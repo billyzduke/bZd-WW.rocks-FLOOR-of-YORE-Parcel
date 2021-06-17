@@ -69,6 +69,10 @@ const setBTTF = ( {
       on: false,
       obj: {},
       pilotingDepth: 1200,
+      tunnel: {
+        girderSpacing: 575,
+        zoomSpeed: 25
+      },
       xy: [ 'x', 'y' ],
       xyz: [ 'x', 'y', 'z' ],
     }
@@ -114,10 +118,11 @@ const setBTTF = ( {
     }
 
     // smoke group creation needed even if smoke itself is suppressed for directional light target
-    g.bttf.grp.smoke = new THREE.Group()
-    g.bttf.grp.smoke.name = 'smoke'
-    g.bttf.scene.add( g.bttf.grp.smoke )
-    g.bttf.inScene.smoke = g.bttf.grp.smoke
+    g.bttf.grp.freeSmoke = new THREE.Group()
+    g.bttf.grp.freeSmoke.name = 'freeSmoke'
+    g.bttf.scene.add(g.bttf.grp.freeSmoke)
+    g.bttf.inScene.allSmoke = []
+    g.bttf.inScene.freeSmoke = g.bttf.grp.freeSmoke
 
     if ( tunnel ) setTunnelEnvironment( { smoke, floaters } )
 
@@ -134,7 +139,7 @@ const setBTTF = ( {
     g.bttf.lights = [ new THREE.AmbientLight( 0x404040, 0.125 ), new THREE.DirectionalLight( 0xffffff, 0.5 ) ]
     g.bttf.lights.forEach( light => {
       if ( light instanceof THREE.DirectionalLight ) {
-        light.target = g.bttf.inScene.smoke
+        light.target = g.bttf.inScene.freeSmoke
         light.castShadow = true // default false
         light.shadow.camera.far = 5000 // default 500
         light.shadow.camera.left = -2500
