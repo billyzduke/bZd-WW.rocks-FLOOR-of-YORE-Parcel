@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
-import { gsap } from 'gsap'
+import { gsap, TimelineMax as TL } from 'gsap'
 
 import assSmoke from 'url:/src/shared/smoke/smoke_3.png'
 import assSmokeAlpha from 'url:/src/shared/smoke/smoke_3_alpha.png'
@@ -34,7 +34,7 @@ const setTunnelEnvironment = ( { floaters = true, smoke = true } = {} ) => {
   if ( smoke ) setTunnelSmoke()
 }
 
-const setTunnelGirders = ( { girders = 30, depth = 3600 } = {} ) => {
+const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
   const girderSpacing = 575
   const zoomSpeed = 25
 
@@ -82,7 +82,7 @@ const setTunnelGirders = ( { girders = 30, depth = 3600 } = {} ) => {
         const backBulbs = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampBackBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampBackBulb`, true ) ]
         const frontBulbs = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampFrontBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampFrontBulb`, true ) ]
         backBulbs.forEach( bulb => {
-          if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + 1000 ) ) {
+          if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPostTurnDepthAdjustment ) ) {
             if ( g.bttf.blink[bulb.name] ) {
               bulb.material.emissiveIntensity += 0.25
               g.bttf.lampLights[bulb.name].intensity += 0.075
@@ -98,7 +98,7 @@ const setTunnelGirders = ( { girders = 30, depth = 3600 } = {} ) => {
           }
         } )
         frontBulbs.forEach( bulb => {
-          if ( gdrGrp.position.z < -( g.bttf.pilotingDepth + 1000 ) ) {
+          if ( gdrGrp.position.z < -( g.bttf.pilotingDepth + g.bttf.lampPostTurnDepthAdjustment ) ) {
             if ( g.bttf.blink[bulb.name] ) {
               bulb.material.emissiveIntensity += 0.25
               g.bttf.lampLights[bulb.name].intensity += 0.075
@@ -113,11 +113,13 @@ const setTunnelGirders = ( { girders = 30, depth = 3600 } = {} ) => {
             if ( g.bttf.lampLights[bulb.name].intensity > 0 ) g.bttf.lampLights[bulb.name].intensity -= 0.075
           }
         } )
-        if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + 1000 ) ) {
+        if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPostTurnDepthAdjustment ) ) {
           if ( lampPostPair.children[0].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[0].rotateY( threeMake.degToRad( -10 ) )
           if ( lampPostPair.children[1].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[1].rotateY( threeMake.degToRad( 10 ) )
         }
       }
+      if ( gdrGrp.position.z >= girderSpacing - tunnelDepth && gdr.material.opacity > 0 ) gdr.material.opacity = 0
+      else if ( gdr.material.opacity < 1 ) gdr.material.opacity += 0.01
       if ( gdrGrp.position.z >= 0 ) {
         gdrGrp.position.z = 0 - ( girderSpacing * ( girders - 1 ) )
         if ( lampPostPair ) {
@@ -125,7 +127,6 @@ const setTunnelGirders = ( { girders = 30, depth = 3600 } = {} ) => {
           lampPostPair.children[0].position.x = randoNum( ( tvp.w * 0.25 ) + g.bttf.lampPostClearance.cx, ( tvp.w * 0.65 ) - g.bttf.lampPostClearance.cx - g.bttf.lampPostPairClearance ) - tvp.cx
           lampPostPair.children[0].position.y = randoNum( ( tvp.h * 0.3 ) + g.bttf.lampPostClearance.cy, ( tvp.h * 0.75 ) - g.bttf.lampPostClearance.cy ) - tvp.cy
           lampPostPair.children[1].rotateY( threeMake.degToRad( -180 ) )
-          console.log( { refreshed: g.bttf.lampPostPairClearance + g.bttf.lampPostClearance.w } )
           lampPostPair.children[1].position.x = lampPostPair.children[0].position.x + g.bttf.lampPostPairClearance + g.bttf.lampPostClearance.w
           lampPostPair.children[1].position.y = lampPostPair.children[0].position.y
         }
@@ -485,7 +486,6 @@ const pairLampPostsInto = ( lampPostPair, tvp ) => {
   rightLamp.name = `rightLamp${whichPair}`
   rightLamp.children[0].name = `rightLampGyro${whichPair}`
   threeMesh.mirrorMesh( rightLamp )
-  console.log( { first: g.bttf.lampPostPairClearance + g.bttf.lampPostClearance.w } )
   rightLamp.position.x += g.bttf.lampPostPairClearance + g.bttf.lampPostClearance.w
   lampPostPair.add( rightLamp )
 
@@ -512,12 +512,13 @@ const randoRotateDuration = ( min = 5.5, max = 7.5 ) => randoNum( min * 10, max 
 
 const wobbleLampPosts = lampPostPair => {
   lampPostPair.children.forEach( lampPost => {
+    const lpTL = new TL( { defaults: { overwrite: 'auto' } } )
     const randoRotate = {
       x: randoRotateAxis(),
       y: randoRotateAxis(),
       z: randoRotateAxis(),
     }
-    g.tL.dL.fromTo( lampPost.children[0].rotation, {
+    lpTL.fromTo( lampPost.children[0].rotation, {
       x: -randoRotate.x,
     }, {
       duration: randoRotateDuration(),

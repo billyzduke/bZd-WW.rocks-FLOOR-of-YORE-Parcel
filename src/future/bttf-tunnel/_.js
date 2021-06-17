@@ -17,7 +17,7 @@ import { deObscureThen } from '/src/obscuro/_'
 import { setTunnelEnvironment } from './environment/_'
 
 const setBTTF = ( {
-  car = true, controls = false, floaters = true, fog = true, smoke = true, stats = false, tunnel = true,
+  car = true, controls = false, floaters = true, fog = false, smoke = true, stats = false, tunnel = true,
 } = {} ) => {
   if ( !g.bttf ) {
     g.bttf = {
@@ -48,6 +48,7 @@ const setBTTF = ( {
         red: threeMake.color( 0xfc252a ),
       },
       lampPostClearance: {},
+      lampPostTurnDepthAdjustment: 500,
       lampPostPairClearance: 1024,
       lve: false,
       m: {
