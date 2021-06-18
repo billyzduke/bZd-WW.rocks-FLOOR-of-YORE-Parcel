@@ -63,7 +63,7 @@ const setBTTF = ( {
             max: 0.75,
           },
         },
-        visible: false,
+        visible: controls,
       },
       lve: false,
       m: {
@@ -181,6 +181,7 @@ const setBTTF = ( {
       if ( stats ) g.bttf.stats.begin()
       g.bttf.raf = g.window.requestAnimationFrame( g.bttf.ani.go )
       g.bttf.renderer.render( g.bttf.scene, g.bttf.camera )
+      g.bttf.renderer.state.reset()
       bttfAnim.updateAnimationFrame()
       if ( stats ) g.bttf.stats.end()
       if ( startYourEngines && g.obscure ) deObscureThen()

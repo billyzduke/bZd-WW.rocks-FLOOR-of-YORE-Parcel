@@ -75,41 +75,49 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
       if ( lampPostPair.children.length === 2 ) {
         const backBulbs = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampBackBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampBackBulb`, true ) ]
         const frontBulbs = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampFrontBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampFrontBulb`, true ) ]
+        const rotators = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampRotator`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampRotator`, true ) ]
         backBulbs.forEach( bulb => {
           if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPosts.turnDepthAdjustment ) ) {
             if ( g.bttf.blink[bulb.name] ) {
               bulb.material.emissiveIntensity += 0.25
-              g.bttf.lampLights[bulb.name].intensity += 0.075
+              if ( g.bttf.lampLights[bulb.name] ) g.bttf.lampLights[bulb.name].intensity += 0.075
               if ( bulb.material.emissiveIntensity >= 5 ) g.bttf.blink[bulb.name] = false
             } else {
               bulb.material.emissiveIntensity -= 0.25
-              g.bttf.lampLights[bulb.name].intensity -= 0.075
+              if ( g.bttf.lampLights[bulb.name] ) g.bttf.lampLights[bulb.name].intensity -= 0.075
               if ( bulb.material.emissiveIntensity <= 0 ) g.bttf.blink[bulb.name] = true
             }
           } else {
             if ( bulb.material.emissiveIntensity > 0 ) bulb.material.emissiveIntensity -= 0.25
-            if ( g.bttf.lampLights[bulb.name].intensity > 0 ) g.bttf.lampLights[bulb.name].intensity -= 0.075
+            if ( g.bttf.lampLights[bulb.name] && g.bttf.lampLights[bulb.name].intensity > 0 ) g.bttf.lampLights[bulb.name].intensity -= 0.075
           }
         } )
         frontBulbs.forEach( bulb => {
           if ( gdrGrp.position.z < -( g.bttf.pilotingDepth + g.bttf.lampPosts.turnDepthAdjustment ) ) {
             if ( g.bttf.blink[bulb.name] ) {
               bulb.material.emissiveIntensity += 0.25
-              g.bttf.lampLights[bulb.name].intensity += 0.075
+              if ( g.bttf.lampLights[bulb.name] ) g.bttf.lampLights[bulb.name].intensity += 0.075
               if ( bulb.material.emissiveIntensity >= 5 ) g.bttf.blink[bulb.name] = false
             } else {
               bulb.material.emissiveIntensity -= 0.25
-              g.bttf.lampLights[bulb.name].intensity -= 0.075
+              if ( g.bttf.lampLights[bulb.name] ) g.bttf.lampLights[bulb.name].intensity -= 0.075
               if ( bulb.material.emissiveIntensity <= 0 ) g.bttf.blink[bulb.name] = true
             }
           } else {
             if ( bulb.material.emissiveIntensity > 0 ) bulb.material.emissiveIntensity -= 0.25
-            if ( g.bttf.lampLights[bulb.name].intensity > 0 ) g.bttf.lampLights[bulb.name].intensity -= 0.075
+            if ( g.bttf.lampLights[bulb.name] && g.bttf.lampLights[bulb.name].intensity > 0 ) g.bttf.lampLights[bulb.name].intensity -= 0.075
           }
+        } )
+        rotators.forEach( rotator => {
+          rotator.rotateY( -threeMake.degToRad( 2 ) )
+          if ( rotator.intensity < 1.5 ) rotator.intensity += 0.075
         } )
         if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPosts.turnDepthAdjustment ) ) {
           if ( lampPostPair.children[0].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[0].rotateY( threeMake.degToRad( -10 ) )
           if ( lampPostPair.children[1].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[1].rotateY( threeMake.degToRad( 10 ) )
+          rotators.forEach( rotator => {
+            if ( rotator.intensity > 0 ) rotator.intensity -= 0.075
+          } )
         }
       }
       if ( gdrGrp.position.z >= -g.bttf.tunnel.girderSpacing && gdr.material.opacity > 0 ) gdr.material.opacity = 0
@@ -117,7 +125,10 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
       if ( gdrGrp.position.z >= 0 ) {
         gdrGrp.position.z = 0 - ( g.bttf.tunnel.girderSpacing * ( girders - 1 ) )
         if ( lampPostPair.children.length === 2 ) {
-          if ( g.bttf.lampPostPairs.visible ) lampPostPair.visible = true
+          if ( g.bttf.lampPostPairs.visible ) {
+            lampPostPair.visible = true
+            console.log( { visible: lampPostPair.visible } )
+          }
           lampPostPair.children[0].rotateY( threeMake.degToRad( 180 ) )
           lampPostPair.children[0].position.x = randoNum( ( tvp.w * g.bttf.lampPostPairs.position.x.min ) + g.bttf.lampPosts.clearance.cx, ( tvp.w * g.bttf.lampPostPairs.position.x.max ) - g.bttf.lampPosts.clearance.cx - g.bttf.lampPostPairs.clearance ) - tvp.cx
           lampPostPair.children[0].position.y = randoNum( ( tvp.h * g.bttf.lampPostPairs.position.y.min ) + g.bttf.lampPosts.clearance.cy, ( tvp.h * g.bttf.lampPostPairs.position.y.max ) - g.bttf.lampPosts.clearance.cy ) - tvp.cy
@@ -156,7 +167,7 @@ const setSmokePuff = ( {
 }
 
 const setTunnelSmoke = ( {
-  puffsPerGirder = 3, freePuffs = 16, depth = 3000, tvp,
+  puffsPerGirder = 2, freePuffs = 16, depth = 3000, tvp,
 } = {} ) => {
   const smokem = [
     'c56fdd',
@@ -279,10 +290,13 @@ const pairLampPostsInto = ( lampPostPair, tvp ) => {
     return loader.load(
       assFloatingLightShapes,
       pathsData => {
+        const leftLamp = new THREE.Group()
+        leftLamp.name = `leftLamp${whichPair}`
+        const leftLampGyro = new THREE.Group()
+        leftLampGyro.name = `leftLampGyro${whichPair}`
+
         const { paths } = pathsData
         const supportRodShape = SVGLoader.createShapes( paths[0] )
-
-        const leftLampGyro = new THREE.Group()
 
         const lineSegments = [
           [ [ 0, 0, 0 ], [ 0, -42, 0 ] ],
@@ -473,8 +487,11 @@ const pairLampPostsInto = ( lampPostPair, tvp ) => {
         } )
         const levitatorTop = new THREE.Mesh( levitatorTopGeo, levitatorTopMat )
         levitatorTop.castShadow = levitatorTop.receiveShadow = true
-        levitatorTop.position.set( 16.5, -105, -21 )
-        floaterBase.add( levitatorTop )
+        const levitatorRotator = new THREE.Group()
+        levitatorRotator.name = `lampPostPair_${whichPair}_leftLampRotator`
+        levitatorRotator.add( levitatorTop )
+        levitatorRotator.position.set( 16.5, -105, -21 )
+        floaterBase.add( levitatorRotator )
 
         const levitatorMiddleGeo = new THREE.CylinderGeometry( 96, 24, 108, 16, 1, true )
         const levitatorMiddleMap = threeMake.textureLoader( assGoldMetal )
@@ -502,10 +519,6 @@ const pairLampPostsInto = ( lampPostPair, tvp ) => {
 
         leftLampGyro.add( floaterBase )
 
-        const leftLamp = new THREE.Group()
-        leftLamp.name = `leftLamp${whichPair}`
-        leftLampGyro.name = `leftLampGyro${whichPair}`
-
         leftLamp.add( leftLampGyro )
         threeMesh.mirrorMesh( leftLamp )
         leftLamp.rotateY( threeMake.degToRad( 90 ) )
@@ -532,6 +545,7 @@ const pairLampPostsInto = ( lampPostPair, tvp ) => {
   rightLamp.position.x += g.bttf.lampPostPairs.clearance + g.bttf.lampPosts.clearance.w
   lampPostPair.add( rightLamp )
 
+  lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampRotator`, true ).name = `${lampPostPair.name}_rightLampRotator`
   rightLamp.children[0].children[0].children[1].children[1].name = `lampPostPair_${whichPair}_rightLampFrontBulb`
   rightLamp.children[0].children[0].children[1].children[1].material = new THREE.MeshPhysicalMaterial( {
     color: g.bttf.lampLightBulbColors.yellow,
@@ -606,36 +620,61 @@ const setTunnelFloaters = tvp => {
 }
 
 const addSpotLightsToLampPostPair = lampPostPair => {
-  const bulbs = {
-    back: [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampBackBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampBackBulb`, true ) ],
-    front: [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampFrontBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampFrontBulb`, true ) ],
-  }
-  Object.keys( bulbs ).forEach( bulbSet => {
-    bulbs[bulbSet].forEach( bulb => {
-      g.bttf.blink[bulb.name] = false
-      const spotLight = new THREE.SpotLight( bulbSet === 'back' ? g.bttf.lampLightBulbColors.red : g.bttf.lampLightBulbColors.yellow, bulbSet === 'back' ? 0 : 1.5, 0, threeMake.degToRad( 12 ), 0.25 )
+  // the lamplights themselves
+  // const bulbs = {
+  //   back: [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampBackBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampBackBulb`, true ) ],
+  //   front: [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampFrontBulb`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampFrontBulb`, true ) ],
+  // }
+  // Object.keys( bulbs ).forEach( bulbSet => {
+  //   bulbs[bulbSet].forEach( bulb => {
+  //     g.bttf.blink[bulb.name] = false
+  //     const spotLight = new THREE.SpotLight( bulbSet === 'back' ? g.bttf.lampLightBulbColors.red : g.bttf.lampLightBulbColors.yellow, bulbSet === 'back' ? 0 : 1.5, 0, threeMake.degToRad( 12 ), 0.25 )
+  //     spotLight.castShadow = true // default false
+  //     spotLight.position.x = -18
+  //     spotLight.position.y = 55
+  //     // g.bttf.scene.add( new THREE.SpotLightHelper( spotLight ) )
+  //     bulb.add( spotLight )
+  //     g.bttf.lampLights[bulb.name] = spotLight
+  //     const spotLightTarget = new THREE.Mesh( new THREE.TetrahedronGeometry(), new THREE.MeshBasicMaterial( { opacity: 0, depthWrite: false, transparent: true } ) )
+  //     spotLightTarget.position.x = -256
+  //     spotLightTarget.position.y = 55
+  //     bulb.add( spotLightTarget )
+  //     spotLight.target = spotLightTarget
+  //   } )
+  // } )
+  // if ( !g.bttf.inScene.lampLightBulbs ) g.bttf.inScene.lampLightBulbs = []
+  // g.bttf.inScene.lampLightBulbs.push( bulbs )
+
+  // rotator
+  const rotators = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampRotator`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampRotator`, true ) ]
+  rotators.forEach( rotator => {
+    // let rotatePair = 0
+    // for ( let rp = 0; rp < 3; rp++ ) {
+    const rotatorPair = new THREE.Group()
+    for ( let rpp = 0; rpp < 2; rpp++ ) {
+      const spotLight = new THREE.SpotLight( g.bttf.lampLightBulbColors.yellow, 1.5, 0, threeMake.degToRad( 6 ), 0.25 )
       spotLight.castShadow = true // default false
-      spotLight.position.x = -18
-      spotLight.position.y = 55
-      // g.bttf.scene.add( new THREE.SpotLightHelper( spotLight ) )
-      bulb.add( spotLight )
-      g.bttf.lampLights[bulb.name] = spotLight
+      rotatorPair.add( spotLight )
+      spotLight.position.z = rpp ? -90 : 90
       const spotLightTarget = new THREE.Mesh( new THREE.TetrahedronGeometry(), new THREE.MeshBasicMaterial( { opacity: 0, depthWrite: false, transparent: true } ) )
-      spotLightTarget.position.x = -256
-      spotLightTarget.position.y = 55
-      bulb.add( spotLightTarget )
+      spotLightTarget.position.z = rpp ? -500 : 500
+      rotatorPair.add( spotLightTarget )
       spotLight.target = spotLightTarget
-    } )
+      // g.bttf.scene.add( new THREE.SpotLightHelper( spotLight ) )
+    }
+    // rotatorPair.rotateY( threeMake.degToRad( rotatePair ) )
+    // rotatePair += 120
+    // if ( rotatePair >= 360 ) rotatePair = 0
+    rotator.add( rotatorPair )
+    // }
   } )
-  if ( !g.bttf.inScene.lampLightBulbs ) g.bttf.inScene.lampLightBulbs = []
-  g.bttf.inScene.lampLightBulbs.push( bulbs )
 
   console.log( { gBTTF: g.bttf } )
 }
 
 const setLampPosts = tvp => {
   const lampPostPair = new THREE.Group()
-  lampPostPair.visible = false
+  lampPostPair.visible = g.bttf.lampPostPairs.visible
   if ( !g.bttf.inScene.lampPostPairs ) g.bttf.inScene.lampPostPairs = []
   lampPostPair.name = `lampPostPair_${padStr( g.bttf.inScene.lampPostPairs.length )}`
   g.bttf.inScene.tunnel.children[g.bttf.inScene.tunnel.children.length - 1].add( lampPostPair )
