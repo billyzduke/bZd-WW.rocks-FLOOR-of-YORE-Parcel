@@ -202,13 +202,13 @@ const randoColor = ( as = 'hex' ) => {
 
 const roundNumberTo = ( num, dec = 0 ) => Math.round( ( ( num + Number.EPSILON ) * ( 10 ** dec ) ) / ( 10 ** dec ) )
 
-const cleanUp = messes => {
-  if ( messes && messes.length ) {
-    messes.forEach( ( _, cu ) => {
-      ifFunctionThenCall( messes[cu] )
-      messes.cu = undefined
+const cleanUp = mess => {
+  if ( mess && mess.length ) {
+    mess.forEach( ( _, cu ) => {
+      ifFunctionThenCall( mess[cu] )
+      mess.cu = undefined
     } )
-  } else devLog( { messEscapedCleaning: messes, typeOfMess: typeof messes } )
+  } else devLog( { messEscapedCleaning: mess, typeOfMess: typeof mess } )
   return []
 }
 

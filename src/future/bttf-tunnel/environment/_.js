@@ -112,7 +112,7 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
           if ( lampPostPair.children[1].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[1].rotateY( threeMake.degToRad( 10 ) )
         }
       }
-      if ( gdrGrp.position.z >= g.bttf.tunnel.girderSpacing - tunnelDepth && gdr.material.opacity > 0 ) gdr.material.opacity = 0
+      if ( gdrGrp.position.z >= -g.bttf.tunnel.girderSpacing && gdr.material.opacity > 0 ) gdr.material.opacity = 0
       else if ( gdr.material.opacity < 1 ) gdr.material.opacity += 0.01
       if ( gdrGrp.position.z >= 0 ) {
         gdrGrp.position.z = 0 - ( g.bttf.tunnel.girderSpacing * ( girders - 1 ) )
@@ -130,7 +130,7 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
         const girderViewPort = threeMake.visibleSizeAtZDepth( gdrGrp.position.z )
         const dz = gdrGrp.position.z / ( ( g.bttf.tunnel.girderSpacing * girders ) - g.bttf.tunnel.girderSpacing )
         gdrGrp.position.x = -( ( g.bttf.inScene.deLorean.position.x / g.main.w ) * girderViewPort.cx ) * ( 1 - ( girderViewPort.w / tvp.w ) ) * Math.cbrt( dz )
-        gdrGrp.position.y = -( ( g.bttf.inScene.deLorean.position.y / g.main.h ) * girderViewPort.cy ) * ( 1 - ( girderViewPort.h / tvp.h ) ) * Math.cbrt( dz ) - 250 // delorean origin is still in the undercarriage
+        gdrGrp.position.y = -( ( g.bttf.inScene.deLorean.position.y / g.main.h ) * girderViewPort.cy ) * ( 1 - ( girderViewPort.h / tvp.h ) ) * Math.cbrt( dz ) - 300 // delorean origin is still in the undercarriage
       }
     }
   }
@@ -139,14 +139,14 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
 }
 
 const setSmokePuff = ( {
-  baseZ = 0, exclude = [ 0 ], spacingZ = 0, svp = {}, varZ = 1000,
+  baseZ = 0, exclude = [ 0 ], spacingZ = 0, svp = {}, varZ = 1000, margin = 0,
 } = {} ) => {
   let z = 0
   while ( exclude.includes( z ) ) z = randoNum( 0, varZ ) - baseZ
   exclude.push( z )
   for ( let spz = 1; spz <= spacingZ; spz++ ) exclude.push( z + spz, z - spz )
-  const x = randoNum( 0, svp.w ) - svp.cx
-  const y = randoNum( 0, svp.h ) - svp.cy
+  const x = randoNum( margin, svp.w - margin ) - svp.cx
+  const y = randoNum( margin, svp.h - margin ) - svp.cy
   return {
     x,
     y,
@@ -173,6 +173,8 @@ const setTunnelSmoke = ( {
       w: depth + 600,
     }
     smokeSize.h = ( smokeSize.w * smokeTexture.image.width ) / smokeTexture.image.height // maintain aspect ratio of original image
+    let margin = smokeSize.h > smokeSize.w ? smokeSize.h : smokeSize.w
+    margin /= 2
     const smokeGeo = new THREE.PlaneGeometry( smokeSize.h, smokeSize.w, 25, 25 )
     const svp = threeMake.visibleSizeAtZDepth( smokeDepth )
     const usedZs = [ 0 ]
@@ -182,7 +184,7 @@ const setTunnelSmoke = ( {
     for ( let gdr = 0; gdr < g.bttf.grp.tunnel.children.length - 1; gdr++ ) {
       puffPosZ = ( g.bttf.tunnel.girderSpacing - girderPuffSpacing ) / 2
       for ( let pf = 0; pf < puffsPerGirder; pf++ ) {
-        const puffPos = setSmokePuff( { svp: tvp } )
+        const puffPos = setSmokePuff( { margin, svp: tvp } )
         const smokeMat = new THREE.MeshLambertMaterial( {
           alphaMap: smokeAlphaTexture, emissiveIntensity: 0.2, emissiveMap: smokeAlphaTexture, map: smokeTexture, transparent: true,
         } )
@@ -254,7 +256,7 @@ const setTunnelSmoke = ( {
               g.bttf.inScene.allSmoke[spf].material.depthWrite = false
               g.bttf.inScene.allSmoke[spf].material.opacity = 0
               if ( whichGirderGroup.position.z >= -26 ) {
-                const puffPos = setSmokePuff( { svp: tvp } )
+                const puffPos = setSmokePuff( { margin, svp: tvp } )
                 g.bttf.inScene.allSmoke[spf].position.set( puffPos.x, puffPos.y, -puffPosZ )
                 puffPosZ += girderPuffSpacing / 2
                 if ( puffPosZ > g.bttf.tunnel.girderSpacing ) puffPosZ = ( g.bttf.tunnel.girderSpacing - girderPuffSpacing ) / 2
