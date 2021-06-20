@@ -63,7 +63,6 @@ const setBTTF = ( {
             max: 0.75,
           },
         },
-        visible: controls,
       },
       lve: false,
       m: {
@@ -193,6 +192,10 @@ const setBTTF = ( {
   }
 }
 
+const togglePauseThree = () => {
+  if ( g.bttf ) g.bttf.on = !g.bttf.on
+}
+
 export {
-  setBTTF,
+  setBTTF, togglePauseThree
 }

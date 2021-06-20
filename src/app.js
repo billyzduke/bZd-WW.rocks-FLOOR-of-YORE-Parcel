@@ -11,7 +11,7 @@ import { setTitles } from '/src/main-stage/titles/_'
 import { setCurtains } from '/src/main-stage/curtains/_'
 import { setFloor } from '/src/main-stage/floor/_'
 import { setShaiHulud } from '/src/main-stage/shai-hulud/_'
-import { setBTTF } from '/src/future/bttf-tunnel/_'
+import { setBTTF, togglePauseThree } from '/src/future/bttf-tunnel/_'
 import { setScene } from '/src/scenes/_'
 import { setSceneSkipper } from '/src/shared/dev/_'
 import { resetCtrRingPos1 } from '/src/main-stage/baubles/layer-01/_'
@@ -40,6 +40,7 @@ const loadApp = () => {
       'rotateZ0',
       'subSceneSkippers',
       'sceneSkipper',
+      'toggleFlyAlongPath',
       'threeCamX',
       'threeCamY',
       'threeCamZ',
@@ -189,7 +190,7 @@ const loadApp = () => {
   if ( g.dev && g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
     setBTTF( {
-      controls: false, fog: false, smoke: true, stats: true, tunnel: true,
+      controls: false, smoke: true, stats: true,
     } )
     prepDeLorean()
     g.el.lynchBox.style.opacity = 1
@@ -199,6 +200,9 @@ const loadApp = () => {
     startDeLorean( { force: true } )
     setAddOn( '#toggleFlyAlongPath', 'click', () => {
       toggleFlyAlongPath()
+    } )
+    setAddOn( '#togglePauseThree', 'click', () => {
+      togglePauseThree()
     } )
   }
 

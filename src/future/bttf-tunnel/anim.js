@@ -74,7 +74,6 @@ const backItUp = () => {
       ease: 'power2.out',
       onComplete: function () {
         allowDragging()
-        g.bttf.lampPostPairs.visible = true
         g.tL.dL.to( g.bttf.inScene.carGyro.rotation, {
           duration: 5.5,
           ease: 'power1.inOut',

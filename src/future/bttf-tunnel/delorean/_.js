@@ -305,6 +305,7 @@ const toggleFlightMode = () => {
 
 const toggleFlyAlongPath = () => {
   if ( g.bttf.on ) {
+    g.el.toggleFlyAlongPath.style.display = 'none'
     g.bttf.mov = true
   }
 }
