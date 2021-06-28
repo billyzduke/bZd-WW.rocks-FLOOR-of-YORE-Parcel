@@ -190,7 +190,7 @@ const loadApp = () => {
   if ( g.dev && g.el.future.classList.contains( 'model' ) ) {
     toggleFermata( { exceptTLs: [ 'dL' ] }, true )
     setBTTF( {
-      controls: false, smoke: true, stats: true,
+      controls: true, smoke: false, stats: true, tunnel: false,
     } )
     prepDeLorean()
     g.el.lynchBox.style.opacity = 1

@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 
-import assExtBackBarFace from 'url:/src/future/bttf-tunnel/delorean/exterior/backBarFace.png'
+import assBackBar from 'url:/src/future/bttf-tunnel/delorean/exterior/backBar.png'
+import assBackBarEmissive from 'url:/src/future/bttf-tunnel/delorean/exterior/backBarEmissive.png'
 import assRearVentTop from 'url:/src/future/bttf-tunnel/delorean/exterior/rearVentTop.png'
 import assRearVentSide from 'url:/src/future/bttf-tunnel/delorean/exterior/rearVentside.png'
 import assRearVentLeftBackTop from 'url:/src/future/bttf-tunnel/delorean/exterior/rearVentLeftBackTop.png'
@@ -27,129 +28,32 @@ import * as threeMesh from '/src/shared/three/mesh'
 import * as threeX from '/src/shared/three/x'
 
 const makeBackBar = () => {
-  const bb = {
-    c: 15,
-    h: 40,
-    w: 92,
-  }
-  const msh = { ...g.bttf.msh }
-  const barFaceMats = []
-  for ( let face = 0; face < 8; face++ ) {
-    const mshMap = {
-      map: threeMake.textureLoader( assExtBackBarFace ),
-    }
-    barFaceMats[face] = new THREE.MeshBasicMaterial( {
-      ...msh,
-      ...mshMap,
-    } )
-  }
-  barFaceMats.forEach( ( _, f ) => {
-    if ( barFaceMats[f].map ) {
-      barFaceMats[f].map.wrapS = barFaceMats[f].map.wrapT = THREE.RepeatWrapping
-
-      switch ( f ) {
-        case 0:
-          barFaceMats[f].map.repeat.set( ( bb.w - ( bb.c * 2 ) ) / bb.w, bb.c / bb.h )
-          barFaceMats[f].map.offset.x = bb.c / bb.w
-          barFaceMats[f].map.offset.y = ( bb.h - bb.c ) / bb.h
-          break
-        case 1:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
-          barFaceMats[f].map.rotation = threeMake.degToRad( -90 )
-          break
-        case 2:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, ( bb.h - bb.c ) / bb.h )
-          barFaceMats[f].map.rotation = threeMake.degToRad( -90 )
-          break
-        case 3:
-          barFaceMats[f].map.repeat.set( 1, bb.c / bb.h )
-          barFaceMats[f].map.offset.y = ( bb.h - bb.c ) / bb.h
-          break
-        case 4:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
-          barFaceMats[f].map.rotation = threeMake.degToRad( 90 )
-          barFaceMats[f].map.offset.x = ( bb.w - bb.c ) / bb.w
-          break
-        case 5:
-          barFaceMats[f].map.repeat.set( bb.c / bb.w, 1 )
-          barFaceMats[f].map.rotation = threeMake.degToRad( -90 )
-          break
-        case 6:
-          barFaceMats[f].map.rotation = threeMake.degToRad( 180 )
-          break
-      }
-    }
+  const barCrv = [
+    [ 7.5, 0, 0 ],
+    [ 7.5, -25, 0 ],
+    [ 15, -32.5, 0 ],
+    [ 46, -34, 0 ],
+    [ 77, -32.5, 0 ],
+    [ 84.5, -25, 0 ],
+    [ 84.5, 0, 0 ],
+  ]
+  const crvPts = threeMake.createVector3s( barCrv )
+  const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
+  const tubeMap = threeMake.textureLoader( assBackBar )
+  const tubeEmissiveMap = threeMake.textureLoader( assBackBarEmissive )
+  const tubeGeo = new THREE.TubeGeometry( tubeCrv, 24, 7.5, 10, false )
+  const tubeMat = new THREE.MeshStandardMaterial( {
+    map: tubeMap,
+    side: THREE.DoubleSide,
+    emissive: threeMake.color( 0xffffff ),
+    emissiveIntensity: 0.64,
+    emissiveMap: tubeEmissiveMap,
   } )
-
+  const tubeMsh = new THREE.Mesh( tubeGeo, tubeMat )
   return {
-    // struct: [ 92, 15, 40 ],
-    position: [ 0, -284, -202 ],
-    children: {
-      backBarInner: {
-        struct: [ 62, 15, 25 ],
-        position: [ 0, 0, 7.5 ],
-        children: {
-          backBarInnerTop: {
-            struct: [ 62, 15 ],
-            position: [ 0, 0, -25 ],
-            mat: barFaceMats[0],
-          },
-          backBarInnerLeft: {
-            struct: [ 25, 15 ],
-            pivot: [ 12.5 ],
-            position: [ 31 ],
-            rotation: [ 0, 90 ],
-            mat: barFaceMats[1],
-          },
-          backBarInnerRight: {
-            struct: [ 25, 15 ],
-            pivot: [ 12.5 ],
-            position: [ -31 ],
-            rotation: [ 180, -90 ],
-            mat: barFaceMats[2],
-          },
-        },
-      },
-      backBarOuter: {
-        geo: 'box',
-        struct: [ 92, 15, 40 ],
-        children: {
-          backBarOuterTop: {
-            struct: [ 92, 15 ],
-            position: [ 0, 0, -32.5 ],
-            mat: barFaceMats[3],
-          },
-          backBarOuterLeft: {
-            struct: [ 40, 15 ],
-            pivot: [ -20 ],
-            position: [ 46, 0, 7.5 ],
-            rotation: [ 0, -90 ],
-            mat: barFaceMats[4],
-          },
-          backBarOuterRight: {
-            struct: [ 40, 15 ],
-            pivot: [ 20 ],
-            position: [ -46, 0, 7.5 ],
-            rotation: [ 0, 90 ],
-            mat: barFaceMats[5],
-          },
-          backBarOuterFront: {
-            struct: [ 92, 40 ],
-            pivot: [ 0, 20 ],
-            position: [ 0, 7.5, -32.5 ],
-            rotation: [ 90 ],
-            mat: barFaceMats[6],
-          },
-          backBarOuterBack: {
-            struct: [ 92, 40 ],
-            pivot: [ 0, 20 ],
-            position: [ 0, -7.5, 7.5 ],
-            rotation: [ -90 ],
-            mat: barFaceMats[7],
-          },
-        },
-      },
-    },
+    msh: tubeMsh,
+    position: [ -46, -284, -202 ],
+    rotation: { x: 90 },
   }
 }
 
@@ -445,12 +349,13 @@ const makeLightBarRails = where => {
       const crvPts = threeMake.createVector3s( lb.crv )
       const tubeCrv = new THREE.CatmullRomCurve3( crvPts )
       const tubeMap = threeMake.textureLoader( assPipeMetal03 )
-      const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 32, false )
+      const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 10, false )
       const tubeMat = new THREE.MeshStandardMaterial( {
         color: 0xcccccc,
-        side: THREE.DoubleSide,
+        emissive: threeMake.color(0xffffff),
+        // emissiveIntensity: 0.24,
         emissiveMap: tubeMap,
-        emissive: threeMake.color( 0xffffff ),
+        side: THREE.DoubleSide,
       } )
       const tubeMsh = new THREE.Mesh( tubeGeo, tubeMat )
       if ( lbr % 2 ) threeMesh.mirrorMesh( tubeMsh )

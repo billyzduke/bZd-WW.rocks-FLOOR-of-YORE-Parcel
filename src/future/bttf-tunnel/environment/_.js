@@ -115,22 +115,30 @@ const setTunnelGirders = ( { girders = 25, depth = 3600 } = {} ) => {
         } )
         rotators.forEach( rotator => {
           rotator.rotateY( -threeMake.degToRad( 3 ) )
-          rotator.children.forEach( rChild => {
-            if ( typeof rChild.intensity !== 'undefined' && rChild.intensity < 3 ) rChild.intensity += 0.15
-          } )
         } )
         if ( gdrGrp.position.z >= -( g.bttf.pilotingDepth + g.bttf.lampPosts.turnDepthAdjustment ) ) {
           if ( lampPostPair.children[0].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[0].rotateY( threeMake.degToRad( -10 ) )
           if ( lampPostPair.children[1].rotation.y > threeMake.degToRad( -90 ) ) lampPostPair.children[1].rotateY( threeMake.degToRad( 10 ) )
           rotators.forEach( rotator => {
-            rotator.children.forEach( rChild => {
-              if ( typeof rChild.intensity !== 'undefined' && rChild.intensity > 0 ) rChild.intensity -= 0.15
+            rotator.children.forEach( rPair => {
+              rPair.children.forEach( rLight => {
+                if ( typeof rLight.intensity !== 'undefined' && rLight.intensity > 0 ) rLight.intensity -= 0.1
+              } )
+            } )
+          } )
+        } else {
+          rotators.forEach( rotator => {
+            rotator.children.forEach( rPair => {
+              rPair.children.forEach( rLight => {
+                if ( typeof rLight.intensity !== 'undefined' && rLight.intensity < 3 ) rLight.intensity += 0.1
+              } )
             } )
           } )
         }
       }
-      if ( gdrGrp.position.z >= -g.bttf.tunnel.girderSpacing && gdr.material.opacity > 0 ) gdr.material.opacity = 0
+      if ( gdrGrp.position.z >= -g.bttf.tunnel.girderSpacing && gdr.material.opacity > 0 ) gdr.material.opacity -= 0.05
       else if ( gdr.material.opacity < 1 ) gdr.material.opacity += 0.01
+      if ( lampPostPair.name.length && !g.bttf.drg ) lampPostPair.position.y += 10
       if ( gdrGrp.position.z >= 0 ) {
         gdrGrp.position.z = 0 - ( g.bttf.tunnel.girderSpacing * ( girders - 1 ) )
         if ( lampPostPair.name.length && g.bttf.drg ) {
@@ -173,7 +181,7 @@ const setSmokePuff = ( {
 }
 
 const setTunnelSmoke = ( {
-  puffsPerGirder = 2, freePuffs = 16, depth = 3000, tvp,
+  maxPuffsPerGirder = 2, freePuffs = 20, depth = 3000, tvp,
 } = {} ) => {
   const smokem = [
     'c56fdd',
@@ -200,6 +208,7 @@ const setTunnelSmoke = ( {
 
     for ( let gdr = 0; gdr < g.bttf.grp.tunnel.children.length - 1; gdr++ ) {
       puffPosZ = ( g.bttf.tunnel.girderSpacing - girderPuffSpacing ) / 2
+      const puffsPerGirder = randoNum( 0, maxPuffsPerGirder )
       for ( let pf = 0; pf < puffsPerGirder; pf++ ) {
         const puffPos = setSmokePuff( { margin, svp: tvp } )
         const smokeMat = new THREE.MeshLambertMaterial( {
@@ -324,6 +333,7 @@ const pairLampPostsInto = ( lampPostPair, tvp ) => {
           color: threeMake.color( 0x4f191f ),
           side: THREE.DoubleSide,
           emissive: threeMake.color( 0x4f191f ),
+          emissiveIntensity: 3,
           emissiveMap: supportRodEmissiveMap,
           map: supportRodMap,
         } )
@@ -656,8 +666,9 @@ const addSpotLightsToLampPostPair = lampPostPair => {
 
   // rotating ring of spotlights
   const rotators = [ lampPostPair.getObjectByName( `${lampPostPair.name}_leftLampRotator`, true ), lampPostPair.getObjectByName( `${lampPostPair.name}_rightLampRotator`, true ) ]
+  let rotatePair = 0
   rotators.forEach( rotator => {
-    let rotatePair = 0
+    if ( rotatePair > 0 ) rotatePair = 45
     for ( let rp = 0; rp < 2; rp++ ) {
       const rotatorPair = new THREE.Group()
       for ( let rpp = 0; rpp < 2; rpp++ ) {
@@ -687,7 +698,6 @@ const addSpotLightsToLampPostPair = lampPostPair => {
       }
       rotatorPair.rotateY( threeMake.degToRad( rotatePair ) )
       rotatePair += 90
-      // if ( rotatePair >= 360 ) rotatePair = 0
       rotator.add( rotatorPair )
     }
   } )
@@ -706,7 +716,7 @@ const addSpotLightsToLampPostPair = lampPostPair => {
 
 const setLampPosts = tvp => {
   const lampPostPair = new THREE.Group()
-  lampPostPair.position.y = -4000
+  lampPostPair.position.y = 10000
   if ( !g.bttf.inScene.lampPostPairs ) g.bttf.inScene.lampPostPairs = []
   lampPostPair.name = `lampPostPair_${padStr( g.bttf.inScene.lampPostPairs.length )}`
   g.bttf.inScene.tunnel.children[g.bttf.inScene.tunnel.children.length - 1].add( lampPostPair )

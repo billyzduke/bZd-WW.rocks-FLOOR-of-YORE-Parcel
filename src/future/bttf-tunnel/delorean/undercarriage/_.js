@@ -11,53 +11,21 @@ import assExhaustPipeInner from 'url:/src/future/bttf-tunnel/delorean/undercarri
 import g from '/src/shared/_'
 import * as threeMake from '/src/shared/three/make'
 
-const makeExhaustPipeFace = face => {
-  const rotation = [ 0, 0, 0 ]
-  const position = [ 0, 0, 0 ]
-  switch ( face ) {
-    case 'L':
-      position[0] = 9.5
-      rotation[1] = -90
-      break
-    case 'R':
-      position[0] = -9.5
-      rotation[1] = 90
-      break
-    case 'T':
-      position[2] = -9.5
-      rotation[1] = 180
-      break
-    case 'B':
-      position[2] = 9.5
-      break
-  }
-  return {
+const makeExhaustPipe = side => ( {
+  [`exP${side}`]: {
+    geo: 'cylinder',
     txtAss: assExhaustPipeOuter,
-    struct: [ 19, 40 ],
-    position,
-    rotation,
-  }
-}
-
-const makeExhaustPipe = side => {
-  const faces = [
-    'L',
-    'R',
-    'T',
-    'B',
-  ]
-  const pipe = {}
-  faces.forEach( face => {
-    pipe[`exP${side}${face}`] = makeExhaustPipeFace( face )
-  } )
-  pipe[`exP${side}C`] = {
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 9.5, 9.5, 40, 10, 1, true ],
+  },
+  [`exP${side}C`]: {
+    geo: 'circle',
+    struct: [ 9, 10 ],
     txtAss: assExhaustPipeInner,
-    struct: [ 18.5, 18.5 ],
-    position: [ 0, -10 ],
+    position: [ 0, -100 ],
     rotation: [ 90 ],
-  }
-  return pipe
-}
+  },
+} )
 
 const makeWheelMech = ( wheel, mobile ) => {
   const wheelIsFront = wheel.includes( 'F' )
@@ -144,14 +112,14 @@ const makeUnderCarriage = () => ( {
               position: [ 0, -132, -9 ],
               children: {
                 exPL: {
-                  struct: [ 19, 40, 19 ],
+                  // struct: [ 19, 40, 19 ],
                   children: makeExhaustPipe( 'L' ),
                   position: [ 123 ],
                 },
                 exPR: {
-                  struct: [ 19, 40, 19 ],
+                  // struct: [ 19, 40, 19 ],
                   children: makeExhaustPipe( 'R' ),
-                  position: [ -118 ],
+                  position: [ -117 ],
                 },
               },
             },

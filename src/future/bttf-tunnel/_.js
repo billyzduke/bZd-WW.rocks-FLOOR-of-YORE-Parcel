@@ -52,15 +52,15 @@ const setBTTF = ( {
         turnDepthAdjustment: 500,
       },
       lampPostPairs: {
-        clearance: 1024,
+        clearance: 1442,
         position: {
           x: {
             min: 0.33,
             max: 0.66,
           },
           y: {
-            min: 0.3,
-            max: 0.75,
+            min: 0.33,
+            max: 0.66,
           },
         },
       },
@@ -197,5 +197,5 @@ const togglePauseThree = () => {
 }
 
 export {
-  setBTTF, togglePauseThree
+  setBTTF, togglePauseThree,
 }
