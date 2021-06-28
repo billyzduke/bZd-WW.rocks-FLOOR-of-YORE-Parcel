@@ -23,6 +23,8 @@ import assBodyEngineLeft from 'url:/src/future/bttf-tunnel/delorean/body/bodyEng
 import assBodyEngineRight from 'url:/src/future/bttf-tunnel/delorean/body/bodyEngineUpperRight.png'
 import assBodyBackPlate from 'url:/src/future/bttf-tunnel/delorean/body/bodyBackPlate.png'
 import assBodyBackLedge from 'url:/src/future/bttf-tunnel/delorean/body/bodyBackLedge.png'
+import assBumperAftTop from 'url:/src/future/bttf-tunnel/delorean/body/bumperAftTop.jpg'
+import assBumperAftBottom from 'url:/src/future/bttf-tunnel/delorean/body/bumperAftBottom.jpg'
 import * as threeMake from '/src/shared/three/make'
 
 const makeBody = () => ( {
@@ -320,24 +322,25 @@ const makeBody = () => ( {
       rotation: { x: -22 },
     },
     bumperAftUpper: {
-      color: threeMake.color( 0x2f2f2f ),
-      struct: [ 376, 32 ],
+      txtAss: assBumperAftTop,
+      struct: [ 375.5, 33 ],
       pivot: [ 0, 16.5 ],
-      position: [ 0, -486.5, -72 ],
-      rotation: { x: -90 },
+      position: [ 0, -486.5, -71 ],
+      rotation: { x: -90, y: 180 },
     },
     bumperAftMiddle: {
       color: threeMake.color( 0x101010 ),
-      struct: [ 376.5, 9 ],
+      struct: [ 377, 9 ],
       pivot: [ 0, 4.5 ],
-      position: [ 0, -487, -72 ],
+      position: [ 0, -487, -71 ],
+      // rotation: { x: 7.125 },
     },
     bumperAftLower: {
-      color: threeMake.color( 0x18171d ),
-      struct: [ 381, 50 ],
+      txtAss: assBumperAftBottom,
+      struct: [ 378.5, 43 ],
       pivot: [ 0, 25 ],
-      position: [ 0, -474, -41 ],
-      rotation: { x: -90 },
+      position: [ 0, -480, -37 ],
+      rotation: { x: -90, y: 180 },
     },
   },
 } )

@@ -12,18 +12,19 @@ import g from '/src/shared/_'
 import * as threeMake from '/src/shared/three/make'
 
 const makeExhaustPipe = side => ( {
-  [`exP${side}`]: {
+  [`exP${side}outer`]: {
     geo: 'cylinder',
     txtAss: assExhaustPipeOuter,
     // eslint-disable-next-line array-bracket-newline, array-element-newline
     struct: [ 9.5, 9.5, 40, 10, 1, true ],
   },
-  [`exP${side}C`]: {
-    geo: 'circle',
-    struct: [ 9, 10 ],
+  [`exP${side}inner`]: {
+    geo: 'sphere',
+    // eslint-disable-next-line array-bracket-newline, array-element-newline
+    struct: [ 9.25, 10, 10, 0, Math.PI * 2, 0, Math.PI / 2 ],
     txtAss: assExhaustPipeInner,
-    position: [ 0, -100 ],
-    rotation: [ 90 ],
+    position: [ 0, -10 ],
+    rotation: { y: 18 },
   },
 } )
 
