@@ -57,7 +57,7 @@ const makeSeats = () => {
       const seatBaseFrontMsh = new THREE.Mesh( seatBaseFrontGeo, seatMat )
       const seatBaseFronts = [ seatBaseFrontMsh, seatBaseFrontMsh.clone() ]
       g.bttf.inScene.seats.forEach( ( _, side ) => {
-        g.bttf.inScene.seats[side].position.set( side ? -100 : 100, -176, -188 )
+        g.bttf.inScene.seats[side].position.set( side ? -100 : 100, -164, -188 )
         g.bttf.inScene.seats[side].rotateY( threeMake.degToRad( 90 ) )
         g.bttf.inScene.seats[side].rotateZ( threeMake.degToRad( 90 ) )
         g.bttf.inScene.seats[side].name = side ? 'passengerSeat' : 'driversSeat'
@@ -170,14 +170,14 @@ const makeInterior = () => {
             txtAss: assIntRearPanel2,
             struct: [ 82, 218.5 ],
             pivot: [ 41, 109.25 ],
-            position: [ -115, -186.5 ],
-            rotation: { x: -90, y: 15 },
+            position: [ -115, -170 ],
+            rotation: { x: -90, y: 28 },
           },
           rearPanel3: {
             txtAss: assIntRearPanel3,
             struct: [ 100, 218.5 ],
             pivot: [ 50, 109.25 ],
-            position: [ -215, -186.5 ],
+            position: [ -215, -170 ],
             rotation: { x: -90 },
           },
         },
@@ -185,7 +185,7 @@ const makeInterior = () => {
       fluxCapacitor: {
         txtAss: assFluxCC,
         struct: [ 77, 111 ],
-        position: [ 0, -186.5, -148 ],
+        position: [ 0, -170, -142 ],
         rotation: { x: -90 },
       },
     },
