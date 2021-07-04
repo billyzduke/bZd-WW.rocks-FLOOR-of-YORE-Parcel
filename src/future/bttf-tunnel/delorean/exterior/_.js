@@ -22,6 +22,10 @@ import assFusionCrossSection from 'url:/src/future/bttf-tunnel/delorean/exterior
 import assFusionLockFace from 'url:/src/future/bttf-tunnel/delorean/exterior/fusionLock.png'
 import assPipeMetal03 from 'url:/src/future/bttf-tunnel/metalPipeHorizontal.png'
 import assPanelScreen from 'url:/src/future/bttf-tunnel/delorean/exterior/panelScreen.png'
+import assSideMirrorBottom from 'url:/src/future/bttf-tunnel/delorean/exterior/sideMirrorBottom.png'
+import assSideMirrorTop from 'url:/src/future/bttf-tunnel/delorean/exterior/sideMirrorTop.png'
+import assSideMirrorFront from 'url:/src/future/bttf-tunnel/delorean/exterior/sideMirrorFront.png'
+import assSideMirrorSide from 'url:/src/future/bttf-tunnel/delorean/exterior/sideMirrorSide.png'
 import g from '/src/shared/_'
 import * as threeMake from '/src/shared/three/make'
 import * as threeMesh from '/src/shared/three/mesh'
@@ -352,7 +356,7 @@ const makeLightBarRails = where => {
       const tubeGeo = new THREE.TubeGeometry( tubeCrv, 120, 2.5, 10, false )
       const tubeMat = new THREE.MeshStandardMaterial( {
         color: 0xcccccc,
-        emissive: threeMake.color(0xffffff),
+        emissive: threeMake.color( 0xffffff ),
         // emissiveIntensity: 0.24,
         emissiveMap: tubeMap,
         side: THREE.DoubleSide,
@@ -431,4 +435,63 @@ const makeExterior = () => ( {
   },
 } )
 
-export { makeExterior }
+const makeSideViewMirror = side => {
+  const msh = { ...g.bttf.msh }
+  const mat = {
+    map: threeMake.textureLoader( assSideMirrorSide ),
+    emissive: threeMake.color( 'white' ),
+  }
+  mat.emissiveMap = mat.map
+  const mirrorSideMaterial = new THREE.MeshStandardMaterial( { ...msh, ...mat } )
+  mirrorSideMaterial.map.wrapS = mirrorSideMaterial.map.wrapT = THREE.RepeatWrapping
+  mirrorSideMaterial.map.repeat.set( 0.05, 0.03 )
+
+  const mirrorSideOuterShape = new THREE.Shape()
+  mirrorSideOuterShape.lineTo( 9, -34 )
+  mirrorSideOuterShape.lineTo( 23, -28.25 )
+  mirrorSideOuterShape.lineTo( 18.75, 0 )
+  mirrorSideOuterShape.lineTo( 0, 0 )
+
+  const mirrorSideBackShape = new THREE.Shape()
+  mirrorSideBackShape.lineTo( 0, -28.75 )
+  mirrorSideBackShape.lineTo( 51.75, -26.25 )
+  mirrorSideBackShape.lineTo( 33, -0.75 )
+  mirrorSideBackShape.lineTo( 0, 0 )
+
+  return {
+    children: {
+      [`mirrorBottom${side}`]: {
+        txtAss: assSideMirrorBottom,
+        struct: [ 48, 50.5 ],
+        pivot: [ 24, 25.25 ],
+      },
+      [`mirrorTop${side}`]: {
+        txtAss: assSideMirrorTop,
+        struct: [ 76, 48 ],
+        pivot: [ 38, 24 ],
+        position: [ -28, 9, -34 ],
+        rotation: { x: 23 },
+      },
+      [`mirrorFront${side}`]: {
+        txtAss: assSideMirrorFront,
+        struct: [ 76, 35.25 ],
+        pivot: [ 38, 17.625 ],
+        position: [ -28 ],
+        rotation: { x: -75 },
+      },
+      [`mirrorSideOuter${side}`]: {
+        msh: new THREE.Mesh( new THREE.ShapeGeometry( mirrorSideOuterShape ), mirrorSideMaterial ),
+        position: [ 48 ],
+        rotation: { x: 90, y: 90 },
+      },
+      [`mirrorSideBack${side}`]: {
+        msh: new THREE.Mesh( new THREE.ShapeGeometry( mirrorSideBackShape ), mirrorSideMaterial ),
+        position: [ 48, 18.75 ],
+        rotation: { x: 98, y: 168.75, z: 0.25 },
+      },
+    },
+    position: [ 0, 98, 3.5 ],
+  }
+}
+
+export { makeExterior, makeSideViewMirror }

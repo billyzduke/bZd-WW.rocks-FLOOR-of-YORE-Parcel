@@ -80,7 +80,7 @@ const makeThreeObj = ( obj, makeObj ) => {
       makeObj.geo = 'plane'
     }
     let makeFail, makeMesh
-    if ( makeObj.geo !== 'group' && makeObj.struct && makeObj.struct.length && makeObj.struct.length >= 2 ) {
+    if ( makeObj.geo !== 'group' && ( ( makeObj.struct && makeObj.struct.length && makeObj.struct.length >= 2 ) || makeObj.geo instanceof THREE.ShapeGeometry ) ) {
       if ( makeObj.geo !== 'group' ) {
         if ( g.bttf.obj[obj] ) devLog( `FUCKER! obj "${obj}" already exists!` )
         g.bttf.obj[obj] = {}
@@ -93,56 +93,59 @@ const makeThreeObj = ( obj, makeObj ) => {
       }
       if ( !makeObj.mat ) makeObj.mat = THREE.MeshBasicMaterial
       if ( makeObj.msh && typeof makeObj.msh.depthWrite !== 'undefined' ) makeObj.mat.depthWrite = makeObj.msh.depthWrite
+      if ( makeObj.geo instanceof THREE.ShapeGeometry ) g.bttf.obj[obj].geo = makeObj.geo
     }
-    switch ( makeObj.geo ) {
-      case 'cylinder':
-        if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
-          if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = 1 // heightSegments
-          if ( typeof makeObj.struct[5] === 'undefined' ) makeObj.struct[5] = false // openEnded
-          g.bttf.obj[obj].geo = new THREE.CylinderGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4], makeObj.struct[5] )
-        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
-        break
-      case 'sphere':
-        if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] ) {
-          if ( typeof makeObj.struct[3] === 'undefined' ) makeObj.struct[3] = 0 // phiStart
-          if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = Math.PI * 2 // phiLength
-          if ( typeof makeObj.struct[5] === 'undefined' ) makeObj.struct[5] = 0 // phiStart
-          if ( typeof makeObj.struct[6] === 'undefined' ) makeObj.struct[6] = Math.PI // phiLength
-          g.bttf.obj[obj].geo = new THREE.SphereGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4], makeObj.struct[5], makeObj.struct[6] )
-        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
-        break
-      case 'torus':
-        if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
-          if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = Math.PI * 2 // arc
-          g.bttf.obj[obj].geo = new THREE.TorusGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4] )
-        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
-        break
-      case 'box':
-        if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] ) {
-          g.bttf.obj[obj].geo = new THREE.BoxGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2] )
-        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
-        break
-      case 'circle':
-        if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] ) {
-          g.bttf.obj[obj].geo = new THREE.CircleGeometry( makeObj.struct[0], makeObj.struct[1] )
-        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
-        break
-      case 'plane':
-        if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] ) {
-          g.bttf.obj[obj].geo = new THREE.PlaneGeometry( makeObj.struct[0], makeObj.struct[1] )
-        } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
-        break
-      case 'group':
-      default:
-        // if (makeObj.pivot && makeObj.struct && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2]) {
-        //   console.log({ groupBox: makeObj })
-        //   g.bttf.grp[obj] = new THREE.Mesh(new THREE.BoxGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2]), new THREE.MeshBasicMaterial({ opacity: 0, transparent: true }))
-        //   setPivot(g.bttf.grp[obj], makeObj)
-        // } else {
-        if ( g.bttf.grp[obj] ) devLog( `FUCKER! grp "${obj}" already exists!` )
-        g.bttf.grp[obj] = new THREE.Group()
-        g.bttf.grp[obj].name = obj
+    if ( !( makeObj.geo instanceof THREE.ShapeGeometry ) ) {
+      switch ( makeObj.geo ) {
+        case 'cylinder':
+          if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
+            if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = 1 // heightSegments
+            if ( typeof makeObj.struct[5] === 'undefined' ) makeObj.struct[5] = false // openEnded
+            g.bttf.obj[obj].geo = new THREE.CylinderGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4], makeObj.struct[5] )
+          } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+          break
+        case 'sphere':
+          if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] ) {
+            if ( typeof makeObj.struct[3] === 'undefined' ) makeObj.struct[3] = 0 // phiStart
+            if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = Math.PI * 2 // phiLength
+            if ( typeof makeObj.struct[5] === 'undefined' ) makeObj.struct[5] = 0 // phiStart
+            if ( typeof makeObj.struct[6] === 'undefined' ) makeObj.struct[6] = Math.PI // phiLength
+            g.bttf.obj[obj].geo = new THREE.SphereGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4], makeObj.struct[5], makeObj.struct[6] )
+          } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+          break
+        case 'torus':
+          if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] && makeObj.struct[3] ) {
+            if ( typeof makeObj.struct[4] === 'undefined' ) makeObj.struct[4] = Math.PI * 2 // arc
+            g.bttf.obj[obj].geo = new THREE.TorusGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2], makeObj.struct[3], makeObj.struct[4] )
+          } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+          break
+        case 'box':
+          if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2] ) {
+            g.bttf.obj[obj].geo = new THREE.BoxGeometry( makeObj.struct[0], makeObj.struct[1], makeObj.struct[2] )
+          } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+          break
+        case 'circle':
+          if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] ) {
+            g.bttf.obj[obj].geo = new THREE.CircleGeometry( makeObj.struct[0], makeObj.struct[1] )
+          } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+          break
+        case 'plane':
+          if ( g.bttf.obj[obj] && makeObj.struct[0] && makeObj.struct[1] ) {
+            g.bttf.obj[obj].geo = new THREE.PlaneGeometry( makeObj.struct[0], makeObj.struct[1] )
+          } else makeFail = { obj, makeFail: makeObj, failedOn: { geo: makeObj.geo } }
+          break
+        case 'group':
+        default:
+          // if (makeObj.pivot && makeObj.struct && makeObj.struct[0] && makeObj.struct[1] && makeObj.struct[2]) {
+          //   console.log({ groupBox: makeObj })
+          //   g.bttf.grp[obj] = new THREE.Mesh(new THREE.BoxGeometry(makeObj.struct[0], makeObj.struct[1], makeObj.struct[2]), new THREE.MeshBasicMaterial({ opacity: 0, transparent: true }))
+          //   setPivot(g.bttf.grp[obj], makeObj)
+          // } else {
+          if ( g.bttf.grp[obj] ) devLog( `FUCKER! grp "${obj}" already exists!` )
+          g.bttf.grp[obj] = new THREE.Group()
+          g.bttf.grp[obj].name = obj
         // }
+      }
     }
     if ( makeFail ) devLog( makeFail )
     else if ( g.bttf.obj[obj] && g.bttf.obj[obj].geo && makeMesh && makeObj.mat ) {

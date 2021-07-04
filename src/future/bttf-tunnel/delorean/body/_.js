@@ -26,6 +26,7 @@ import assBodyBackLedge from 'url:/src/future/bttf-tunnel/delorean/body/bodyBack
 import assBumperAftTop from 'url:/src/future/bttf-tunnel/delorean/body/bumperAftTop.jpg'
 import assBumperAftBottom from 'url:/src/future/bttf-tunnel/delorean/body/bumperAftBottom.jpg'
 import * as threeMake from '/src/shared/three/make'
+import { makeSideViewMirror } from '/src/future/bttf-tunnel/delorean/exterior/_'
 
 const makeBody = () => ( {
   struct: [ 432, 1000, 300 ],
@@ -69,9 +70,7 @@ const makeBody = () => ( {
           pivot: [ 50 ],
           rotation: [ 0, 132.5 ],
         },
-        sideViewMirrorL: {
-
-        },
+        sideViewMirrorL: makeSideViewMirror( 'L' ),
       },
     },
     bcUpperR: {
@@ -85,9 +84,7 @@ const makeBody = () => ( {
           pivot: [ 50 ],
           rotation: [ 0, 47.5 ],
         },
-        sideViewMirrorR: {
-
-        },
+        sideViewMirrorR: makeSideViewMirror( 'R' ),
       },
     },
     sideWindowL: {

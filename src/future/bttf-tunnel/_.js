@@ -6,6 +6,7 @@ import Stats from 'stats.js'
 import g from '/src/shared/_'
 import * as bttfAnim from '/src/future/bttf-tunnel/anim'
 import * as threeMake from '/src/shared/three/make'
+import * as threeMesh from '/src/shared/three/mesh'
 import * as threeRend from '/src/shared/three/rend'
 import {
   makeDeLorean, setModel, toggleFlightMode, toggleFlyAlongPath, toggleWheelsDrop,
@@ -129,6 +130,8 @@ const setBTTF = ( {
       }
       Object.keys( g.bttf.makeObjs ).forEach( obj => threeMake.makeThreeObj( obj, g.bttf.makeObjs[obj] ) )
       Object.keys( g.bttf.makeObjs ).forEach( grp => g.bttf.scene.add( g.bttf.grp[grp] ) )
+      const sideViewMirrorR = g.bttf.scene.getObjectByName( 'sideViewMirrorR' )
+      threeMesh.mirrorMesh( sideViewMirrorR )
     }
 
     // smoke group creation needed even if smoke itself is suppressed for directional light target
