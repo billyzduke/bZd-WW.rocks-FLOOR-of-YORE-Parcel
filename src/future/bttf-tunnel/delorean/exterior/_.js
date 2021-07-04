@@ -444,7 +444,7 @@ const makeSideViewMirror = side => {
   mat.emissiveMap = mat.map
   const mirrorSideMaterial = new THREE.MeshStandardMaterial( { ...msh, ...mat } )
   mirrorSideMaterial.map.wrapS = mirrorSideMaterial.map.wrapT = THREE.RepeatWrapping
-  mirrorSideMaterial.map.repeat.set( 0.05, 0.03 )
+  mirrorSideMaterial.map.repeat.set( 0.02, 0.03 )
 
   const mirrorSideOuterShape = new THREE.Shape()
   mirrorSideOuterShape.lineTo( 9, -34 )
@@ -457,6 +457,12 @@ const makeSideViewMirror = side => {
   mirrorSideBackShape.lineTo( 51.75, -26.25 )
   mirrorSideBackShape.lineTo( 33, -0.75 )
   mirrorSideBackShape.lineTo( 0, 0 )
+
+  const mirrorSideMountShape = new THREE.Shape()
+  mirrorSideMountShape.lineTo( 0, -33 )
+  mirrorSideMountShape.lineTo( 28, -18 )
+  mirrorSideMountShape.lineTo( 18, 7 )
+  mirrorSideMountShape.lineTo( 0, 0 )
 
   return {
     children: {
@@ -488,6 +494,11 @@ const makeSideViewMirror = side => {
         msh: new THREE.Mesh( new THREE.ShapeGeometry( mirrorSideBackShape ), mirrorSideMaterial ),
         position: [ 48, 18.75 ],
         rotation: { x: 98, y: 168.75, z: 0.25 },
+      },
+      [`mirrorSideMount${side}`]: {
+        msh: new THREE.Mesh( new THREE.ShapeGeometry( mirrorSideMountShape ), mirrorSideMaterial ),
+        position: [ 0, 53, 0 ],
+        rotation: { z: 31.5, y: 120 },
       },
     },
     position: [ 0, 98, 3.5 ],
