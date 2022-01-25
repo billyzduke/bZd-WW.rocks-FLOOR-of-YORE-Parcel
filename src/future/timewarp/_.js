@@ -234,7 +234,7 @@ const fadeWarp = () => {
             opacity: 0,
             onComplete: function () {
               setClearActors( '#flux' )
-              g.bttf.bin.push( setAddOn( '#deLorean', 'click', toggleFlyAlongPath ) )
+              g.bttf.bin.push( setAddOn( '#bttfTunnel', 'click', toggleFlyAlongPath ) )
               g.bttf.on = true
               // g.bttf.mkr.io = undefined
               threeRend.startRendering()
